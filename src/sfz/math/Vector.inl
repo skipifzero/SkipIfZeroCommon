@@ -49,6 +49,16 @@ namespace sfz {
 		return squaredSum;
 	}
 
+	template<class T, std::size_t N>
+	T Vector<T,N>::dot(const Vector<T,N>& other) const {
+		T product = 0;
+		auto itr = other.begin();
+		for(auto element : array) {
+			product += (element*(*itr++));
+		}
+		return product;
+	}
+
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

@@ -231,3 +231,29 @@ TEST_CASE("Comparison operators", "[sfz::Vector]") {
 		REQUIRE(v3 >= v2);
 	}
 }
+
+TEST_CASE("Dot (scalar) product", "[sfz::Vector]") {
+	SECTION("Correctness test") {
+		sfz::Vector<int, 3> v1{1, 0, -2};
+		sfz::Vector<int, 3> v2{6, 2, 2};
+		int scalarProduct = v1.dot(v2);
+		
+		REQUIRE(scalarProduct == 2);
+		
+		REQUIRE(v1[sfz::x] == 1);
+		REQUIRE(v1[sfz::y] == 0);
+		REQUIRE(v1[sfz::z] == -2);
+		REQUIRE(v2[sfz::x] == 6);
+		REQUIRE(v2[sfz::y] == 2);
+		REQUIRE(v2[sfz::z] == 2);
+	}
+	SECTION("Using same vector twice") {	
+		sfz::Vector<int, 2> v1{-3, 2};
+		int scalarProduct = v1.dot(v1);
+		
+		REQUIRE(scalarProduct == 13);
+		
+		REQUIRE(v1[sfz::x] == -3);
+		REQUIRE(v1[sfz::y] == 2);	
+	}
+}

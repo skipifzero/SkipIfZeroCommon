@@ -75,6 +75,14 @@ namespace sfz {
 		 */
 		T lengthSquared() const;
 
+		/**
+		 * @brief Calculates the dot (scalar) product between this vector and the other vector.
+		 * Might overflow and return weird stuff if vector contains many, very large elements.
+		 * @param other the other vector
+		 * @return the dot product
+		 */
+		T dot(const Vector<T,N>& other) const;
+
 		// Standard iterator functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
