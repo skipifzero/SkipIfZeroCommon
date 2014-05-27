@@ -85,6 +85,14 @@ namespace sfz {
 		T squaredNorm() const;
 
 		/**
+		 * @brief Normalizes the vector and produces a unit vector.
+		 * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing in the same
+		 * direction with the norm 1.
+		 * @return the unit vector
+		 */
+		Vector<T,N> normalize() const;
+
+		/**
 		 * @brief Calculates the dot (scalar) product between this vector and the other vector.
 		 * Might overflow and return weird stuff if vector contains many, very large elements.
 		 * @param other the other vector
@@ -178,6 +186,16 @@ namespace sfz {
 	template<class T, std::size_t N>
 	T norm(const Vector<T,N>& vector);
 
+	/**
+	 * @relates sfz::Vector
+	 * @brief Normalizes the vector and produces a unit vector.
+	 * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing in the same
+	 * direction with the norm 1.
+	 * @param vector the vector to normalize
+	 * @return the unit vector
+	 */
+	template<class T, std::size_t N>
+	Vector<T,N> normalize(const Vector<T,N>& vector);
 
 
 	// External Operators (Arithmetic)

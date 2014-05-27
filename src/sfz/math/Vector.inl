@@ -59,6 +59,15 @@ namespace sfz {
 	}
 
 	template<class T, std::size_t N>
+	Vector<T,N> Vector<T,N>::normalize() const {
+		T normTmp = norm();
+		if(normTmp == 0) {
+			return *this;
+		} 
+		return (*this)/normTmp;
+	}
+
+	template<class T, std::size_t N>
 	T Vector<T,N>::dot(const Vector<T,N>& other) const {
 		T product = 0;
 		auto itr = other.begin();
@@ -160,6 +169,11 @@ namespace sfz {
 	template<class T, std::size_t N>
 	T norm(const Vector<T,N>& vector) {
 		return vector.norm();
+	}
+
+	template<class T, std::size_t N>
+	Vector<T,N> normalize(const Vector<T,N>& vector) {
+		return vector.normalize();
 	}
 
 	// External Operators (Arithmetic)

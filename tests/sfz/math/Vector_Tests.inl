@@ -211,6 +211,30 @@ TEST_CASE("Norm (length) of vector", "[sfz::Vector]") {
 	}
 }
 
+TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]") {
+	sfz::Vector<float, 4> v1 = normalize(sfz::Vector<float, 4>{-2.f, 2.f, -2.f, 2.f});
+	const float delta = 1e-3f;
+
+	SECTION("Correct answer") {
+		const float posLower = 0.5f - delta;
+		const float posHigher = 0.5f + delta;
+		const float negLower = -0.5f - delta;
+		const float negHigher = -0.5f + delta;		
+
+		REQUIRE(negLower <= v1[0]);
+		REQUIRE(v1[0] <= negHigher);
+
+		REQUIRE(posLower <= v1[1]);
+		REQUIRE(v1[1] <= posHigher);
+
+		REQUIRE(negLower <= v1[2]);
+		REQUIRE(v1[2] <= negHigher);
+
+		REQUIRE(posLower <= v1[3]);
+		REQUIRE(v1[3] <= posHigher);
+	}
+}
+
 TEST_CASE("Comparison operators", "[sfz::Vector]") {
 	sfz::Vector<int, 3> v1{-4, 0, 0};
 	sfz::Vector<int, 3> v2{0, 2, 0};
