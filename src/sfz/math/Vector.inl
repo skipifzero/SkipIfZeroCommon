@@ -36,12 +36,12 @@ namespace sfz {
 	}
 
 	template<class T, std::size_t N>
-	T Vector<T,N>::length() const {
-		return std::sqrt(lengthSquared());
+	T Vector<T,N>::norm() const {
+		return std::sqrt(squaredNorm());
 	}
 
 	template<class T, std::size_t N>
-	T Vector<T,N>::lengthSquared() const {
+	T Vector<T,N>::squaredNorm() const {
 		T squaredSum = 0;
 		for(auto element : array) {
 			squaredSum += element*element;
@@ -145,6 +145,14 @@ namespace sfz {
 		return *this;
 	}
 
+	// External functions
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<class T, std::size_t N>
+	T norm(const Vector<T,N>& vector) {
+		return vector.norm();
+	}
+
 	// External Operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
@@ -199,21 +207,21 @@ namespace sfz {
 
 	template<class T, std::size_t N>
 	bool operator <(const Vector<T,N>& left, const Vector<T,N>& right) {
-		return left.lengthSquared() < right.lengthSquared();
+		return left.squaredNorm() < right.squaredNorm();
 	}
 
 	template<class T, std::size_t N>
 	bool operator >(const Vector<T,N>& left, const Vector<T,N>& right) {
-		return left.lengthSquared() > right.lengthSquared();
+		return right < left;
 	}
 
 	template<class T, std::size_t N>
 	bool operator <=(const Vector<T,N>& left, const Vector<T,N>& right) {
-		return left.lengthSquared() <= right.lengthSquared();
+		return left.squaredNorm() <= right.squaredNorm();
 	}
 
 	template<class T, std::size_t N>
 	bool operator >=(const Vector<T,N>& left, const Vector<T,N>& right) {
-		return left.lengthSquared() >= right.lengthSquared();
+		return right <= left;
 	}
 }

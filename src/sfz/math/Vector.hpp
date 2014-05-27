@@ -58,22 +58,23 @@ namespace sfz {
 		void set(std::size_t index, T value);
 
 		/**
-		 * @brief Calculates the length of the vector.
+		 * @brief Calculates the norm (length) of the vector.
 		 * Note when using discrete types (int, long, etc): This method will square each element of the vector and add
 		 * them together before taking the square root. This might result in an overflow if the elements are too
 		 * large. In that case the result of this function will be undefined. Also, the return type will still be a
 		 * discrete type, meaning that the result will be truncated. If this is a problem you should use the
-		 * lengthSquared() function and do the square root yourself.
-		 * @return length of the vector
+		 * squaredNorm() function and do the square root yourself.
+		 * @return norm of the vector
 		 */
-		T length() const;
+		T norm() const;
 
 		/**
-		 * @brief Calculates the squared length of the vector.
-		 * Does the same thing as the length() function except it doesn't do the expensive square root operation.
-		 * @return squared length of the vector
+		 * @brief Calculates the squared norm (length) of the vector.
+		 * Sums the squares of each element in the vector. Take the sqrt of this sum and you get the norm (length).
+		 * This function is useful if you only need to compare vectors as you can skip the expensive sqrt operation.
+		 * @return squared norm of the vector
 		 */
-		T lengthSquared() const;
+		T squaredNorm() const;
 
 		/**
 		 * @brief Calculates the dot (scalar) product between this vector and the other vector.
@@ -155,6 +156,20 @@ namespace sfz {
 	private:
 		std::array<T,N> array;
 	};
+
+	// External functions
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	/**
+	 * @relates sfz::Vector
+	 * @brief Calculates the norm (length) of the vector.
+	 * @see sfz::Vector<T,N>::norm()
+	 * @param vector the vector to calculate norm of
+	 * @return norm of the vector
+	 */
+	template<class T, std::size_t N>
+	T norm(const Vector<T,N>& vector);
+
 
 	// External Operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

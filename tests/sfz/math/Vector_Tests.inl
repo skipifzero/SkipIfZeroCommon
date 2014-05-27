@@ -181,22 +181,26 @@ TEST_CASE("Arithmetic operators", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Length of vector", "[sfz::Vector]") {
+TEST_CASE("Norm (length) of vector", "[sfz::Vector]") {
 	sfz::Vector<int, 2> v1{2, 0};
 	sfz::Vector<int, 5> v2{-2, 2, 2, -2, 3};
 
-	SECTION("lengthSquared()") {
-		REQUIRE(v1.lengthSquared() == 4);
-		REQUIRE(v2.lengthSquared() == 25);
+	SECTION("squaredNorm()") {
+		REQUIRE(v1.squaredNorm() == 4);
+		REQUIRE(v2.squaredNorm() == 25);
 	}
-	SECTION("length()") {
-		REQUIRE(v1.length() == 2);
-		REQUIRE(v2.length() == 5);
+	SECTION("v.norm()") {
+		REQUIRE(v1.norm() == 2);
+		REQUIRE(v2.norm() == 5);
+	}
+	SECTION("norm(v)") {
+		REQUIRE(norm(v1) == 2);
+		REQUIRE(norm(v2) == 5);
 	}
 	SECTION("Rounding down") {
 		sfz::Vector<int, 2> v3{2,1};
-		REQUIRE(v3.lengthSquared() == 5);
-		REQUIRE(v3.length() == 2);
+		REQUIRE(v3.squaredNorm() == 5);
+		REQUIRE(v3.norm() == 2);
 	}
 }
 
