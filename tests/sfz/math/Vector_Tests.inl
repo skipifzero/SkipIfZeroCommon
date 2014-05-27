@@ -1,6 +1,6 @@
 #include "../../../src/sfz/math/Vector.hpp"
 
-TEST_CASE("Correct element assignment at construction", "[sfz::Vector]") {
+TEST_CASE("Constructors", "[sfz::Vector]") {
 	SECTION("Default constructor initializes elements to 0") {
 		sfz::Vector<int, 3> vector;
 		for(std::size_t i = 0; i < 3; i++) {
@@ -25,6 +25,13 @@ TEST_CASE("Correct element assignment at construction", "[sfz::Vector]") {
 	}
 	SECTION("Copy constructor correctly copies vector") {
 		sfz::Vector<int, 4> vector{sfz::Vector<int, 4>{-2, 2, 1, 42}};
+		REQUIRE(vector[sfz::x] == -2);
+		REQUIRE(vector[sfz::y] == 2);
+		REQUIRE(vector[sfz::z] == 1);
+		REQUIRE(vector[3] == 42);
+	}
+	SECTION("Copy cast construcotr correctly copies and casts") {
+		sfz::Vector<int, 4> vector{sfz::Vector<float, 4>{-2.1f, 2.1f, 1.1f, 42.1f}};
 		REQUIRE(vector[sfz::x] == -2);
 		REQUIRE(vector[sfz::y] == 2);
 		REQUIRE(vector[sfz::z] == 1);

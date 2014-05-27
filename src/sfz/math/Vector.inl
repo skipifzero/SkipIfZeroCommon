@@ -9,8 +9,17 @@ namespace sfz {
 	}
 
 	template<class T, std::size_t N>
-	Vector<T,N>::Vector(const sfz::Vector<T,N>& vector) {
+	Vector<T,N>::Vector(const Vector<T,N>& vector) {
 		array = vector.array;
+	}
+
+	template<class T, std::size_t N>
+	template<class T2>
+	Vector<T,N>::Vector(const Vector<T2,N>& vector) {
+		auto itr = vector.begin();
+		for(auto& element : array) {
+			element = static_cast<T>(*itr++);
+		}
 	}
 
 	template<class T, std::size_t N>

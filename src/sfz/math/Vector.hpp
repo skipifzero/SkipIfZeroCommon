@@ -27,7 +27,15 @@ namespace sfz {
 		 * Copies all elements from specified vector to this vector.
 		 * @param vector the vector to copy
 		 */
-		Vector(const sfz::Vector<T,N>& vector);
+		Vector(const Vector<T,N>& vector);
+
+		/**
+		 * @brief Copy cast constructor.
+		 * Copies all elements from specified vector and attempts to static_cast them to this vectors type.
+		 * @param vector the vector to copy
+		 */
+		template<class T2>
+		explicit Vector(const Vector<T2,N>& vector);
 
 		/**
 		 * @brief Initializer list constructor.
@@ -169,6 +177,7 @@ namespace sfz {
 	 */
 	template<class T, std::size_t N>
 	T norm(const Vector<T,N>& vector);
+
 
 
 	// External Operators (Arithmetic)
