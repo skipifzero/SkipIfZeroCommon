@@ -71,6 +71,18 @@ TEST_CASE("Assignment and accessing", "[sfz::Vector]") {
 	}
 }
 
+TEST_CASE("fill", "[sfz::Vector]") {
+	sfz::Vector<int,4> v;
+	v.fill(4);
+	for(auto e : v) {
+		REQUIRE(e == 4);
+	}
+	v.fill(2);
+	for(auto e : v) {
+		REQUIRE(e == 2);
+	}
+}
+
 TEST_CASE("Arithmetic operators", "[sfz::Vector]") {
 	sfz::Vector<int, 3> v1{1, -2, 5};
 	sfz::Vector<int, 3> v2{0, -2, 1};

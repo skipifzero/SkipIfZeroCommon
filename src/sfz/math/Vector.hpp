@@ -66,6 +66,13 @@ namespace sfz {
 		void set(std::size_t index, T value);
 
 		/**
+		 * @brief Fills the vector with the specified value.
+		 * Assigns each elemnt in the vector the specified value
+		 * @param value the value to fill vector with
+		 */
+		void fill(T value);
+
+		/**
 		 * @brief Calculates the norm (length) of the vector.
 		 * Note when using discrete types (int, long, etc): This method will square each element of the vector and add
 		 * them together before taking the square root. This might result in an overflow if the elements are too
@@ -170,7 +177,7 @@ namespace sfz {
 		Vector<T,N>& operator /=(const T& right);
 
 	private:
-		std::array<T,N> array;
+		std::array<T,N> elements;
 	};
 
 	// External functions
