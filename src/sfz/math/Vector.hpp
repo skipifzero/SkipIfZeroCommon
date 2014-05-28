@@ -46,7 +46,7 @@ namespace sfz {
 
 		virtual ~Vector() = default;
 
-		// Public functions
+		// Public member functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		/**
@@ -121,7 +121,7 @@ namespace sfz {
 		const_iterator end() const;
 		const_iterator cend() const;
 
-		// Internal operators
+		// Member operators (access)
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		/**
@@ -140,7 +140,7 @@ namespace sfz {
 		 */
 		const T& operator [](std::size_t index) const;
 
-		// Internal operators (Arithmetic & Assignment)
+		// Member operators (Arithmetic & Assignment)
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		/**
@@ -180,7 +180,7 @@ namespace sfz {
 		std::array<T,N> elements;
 	};
 
-	// External functions
+	// Free (non-member) functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
@@ -205,7 +205,7 @@ namespace sfz {
 	Vector<T,N> normalize(const Vector<T,N>& vector);
 
 
-	// External Operators (Arithmetic)
+	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
 	/**
@@ -274,7 +274,7 @@ namespace sfz {
 	template<class T, std::size_t N>
 	Vector<T,N> operator /(const Vector<T,N>& left, const T& right);
 
-	// External Operators (Comparison)
+	// Free (non-member) operators (Comparison)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**

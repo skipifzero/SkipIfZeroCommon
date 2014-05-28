@@ -31,7 +31,7 @@ namespace sfz {
 		std::copy(list.begin(), list.end(), elements.begin());
 	}
 
-	// Public functions
+	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<class T, std::size_t N>
@@ -115,7 +115,7 @@ namespace sfz {
 		return elements.cend();
 	}
 
-	// Internal operators
+	// Member operators (access)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<class T, std::size_t N>
@@ -128,7 +128,7 @@ namespace sfz {
 		return elements.at(index);
 	}
 
-	// Internal operators (Arithmetic & Assignment)
+	// Member operators (Arithmetic & Assignment)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<class T, std::size_t N>
@@ -168,7 +168,7 @@ namespace sfz {
 		return *this;
 	}
 
-	// External functions
+	// Free (non-member) functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<class T, std::size_t N>
@@ -181,7 +181,7 @@ namespace sfz {
 		return vector.normalize();
 	}
 
-	// External Operators (Arithmetic)
+	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
 	template<class T, std::size_t N>
@@ -214,7 +214,7 @@ namespace sfz {
 		return (Vector<T,N>{left} /= right);
 	}
 
-	// External Operators (Comparison)
+	// Free (non-member) operators (Comparison)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<class T, std::size_t N>
