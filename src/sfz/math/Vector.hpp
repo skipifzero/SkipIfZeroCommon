@@ -116,6 +116,12 @@ namespace sfz {
 		 */
 		Vector<T,N> elementMultiply(const Vector<T,N>& other) const;
 
+		/**
+		 * @brief Sums the elements in the vector.
+		 * @return the sum of all the elements in the vector
+		 */
+		T sum() const;
+
 		// Standard iterator functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

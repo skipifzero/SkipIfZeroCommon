@@ -343,3 +343,8 @@ TEST_CASE("Element-wise multiplication", "[sfz::Vector]") {
 		REQUIRE(v3[sfz::z] == 9);
 	}
 }
+
+TEST_CASE("Sum of vector", "[sfz::Vector]") {
+	sfz::Vector<int, 4> v1{1, 2, -4, 9};
+	REQUIRE(v1.sum() == 8);
+}

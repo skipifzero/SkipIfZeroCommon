@@ -92,6 +92,15 @@ namespace sfz {
 		return result;
 	}
 
+	template<class T, std::size_t N>
+	T Vector<T,N>::sum() const {
+		T result = 0;
+		for(auto element : elements) {
+			result += element;
+		}
+		return result;
+	}
+
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
