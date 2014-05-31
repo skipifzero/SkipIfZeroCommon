@@ -1,3 +1,6 @@
+#define CATCH_CONFIG_MAIN
+#include "../../catch.hpp"
+
 #include "../../../src/sfz/math/Vector.hpp"
 
 TEST_CASE("Constructors", "[sfz::Vector]") {
