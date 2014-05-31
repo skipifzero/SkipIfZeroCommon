@@ -9,6 +9,8 @@
 #include <cmath>
 #include <iterator>
 
+#include "MathUtils.hpp"
+
 namespace sfz {
 
 	template<class T, std::size_t N>
@@ -204,6 +206,28 @@ namespace sfz {
 	template<class T, std::size_t N>
 	Vector<T,N> normalize(const Vector<T,N>& vector);
 
+	/**
+	 * @relates sfz::Vector
+	 * @brief Calculates the positive angle between the specified vector and the x-axis in radians.
+	 * The angle will be in the range [0, 2*Pi).
+	 * @throws std::domain_error if norm of vector is 0
+	 * @param vector the 2-dimensional vector to calculate angle of
+	 * @return the angle between the vector and the x-axis
+	 */
+	template<class T>
+	T angle(const Vector<T,2>& vector);
+
+	/**
+	 * @relates sfz::Vector
+	 * @brief Calculates the positive angle between two vectors.
+	 * The angle will be in range [0, Pi] and will always be the smallest possible angle between the vectors.
+	 * @throws std::domain_error if norm of vectorA or B is 0
+	 * @param vectorA the first vector
+	 * @param vectorB the second vector
+	 * @return the angle between the two vectors
+	 */
+	template<class T, std::size_t N>
+	T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
 
 	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

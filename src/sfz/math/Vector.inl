@@ -181,6 +181,31 @@ namespace sfz {
 		return vector.normalize();
 	}
 
+	template<class T>
+	T angle(const Vector<T,2>& vector) {
+		if(vector[x] == 0 && vector[y] == 0) {
+			throw std::domain_error("Norm of vector is 0");
+		}
+		T angle = std::atan2(vector[y], vector[x]);
+		if(angle < 0) {
+			angle += 2.f*static_cast<T>(PI_DOUBLE);
+		}
+		return angle;
+	}
+
+	template<class T, std::size_t N>
+	T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) {
+		T normA = norm(vectorA);
+		T normB = norm(vectorB);
+		if(normA == 0) {
+			throw std::domain_error("Norm of vectorA is 0");
+		}
+		if(normB == 0) {
+			throw std::domain_error("Norm of vectorB is 0");
+		}
+		return std::acos(vectorA.dot(vectorB)/(std::sqrt(vectorA.squaredNorm()*vectorB.squaredNorm())));
+	}
+
 	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	

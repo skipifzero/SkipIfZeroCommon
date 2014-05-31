@@ -64,13 +64,7 @@ TEST_CASE("Assignment and accessing", "[sfz::Vector]") {
 		REQUIRE(vector[4] == 54);
 	}
 	SECTION("Throws std::out_of_range when accessing invalid index") {
-		bool exceptionSuccess = false;
-		try {
-			vector[5];
-		} catch (std::out_of_range exc) {
-			exceptionSuccess = true;
-		}
-		REQUIRE(exceptionSuccess);
+		REQUIRE_THROWS_AS(vector[5], std::out_of_range);
 	}
 }
 
@@ -162,13 +156,7 @@ TEST_CASE("Arithmetic operators", "[sfz::Vector]") {
 		auto v1 = sfz::Vector<int, 2>{2, -2}/2;
 		REQUIRE(v1[sfz::x] == 1);
 		REQUIRE(v1[sfz::y] == -1);
-		bool exceptionSuccess = false;
-		try {
-			v1/0;
-		} catch (std::domain_error exc) {
-			exceptionSuccess = true;
-		}
-		REQUIRE(exceptionSuccess);
+		REQUIRE_THROWS_AS(v1/0, std::domain_error);
 	}
 	SECTION("Addition assignment") {
 		v1 += v2;
@@ -193,13 +181,7 @@ TEST_CASE("Arithmetic operators", "[sfz::Vector]") {
 		v3 /= 2;
 		REQUIRE(v3[sfz::x] == 1);
 		REQUIRE(v3[sfz::y] == -1);
-		bool exceptionSuccess = false;
-		try {
-			v3 /= 0;
-		} catch (std::domain_error exc) {
-			exceptionSuccess = true;
-		}
-		REQUIRE(exceptionSuccess);
+		REQUIRE_THROWS_AS(v3 /= 0, std::domain_error);
 	}
 }
 
@@ -247,6 +229,42 @@ TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]") {
 
 		REQUIRE(posLower <= v1[3]);
 		REQUIRE(v1[3] <= posHigher);
+	}
+}
+
+TEST_CASE("Angle of vectors", "[sfz::Vector]") {
+	sfz::Vector<float, 2> vRight{1, 0};
+	sfz::Vector<float, 2> vUp{0, 1};
+	sfz::Vector<float, 2> vDown{0, -1};
+
+	SECTION("(2D) Angle between y and (implicit) x-axis") {
+		auto angle = sfz::angle(vUp);
+		REQUIRE((3.1415f/2.f) <= angle);
+		REQUIRE(angle <= (3.1416f/2.f));
+	}
+	SECTION("Angle between y and (explicit) x-axis") {
+		auto angle = sfz::angle(vRight, vUp);
+		REQUIRE((3.1415f/2.f) <= angle);
+		REQUIRE(angle <= (3.1416f/2.f));
+	}
+	SECTION("Angle between same vectors") {
+		auto angle1 = angle(vRight);
+		REQUIRE(angle1 == 0);
+
+		auto angle2 = angle(vUp, vUp);
+		REQUIRE(angle2 == 0);
+	}
+	SECTION("(2D) Angle with implicit x-axis should never give negative angles") {
+		auto angle = sfz::angle(vDown);
+		REQUIRE((3.f*3.1415f/2.f) <= angle);
+		REQUIRE(angle <= (3.f*3.1416f/2.f));
+	}
+	SECTION("Vectors with norm == 0") {
+		sfz::Vector<float, 2> vZero{0, 0};
+		REQUIRE_THROWS_AS(angle(vZero), std::domain_error);
+		REQUIRE_THROWS_AS(angle(vZero, vUp), std::domain_error);
+		REQUIRE_THROWS_AS(angle(vRight, vZero), std::domain_error);
+		REQUIRE_THROWS_AS(angle(vZero, vZero), std::domain_error);
 	}
 }
 
