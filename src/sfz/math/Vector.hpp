@@ -109,6 +109,13 @@ namespace sfz {
 		 */
 		T dot(const Vector<T,N>& other) const;
 
+		/**
+		 * @brief Does an element-wise multiplication of two vectors.
+		 * @param the other vector
+		 * @return the resulting vector
+		 */
+		Vector<T,N> elementMultiply(const Vector<T,N>& other) const;
+
 		// Standard iterator functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

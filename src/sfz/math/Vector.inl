@@ -82,6 +82,16 @@ namespace sfz {
 		return product;
 	}
 
+	template<class T, std::size_t N>
+	Vector<T,N> Vector<T,N>::elementMultiply(const Vector<T,N>& other) const {
+		Vector<T,N> result = *this;
+		auto itr = other.begin();
+		for(auto& element : result) {
+			element *= *itr++;
+		}
+		return result;
+	}
+
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

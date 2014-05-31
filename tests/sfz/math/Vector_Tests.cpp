@@ -325,3 +325,21 @@ TEST_CASE("Dot (scalar) product", "[sfz::Vector]") {
 		REQUIRE(v1[sfz::y] == 2);	
 	}
 }
+
+TEST_CASE("Element-wise multiplication", "[sfz::Vector]") {
+	sfz::Vector<int, 3> v1{1, 0, -3};
+	sfz::Vector<int, 3> v2{2, 0, 2};
+
+	SECTION("Correctness test") {
+		auto v3 = v1.elementMultiply(v2);
+		REQUIRE(v3[sfz::x] == 2);
+		REQUIRE(v3[sfz::y] == 0);
+		REQUIRE(v3[sfz::z] == -6);
+	}
+	SECTION("Same vector") {
+		auto v3 = v1.elementMultiply(v1);
+		REQUIRE(v3[sfz::x] == 1);
+		REQUIRE(v3[sfz::y] == 0);
+		REQUIRE(v3[sfz::z] == 9);
+	}
+}
