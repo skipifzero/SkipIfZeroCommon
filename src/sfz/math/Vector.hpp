@@ -114,7 +114,7 @@ namespace sfz {
 		 * @param the other vector
 		 * @return the resulting vector
 		 */
-		Vector<T,N> elementMultiply(const Vector<T,N>& other) const;
+		Vector<T,N> elemMult(const Vector<T,N>& other) const;
 
 		/**
 		 * @brief Sums the elements in the vector.
