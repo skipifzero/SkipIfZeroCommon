@@ -57,7 +57,7 @@ namespace sfz {
 		 * @param index the index of the element
 		 * @return the element at the specified index
 		 */
-		T get(std::size_t index) const;
+		T get(const std::size_t index) const;
 
 		/**
 		 * @brief Assigns value to the specified index.
@@ -65,14 +65,14 @@ namespace sfz {
 		 * @param index the index to assign value to
 		 * @param value the value to assign
 		 */
-		void set(std::size_t index, T value);
+		void set(const std::size_t index, const T value);
 
 		/**
 		 * @brief Fills the vector with the specified value.
 		 * Assigns each elemnt in the vector the specified value
 		 * @param value the value to fill vector with
 		 */
-		void fill(T value);
+		void fill(const T value);
 
 		/**
 		 * @brief Calculates the norm (length) of the vector.
@@ -145,7 +145,7 @@ namespace sfz {
 		 * @param index the index of the element
 		 * @return reference to element at the specified index
 		 */
-		T& operator [](std::size_t index);
+		T& operator [](const std::size_t index);
 
 		/**
 		 * @brief Returns a const reference to element at the specified index.
@@ -153,7 +153,7 @@ namespace sfz {
 		 * @param index the index of the element
 		 * @return const reference to element at the specified index
 		 */
-		const T& operator [](std::size_t index) const;
+		const T& operator [](const std::size_t index) const;
 
 		// Member operators (Arithmetic & Assignment)
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

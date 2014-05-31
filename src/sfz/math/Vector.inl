@@ -35,17 +35,17 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<class T, std::size_t N>
-	T Vector<T,N>::get(std::size_t index) const {
+	T Vector<T,N>::get(const std::size_t index) const {
 		return elements.at(index);
 	}
 
 	template<class T, std::size_t N>
-	void Vector<T,N>::set(std::size_t index, T value) {
+	void Vector<T,N>::set(const std::size_t index, T value) {
 		elements.at(index) = value;
 	}
 
 	template<class T, std::size_t N>
-	void Vector<T,N>::fill(T value) {
+	void Vector<T,N>::fill(const T value) {
 		elements.fill(value);
 	}
 
@@ -138,12 +138,12 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<class T, std::size_t N>
-	T& Vector<T,N>::operator [](std::size_t index) {
+	T& Vector<T,N>::operator [](const std::size_t index) {
 		return elements.at(index);
 	}
 
 	template<class T, std::size_t N>
-	const T& Vector<T,N>::operator [](std::size_t index) const {
+	const T& Vector<T,N>::operator [](const std::size_t index) const {
 		return elements.at(index);
 	}
 
