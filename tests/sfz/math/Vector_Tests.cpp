@@ -232,6 +232,37 @@ TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]") {
 	}
 }
 
+TEST_CASE("Cross product", "[sfz::Vector]") {
+	sfz::Vector<int, 3> v1{-1, 4, 0};
+	sfz::Vector<int, 3> v2{1, -2, 3};
+
+	SECTION("Correctness test") {
+		auto res = sfz::cross(v1, v2);
+
+		REQUIRE(res[sfz::x] == 12);
+		REQUIRE(res[sfz::y] == 3);
+		REQUIRE(res[sfz::z] == -2);
+	}
+	SECTION("2nd correctness test") {
+		auto res = sfz::cross(v2, v1);
+
+		REQUIRE(res[sfz::x] == -12);
+		REQUIRE(res[sfz::y] == -3);
+		REQUIRE(res[sfz::z] == 2);
+	}
+	SECTION("A x A = 0") {
+		auto res1 = sfz::cross(v1, v1);
+		REQUIRE(res1[sfz::x] == 0);
+		REQUIRE(res1[sfz::y] == 0);
+		REQUIRE(res1[sfz::z] == 0);
+
+		auto res2 = sfz::cross(v2, v2);
+		REQUIRE(res2[sfz::x] == 0);
+		REQUIRE(res2[sfz::y] == 0);
+		REQUIRE(res2[sfz::z] == 0);
+	}
+}
+
 TEST_CASE("Angle of vectors", "[sfz::Vector]") {
 	sfz::Vector<float, 2> vRight{1, 0};
 	sfz::Vector<float, 2> vUp{0, 1};

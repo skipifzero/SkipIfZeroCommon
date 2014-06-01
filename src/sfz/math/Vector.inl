@@ -200,6 +200,20 @@ namespace sfz {
 		return vector.normalize();
 	}
 
+	template<class T, std::size_t N>
+	T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) {
+		return vectorA.dot(vectorB);
+	}
+
+	template<class T>
+	Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) {
+		sfz::Vector<T,3> result;
+		result[x] = vectorA[y]*vectorB[z] - vectorA[z]*vectorB[y];
+		result[y] = vectorA[z]*vectorB[x] - vectorA[x]*vectorB[z];
+		result[z] = vectorA[x]*vectorB[y] - vectorA[y]*vectorB[x];
+		return result;
+	}
+
 	template<class T>
 	T angle(const Vector<T,2>& vector) {
 		if(vector[x] == 0 && vector[y] == 0) {

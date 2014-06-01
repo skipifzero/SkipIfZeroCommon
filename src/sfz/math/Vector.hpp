@@ -221,6 +221,27 @@ namespace sfz {
 
 	/**
 	 * @relates sfz::Vector
+	 * @brief Calculates the dot (scalar) product of the vectors.
+	 * @param vectorA the first vector
+	 * @param vectorB the second vector
+	 * @return the dot product
+	 */
+	template<class T, std::size_t N>
+	T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
+
+	/**
+	 * @relates sfz::Vector
+	 * @brief Calculates the cross product of the vectors.
+	 * More specifically this function calculates: vectorA x vectorB.
+	 * @param vectorA the first vector
+	 * @param vectorB the second vector
+	 * @return the resulting vector
+	 */
+	template<class T>
+	Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB);
+
+	/**
+	 * @relates sfz::Vector
 	 * @brief Calculates the positive angle between the specified vector and the x-axis in radians.
 	 * The angle will be in the range [0, 2*Pi).
 	 * @throws std::domain_error if norm of vector is 0
