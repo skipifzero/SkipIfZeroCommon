@@ -225,6 +225,13 @@ namespace sfz {
 		return std::acos(vectorA.dot(vectorB)/(std::sqrt(vectorA.squaredNorm()*vectorB.squaredNorm())));
 	}
 
+	template<class T>
+	Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) {
+		T cos = std::cos(angle);
+		T sin = std::sin(angle);	
+		return Vector<T,2>{vector[x]*cos - vector[y]*sin, vector[x]*sin + vector[y]*cos};
+	}
+
 	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	

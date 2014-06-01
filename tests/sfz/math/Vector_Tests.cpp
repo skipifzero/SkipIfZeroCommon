@@ -268,6 +268,43 @@ TEST_CASE("Angle of vectors", "[sfz::Vector]") {
 	}
 }
 
+TEST_CASE("Rotating vectors", "[sfz::Vector]") {
+	sfz::Vector<float, 2> vRight{1, 0};
+	sfz::Vector<float, 2> vUp{0, 1};
+	
+	SECTION("Rotates in positive direction") {
+		auto res = sfz::rotate(vRight, 3.1415926f);
+		REQUIRE(-1.01f <= res[sfz::x]);
+		REQUIRE(res[sfz::x] <= -0.99f);
+		REQUIRE(-0.01f <= res[sfz::y]);
+		REQUIRE(res[sfz::y] <= 0.01f);
+
+		auto angleOrg = angle(vRight);
+		auto angleRes = angle(res);
+		REQUIRE((angleOrg + 3.1415f) <= angleRes);
+		REQUIRE(angleRes <= (angleOrg + 3.1416f));
+	}
+	SECTION("Rotates in negative direction") {
+		auto res = sfz::rotate(vUp, -3.1415926f);
+		REQUIRE(-0.01f <= res[sfz::x]);
+		REQUIRE(res[sfz::x] <= 0.01f);
+		REQUIRE(-1.01f <= res[sfz::y]);
+		REQUIRE(res[sfz::y] <= -0.99f);
+
+		auto angleOrg = angle(vUp);
+		auto angleRes = angle(res);
+		// "+" in this case since angle() returns positive angle from x-axis.
+		REQUIRE((angleOrg + 3.1415f) <= angleRes);
+		REQUIRE(angleRes <= (angleOrg + 3.1416f));
+	}
+	SECTION("Nothing happens when rotating with 0") {
+		auto resRight = sfz::rotate(vRight, 0.f);
+		REQUIRE(resRight == vRight);
+		auto resUp = sfz::rotate(vUp, 0.f);
+		REQUIRE(resUp == vUp);
+	}
+}
+
 TEST_CASE("Comparison operators", "[sfz::Vector]") {
 	sfz::Vector<int, 3> v1{-4, 0, 0};
 	sfz::Vector<int, 3> v2{0, 2, 0};

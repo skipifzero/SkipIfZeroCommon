@@ -242,6 +242,16 @@ namespace sfz {
 	template<class T, std::size_t N>
 	T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
 
+	/**
+	 * @relates sfz::Vector
+	 * @brief Rotates a 2-dimensional vector with the specified angle around origo.
+	 * @param vector the vector to rotate
+	 * @param angle the angle to rotate in radians
+	 * @return the resulting vector
+	 */
+	template<class T>
+	Vector<T,2> rotate(const Vector<T,2>& vector, const T angle);
+
 	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
