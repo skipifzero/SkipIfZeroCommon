@@ -9,7 +9,7 @@
 #include <cmath>
 #include <iterator>
 
-#include "MathUtils.hpp"
+#include "MathConstants.hpp"
 
 namespace sfz {
 

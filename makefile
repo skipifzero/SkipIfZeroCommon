@@ -24,30 +24,23 @@ OBJS =
 
 # Binaries
 MAIN_BIN = $(BUILD_DIR)MainBin.out
-#TESTS_BIN = $(BUILD_DIR)Tests.out
 
-$(MAIN_BIN): $(OBJS) $(SRC_DIR)Main.cpp $(SRC_SFZ_DIR)Math.hpp $(SRC_SFZ_MATH_DIR)Vector.hpp $(SRC_SFZ_MATH_DIR)Vector.inl $(SRC_SFZ_MATH_DIR)MathUtils.hpp
+$(MAIN_BIN): $(OBJS) $(SRC_DIR)Main.cpp $(SRC_SFZ_DIR)Math.hpp $(SRC_SFZ_MATH_DIR)Vector.hpp $(SRC_SFZ_MATH_DIR)Vector.inl $(SRC_SFZ_MATH_DIR)MathConstants.hpp
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(LFLAGS) $@ $(SRC_DIR)Main.cpp $(OBJS)
 	@echo ""
 
 
 # Test binaries
-$(BUILD_DIR)MathUtils_Tests.out: $(MAIN_BIN) $(OBJS) $(TEST_SFZ_MATH_DIR)MathUtils_Tests.cpp
+$(BUILD_DIR)MathConstants_Tests.out: $(MAIN_BIN) $(OBJS) $(TEST_SFZ_MATH_DIR)MathConstants_Tests.cpp
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(TEST_LFLAGS) $@ $(TEST_SFZ_MATH_DIR)MathUtils_Tests.cpp
+	$(CC) $(TEST_LFLAGS) $@ $(TEST_SFZ_MATH_DIR)MathConstants_Tests.cpp
 	@echo ""
 
 $(BUILD_DIR)Vector_Tests.out: $(MAIN_BIN) $(OBJS) $(TEST_SFZ_MATH_DIR)Vector_Tests.cpp
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(TEST_LFLAGS) $@ $(TEST_SFZ_MATH_DIR)Vector_Tests.cpp
 	@echo ""
-
-
-#$(TESTS_BIN): $(MAIN_BIN) $(OBJS) $(TEST_DIR)catch.hpp $(TEST_DIR)Tests.cpp $(TEST_SFZ_MATH_DIR)Vector_Tests.inl $(TEST_SFZ_MATH_DIR)MathUtils_Tests.inl
-#	mkdir -p $(BUILD_DIR)
-#	$(CC) $(TEST_LFLAGS) $@ $(TEST_DIR)Tests.cpp $(OBJS) 
-#	@echo ""
 
 
 # Compilation units
@@ -66,9 +59,7 @@ run: all
 
 # Builds and runs tests
 tests: all $(BUILD_DIR)MathUtils_Tests.out $(BUILD_DIR)Vector_Tests.out
-	@echo "Running MathUtils tests"
 	./$(BUILD_DIR)MathUtils_Tests.out
-	@echo "Running Vector tests"
 	./$(BUILD_DIR)Vector_Tests.out
 
 # Cleans the project from built files
