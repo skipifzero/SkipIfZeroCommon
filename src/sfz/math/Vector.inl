@@ -246,6 +246,19 @@ namespace sfz {
 		return Vector<T,2>{vector[x]*cos - vector[y]*sin, vector[x]*sin + vector[y]*cos};
 	}
 
+	template<class T, std::size_t N>
+	std::string to_string(const Vector<T,N>& vector) {
+		std::string str;
+		str += "[";
+		for(auto element : vector) {
+			str += std::to_string(element);
+			str += ", ";
+		}
+		str.erase(str.length()-2);
+		str += "]";
+		return str;
+	}
+
 	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <string>
 
 #include "MathConstants.hpp"
 
@@ -272,6 +273,15 @@ namespace sfz {
 	 */
 	template<class T>
 	Vector<T,2> rotate(const Vector<T,2>& vector, const T angle);
+
+	/**
+	 * @relates sfz::Vector
+	 * @brief Creates a string representation of the specified vector.
+	 * @param vector the vector to make a string of
+	 * @return the string representation
+	 */
+	template<class T, std::size_t N>
+	std::string to_string(const Vector<T,N>& vector);
 
 	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

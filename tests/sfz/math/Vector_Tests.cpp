@@ -416,3 +416,8 @@ TEST_CASE("Sum of vector", "[sfz::Vector]") {
 	sfz::Vector<int, 4> v1{1, 2, -4, 9};
 	REQUIRE(v1.sum() == 8);
 }
+
+TEST_CASE("Converting to string", "[sfz::Vector]") {
+	sfz::Vector<int, 3> v{-1, 2, 10};
+	REQUIRE(sfz::to_string(v) == "[-1, 2, 10]");
+}
