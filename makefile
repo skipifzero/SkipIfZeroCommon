@@ -58,8 +58,8 @@ run: all
 	./$(MAIN_BIN)
 
 # Builds and runs tests
-tests: all $(BUILD_DIR)MathUtils_Tests.out $(BUILD_DIR)Vector_Tests.out
-	./$(BUILD_DIR)MathUtils_Tests.out
+tests: all $(BUILD_DIR)MathConstants_Tests.out $(BUILD_DIR)Vector_Tests.out
+	./$(BUILD_DIR)MathConstants_Tests.out
 	./$(BUILD_DIR)Vector_Tests.out
 
 # Cleans the project from built files
