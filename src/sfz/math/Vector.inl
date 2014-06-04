@@ -101,6 +101,16 @@ namespace sfz {
 		return result;
 	}
 
+	template<class T, std::size_t N>
+	std::size_t Vector<T,N>::hash() const {
+		std::hash<T> hasher;
+		std::size_t hash = 0;
+		for(auto element : elements) {
+			hash ^= hasher(element) + 0x9e3779b9 + (hash << 6) + (hash >> 2); // hash_combine algorithm from boost
+		}
+		return hash;
+	}
+
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -329,5 +339,14 @@ namespace sfz {
 	template<class T, std::size_t N>
 	bool operator >=(const Vector<T,N>& left, const Vector<T,N>& right) {
 		return right <= left;
+	}
+}
+
+// Specializations of standard library for sfz::Vector
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<class T, size_t N>
+	size_t hash<sfz::Vector<T,N>>::operator() (const sfz::Vector<T,N>& vector) const {
+		return vector.hash();
 	}
 }

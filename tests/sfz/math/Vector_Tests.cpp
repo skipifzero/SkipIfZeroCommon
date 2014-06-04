@@ -3,6 +3,8 @@
 
 #include "../../../src/sfz/math/Vector.hpp"
 
+#include <unordered_map>
+
 TEST_CASE("Constructors", "[sfz::Vector]") {
 	SECTION("Default constructor initializes elements to 0") {
 		sfz::Vector<int, 3> vector;
@@ -420,4 +422,23 @@ TEST_CASE("Sum of vector", "[sfz::Vector]") {
 TEST_CASE("Converting to string", "[sfz::Vector]") {
 	sfz::Vector<int, 3> v{-1, 2, 10};
 	REQUIRE(sfz::to_string(v) == "[-1, 2, 10]");
+}
+
+TEST_CASE("Hashing", "[sfz::Vector]") {
+	sfz::Vector<int, 3> v1{2, 100, 32};
+	sfz::Vector<int, 3> v2{-1, 0, -10};
+	sfz::Vector<int, 3> v3{0, -9, 14};
+
+	// This test checks if unordered_map works as it should. Not a very good test, but the best I can come up with
+	// to test if hashing works as it should at the moment.
+	std::unordered_map<sfz::Vector<int, 3>, int> hashMap;
+	hashMap[v1] = 1;
+	hashMap[v2] = 2;
+	hashMap[v3] = 3;
+	REQUIRE(hashMap[v1] == 1);
+	REQUIRE(hashMap[v2] == 2);
+	REQUIRE(hashMap[v3] == 3);
+
+	REQUIRE(v1.hash() != v2.hash());
+	REQUIRE(v2.hash() != v3.hash());
 }

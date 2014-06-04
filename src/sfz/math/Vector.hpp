@@ -123,6 +123,12 @@ namespace sfz {
 		 */
 		T sum() const;
 
+		/**
+		 * @brief Hashes the vector.
+		 * @return hash of the vector
+		 */
+		std::size_t hash() const;
+
 		// Standard iterator functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -448,5 +454,15 @@ namespace sfz {
 	 */
 	const std::size_t z = 2;
 }
+
+// Specializations of standard library for sfz::Vector
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<class T, size_t N>
+	struct hash<sfz::Vector<T,N>> {
+		size_t operator() (const sfz::Vector<T,N>& vector) const;
+	};
+}
+
 #include "Vector.inl"
 #endif
