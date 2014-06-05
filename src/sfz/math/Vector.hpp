@@ -14,6 +14,17 @@
 
 namespace sfz {
 
+	/**
+	 * @brief A mathematical vector class.
+	 * Functions just like you'd expect a built in vector primitive to work. 
+	 * The template is designed to be used with float and doubles in first hand, and everything should work as 
+	 * expected with them. Integral types can also be used, but some things will not function as expected due to 
+	 * truncation. Most notably taking the norm will most likely not give the correct result as it involves taking the
+	 * square root. Another trouble with integral types is the risk of overflow. When calculating the norm you have to
+	 * square each element in the vector, which might wery well overflow if you have large elements.
+	 * @param T the element type
+	 * @param N the amount of elements in the vector
+	 */
 	template<class T, std::size_t N>
 	class Vector {
 	public:
