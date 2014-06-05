@@ -124,6 +124,16 @@ namespace sfz {
 		T sum() const;
 
 		/**
+		 * @brief Projects the vector onto another vector.
+		 * Makes a scalar projection of the vector onto the specifed target vector. The resulting vector will be equal
+		 * to the target vector times a scalar constant.
+		 * @throws std::domain_error if target vector is 0
+		 * @param target the vector to project onto
+		 * @return the resulting projection in vector form
+		 */
+		Vector<T,N> projectOnto(const Vector<T,N>& target) const;
+
+		/**
 		 * @brief Hashes the vector.
 		 * @return hash of the vector
 		 */

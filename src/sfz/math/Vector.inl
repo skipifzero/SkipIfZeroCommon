@@ -102,6 +102,15 @@ namespace sfz {
 	}
 
 	template<class T, std::size_t N>
+	Vector<T,N> Vector<T,N>::projectOnto(const Vector<T,N>& target) const {
+		auto targetSquaredNorm = target.squaredNorm();
+		if(targetSquaredNorm == 0) {
+			throw std::domain_error("Target vector may not be 0.");
+		}
+		return target * (this->dot(target)/targetSquaredNorm);
+	}
+
+	template<class T, std::size_t N>
 	std::size_t Vector<T,N>::hash() const {
 		std::hash<T> hasher;
 		std::size_t hash = 0;
@@ -238,15 +247,15 @@ namespace sfz {
 
 	template<class T, std::size_t N>
 	T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) {
-		T normA = norm(vectorA);
-		T normB = norm(vectorB);
-		if(normA == 0) {
+		auto squaredNormA = vectorA.squaredNorm();
+		auto squaredNormB = vectorB.squaredNorm();
+		if(squaredNormA == 0) {
 			throw std::domain_error("Norm of vectorA is 0");
 		}
-		if(normB == 0) {
+		if(squaredNormB == 0) {
 			throw std::domain_error("Norm of vectorB is 0");
 		}
-		return std::acos(vectorA.dot(vectorB)/(std::sqrt(vectorA.squaredNorm()*vectorB.squaredNorm())));
+		return std::acos(vectorA.dot(vectorB)/(std::sqrt(squaredNormA*squaredNormB)));
 	}
 
 	template<class T>

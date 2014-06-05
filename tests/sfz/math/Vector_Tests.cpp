@@ -419,6 +419,26 @@ TEST_CASE("Sum of vector", "[sfz::Vector]") {
 	REQUIRE(v1.sum() == 8);
 }
 
+TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]") {
+	sfz::Vector<int, 2> vUp{0, 2};
+	sfz::Vector<int, 2> vRight{3, 0};
+	sfz::Vector<int, 2> v{9, 12};
+
+	SECTION("Basic test") {
+		auto res = v.projectOnto(vUp);
+		REQUIRE(res[sfz::x] == 0);
+		REQUIRE(res[sfz::y] == 12);
+	}
+	SECTION("Basic test 2") {
+		auto res = v.projectOnto(vRight);
+		REQUIRE(res[sfz::x] == 9);
+		REQUIRE(res[sfz::y] == 0);
+	}
+	SECTION("Throws exception if target is 0") {
+		REQUIRE_THROWS_AS(v.projectOnto(sfz::Vector<int, 2>{0, 0}), std::domain_error);
+	}
+}
+
 TEST_CASE("Converting to string", "[sfz::Vector]") {
 	sfz::Vector<int, 3> v{-1, 2, 10};
 	REQUIRE(sfz::to_string(v) == "[-1, 2, 10]");
