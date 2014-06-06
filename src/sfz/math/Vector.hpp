@@ -24,6 +24,7 @@ namespace sfz {
 	 * square each element in the vector, which might wery well overflow if you have large elements.
 	 * @param T the element type
 	 * @param N the amount of elements in the vector
+	 * @author Peter Hillerström <peter@hstroem.se>
 	 */
 	template<class T, std::size_t N>
 	class Vector {
