@@ -1,9 +1,9 @@
 #include <iostream>
-#include "sfz/Math.hpp"
+#include "sfz/algo/SortingPerfTest.hpp"
 
 int main(int argc, char** argv) {
 
-	std::cout << "Hello from VectorN program. Doesn't do anything yet." << std::endl;
+	sfz::runSortingPerformanceTest();
 
 	return 0;
 }

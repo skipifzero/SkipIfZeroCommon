@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SFZ_STOP_WATCH_HPP
-#define SFZ_STOP_WATCH_HPP
+#ifndef SFZ_UTIL_STOP_WATCH_HPP
+#define SFZ_UTIL_STOP_WATCH_HPP
 
 #include <chrono>
 
