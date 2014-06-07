@@ -25,5 +25,8 @@
 *.out
 *.app
 
+# Precompiled GCC headers
+*.gch
+
 # Build directory
 build/
