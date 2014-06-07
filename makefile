@@ -1,35 +1,47 @@
 CC = clang++
 #Add "-g" to enable debugging.
 DEBUG =
-LFLAGS = -Wall -std=c++11 -pthread -O3 -o $(DEBUG)
-TEST_LFLAGS = -Wall -std=c++11 -pthread -O0 -o $(DEBUG)
-CFLAGS = -Wall -std=c++11 -pthread -O3 -c -o $(DEBUG)
+LFLAGS = -Wall -Wno-c++11-extensions -std=c++11 -pthread -O3 -o $(DEBUG)
+TEST_LFLAGS = -Wall -Wno-c++11-extensions -std=c++11 -pthread -O0 -o $(DEBUG)
+CFLAGS = -Wall -Wno-c++11-extensions -std=c++11 -pthread -O3 -c -o $(DEBUG)
 
 # Subdirectories
 SFZ_SUB = sfz/
 MATH_SUB = math/
+SFZ_MATH_SUB = $(SFZ_SUB)$(MATH_SUB)
+UTIL_SUB = util/
+SFZ_UTIL_SUB = $(SFZ_SUB)$(UTIL_SUB)
 
 # Source paths
 SRC_DIR = src/
 SRC_SFZ_DIR = $(SRC_DIR)$(SFZ_SUB)
-SRC_SFZ_MATH_DIR = $(SRC_SFZ_DIR)$(MATH_SUB)
+SRC_SFZ_MATH_DIR = $(SRC_DIR)$(SFZ_MATH_SUB)
+SRC_SFZ_UTIL_DIR = $(SRC_DIR)$(SFZ_UTIL_SUB)
 
+# Test paths
 TEST_DIR = tests/
 TEST_SFZ_DIR = $(TEST_DIR)$(SFZ_SUB)
-TEST_SFZ_MATH_DIR = $(TEST_SFZ_DIR)$(MATH_SUB)
+TEST_SFZ_MATH_DIR = $(TEST_DIR)$(SFZ_MATH_SUB)
 
+# Build paths
 BUILD_DIR = build/
+BUILD_SFZ_UTIL_DIR = $(BUILD_DIR)$(SFZ_UTIL_SUB)
 
-OBJS =
+
+# Compilation units
+OBJS = $(BUILD_SFZ_UTIL_DIR)StopWatch.o
+
+$(BUILD_SFZ_UTIL_DIR)StopWatch.o: $(SRC_SFZ_UTIL_DIR)StopWatch.cpp $(SRC_SFZ_UTIL_DIR)StopWatch.hpp
+	mkdir -p $(BUILD_SFZ_UTIL_DIR)
+	$(CC) $(CFLAGS) $@ $<
+
 
 # Binaries
 MAIN_BIN = $(BUILD_DIR)MainBin.out
-
 $(MAIN_BIN): $(OBJS) $(SRC_DIR)Main.cpp $(SRC_SFZ_DIR)Math.hpp $(SRC_SFZ_MATH_DIR)Vector.hpp $(SRC_SFZ_MATH_DIR)Vector.inl $(SRC_SFZ_MATH_DIR)MathConstants.hpp
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(LFLAGS) $@ $(SRC_DIR)Main.cpp $(OBJS)
 	@echo ""
-
 
 # Test binaries
 $(BUILD_DIR)MathConstants_Tests.out: $(MAIN_BIN) $(OBJS) $(TEST_SFZ_MATH_DIR)MathConstants_Tests.cpp
@@ -41,12 +53,6 @@ $(BUILD_DIR)Vector_Tests.out: $(MAIN_BIN) $(OBJS) $(TEST_SFZ_MATH_DIR)Vector_Tes
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(TEST_LFLAGS) $@ $(TEST_SFZ_MATH_DIR)Vector_Tests.cpp
 	@echo ""
-
-
-# Compilation units
-# $(BUILD_DIR)Main.o: $(SRC_DIR)Main.cpp $(SRC_SFZ_DIR)Math.hpp $(SRC_SFZ_MATH_DIR)VectorN.hpp $(SRC_SFZ_MATH_DIR)VectorN.inl
-#	mkdir -p $(BUILD_DIR)
-#	$(CC) $(CFLAGS) $@ $<
 
 
 # Commands
