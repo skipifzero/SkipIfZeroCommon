@@ -13,6 +13,7 @@
 #include "MathConstants.hpp"
 
 namespace sfz {
+	using std::size_t;
 
 	/**
 	 * @brief A mathematical vector class that functions that imitates a built-in primitive.
@@ -29,7 +30,7 @@ namespace sfz {
 	 * @author Peter Hillerström <peter@hstroem.se>
 	 * @date 2014-06-07
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	class Vector {
 	public:
 		// Constructors and destructors
@@ -52,7 +53,7 @@ namespace sfz {
 		 * Copies all elements from specified vector and attempts to static_cast them to this vectors type.
 		 * @param vector the vector to copy
 		 */
-		template<class T2>
+		template<typename T2>
 		explicit Vector(const Vector<T2,N>& vector);
 
 		/**
@@ -73,7 +74,7 @@ namespace sfz {
 		 * @param index the index of the element
 		 * @return the element at the specified index
 		 */
-		T get(const std::size_t index) const;
+		T get(const size_t index) const;
 
 		/**
 		 * @brief Assigns value to the specified index.
@@ -81,7 +82,7 @@ namespace sfz {
 		 * @param index the index to assign value to
 		 * @param value the value to assign
 		 */
-		void set(const std::size_t index, const T value);
+		void set(const size_t index, const T value);
 
 		/**
 		 * @brief Fills the vector with the specified value.
@@ -152,7 +153,7 @@ namespace sfz {
 		 * @brief Hashes the vector.
 		 * @return hash of the vector
 		 */
-		std::size_t hash() const;
+		size_t hash() const;
 
 		// Standard iterator functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -177,7 +178,7 @@ namespace sfz {
 		 * @param index the index of the element
 		 * @return reference to element at the specified index
 		 */
-		T& operator [](const std::size_t index);
+		T& operator [](const size_t index);
 
 		/**
 		 * @brief Returns a const reference to element at the specified index.
@@ -185,7 +186,7 @@ namespace sfz {
 		 * @param index the index of the element
 		 * @return const reference to element at the specified index
 		 */
-		const T& operator [](const std::size_t index) const;
+		const T& operator [](const size_t index) const;
 
 		// Member operators (Arithmetic & Assignment)
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -237,7 +238,7 @@ namespace sfz {
 	 * @param vector the vector to calculate norm of
 	 * @return norm of the vector
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	T norm(const Vector<T,N>& vector);
 
 	/**
@@ -248,7 +249,7 @@ namespace sfz {
 	 * @param vector the vector to normalize
 	 * @return the unit vector
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	Vector<T,N> normalize(const Vector<T,N>& vector);
 
 	/**
@@ -258,7 +259,7 @@ namespace sfz {
 	 * @param vectorB the second vector
 	 * @return the dot product
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
 
 	/**
@@ -269,7 +270,7 @@ namespace sfz {
 	 * @param vectorB the second vector
 	 * @return the resulting vector
 	 */
-	template<class T>
+	template<typename T>
 	Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB);
 
 	/**
@@ -280,7 +281,7 @@ namespace sfz {
 	 * @param vector the 2-dimensional vector to calculate angle of
 	 * @return the angle between the vector and the x-axis
 	 */
-	template<class T>
+	template<typename T>
 	T angle(const Vector<T,2>& vector);
 
 	/**
@@ -292,7 +293,7 @@ namespace sfz {
 	 * @param vectorB the second vector
 	 * @return the angle between the two vectors
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
 
 	/**
@@ -302,7 +303,7 @@ namespace sfz {
 	 * @param angle the angle to rotate in radians
 	 * @return the resulting vector
 	 */
-	template<class T>
+	template<typename T>
 	Vector<T,2> rotate(const Vector<T,2>& vector, const T angle);
 
 	/**
@@ -311,7 +312,7 @@ namespace sfz {
 	 * @param vector the vector to make a string of
 	 * @return the string representation
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	std::string to_string(const Vector<T,N>& vector);
 
 	// Free (non-member) operators (Arithmetic)
@@ -325,7 +326,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return the resulting vector
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	Vector<T,N> operator +(const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
@@ -336,7 +337,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return the resulting vector
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	Vector<T,N> operator -(const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
@@ -346,7 +347,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return the resulting vector
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	Vector<T,N> operator -(const Vector<T,N>& right);
 
 	/**
@@ -357,7 +358,7 @@ namespace sfz {
 	 * @param right the rhs element
 	 * @return the resulting vector
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	Vector<T,N> operator *(const Vector<T,N>& left, const T& right);
 
 	/**
@@ -368,7 +369,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return the resulting vector
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	Vector<T,N> operator *(const T& left, const Vector<T,N>& right);
 
 	/**
@@ -380,7 +381,7 @@ namespace sfz {
 	 * @param right the rhs element
 	 * @return the resulting vector
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	Vector<T,N> operator /(const Vector<T,N>& left, const T& right);
 
 	// Free (non-member) operators (Comparison)
@@ -393,7 +394,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return whether the lhs and rhs vectors are equal
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	bool operator ==(const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
@@ -403,7 +404,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return whether the lhs and rhs vectors aren't equal
 	 */
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	bool operator !=(const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
@@ -414,7 +415,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return whether the lhs vector is smaller than the rhs vector
 	 */	
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	bool operator <(const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
@@ -425,7 +426,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return whether the lhs vector is larger than the rhs vector
 	 */	
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	bool operator >(const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
@@ -436,7 +437,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return whether the lhs vector is smaller than or equal to the rhs vector
 	 */	
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	bool operator <=(const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
@@ -447,7 +448,7 @@ namespace sfz {
 	 * @param right the rhs vector
 	 * @return whether the lhs vector is larger than or equal to the rhs vector
 	 */	
-	template<class T, std::size_t N>
+	template<typename T, size_t N>
 	bool operator >=(const Vector<T,N>& left, const Vector<T,N>& right);	
 
 	// Typedefs
@@ -467,23 +468,23 @@ namespace sfz {
 	/**
 	 * @brief Constant for accessing the x element of a sfz::Vector (x == 0).
 	 */
-	const std::size_t x = 0;
+	const size_t x = 0;
 
 	/**
 	 * @brief Constant for accessing the y element of a sfz::Vector (y == 1).
 	 */
-	const std::size_t y = 1;
+	const size_t y = 1;
 
 	/**
 	 * @brief Constant for accessing the z element of a sfz::Vector (z == 2).
 	 */
-	const std::size_t z = 2;
+	const size_t z = 2;
 }
 
 // Specializations of standard library for sfz::Vector
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 namespace std {
-	template<class T, size_t N>
+	template<typename T, size_t N>
 	struct hash<sfz::Vector<T,N>> {
 		size_t operator() (const sfz::Vector<T,N>& vector) const;
 	};
