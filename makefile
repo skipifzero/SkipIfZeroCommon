@@ -40,29 +40,31 @@ BUILD_SFZ_UTIL_DIR = $(BUILD_DIR)$(SFZ_UTIL_SUB)
 OBJS = $(BUILD_SFZ_UTIL_DIR)StopWatch.o $(BUILD_SFZ_ALGO_DIR)SortingPerfTest.o
 
 $(BUILD_SFZ_UTIL_DIR)StopWatch.o: $(SRC_SFZ_UTIL_DIR)StopWatch.cpp $(SRC_SFZ_UTIL_DIR)StopWatch.hpp
-	mkdir -p $(BUILD_SFZ_UTIL_DIR)
+	@mkdir -p $(BUILD_SFZ_UTIL_DIR)
 	$(CC) $(CFLAGS) $@ $<
+	@echo ""
 
 $(BUILD_SFZ_ALGO_DIR)SortingPerfTest.o: $(SRC_SFZ_ALGO_DIR)SortingPerfTest.cpp $(SRC_SFZ_ALGO_DIR)SortingPerfTest.hpp $(SRC_SFZ_ALGO_DIR)Sorting.hpp $(SRC_SFZ_ALGO_DIR)Sorting.inl $(SRC_SFZ_UTIL_DIR)StopWatch.hpp
-	mkdir -p $(BUILD_SFZ_ALGO_DIR)
+	@mkdir -p $(BUILD_SFZ_ALGO_DIR)
 	$(CC) $(CFLAGS) $@ $<
+	@echo ""
 
 
 # Binaries
 MAIN_BIN = $(BUILD_DIR)MainBin.out
 $(MAIN_BIN): $(OBJS) $(SRC_DIR)Main.cpp $(SRC_SFZ_DIR)Math.hpp $(SRC_SFZ_MATH_DIR)Vector.hpp $(SRC_SFZ_MATH_DIR)Vector.inl $(SRC_SFZ_MATH_DIR)MathConstants.hpp
-	mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
 	$(CC) $(LFLAGS) $@ $(SRC_DIR)Main.cpp $(OBJS)
 	@echo ""
 
 # Test binaries
 $(BUILD_DIR)MathConstants_Tests.out: $(MAIN_BIN) $(OBJS) $(TEST_SFZ_MATH_DIR)MathConstants_Tests.cpp
-	mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
 	$(CC) $(TEST_LFLAGS) $@ $(TEST_SFZ_MATH_DIR)MathConstants_Tests.cpp
 	@echo ""
 
 $(BUILD_DIR)Vector_Tests.out: $(MAIN_BIN) $(OBJS) $(TEST_SFZ_MATH_DIR)Vector_Tests.cpp
-	mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
 	$(CC) $(TEST_LFLAGS) $@ $(TEST_SFZ_MATH_DIR)Vector_Tests.cpp
 	@echo ""
 
