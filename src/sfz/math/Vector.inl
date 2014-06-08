@@ -157,12 +157,12 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T, size_t N>
-	T& Vector<T,N>::operator [](const size_t index) {
+	T& Vector<T,N>::operator[] (const size_t index) {
 		return elements.at(index);
 	}
 
 	template<typename T, size_t N>
-	const T& Vector<T,N>::operator [](const size_t index) const {
+	const T& Vector<T,N>::operator[] (const size_t index) const {
 		return elements.at(index);
 	}
 
@@ -170,7 +170,7 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T, size_t N>
-	Vector<T,N>& Vector<T,N>::operator +=(const Vector<T,N>& right) {
+	Vector<T,N>& Vector<T,N>::operator+= (const Vector<T,N>& right) {
 		auto itr = right.begin();
 		for(auto& element : elements) {
 			element += *itr++;
@@ -179,7 +179,7 @@ namespace sfz {
 	}
 
 	template<typename T, size_t N>
-	Vector<T,N>& Vector<T,N>::operator -=(const Vector<T,N>& right) {
+	Vector<T,N>& Vector<T,N>::operator-= (const Vector<T,N>& right) {
 		auto itr = right.begin();
 		for(auto& element : elements) {
 			element -= *itr++;
@@ -188,7 +188,7 @@ namespace sfz {
 	}
 
 	template<typename T, size_t N>
-	Vector<T,N>& Vector<T,N>::operator *=(const T& right) {
+	Vector<T,N>& Vector<T,N>::operator*= (const T& right) {
 		for(auto& element : elements) {
 			element *= right;
 		}
@@ -196,7 +196,7 @@ namespace sfz {
 	}
 
 	template<typename T, size_t N>
-	Vector<T,N>& Vector<T,N>::operator /=(const T& right) {
+	Vector<T,N>& Vector<T,N>::operator/= (const T& right) {
 		if(right == 0) {
 			throw std::domain_error{"Division by zero"};
 		}
@@ -282,32 +282,32 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
 	template<typename T, size_t N>
-	Vector<T,N> operator +(const Vector<T,N>& left, const Vector<T,N>& right) {
+	Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return (Vector<T,N>{left} += right);
 	}
 
 	template<typename T, size_t N>
-	Vector<T,N> operator -(const Vector<T,N>& left, const Vector<T,N>& right) {
+	Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return (Vector<T,N>{left} -= right);
 	}
 
 	template<typename T, size_t N>
-	Vector<T,N> operator -(const Vector<T,N>& right) {
+	Vector<T,N> operator- (const Vector<T,N>& right) {
 		return (Vector<T,N>{right} *= -1);
 	}
 
 	template<typename T, size_t N>
-	Vector<T,N> operator *(const Vector<T,N>& left, const T& right) {
+	Vector<T,N> operator* (const Vector<T,N>& left, const T& right) {
 		return (Vector<T,N>{left} *= right);
 	}
 
 	template<typename T, size_t N>
-	Vector<T,N> operator *(const T& left, const Vector<T,N>& right) {
+	Vector<T,N> operator* (const T& left, const Vector<T,N>& right) {
 		return (Vector<T,N>{right} *= left);
 	}
 
 	template<typename T, size_t N>
-	Vector<T,N> operator /(const Vector<T,N>& left, const T& right) {
+	Vector<T,N> operator/ (const Vector<T,N>& left, const T& right) {
 		return (Vector<T,N>{left} /= right);
 	}
 
@@ -315,7 +315,7 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T, size_t N>
-	bool operator ==(const Vector<T,N>& left, const Vector<T,N>& right) {
+	bool operator== (const Vector<T,N>& left, const Vector<T,N>& right) {
 		auto itr = right.begin();
 		for(auto element : left) {
 			if(element != *itr++) {
@@ -326,27 +326,27 @@ namespace sfz {
 	}
 
 	template<typename T, size_t N>
-	bool operator !=(const Vector<T,N>& left, const Vector<T,N>& right) {
+	bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return !(left == right);
 	}
 
 	template<typename T, size_t N>
-	bool operator <(const Vector<T,N>& left, const Vector<T,N>& right) {
+	bool operator< (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return left.squaredNorm() < right.squaredNorm();
 	}
 
 	template<typename T, size_t N>
-	bool operator >(const Vector<T,N>& left, const Vector<T,N>& right) {
+	bool operator> (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return right < left;
 	}
 
 	template<typename T, size_t N>
-	bool operator <=(const Vector<T,N>& left, const Vector<T,N>& right) {
+	bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return left.squaredNorm() <= right.squaredNorm();
 	}
 
 	template<typename T, size_t N>
-	bool operator >=(const Vector<T,N>& left, const Vector<T,N>& right) {
+	bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return right <= left;
 	}
 }

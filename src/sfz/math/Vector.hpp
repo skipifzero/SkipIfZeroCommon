@@ -178,7 +178,7 @@ namespace sfz {
 		 * @param index the index of the element
 		 * @return reference to element at the specified index
 		 */
-		T& operator [](const size_t index);
+		T& operator[] (const size_t index);
 
 		/**
 		 * @brief Returns a const reference to element at the specified index.
@@ -186,7 +186,7 @@ namespace sfz {
 		 * @param index the index of the element
 		 * @return const reference to element at the specified index
 		 */
-		const T& operator [](const size_t index) const;
+		const T& operator[] (const size_t index) const;
 
 		// Member operators (Arithmetic & Assignment)
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -197,7 +197,7 @@ namespace sfz {
 		 * @param right the rhs vector
 		 * @return reference to the modified vector
 		 */
-		Vector<T,N>& operator +=(const Vector<T,N>& right);
+		Vector<T,N>& operator+= (const Vector<T,N>& right);
 
 		/**
 		 * @brief Assignment subtraction operator.
@@ -205,7 +205,7 @@ namespace sfz {
 		 * @param right the rhs vector
 		 * @return reference to the modified vector
 		 */
-		Vector<T,N>& operator -=(const Vector<T,N>& right);
+		Vector<T,N>& operator-= (const Vector<T,N>& right);
 
 		/**
 		 * @brief Assignment multiplication operator.
@@ -213,7 +213,7 @@ namespace sfz {
 		 * @param right the rhs element
 		 * @return reference to the modified vector
 		 */
-		Vector<T,N>& operator *=(const T& right);
+		Vector<T,N>& operator*= (const T& right);
 
 		/**
 		 * @brief Assignment division operator.
@@ -222,7 +222,7 @@ namespace sfz {
 		 * @param right the rhs element
 		 * @return reference to the modified vector
 		 */
-		Vector<T,N>& operator /=(const T& right);
+		Vector<T,N>& operator/= (const T& right);
 
 	private:
 		std::array<T,N> elements;
@@ -327,7 +327,7 @@ namespace sfz {
 	 * @return the resulting vector
 	 */
 	template<typename T, size_t N>
-	Vector<T,N> operator +(const Vector<T,N>& left, const Vector<T,N>& right);
+	Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -338,7 +338,7 @@ namespace sfz {
 	 * @return the resulting vector
 	 */
 	template<typename T, size_t N>
-	Vector<T,N> operator -(const Vector<T,N>& left, const Vector<T,N>& right);
+	Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -348,7 +348,7 @@ namespace sfz {
 	 * @return the resulting vector
 	 */
 	template<typename T, size_t N>
-	Vector<T,N> operator -(const Vector<T,N>& right);
+	Vector<T,N> operator- (const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -359,7 +359,7 @@ namespace sfz {
 	 * @return the resulting vector
 	 */
 	template<typename T, size_t N>
-	Vector<T,N> operator *(const Vector<T,N>& left, const T& right);
+	Vector<T,N> operator* (const Vector<T,N>& left, const T& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -370,7 +370,7 @@ namespace sfz {
 	 * @return the resulting vector
 	 */
 	template<typename T, size_t N>
-	Vector<T,N> operator *(const T& left, const Vector<T,N>& right);
+	Vector<T,N> operator* (const T& left, const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -382,7 +382,7 @@ namespace sfz {
 	 * @return the resulting vector
 	 */
 	template<typename T, size_t N>
-	Vector<T,N> operator /(const Vector<T,N>& left, const T& right);
+	Vector<T,N> operator/ (const Vector<T,N>& left, const T& right);
 
 	// Free (non-member) operators (Comparison)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -395,7 +395,7 @@ namespace sfz {
 	 * @return whether the lhs and rhs vectors are equal
 	 */
 	template<typename T, size_t N>
-	bool operator ==(const Vector<T,N>& left, const Vector<T,N>& right);
+	bool operator== (const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -405,7 +405,7 @@ namespace sfz {
 	 * @return whether the lhs and rhs vectors aren't equal
 	 */
 	template<typename T, size_t N>
-	bool operator !=(const Vector<T,N>& left, const Vector<T,N>& right);
+	bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -416,7 +416,7 @@ namespace sfz {
 	 * @return whether the lhs vector is smaller than the rhs vector
 	 */	
 	template<typename T, size_t N>
-	bool operator <(const Vector<T,N>& left, const Vector<T,N>& right);
+	bool operator< (const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -427,7 +427,7 @@ namespace sfz {
 	 * @return whether the lhs vector is larger than the rhs vector
 	 */	
 	template<typename T, size_t N>
-	bool operator >(const Vector<T,N>& left, const Vector<T,N>& right);
+	bool operator> (const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -438,7 +438,7 @@ namespace sfz {
 	 * @return whether the lhs vector is smaller than or equal to the rhs vector
 	 */	
 	template<typename T, size_t N>
-	bool operator <=(const Vector<T,N>& left, const Vector<T,N>& right);
+	bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right);
 
 	/**
 	 * @relates sfz::Vector
@@ -449,7 +449,7 @@ namespace sfz {
 	 * @return whether the lhs vector is larger than or equal to the rhs vector
 	 */	
 	template<typename T, size_t N>
-	bool operator >=(const Vector<T,N>& left, const Vector<T,N>& right);	
+	bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right);	
 
 	// Typedefs
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
