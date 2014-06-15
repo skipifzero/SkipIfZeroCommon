@@ -8,18 +8,16 @@
 #include <mutex>
 
 namespace sfz {
-	using size_t = std::size_t;
+	using std::size_t;
 
-	const size_t INSERTIONSORT_TRESHOLD = 7;
+	template<typename RandomIt>
+	void quickSort(RandomIt first, RandomIt last);
 
-	template<class T>
-	void quicksort(T* array, const size_t length);
-	
-	template<class T>
-	void insertionsort(T* array, const size_t length);
+	template<typename RandomIt>
+	void parallelQuickSort(RandomIt first, RandomIt last, const size_t numThreads = std::thread::hardware_concurrency());
 
-	//template<class T>
-	//void concurrentQuicksort(T* array, const size_t length, const size_t numThreads = std::thread::hardware_concurrency());
+	template<typename RandomIt>
+	void insertionSort(RandomIt first, RandomIt last);
 }
 #include "Sorting.inl"
 #endif

@@ -11,7 +11,7 @@
 #include "../util/StopWatch.hpp"
 
 namespace sfz {
-	using size_t = std::size_t;
+	using std::size_t;
 
 	void runSortingPerformanceTest();
 }

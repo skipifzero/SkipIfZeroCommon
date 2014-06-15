@@ -40,18 +40,9 @@ namespace sfz {
 		}
 
 		template<class T>
-		void std_qsort(T* array, size_t length) {
-			std::qsort(array, length, sizeof(T), compare<T>);
-		}
-
-		template<class T>
-		void std_sort(T* array, size_t length) {
-			std::sort(array, array + length);
-		}
-
-		template<class T>
-		void std_stable_sort(T* array, size_t length) {
-			std::stable_sort(array, array + length);
+		void std_qsort(T* first, T* last) {
+			//std::qsort(array, length, sizeof(T), compare<T>);
+			std::qsort(first, last - first, sizeof(T), compare<T>);
 		}
 
 		/*template<class T>
@@ -80,9 +71,9 @@ namespace sfz {
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		template<class T>
-		sfz::StopWatch sortArray(T* array, size_t length, void(*sort)(T*,size_t)) {
+		sfz::StopWatch sortArray(T* array, size_t length, void(*sort)(T*,T*)) {
 			sfz::StopWatch clock;
-			sort(array, length);
+			sort(array, array + length);
 			clock.stop();
 			return clock;
 		}
@@ -107,7 +98,7 @@ namespace sfz {
 		}
 
 		template<class T>
-		void test(T*(*arrayCreator)(size_t), void(*sort)(T*,size_t), size_t length) {
+		void test(T*(*arrayCreator)(size_t), void(*sort)(T*,T*), size_t length) {
 			T* array = arrayCreator(length);
 			printTime(sortArray(array, length, sort));
 			isArraySortedTest(array, length);
@@ -118,11 +109,11 @@ namespace sfz {
 		void testMany(std::string title, T*(*arrayCreator)(size_t), size_t length) {
 			std::cout << title << ", length: " << length << "\n";
 
-			//std::cout << "                  sfz::insertionsort(): ";
-			//test(arrayCreator, sfz::insertionsort, length);
+			std::cout << "                  sfz::insertionSort(): ";
+			test(arrayCreator, insertionSort<T*>, length);
 
-			//std::cout << "                      sfz::quicksort():  ";
-			//test(arrayCreator, quicksort, length);
+			std::cout << "                      sfz::quickSort():  ";
+			test(arrayCreator, quickSort<T*>, length);
 
 			/*std::cout << " sfz::concurrentQuicksort() (1 thread):  ";
 			test(arrayCreator, sfz_concurrentQuicksort1Thread, length);
@@ -140,10 +131,10 @@ namespace sfz {
 			test(arrayCreator, std_qsort, length);
 
 			std::cout << "                           std::sort():  ";
-			test(arrayCreator, std_sort, length);
+			test(arrayCreator, std::sort<T*>, length);
 
 			std::cout << "                    std::stable_sort():  ";
-			test(arrayCreator, std_stable_sort, length);
+			test(arrayCreator, std::stable_sort<T*>, length);
 
 			std::cout << "\n";
 		}
@@ -196,14 +187,14 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *	
 
 	void runSortingPerformanceTest() {
-		testMany("### Array with limited random numbers", randomNumberArray, 500000);
+		testMany("### Array with limited random numbers", randomNumberArray, 50000);
 
-		testMany("### Array with sparse random numbers", randomNumberArraySparse, 500000);
+		testMany("### Array with sparse random numbers", randomNumberArraySparse, 50000);
 
-		testMany("### Array with binary numbers", binaryNumberArray, 500000);
+		testMany("### Array with binary numbers", binaryNumberArray, 50000);
 
-		testMany("### Array with sorted numbers", sortedNumberArray, 1000000);
+		testMany("### Array with sorted numbers", sortedNumberArray, 100000);
 
-		testMany("### Array with reversed sorted numbers", reverseSortedNumberArray, 500000);
+		testMany("### Array with reversed sorted numbers", reverseSortedNumberArray, 50000);
 	}
 }

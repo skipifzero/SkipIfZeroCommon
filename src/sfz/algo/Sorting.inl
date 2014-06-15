@@ -39,6 +39,8 @@ namespace sfz {
 			return mid;
 		}
 
+		const size_t INSERTIONSORT_TRESHOLD = 7;
+
 		// Internal quicksort recursive loop
 		template<class T>
 		void quicksort(T* array, size_t lowIndex, size_t highIndex) {
@@ -51,7 +53,8 @@ namespace sfz {
 
 			// Does an insertion sort if length of interval is shorter than treshold.
 			if(intervalLength < INSERTIONSORT_TRESHOLD) {
-				insertionsort(array + lowIndex, intervalLength);
+				//insertionsort(array + lowIndex, intervalLength);
+				insertionSort(array + lowIndex, array + lowIndex + intervalLength);
 				return;
 			}
 
@@ -158,12 +161,12 @@ namespace sfz {
 	}
 	
 	/*
-	 * Implementation of functions from SortingAlgorithms.h
+	 * Implementation of functions from Sorting.hpp
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 */
 
-	template<class T>
-	void quicksort(T* array, size_t length) {
+	template<typename T>
+	void quicksort(T* array, const size_t length) {
 		if(array == nullptr) {
 			throw std::invalid_argument{"Array == nullptr."};
 		}
@@ -174,7 +177,7 @@ namespace sfz {
 	}
 	
 	template<class T>
-	void insertionsort(T* array, size_t length) {
+	void insertionsort(T* array, const size_t length) {
 		for(int i = 0; i < length; i++) {
 			int j = i;
 			while(j > 0 && array[j-1] > array[j]) {
@@ -183,6 +186,18 @@ namespace sfz {
 			}
 		}
 	}
+
+
+	template<typename RandomIt>
+	void insertionSort(RandomIt first, RandomIt last) {
+		insertionsort(first, last - first);
+	}
+
+	template<typename RandomIt>
+	void quickSort(RandomIt first, RandomIt last) {
+		quicksort(first, last - first);
+	}
+
 
 	/*template<class T>
 	void concurrentQuicksort(T* array, const size_t length, const size_t numThreads) {
