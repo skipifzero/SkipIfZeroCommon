@@ -1,25 +1,9 @@
-/*
- * Implementation of SortingAlgorithms.h
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- */
-
 namespace sfz {
-	
-	/*
-	 * Anonymous functions
-	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 */
 
+	// Anonymous helper functions
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	namespace {
 			
-		// Swaps two element in an array.
-		template<class T>
-		inline void swap(T* array, size_t pos1, size_t pos2) {
-			T temp = std::move(array[pos1]);
-			array[pos1] = std::move(array[pos2]);
-			array[pos2] = std::move(temp);
-		}
-		
 		// Returns the index to the median of low, mid and high as the pivot value.
 		template<class T>
 		inline size_t pivotMedianOfThreeInPlace(T* array, size_t low, size_t high) {
@@ -27,13 +11,16 @@ namespace sfz {
 
 			//Sorts the indexes
 			if(array[low] > array[mid]) {
-				swap(array, low, mid);
+				swap(array[low], array[mid]);
+				//swap(array, low, mid);
 			}
 			if(array[low] > array[high]) {
-				swap(array, low, high);
+				swap(array[low], array[high]);
+				//swap(array, low, high);
 			}
 			if(array[mid] > array[high]) {
-				swap(array, mid, high);
+				swap(array[mid], array[high]);
+				//swap(array, mid, high);
 			}
 
 			return mid;
@@ -59,7 +46,8 @@ namespace sfz {
 			}
 
 			// Finds pivot and moves it to end of array.
-			swap(array, pivotMedianOfThreeInPlace(array, lowIndex, highIndex), highIndex);
+			//swap(array, pivotMedianOfThreeInPlace(array, lowIndex, highIndex), highIndex);
+			swap(array[pivotMedianOfThreeInPlace(array, lowIndex, highIndex)], array[highIndex]);
 			T& pivotValue = array[highIndex];
 
 			// The most complicated part, basically what we want to accomplish is splitting the array into three parts.
@@ -71,11 +59,13 @@ namespace sfz {
 			for(size_t i = smallerStore+1; i < equalStore; ) {
 				// Moves equal element to end of array (lowest in equal store).
 				if(array[i] == pivotValue) {
-					swap(array, i, --equalStore);
+					swap(array[i], array[--equalStore]);
+					//swap(array, i, --equalStore);
 				}
 				// Moves smaller element to beginning of array (highest in smaller store).
 				else if(array[i] < pivotValue) {
-					swap(array, i++, ++smallerStore);
+					swap(array[i++], array[++smallerStore]);
+					//swap(array, i++, ++smallerStore);
 				}
 				else {
 					i++;
@@ -85,7 +75,8 @@ namespace sfz {
 			// Moves equal store to the middle of the array right after smaller store.
 			size_t equalMiddleStore = smallerStore + 1; // Index to element at top of new equal store.
 			for(size_t i = equalStore; i <= highIndex; i++) {
-				swap(array, i, equalMiddleStore++);
+				swap(array[i], array[equalMiddleStore++]);
+				//swap(array, i, equalMiddleStore++);
 			}
 
 			// Recursive call with larger and smaller store part of array.
@@ -181,7 +172,8 @@ namespace sfz {
 		for(int i = 0; i < length; i++) {
 			int j = i;
 			while(j > 0 && array[j-1] > array[j]) {
-				swap(array, j-1, j);
+				swap(array[j - 1], array[j]);
+				//swap(array, j-1, j);
 				j--;
 			}
 		}

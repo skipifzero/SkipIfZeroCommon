@@ -6,9 +6,11 @@
 #include <stdexcept>
 #include <thread>
 #include <mutex>
+#include <utility>
 
 namespace sfz {
 	using std::size_t;
+	using std::swap;
 
 	template<typename RandomIt>
 	void quickSort(RandomIt first, RandomIt last);
