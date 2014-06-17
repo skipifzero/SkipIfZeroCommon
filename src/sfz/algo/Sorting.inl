@@ -150,11 +150,9 @@ namespace sfz {
 			data.workerPool->bufferTask(largerData);
 		}*/
 	}
-	
-	/*
-	 * Implementation of functions from Sorting.hpp
-	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 */
+
+	// Implementation of functions defined in Sorting.hpp
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
 	void quicksort(T* array, const size_t length) {
@@ -167,22 +165,19 @@ namespace sfz {
 		quicksort(array, 0, length-1);
 	}
 	
-	template<class T>
-	void insertionsort(T* array, const size_t length) {
-		for(int i = 0; i < length; i++) {
-			int j = i;
-			while(j > 0 && array[j-1] > array[j]) {
-				swap(array[j - 1], array[j]);
-				//swap(array, j-1, j);
+	template<typename RandomIt>
+	void insertionSort(RandomIt first, RandomIt last) {
+		if(last < first) {
+			throw std::invalid_argument("first >= last");
+		}
+		size_t length = last - first;
+		for(size_t i = 1; i < length; i++) {
+			size_t j = i;
+			while(j > 0 && first[j-1] > first[j]) {
+				swap(first[j-1], first[j]);
 				j--;
 			}
 		}
-	}
-
-
-	template<typename RandomIt>
-	void insertionSort(RandomIt first, RandomIt last) {
-		insertionsort(first, last - first);
 	}
 
 	template<typename RandomIt>
