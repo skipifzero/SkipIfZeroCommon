@@ -4,10 +4,7 @@ namespace sfz {
 
 	// Anonymous functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	namespace {
-		//using size_t = std::size_t;
-
-		
+	namespace {		
 		// Printing functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -39,9 +36,8 @@ namespace sfz {
 			return 0;
 		}
 
-		template<class T>
+		template<typename T>
 		void std_qsort(T* first, T* last) {
-			//std::qsort(array, length, sizeof(T), compare<T>);
 			std::qsort(first, last - first, sizeof(T), compare<T>);
 		}
 
@@ -64,8 +60,6 @@ namespace sfz {
 		void sfz_concurrentQuicksort8Threads(T* array, size_t length) {
 			sfz::concurrentQuicksort(array, length, 8);
 		}*/
-
-
 		
 		// Test functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -109,11 +103,11 @@ namespace sfz {
 		void testMany(std::string title, T*(*arrayCreator)(size_t), size_t length) {
 			std::cout << title << ", length: " << length << "\n";
 
-			std::cout << "                  sfz::insertionSort(): ";
-			test(arrayCreator, insertionSort<T*>, length);
+			std::cout << "                  sfz::insertionsort(): ";
+			test(arrayCreator, insertionsort<T*>, length);
 
-			std::cout << "                      sfz::quickSort():  ";
-			test(arrayCreator, quickSort<T*>, length);
+			std::cout << "                      sfz::quicksort():  ";
+			test(arrayCreator, quicksort<T*>, length);
 
 			/*std::cout << " sfz::concurrentQuicksort() (1 thread):  ";
 			test(arrayCreator, sfz_concurrentQuicksort1Thread, length);
@@ -143,8 +137,8 @@ namespace sfz {
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		int* createArrayWithRandomNumbers(size_t length, int min, int max) {
-			std::mt19937_64 ms; //64bit Mersenne Twister
-			ms.seed(1337); //We always want the same random numbers, so we always use this seed.
+			std::mt19937_64 ms; // 64bit Mersenne Twister
+			ms.seed(1337); // We always want the same random numbers, so we always use this seed.
 			std::uniform_int_distribution<int> dist{min, max};
 			int* array = new int[length];
 			for(size_t i = 0; i < length; i++) {
@@ -181,7 +175,6 @@ namespace sfz {
 			return array;
 		}
 	}
-
 
 	// Visible functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *	

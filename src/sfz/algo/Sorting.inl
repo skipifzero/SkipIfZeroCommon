@@ -3,87 +3,66 @@ namespace sfz {
 	// Anonymous helper functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	namespace {
-			
-		// Returns the index to the median of low, mid and high as the pivot value.
-		template<class T>
-		inline size_t pivotMedianOfThreeInPlace(T* array, size_t low, size_t high) {
-			size_t mid = low + ((high-low)/2);
-
-			//Sorts the indexes
-			if(array[low] > array[mid]) {
-				swap(array[low], array[mid]);
-				//swap(array, low, mid);
-			}
-			if(array[low] > array[high]) {
-				swap(array[low], array[high]);
-				//swap(array, low, high);
-			}
-			if(array[mid] > array[high]) {
-				swap(array[mid], array[high]);
-				//swap(array, mid, high);
-			}
-
-			return mid;
-		}
 
 		const size_t INSERTIONSORT_TRESHOLD = 7;
 
-		// Internal quicksort recursive loop
-		template<class T>
-		void quicksort(T* array, size_t lowIndex, size_t highIndex) {
+		template<typename RandomIt>
+		void quicksortInner(RandomIt first, RandomIt last) {
 
-			size_t intervalLength = highIndex-lowIndex+1;
-
-			if(intervalLength <= 0) {
+			// TODO: This end condition necessary? Can a better one be found?
+			if(first >= last) {
 				return;
 			}
 
-			// Does an insertion sort if length of interval is shorter than treshold.
-			if(intervalLength < INSERTIONSORT_TRESHOLD) {
-				//insertionsort(array + lowIndex, intervalLength);
-				insertionSort(array + lowIndex, array + lowIndex + intervalLength);
-				return;
+			// TODO: Insertionsort if length of sequence is below treshold.
+
+			// Sorts first, middle and last elements in place.
+			auto mid = first + ((last-first)/2);
+			if(*first > *mid) {
+				swap(*first, *mid);
+			}
+			if(*first > *last) {
+				swap(*first, *last);
+			}
+			if(*mid > *last) {
+				swap(*mid, *last);
 			}
 
-			// Finds pivot and moves it to end of array.
-			//swap(array, pivotMedianOfThreeInPlace(array, lowIndex, highIndex), highIndex);
-			swap(array[pivotMedianOfThreeInPlace(array, lowIndex, highIndex)], array[highIndex]);
-			T& pivotValue = array[highIndex];
+			// Pivot will now be at mid position and is the median of the previous first, mid and last.
+			// Swap pivot to last position where we will store it temporarily.
+			swap(*mid, *last); // TODO: Could probably combine this step with previous step.
 
-			// The most complicated part, basically what we want to accomplish is splitting the array into three parts.
-			// Smaller than pivot, equal to pivot and larger than pivot, in that order. We do this by iterating through
-			// the array, moving all smaller elements to the beginning of they array and all equal elements to the end
-			// of it.
-			int smallerStore = lowIndex-1; // Index to element at top of smaller store
-			size_t equalStore = highIndex; // Index to element at bottom of equal store (pivot element).
-			for(size_t i = smallerStore+1; i < equalStore; ) {
-				// Moves equal element to end of array (lowest in equal store).
-				if(array[i] == pivotValue) {
-					swap(array[i], array[--equalStore]);
-					//swap(array, i, --equalStore);
-				}
-				// Moves smaller element to beginning of array (highest in smaller store).
-				else if(array[i] < pivotValue) {
-					swap(array[i++], array[++smallerStore]);
-					//swap(array, i++, ++smallerStore);
-				}
-				else {
-					i++;
+			auto smallerStore = first; // RandomIt to position where next smaller element should be placed.
+			auto largerStore = last-1; // RandomIt to position where next larger element should be placed.
+			
+			// Places all elements smaller than pivot in beginning of array and all elements larger in the end of the
+			// array. The elements equal to the pivot element will end up in the middle of the array.
+			for(auto itr = smallerStore; itr <= largerStore; ) {
+				if(*itr < *last) {
+					swap(*itr, *smallerStore);
+					smallerStore++;
+					itr++;
+				} else if(*itr > *last) {
+					// In this case we don't increment the iterator since the value swapped down has not yet been
+					// compared with the pivot element.
+					swap(*itr, *largerStore);
+					largerStore--;
+				} else {
+					itr++;
 				}
 			}
 
-			// Moves equal store to the middle of the array right after smaller store.
-			size_t equalMiddleStore = smallerStore + 1; // Index to element at top of new equal store.
-			for(size_t i = equalStore; i <= highIndex; i++) {
-				swap(array[i], array[equalMiddleStore++]);
-				//swap(array, i, equalMiddleStore++);
-			}
+			// Swap pivot back to middle of sequence.
+			std::swap(*(largerStore+1), *last);
 
-			// Recursive call with larger and smaller store part of array.
-			quicksort(array, lowIndex, smallerStore);
-			quicksort(array, equalMiddleStore, highIndex);
+			// Starts new quicksort iterations on the larger and smaller parts of the sequence.
+			if(first < (smallerStore-1)) { // TODO: Can this check be removed somehow?
+				quicksortInner(first, smallerStore-1);	
+			}
+			if((largerStore+2) < last) { // TODO: Can this check be removed somehow?
+				quicksortInner((largerStore+2), last);
+			}
 		}
-
 
 		/*template<class T>
 		struct qsRecursionData {
@@ -153,20 +132,17 @@ namespace sfz {
 
 	// Implementation of functions defined in Sorting.hpp
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	template<typename T>
-	void quicksort(T* array, const size_t length) {
-		if(array == nullptr) {
-			throw std::invalid_argument{"Array == nullptr."};
-		}
-		if(length <= 1) {
-			return;
-		}
-		quicksort(array, 0, length-1);
-	}
 	
 	template<typename RandomIt>
-	void insertionSort(RandomIt first, RandomIt last) {
+	void quicksort(RandomIt first, RandomIt last) {
+		if(last < first) {
+			throw std::invalid_argument("first >= last");
+		}
+		quicksortInner(first, last);
+	}
+
+	template<typename RandomIt>
+	void insertionsort(RandomIt first, RandomIt last) {
 		if(last < first) {
 			throw std::invalid_argument("first >= last");
 		}
@@ -179,12 +155,6 @@ namespace sfz {
 			}
 		}
 	}
-
-	template<typename RandomIt>
-	void quickSort(RandomIt first, RandomIt last) {
-		quicksort(first, last - first);
-	}
-
 
 	/*template<class T>
 	void concurrentQuicksort(T* array, const size_t length, const size_t numThreads) {

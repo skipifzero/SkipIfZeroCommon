@@ -13,13 +13,13 @@ namespace sfz {
 	using std::swap;
 
 	template<typename RandomIt>
-	void quickSort(RandomIt first, RandomIt last);
+	void quicksort(RandomIt first, RandomIt last);
 
 	template<typename RandomIt>
-	void parallelQuickSort(RandomIt first, RandomIt last, const size_t numThreads = std::thread::hardware_concurrency());
+	void parallelQuicksort(RandomIt first, RandomIt last, const size_t numThreads = std::thread::hardware_concurrency());
 
 	template<typename RandomIt>
-	void insertionSort(RandomIt first, RandomIt last);
+	void insertionsort(RandomIt first, RandomIt last);
 }
 #include "Sorting.inl"
 #endif
