@@ -24,7 +24,9 @@ namespace sfz {
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 		int* arrayWithRandomNumbers(size_t length, int min, int max) {
 			std::mt19937_64 ms; // 64bit Mersenne Twister
-			ms.seed(1337); // We always want the same random numbers, so we always use this seed.
+			// We always use the same seed, this is crucial for the fairness of the tests. This ensures that each time
+			// the function is called with the same parameters the resulting array will contain the same numbers.
+			ms.seed(1337);
 			std::uniform_int_distribution<int> dist{min, max};
 			int* array = new int[length];
 			for(size_t i = 0; i < length; i++) {
