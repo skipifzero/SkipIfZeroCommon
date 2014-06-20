@@ -4,45 +4,50 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	namespace {
 
-		const size_t INSERTIONSORT_TRESHOLD = 7;
+		const size_t INSERTIONSORT_TRESHOLD = 9;
 
 		template<typename RandomIt>
 		void quicksortInner(RandomIt first, RandomIt last) {
 
-			// TODO: This end condition necessary? Can a better one be found?
-			if(first >= last) {
+			auto lastIncl = last-1; // RandomIt to inclusive end of sequence.
+			if(first >= lastIncl) {
 				return;
 			}
 
-			// TODO: Insertionsort if length of sequence is below treshold.
+			// Does an insertionsort on interval if length is less than the INSERTIONSORT_TRESHOLD constant.
+			auto intervalLength = last - first;
+			if(intervalLength < INSERTIONSORT_TRESHOLD) {
+				insertionsort(first, last);
+				return;
+			}
 
-			// Sorts first, middle and last elements in place.
-			auto mid = first + ((last-first)/2);
+			// Sorts first, middle and last (inclusive) elements in-place, except that middle and last (inclusive) is
+			// swapped so that median element will end up in last (inclusive) and the largest element in middle. The
+			// last (inclusive) element will then be our pivot value.
+			auto mid = first + (intervalLength/2);
+			if(*first > *lastIncl) {
+				swap(*first, *lastIncl);
+			}
 			if(*first > *mid) {
 				swap(*first, *mid);
 			}
-			if(*first > *last) {
-				swap(*first, *last);
-			}
-			if(*mid > *last) {
-				swap(*mid, *last);
+			if(*lastIncl > *mid) {
+				swap(*lastIncl, *mid);
 			}
 
-			// Pivot will now be at mid position and is the median of the previous first, mid and last.
-			// Swap pivot to last position where we will store it temporarily.
-			swap(*mid, *last); // TODO: Could probably combine this step with previous step.
-
-			auto smallerStore = first; // RandomIt to position where next smaller element should be placed.
-			auto largerStore = last-1; // RandomIt to position where next larger element should be placed.
+			// RandomIt to where next smaller and larger elements should be placed.
+			auto smallerStore = first;
+			auto largerStore = lastIncl-1;
 			
 			// Places all elements smaller than pivot in beginning of array and all elements larger in the end of the
 			// array. The elements equal to the pivot element will end up in the middle of the array.
-			for(auto itr = smallerStore; itr <= largerStore; ) {
-				if(*itr < *last) {
+			auto itr = smallerStore;
+			while(itr <= largerStore) {
+				if(*itr < *lastIncl) {
 					swap(*itr, *smallerStore);
 					smallerStore++;
 					itr++;
-				} else if(*itr > *last) {
+				} else if(*itr > *lastIncl) {
 					// In this case we don't increment the iterator since the value swapped down has not yet been
 					// compared with the pivot element.
 					swap(*itr, *largerStore);
@@ -53,15 +58,13 @@ namespace sfz {
 			}
 
 			// Swap pivot back to middle of sequence.
-			std::swap(*(largerStore+1), *last);
+			std::swap(*(largerStore+1), *lastIncl);
 
-			// Starts new quicksort iterations on the larger and smaller parts of the sequence.
-			if(first < (smallerStore-1)) { // TODO: Can this check be removed somehow?
-				quicksortInner(first, smallerStore-1);	
-			}
-			if((largerStore+2) < last) { // TODO: Can this check be removed somehow?
-				quicksortInner((largerStore+2), last);
-			}
+			// Starts new quicksort iterations on the larger and smaller parts of the sequence. Note that we use
+			// smallerStore instead of smallerStore-1 since the 'last' iterator should point to the (potentially
+			// non-existing) element after the last inclusive element.
+			quicksortInner(first, smallerStore);
+			quicksortInner(largerStore+2, last);
 		}
 
 		/*template<class T>
@@ -135,7 +138,7 @@ namespace sfz {
 	
 	template<typename RandomIt>
 	void quicksort(RandomIt first, RandomIt last) {
-		if(last < first) {
+		if(last <= first) {
 			throw std::invalid_argument("first >= last");
 		}
 		quicksortInner(first, last);
@@ -143,15 +146,12 @@ namespace sfz {
 
 	template<typename RandomIt>
 	void insertionsort(RandomIt first, RandomIt last) {
-		if(last < first) {
+		if(last <= first) {
 			throw std::invalid_argument("first >= last");
 		}
-		size_t length = last - first;
-		for(size_t i = 1; i < length; i++) {
-			size_t j = i;
-			while(j > 0 && first[j-1] > first[j]) {
+		for(size_t i = 1; i < last - first; i++) {
+			for(size_t j = i; j > 0 && first[j-1] > first[j]; j--) {
 				swap(first[j-1], first[j]);
-				j--;
 			}
 		}
 	}

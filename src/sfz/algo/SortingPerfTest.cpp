@@ -4,11 +4,11 @@ namespace sfz {
 
 	// Anonymous functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	namespace {		
+	namespace {	
 
 		// Printing functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-		template<class T>
+		template<typename T>
 		void printArray(T* array, size_t length, bool limited = true, size_t elementsToShow = 100) {
 			for(size_t i = 0; i < (limited ? (elementsToShow < length ? elementsToShow : length) : length); i++) {
 				std::cout << i << ":\t" << array[i] << std::endl;
@@ -68,8 +68,8 @@ namespace sfz {
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 		template<typename T>
 		int compare(const void* obj1, const void* obj2) {
-			int val1 = *reinterpret_cast<const int*>(obj1);
-			int val2 = *reinterpret_cast<const int*>(obj2);
+			T val1 = *reinterpret_cast<const T*>(obj1);
+			T val2 = *reinterpret_cast<const T*>(obj2);
 			if(val1 < val2) {
 				return -1;
 			}
@@ -111,7 +111,7 @@ namespace sfz {
 		template<typename T>
 		void testAllSorts(std::string title, T*(*arrayCreator)(size_t), size_t length) {
 			std::cout << title << ", length: " << length << "\n";
-			std::cout << "                  sfz::insertionsort(): ";
+			std::cout << "                  sfz::insertionsort():  ";
 			testOneSort(arrayCreator, length, insertionsort<T*>);
 
 			std::cout << "                      sfz::quicksort():  ";
@@ -134,14 +134,14 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *	
 
 	void runSortingPerformanceTest() {
-		testAllSorts("### Array with dense random numbers", denseRandomNumberArray, 50000);
+		testAllSorts("### Array with dense random numbers", denseRandomNumberArray, 100000);
 
-		testAllSorts("### Array with sparse random numbers", sparseRandomNumberArray, 50000);
+		testAllSorts("### Array with sparse random numbers", sparseRandomNumberArray, 100000);
 
-		testAllSorts("### Array with binary numbers", binaryNumberArray, 50000);
+		testAllSorts("### Array with binary numbers", binaryNumberArray, 100000);
 
-		testAllSorts("### Array with sorted numbers", sortedNumberArray, 100000);
+		testAllSorts("### Array with sorted numbers", sortedNumberArray, 1000000);
 
-		testAllSorts("### Array with reversed sorted numbers", reverseSortedNumberArray, 50000);
+		testAllSorts("### Array with reversed sorted numbers", reverseSortedNumberArray, 100000);
 	}
 }
