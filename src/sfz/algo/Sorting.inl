@@ -4,67 +4,70 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	namespace {
 
-		const size_t INSERTIONSORT_TRESHOLD = 9;
+		template<typename T>
+		T& median(const T& a, const T& b, const T& c) {
+			return const_cast<T&>(max(min(a, b), min(max(a, b), c)));
+		}
+
+		const size_t INSERTIONSORT_TRESHOLD = 25;
 
 		template<typename RandomIt>
 		void quicksortInner(RandomIt first, RandomIt last) {
 
 			auto lastIncl = last-1; // RandomIt to inclusive end of sequence.
-			if(first >= lastIncl) {
+			auto intervalLength = last - first;
+
+			// End condition, if there is just one or less elements left then the interval must be correctly sorted.
+			if(intervalLength <= 1) {
 				return;
 			}
 
 			// Does an insertionsort on interval if length is less than the INSERTIONSORT_TRESHOLD constant.
-			auto intervalLength = last - first;
 			if(intervalLength < INSERTIONSORT_TRESHOLD) {
 				insertionsort(first, last);
 				return;
 			}
 
-			// Sorts first, middle and last (inclusive) elements in-place, except that middle and last (inclusive) is
-			// swapped so that median element will end up in last (inclusive) and the largest element in middle. The
-			// last (inclusive) element will then be our pivot value.
+			// Finds the median of first, middle and last (inclusive) elements in sequence. Then selects the median as
+			// pivot element and moves it to the end of the sequence.
 			auto mid = first + (intervalLength/2);
-			if(*first > *lastIncl) {
-				swap(*first, *lastIncl);
-			}
-			if(*first > *mid) {
-				swap(*first, *mid);
-			}
-			if(*lastIncl > *mid) {
-				swap(*lastIncl, *mid);
-			}
-
-			// RandomIt to where next smaller and larger elements should be placed.
-			auto smallerStore = first;
-			auto largerStore = lastIncl-1;
+			swap(median(*lastIncl, *first, *mid), *lastIncl);
 			
-			// Places all elements smaller than pivot in beginning of array and all elements larger in the end of the
-			// array. The elements equal to the pivot element will end up in the middle of the array.
-			auto itr = smallerStore;
-			while(itr <= largerStore) {
+			// RandomIt to where next smaller and equal elements should be placed.
+			auto smallerStore = first;
+			auto equalStore = lastIncl-1;
+			
+			// Places all elements smaller than pivot in beginning of the sequence and all elements equal to the pivot
+			// in the end of the sequence.
+			for(auto itr = smallerStore; itr <= equalStore; ) {
 				if(*itr < *lastIncl) {
 					swap(*itr, *smallerStore);
 					smallerStore++;
 					itr++;
 				} else if(*itr > *lastIncl) {
+					itr++;
+				} else {
 					// In this case we don't increment the iterator since the value swapped down has not yet been
 					// compared with the pivot element.
-					swap(*itr, *largerStore);
-					largerStore--;
-				} else {
-					itr++;
+					swap(*itr, *equalStore);
+					equalStore--;
 				}
 			}
 
-			// Swap pivot back to middle of sequence.
-			std::swap(*(largerStore+1), *lastIncl);
+			// Moves elements equal to pivot to the middle of the sequence.
+			auto newEqualStore = smallerStore;
+			equalStore++;
+			while(equalStore < last) {
+				swap(*newEqualStore, *equalStore);
+				newEqualStore++;
+				equalStore++;
+			}
 
 			// Starts new quicksort iterations on the larger and smaller parts of the sequence. Note that we use
 			// smallerStore instead of smallerStore-1 since the 'last' iterator should point to the (potentially
 			// non-existing) element after the last inclusive element.
 			quicksortInner(first, smallerStore);
-			quicksortInner(largerStore+2, last);
+			quicksortInner(newEqualStore, last);
 		}
 
 		/*template<class T>

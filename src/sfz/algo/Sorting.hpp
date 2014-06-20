@@ -5,12 +5,15 @@
 #include <iostream>
 #include <stdexcept>
 #include <thread>
-#include <mutex>
+//#include <mutex>
+#include <algorithm>
 #include <utility>
 
 namespace sfz {
 	using std::size_t;
 	using std::swap;
+	using std::max;
+	using std::min;
 
 	template<typename RandomIt>
 	void quicksort(RandomIt first, RandomIt last);
