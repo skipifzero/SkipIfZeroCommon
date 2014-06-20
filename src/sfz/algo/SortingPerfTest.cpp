@@ -84,6 +84,11 @@ namespace sfz {
 			std::qsort(first, last - first, sizeof(T), compare<T>);
 		}
 
+		template<typename RandomIt, size_t N>
+		void sfz_parallelQuicksort(RandomIt first, RandomIt last) {
+			parallelQuicksort(first, last, N);
+		}
+
 		// Test functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 		template<typename T>
@@ -116,6 +121,18 @@ namespace sfz {
 
 			std::cout << "                      sfz::quicksort():  ";
 			testOneSort(arrayCreator, length, quicksort<T*>);
+
+			std::cout << " sfz::concurrentQuicksort() (1 thread):  ";
+			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,1>);
+
+			std::cout << "sfz::concurrentQuicksort() (2 threads):  ";
+			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,2>);
+
+			std::cout << "sfz::concurrentQuicksort() (2 threads):  ";
+			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,4>);
+
+			std::cout << "sfz::concurrentQuicksort() (2 threads):  ";
+			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,8>);
 
 			std::cout << "                          std::qsort():  ";
 			testOneSort(arrayCreator, length, std_qsort);

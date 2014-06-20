@@ -5,8 +5,8 @@
 #include <iostream>
 #include <string>
 #include <random>
-#include <cstdlib> //std::qsort()
-#include <algorithm> //std::sort(), std::stable_sort()
+#include <cstdlib> // std::qsort()
+#include <algorithm> // std::sort(), std::stable_sort()
 #include "Sorting.hpp"
 #include "../util/StopWatch.hpp"
 

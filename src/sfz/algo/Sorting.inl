@@ -70,6 +70,91 @@ namespace sfz {
 			quicksortInner(newEqualStore, last);
 		}
 
+		template<typename RandomIt>
+		struct qsRecursionData {
+			qsRecursionData(RandomIt first, RandomIt last) :
+				first{first},
+				last{last} {
+					// Do nothing.
+			}
+			RandomIt first, last;
+		};
+
+		const size_t PARALLELISATION_TRESHOLD = 40000;
+
+		template<typename RandomIt>
+		void parallelQuicksortInner(qsRecursionData<RandomIt> data) {
+			auto first = data.first;
+			auto last = data.last;
+			auto lastIncl = last-1; // RandomIt to inclusive end of sequence.
+			auto intervalLength = last - first;
+
+			// End condition, if there is just one or less elements left then the interval must be correctly sorted.
+			if(intervalLength <= 1) {
+				return;
+			}
+
+			// Does an insertionsort on interval if length is less than the INSERTIONSORT_TRESHOLD constant.
+			if(intervalLength < INSERTIONSORT_TRESHOLD) {
+				insertionsort(first, last);
+				return;
+			}
+
+			// Finds the median of first, middle and last (inclusive) elements in sequence. Then selects the median as
+			// pivot element and moves it to the end of the sequence.
+			auto mid = first + (intervalLength/2);
+			swap(median(*lastIncl, *first, *mid), *lastIncl);
+			
+			// RandomIt to where next smaller and equal elements should be placed.
+			auto smallerStore = first;
+			auto equalStore = lastIncl-1;
+			
+			// Places all elements smaller than pivot in beginning of the sequence and all elements equal to the pivot
+			// in the end of the sequence.
+			for(auto itr = smallerStore; itr <= equalStore; ) {
+				if(*itr < *lastIncl) {
+					swap(*itr, *smallerStore);
+					smallerStore++;
+					itr++;
+				} else if(*itr > *lastIncl) {
+					itr++;
+				} else {
+					// In this case we don't increment the iterator since the value swapped down has not yet been
+					// compared with the pivot element.
+					swap(*itr, *equalStore);
+					equalStore--;
+				}
+			}
+
+			// Moves elements equal to pivot to the middle of the sequence.
+			auto newEqualStore = smallerStore;
+			equalStore++;
+			while(equalStore < last) {
+				swap(*newEqualStore, *equalStore);
+				newEqualStore++;
+				equalStore++;
+			}
+
+			// Starts new quicksort iterations on the larger and smaller parts of the sequence. Note that we use
+			// smallerStore instead of smallerStore-1 since the 'last' iterator should point to the (potentially
+			// non-existing) element after the last inclusive element.
+			if(intervalLength < PARALLELISATION_TRESHOLD) {
+				quicksortInner(first, smallerStore);
+				quicksortInner(newEqualStore, last);
+			} else {
+				qsRecursionData<RandomIt> lowerBounds{first, smallerStore};
+				std::thread lowerThread{[lowerBounds]() {
+					parallelQuicksortInner(lowerBounds);
+				}};
+				qsRecursionData<RandomIt> higherBounds{newEqualStore, last};
+				std::thread higherThread{[higherBounds]() {
+					parallelQuicksortInner(higherBounds);
+				}};
+				lowerThread.join();
+				higherThread.join();
+			}
+		}
+
 		/*template<class T>
 		struct qsRecursionData {
 			WorkerPool<struct qsRecursionData>* workerPool;
@@ -145,6 +230,14 @@ namespace sfz {
 			throw std::invalid_argument("first >= last");
 		}
 		quicksortInner(first, last);
+	}
+
+	template<typename RandomIt>
+	void parallelQuicksort(RandomIt first, RandomIt last, const size_t numThreads) {
+		if(last <= first) {
+			throw std::invalid_argument("first >= last");
+		}
+		parallelQuicksortInner(qsRecursionData<RandomIt>{first, last});
 	}
 
 	template<typename RandomIt>
