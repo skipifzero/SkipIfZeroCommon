@@ -8,6 +8,7 @@
 //#include <mutex>
 #include <algorithm>
 #include <utility>
+#include "../util/ThreadPool.hpp"
 
 namespace sfz {
 	using std::size_t;

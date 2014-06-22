@@ -44,7 +44,7 @@ $(BUILD_SFZ_UTIL_DIR)StopWatch.o: $(SRC_SFZ_UTIL_DIR)StopWatch.cpp $(SRC_SFZ_UTI
 	$(CC) $(CFLAGS) $@ $<
 	@echo ""
 
-$(BUILD_SFZ_ALGO_DIR)SortingPerfTest.o: $(SRC_SFZ_ALGO_DIR)SortingPerfTest.cpp $(SRC_SFZ_ALGO_DIR)SortingPerfTest.hpp $(SRC_SFZ_ALGO_DIR)Sorting.hpp $(SRC_SFZ_ALGO_DIR)Sorting.inl $(SRC_SFZ_UTIL_DIR)StopWatch.hpp
+$(BUILD_SFZ_ALGO_DIR)SortingPerfTest.o: $(SRC_SFZ_ALGO_DIR)SortingPerfTest.cpp $(SRC_SFZ_ALGO_DIR)SortingPerfTest.hpp $(SRC_SFZ_ALGO_DIR)Sorting.hpp $(SRC_SFZ_ALGO_DIR)Sorting.inl $(SRC_SFZ_UTIL_DIR)StopWatch.hpp $(SRC_SFZ_UTIL_DIR)ThreadPool.hpp $(SRC_SFZ_UTIL_DIR)ThreadPool.inl
 	@mkdir -p $(BUILD_SFZ_ALGO_DIR)
 	$(CC) $(CFLAGS) $@ $<
 	@echo ""

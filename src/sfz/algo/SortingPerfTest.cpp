@@ -92,14 +92,15 @@ namespace sfz {
 		// Test functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 		template<typename T>
-		void isArraySortedTest(T* array, size_t length) {
+		bool isArraySortedTest(T* array, size_t length) {
 			for(size_t i = 0; i < length-1; i++) {
 				if(array[i] > array[i+1]) {
 					std::cout << "Array NOT SORTED! array[" << i << "] = "
 					          << array[i] << ", array[" << i+1 << "] = " << array[i+1] << std::endl;
-					return;
+					return false;
 				}
 			}
+			return true;
 		}
 
 		template<typename T>
@@ -110,37 +111,39 @@ namespace sfz {
 			clock.stop();
 			printTime(clock);
 			isArraySortedTest(array, length);
+			//printArray(array, length, true, 20);
 			delete[] array;
 		}
 
 		template<typename T>
 		void testAllSorts(std::string title, T*(*arrayCreator)(size_t), size_t length) {
 			std::cout << title << ", length: " << length << "\n";
-			std::cout << "                  sfz::insertionsort():  ";
+			
+			std::cout << "                     sfz::insertionsort():  ";
 			testOneSort(arrayCreator, length, insertionsort<T*>);
 
-			std::cout << "                      sfz::quicksort():  ";
+			std::cout << "                         sfz::quicksort():  ";
 			testOneSort(arrayCreator, length, quicksort<T*>);
 
-			std::cout << " sfz::concurrentQuicksort() (1 thread):  ";
+			std::cout << "    sfz::concurrentQuicksort() (1 thread):  ";
 			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,1>);
 
-			std::cout << "sfz::concurrentQuicksort() (2 threads):  ";
+			std::cout << "   sfz::concurrentQuicksort() (2 threads):  ";
 			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,2>);
 
-			std::cout << "sfz::concurrentQuicksort() (2 threads):  ";
+			std::cout << "   sfz::concurrentQuicksort() (4 threads):  ";
 			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,4>);
 
-			std::cout << "sfz::concurrentQuicksort() (2 threads):  ";
+			std::cout << "   sfz::concurrentQuicksort() (8 threads):  ";
 			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,8>);
 
-			std::cout << "                          std::qsort():  ";
+			std::cout << "                             std::qsort():  ";
 			testOneSort(arrayCreator, length, std_qsort);
 
-			std::cout << "                           std::sort():  ";
+			std::cout << "                              std::sort():  ";
 			testOneSort(arrayCreator, length, std::sort<T*>);
 
-			std::cout << "                    std::stable_sort():  ";
+			std::cout << "                       std::stable_sort():  ";
 			testOneSort(arrayCreator, length, std::stable_sort<T*>);
 
 			std::cout << std::endl;

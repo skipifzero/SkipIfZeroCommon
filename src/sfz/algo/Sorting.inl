@@ -71,19 +71,29 @@ namespace sfz {
 		}
 
 		template<typename RandomIt>
-		struct qsRecursionData {
-			qsRecursionData(RandomIt first, RandomIt last) :
+		struct QSRecursionData {
+			QSRecursionData() :
+				threadPool{nullptr} {
+					// Do nothing.
+			}
+			QSRecursionData(RandomIt first, RandomIt last, ThreadPool<QSRecursionData<RandomIt>>& threadPool) :
 				first{first},
-				last{last} {
+				last{last},
+				threadPool{&threadPool} {
+					// Do nothing.
+			}
+			QSRecursionData(const QSRecursionData<RandomIt>& qsRecursionData) :
+				first{qsRecursionData.first},
+				last{qsRecursionData.last},
+				threadPool{qsRecursionData.threadPool} {
 					// Do nothing.
 			}
 			RandomIt first, last;
+			ThreadPool<QSRecursionData>* threadPool;
 		};
 
-		const size_t PARALLELISATION_TRESHOLD = 40000;
-
 		template<typename RandomIt>
-		void parallelQuicksortInner(qsRecursionData<RandomIt> data) {
+		void parallelQuicksortInner(QSRecursionData<RandomIt> data) {
 			auto first = data.first;
 			auto last = data.last;
 			auto lastIncl = last-1; // RandomIt to inclusive end of sequence.
@@ -138,87 +148,11 @@ namespace sfz {
 			// Starts new quicksort iterations on the larger and smaller parts of the sequence. Note that we use
 			// smallerStore instead of smallerStore-1 since the 'last' iterator should point to the (potentially
 			// non-existing) element after the last inclusive element.
-			if(intervalLength < PARALLELISATION_TRESHOLD) {
-				quicksortInner(first, smallerStore);
-				quicksortInner(newEqualStore, last);
-			} else {
-				qsRecursionData<RandomIt> lowerBounds{first, smallerStore};
-				std::thread lowerThread{[lowerBounds]() {
-					parallelQuicksortInner(lowerBounds);
-				}};
-				qsRecursionData<RandomIt> higherBounds{newEqualStore, last};
-				std::thread higherThread{[higherBounds]() {
-					parallelQuicksortInner(higherBounds);
-				}};
-				lowerThread.join();
-				higherThread.join();
-			}
+			QSRecursionData<RandomIt> lowerBounds{first, smallerStore, *data.threadPool};
+			data.threadPool->addTask(lowerBounds);
+			QSRecursionData<RandomIt> higherBounds{newEqualStore, last, *data.threadPool};
+			data.threadPool->addTask(higherBounds);
 		}
-
-		/*template<class T>
-		struct qsRecursionData {
-			WorkerPool<struct qsRecursionData>* workerPool;
-			T* array;
-			size_t lowIndex, highIndex;
-		};
-
-		template<class T>
-		void quicksortConcurrent(struct qsRecursionData<T> data) {
-			
-			T* array = data.array;
-			size_t highIndex = data.highIndex;
-			size_t lowIndex = data.lowIndex;
-			size_t intervalLength = highIndex-lowIndex+1;
-
-			if(intervalLength <= 0) {
-				return;
-			}
-
-			// Does an insertion sort if length of interval is shorter than treshold.
-			if(intervalLength < INSERTIONSORT_TRESHOLD) {
-				insertionsort(array + lowIndex, intervalLength);
-				return;
-			}
-
-			// Finds pivot and moves it to end of array.
-			swap(array, pivotMedianOfThreeInPlace(array, lowIndex, highIndex), highIndex);
-			T& pivotValue = array[highIndex];
-
-			// The most complicated part, basically what we want to accomplish is splitting the array into three parts.
-			// Smaller than pivot, equal to pivot and larger than pivot, in that order. We do this by iterating through
-			// the array, moving all smaller elements to the beginning of they array and all equal elements to the end
-			// of it.
-			int smallerStore = lowIndex-1; // Index to element at top of smaller store
-			size_t equalStore = highIndex; // Index to element at bottom of equal store (pivot element).
-			for(size_t i = smallerStore+1; i < equalStore; ) {
-				// Moves equal element to end of array (lowest in equal store).
-				if(array[i] == pivotValue) {
-					swap(array, i, --equalStore);
-				}
-				// Moves smaller element to beginning of array (highest in smaller store).
-				else if(array[i] < pivotValue) {
-					swap(array, i++, ++smallerStore);
-				}
-				else {
-					i++;
-				}
-			}
-
-			// Moves equal store to the middle of the array right after smaller store.
-			size_t equalMiddleStore = smallerStore + 1; // Index to element at top of new equal store.
-			for(size_t i = equalStore; i <= highIndex; i++) {
-				swap(array, i, equalMiddleStore++);
-			}
-
-			struct qsRecursionData<T> smallerData = data;
-			smallerData.highIndex = smallerStore;
-
-			struct qsRecursionData<T> largerData = data;
-			largerData.lowIndex = equalMiddleStore;
-
-			data.workerPool->bufferTask(smallerData);
-			data.workerPool->bufferTask(largerData);
-		}*/
 	}
 
 	// Implementation of functions defined in Sorting.hpp
@@ -237,7 +171,10 @@ namespace sfz {
 		if(last <= first) {
 			throw std::invalid_argument("first >= last");
 		}
-		parallelQuicksortInner(qsRecursionData<RandomIt>{first, last});
+		ThreadPool<QSRecursionData<RandomIt>> threadPool{parallelQuicksortInner<RandomIt>, numThreads};
+		QSRecursionData<RandomIt> initalData{first, last, threadPool};
+		threadPool.addTask(initalData);
+		threadPool.awaitIdle();
 	}
 
 	template<typename RandomIt>
@@ -251,29 +188,4 @@ namespace sfz {
 			}
 		}
 	}
-
-	/*template<class T>
-	void concurrentQuicksort(T* array, const size_t length, const size_t numThreads) {
-		if(array == nullptr) {
-			throw std::invalid_argument{"Array == nullptr."};
-		}
-		if(numThreads < 1) {
-			throw std::invalid_argument("Must have at least one thread.");
-		}
-		if(length <= 1) {
-			return;
-		}
-		
-		sfz::WorkerPool<struct qsRecursionData<T>> workerPool{quicksortConcurrent<T>, numThreads};
-		
-		struct qsRecursionData<T> initalData;
-		initalData.workerPool = &workerPool;
-		initalData.array = array;
-		initalData.lowIndex = 0;
-		initalData.highIndex = length-1;
-
-		workerPool.bufferTask(initalData);
-
-		workerPool.awaitIdle();
-	}*/
 }
