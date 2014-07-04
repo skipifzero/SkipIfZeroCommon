@@ -167,6 +167,17 @@ namespace sfz {
 	}
 
 	template<typename RandomIt>
+	void parallelQuicksort(RandomIt first, RandomIt last) {
+		size_t numThreads = std::thread::hardware_concurrency();
+		// If no information on how many cores is available we can probably assume that the machine is old with no
+		// hardware concurrency. So we set the number of threads to 1.
+		if(numThreads == 0) {
+			numThreads = 1;
+		}
+		parallelQuicksort(first, last, numThreads);
+	}
+
+	template<typename RandomIt>
 	void parallelQuicksort(RandomIt first, RandomIt last, const size_t numThreads) {
 		if(last <= first) {
 			throw std::invalid_argument("first >= last");

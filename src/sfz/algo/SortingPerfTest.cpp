@@ -17,7 +17,8 @@ namespace sfz {
 		}
 
 		void printTime(StopWatch clock) {
-			std::cout << clock.getTimeMilliSeconds().count() << "ms, " << clock.getTimeNanoSeconds().count() % 1000000 << "ns" << std::endl;
+			std::cout << clock.getTimeMilliSeconds().count() << "ms, " << clock.getTimeNanoSeconds().count() % 1000000
+			          << "ns" << std::endl;
 		}
 
 		// Array creators
@@ -125,16 +126,16 @@ namespace sfz {
 			std::cout << "                         sfz::quicksort():  ";
 			testOneSort(arrayCreator, length, quicksort<T*>);
 
-			std::cout << "    sfz::concurrentQuicksort() (1 thread):  ";
+			std::cout << "      sfz::parallelQuicksort() (1 thread):  ";
 			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,1>);
 
-			std::cout << "   sfz::concurrentQuicksort() (2 threads):  ";
+			std::cout << "     sfz::parallelQuicksort() (2 threads):  ";
 			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,2>);
 
-			std::cout << "   sfz::concurrentQuicksort() (4 threads):  ";
+			std::cout << "     sfz::parallelQuicksort() (4 threads):  ";
 			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,4>);
 
-			std::cout << "   sfz::concurrentQuicksort() (8 threads):  ";
+			std::cout << "     sfz::parallelQuicksort() (8 threads):  ";
 			testOneSort(arrayCreator, length, sfz_parallelQuicksort<T*,8>);
 
 			std::cout << "                             std::qsort():  ";
