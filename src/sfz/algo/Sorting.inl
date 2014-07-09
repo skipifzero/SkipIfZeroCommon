@@ -15,7 +15,7 @@ namespace sfz {
 			return median(*(last-1), *first, *mid);
 		}
 
-		const size_t INSERTIONSORT_TRESHOLD = 25;
+		const size_t INSERTIONSORT_TRESHOLD = 15;
 
 		template<typename RandomIt>
 		void quicksortInner(RandomIt first, RandomIt last) {
@@ -41,8 +41,8 @@ namespace sfz {
 			RandomIt midFirst = std::partition(first, last, [&pivot](const T& element) { return element < pivot; });
 			RandomIt midLast = std::partition(midFirst, last, [&pivot](const T& element) { return element <= pivot; });
 		 	
-			parallelSort(first, midFirst);
-			parallelSort(midLast, last);
+			quicksortInner(first, midFirst);
+			quicksortInner(midLast, last);
 		}
 
 		template<typename RandomIt>
