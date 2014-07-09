@@ -6,8 +6,9 @@
 #include <stdexcept>
 #include <thread>
 //#include <mutex>
-#include <algorithm>
-#include <utility>
+#include <algorithm> // min, max, partition, rotate, is_sorted, upper_bound
+#include <utility> // swap
+#include <iterator> // iterator_traits, distance
 #include "../util/ThreadPool.hpp"
 
 namespace sfz {
