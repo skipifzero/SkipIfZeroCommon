@@ -155,13 +155,13 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *	
 
 	void runSortingPerformanceTest() {
-		testAllSorts("### Array with dense random numbers", denseRandomNumberArray, 100000);
+		testAllSorts("### Array with dense random numbers", denseRandomNumberArray, 300000);
 
-		testAllSorts("### Array with sparse random numbers", sparseRandomNumberArray, 100000);
+		testAllSorts("### Array with sparse random numbers", sparseRandomNumberArray, 300000);
 
-		testAllSorts("### Array with binary numbers", binaryNumberArray, 100000);
+		testAllSorts("### Array with binary numbers", binaryNumberArray, 300000);
 
-		testAllSorts("### Array with sorted numbers", sortedNumberArray, 1000000);
+		testAllSorts("### Array with sorted numbers", sortedNumberArray, 3000000);
 
 		testAllSorts("### Array with reversed sorted numbers", reverseSortedNumberArray, 100000);
 	}

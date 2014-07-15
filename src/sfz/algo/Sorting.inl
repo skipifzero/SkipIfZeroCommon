@@ -33,10 +33,10 @@ namespace sfz {
 				return;
 			}
 			
-			// Partitions the sequence and places all elements smaller than the pivot in the beginning of the sequence and
-			// all elements larger than the pivot in the end of the sequence. The 'midFirst' iterator will point to the
-			// first element equal to the pivot, the 'midLast' iterator will point to the first large element after the
-			// last equal element.
+			// Partitions the sequence and places all elements smaller than the pivot in the beginning of the sequence
+			// and all elements larger than the pivot in the end of the sequence. The 'midFirst' iterator will point
+			// to the first element equal to the pivot, the 'midLast' iterator will point to the first large element
+			// after the last equal element.
 			T pivot = findPivot(first, last);
 			RandomIt midFirst = std::partition(first, last, [&pivot](const T& element) { return element < pivot; });
 			RandomIt midLast = std::partition(midFirst, last, [&pivot](const T& element) { return element <= pivot; });
@@ -46,6 +46,39 @@ namespace sfz {
 		}
 
 		template<typename RandomIt>
+		void parallelQuicksortInner(RandomIt first, RandomIt last, size_t threadsLeft) {
+			using T = typename std::iterator_traits<RandomIt>::value_type;
+			auto intervalLength = last - first;
+
+			// End condition, if there is just one or less elements left then the interval must be correctly sorted.
+			if(intervalLength <= 1) {
+				return;
+			}
+
+			// Does an insertionsort on interval if length is less than the INSERTIONSORT_TRESHOLD constant.
+			if(intervalLength < INSERTIONSORT_TRESHOLD) {
+				insertionsort(first, last);
+				return;
+			}
+			
+			// Partitions the sequence and places all elements smaller than the pivot in the beginning of the sequence
+			// and all elements larger than the pivot in the end of the sequence. The 'midFirst' iterator will point
+			// to the first element equal to the pivot, the 'midLast' iterator will point to the first large element
+			// after the last equal element.
+			T pivot = findPivot(first, last);
+			RandomIt midFirst = std::partition(first, last, [&pivot](const T& element) { return element < pivot; });
+			RandomIt midLast = std::partition(midFirst, last, [&pivot](const T& element) { return element <= pivot; });
+		 	
+			if(threadsLeft < 1 || intervalLength < 25000) {
+				parallelQuicksortInner(first, midFirst, threadsLeft);
+		 		parallelQuicksortInner(midLast, last, threadsLeft);
+			} else {
+				sfz::ScopedThread{std::thread{parallelQuicksortInner<RandomIt>, first, midFirst, threadsLeft-1}};
+				parallelQuicksortInner(midLast, last, threadsLeft-1);
+			}
+		}
+
+		/*template<typename RandomIt>
 		struct QSRecursionData {
 			QSRecursionData() :
 				threadPool{nullptr} {
@@ -127,7 +160,7 @@ namespace sfz {
 			data.threadPool->addTask(lowerBounds);
 			QSRecursionData<RandomIt> higherBounds{newEqualStore, last, *data.threadPool};
 			data.threadPool->addTask(higherBounds);
-		}
+		}*/
 	}
 
 	// Implementation of functions defined in Sorting.hpp
@@ -157,10 +190,11 @@ namespace sfz {
 		if(last <= first) {
 			throw std::invalid_argument("first >= last");
 		}
-		ThreadPool<QSRecursionData<RandomIt>> threadPool{parallelQuicksortInner<RandomIt>, numThreads};
+		parallelQuicksortInner(first, last, numThreads);
+		/*ThreadPool<QSRecursionData<RandomIt>> threadPool{parallelQuicksortInner<RandomIt>, numThreads};
 		QSRecursionData<RandomIt> initalData{first, last, threadPool};
 		threadPool.addTask(initalData);
-		threadPool.awaitIdle();
+		threadPool.awaitIdle();*/
 	}
 
 	template<typename RandomIt>

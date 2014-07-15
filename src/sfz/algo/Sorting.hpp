@@ -9,7 +9,9 @@
 #include <algorithm> // min, max, partition, rotate, is_sorted, upper_bound
 #include <utility> // swap
 #include <iterator> // iterator_traits, distance
+#include <future> // future, async
 #include "../util/ThreadPool.hpp"
+#include "../util/ScopedThread.hpp"
 
 namespace sfz {
 	using std::size_t;
