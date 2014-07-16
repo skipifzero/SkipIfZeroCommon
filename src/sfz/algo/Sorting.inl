@@ -20,7 +20,7 @@ namespace sfz {
 		template<typename RandomIt>
 		void quicksortInner(RandomIt first, RandomIt last) {
 			using T = typename std::iterator_traits<RandomIt>::value_type;
-			auto intervalLength = last - first;
+			size_t intervalLength = last - first;
 
 			// End condition, if there is just one or less elements left then the interval must be correctly sorted.
 			if(intervalLength <= 1) {
@@ -48,7 +48,7 @@ namespace sfz {
 		template<typename RandomIt>
 		void parallelQuicksortInner(RandomIt first, RandomIt last, size_t threadsLeft) {
 			using T = typename std::iterator_traits<RandomIt>::value_type;
-			auto intervalLength = last - first;
+			size_t intervalLength = last - first;
 
 			// End condition, if there is just one or less elements left then the interval must be correctly sorted.
 			if(intervalLength <= 1) {
