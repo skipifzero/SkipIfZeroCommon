@@ -10,8 +10,8 @@
 #include <utility> // swap
 #include <iterator> // iterator_traits, distance
 #include <future> // future, async
-#include "../util/ThreadPool.hpp"
-#include "../util/ScopedThread.hpp"
+#include "sfz/util/ThreadPool.hpp"
+#include "sfz/util/ScopedThread.hpp"
 
 namespace sfz {
 	using std::size_t;

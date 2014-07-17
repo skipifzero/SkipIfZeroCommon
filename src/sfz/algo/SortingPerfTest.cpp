@@ -1,4 +1,4 @@
-#include "SortingPerfTest.hpp"
+#include "sfz/algo/SortingPerfTest.hpp"
 
 namespace sfz {
 

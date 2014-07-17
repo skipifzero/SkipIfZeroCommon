@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "../../catch.hpp"
 
-#include "../../../src/sfz/math/Vector.hpp"
+#include "sfz/math/Vector.hpp"
 
 #include <unordered_map>
 

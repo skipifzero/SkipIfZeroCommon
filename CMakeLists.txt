@@ -28,36 +28,42 @@ if (NOT CONFIGURED_ONCE)
 	    CACHE STRING "Flags used by the compiler during all build types." FORCE)
 endif ()
 
+
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+
+
 # Main executable
 add_executable(SFZCommonMain 
 	src/Main.cpp
 
-	src/sfz/algo/Sorting.hpp
-	src/sfz/algo/Sorting.inl
-	src/sfz/algo/SortingPerfTest.hpp
-	src/sfz/algo/SortingPerfTest.cpp
+	include/sfz/algo/Sorting.hpp
+	include/sfz/algo/Sorting.inl
+	include/sfz/algo/SortingPerfTest.hpp
+	    src/sfz/algo/SortingPerfTest.cpp
 
-	src/sfz/Math.hpp
-	src/sfz/math/MathConstants.hpp
-	src/sfz/math/Vector.hpp
-	src/sfz/math/Vector.inl
+	include/sfz/Math.hpp
+	include/sfz/math/MathConstants.hpp
+	include/sfz/math/Vector.hpp
+	include/sfz/math/Vector.inl
 
-	src/sfz/util/BlockingQueue.hpp
-	src/sfz/util/BlockingQueue.inl
-	src/sfz/util/ScopedThread.hpp
-	src/sfz/util/ScopedThread.cpp
-	src/sfz/util/StopWatch.hpp
-	src/sfz/util/StopWatch.cpp
-	src/sfz/util/ThreadPool.hpp
-	src/sfz/util/ThreadPool.inl)
+	include/sfz/util/BlockingQueue.hpp
+	include/sfz/util/BlockingQueue.inl
+	include/sfz/util/ScopedThread.hpp
+	    src/sfz/util/ScopedThread.cpp
+	include/sfz/util/StopWatch.hpp
+	    src/sfz/util/StopWatch.cpp
+	include/sfz/util/ThreadPool.hpp
+	include/sfz/util/ThreadPool.inl)
 
 # Enables tests
 enable_testing()
 
 # Test executables
-add_executable(Vector_Tests tests/sfz/math/Vector_Tests.cpp)
-add_executable(MathConstants_Tests tests/sfz/math/MathConstants_Tests.cpp)
-add_executable(BlockingQueue_Tests tests/sfz/util/BlockingQueue_Tests.cpp)
+add_executable(Vector_Tests test/sfz/math/Vector_Tests.cpp)
+add_executable(MathConstants_Tests test/sfz/math/MathConstants_Tests.cpp)
+add_executable(BlockingQueue_Tests test/sfz/util/BlockingQueue_Tests.cpp)
 
 # Tests to run
 add_test(Vector_Tests_Name Vector_Tests)

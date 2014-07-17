@@ -1,4 +1,4 @@
-#include "ScopedThread.hpp"
+#include "sfz/util/ScopedThread.hpp"
 
 namespace sfz {
 

@@ -8,7 +8,7 @@
 #include <cstdlib> // std::qsort()
 #include <algorithm> // std::sort(), std::stable_sort()
 #include "Sorting.hpp"
-#include "../util/StopWatch.hpp"
+#include "sfz/util/StopWatch.hpp"
 
 namespace sfz {
 	using std::size_t;

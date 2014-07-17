@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "../../catch.hpp"
 
-#include "../../../src/sfz/util/BlockingQueue.hpp"
+#include "sfz/util/BlockingQueue.hpp"
 
 #include <thread>
 #include <chrono>

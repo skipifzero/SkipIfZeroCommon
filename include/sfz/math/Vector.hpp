@@ -10,7 +10,7 @@
 #include <iterator>
 #include <string>
 
-#include "MathConstants.hpp"
+#include "sfz/math/MathConstants.hpp"
 
 namespace sfz {
 	using std::size_t;
