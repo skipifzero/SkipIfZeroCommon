@@ -23,8 +23,8 @@ You then have the following options:
 
 `make help` Shows available options
 
-#### XCode
-On Mac OS X you might also want to generate an XCode project, you can do this using the following commands.
+#### Xcode
+On Mac OS X you might also want to generate an Xcode project, you can do this using the following commands.
 
 `mkdir build`
 
