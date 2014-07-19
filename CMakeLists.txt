@@ -28,50 +28,54 @@ if (NOT CONFIGURED_ONCE)
 	    CACHE STRING "Flags used by the compiler during all build types." FORCE)
 endif ()
 
+# Directories
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test)
+set(EXTERNALS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/externals)
 
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
+# Set standard include directory
+include_directories(${INCLUDE_DIR})
 
 
 # Main executable
 add_executable(SFZCommonMain 
-	src/Main.cpp
+	 ${SOURCE_DIR}/Main.cpp
 
-	include/sfz/algo/Sorting.hpp
-	include/sfz/algo/Sorting.inl
-	include/sfz/algo/SortingPerfTest.hpp
-	    src/sfz/algo/SortingPerfTest.cpp
+	${INCLUDE_DIR}/sfz/algo/Sorting.hpp
+	${INCLUDE_DIR}/sfz/algo/Sorting.inl
+	${INCLUDE_DIR}/sfz/algo/SortingPerfTest.hpp
+	 ${SOURCE_DIR}/sfz/algo/SortingPerfTest.cpp
 
-	include/sfz/Math.hpp
-	include/sfz/math/MathConstants.hpp
-	include/sfz/math/Vector.hpp
-	include/sfz/math/Vector.inl
+	${INCLUDE_DIR}/sfz/Math.hpp
+	${INCLUDE_DIR}/sfz/math/MathConstants.hpp
+	${INCLUDE_DIR}/sfz/math/Vector.hpp
+	${INCLUDE_DIR}/sfz/math/Vector.inl
 
-	include/sfz/util/BlockingQueue.hpp
-	include/sfz/util/BlockingQueue.inl
-	include/sfz/util/ScopedThread.hpp
-	    src/sfz/util/ScopedThread.cpp
-	include/sfz/util/StopWatch.hpp
-	    src/sfz/util/StopWatch.cpp
-	include/sfz/util/ThreadPool.hpp
-	include/sfz/util/ThreadPool.inl)
+	${INCLUDE_DIR}/sfz/util/BlockingQueue.hpp
+	${INCLUDE_DIR}/sfz/util/BlockingQueue.inl
+	${INCLUDE_DIR}/sfz/util/ScopedThread.hpp
+	 ${SOURCE_DIR}/sfz/util/ScopedThread.cpp
+	${INCLUDE_DIR}/sfz/util/StopWatch.hpp
+	 ${SOURCE_DIR}/sfz/util/StopWatch.cpp
+	${INCLUDE_DIR}/sfz/util/ThreadPool.hpp
+	${INCLUDE_DIR}/sfz/util/ThreadPool.inl)
 
-# Enables tests
-enable_testing()
+
+# Enables testing and adds catch header to project.
+enable_testing(true)
+include_directories(${EXTERNALS_DIR}/catch/include)
 
 # Test executables
-add_executable(Vector_Tests test/sfz/math/Vector_Tests.cpp)
-add_executable(MathConstants_Tests test/sfz/math/MathConstants_Tests.cpp)
-add_executable(BlockingQueue_Tests test/sfz/util/BlockingQueue_Tests.cpp)
+add_executable(Vector_Tests ${TEST_DIR}/sfz/math/Vector_Tests.cpp)
+add_executable(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
+add_executable(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
 
 # Tests to run
 add_test(Vector_Tests_Name Vector_Tests)
 add_test(MathConstants_Tests_Name MathConstants_Tests)
 add_test(BlockingQueue_Tests_Name BlockingQueue_Tests)
 
-
-# install(TARGETS SFZCommonMain DESTINATION bin)
 
 # Sets flag that ensures some variables are only set once.
 set(CONFIGURED_ONCE TRUE CACHE INTERNAL "A flag showing that CMake has configured at least once.")
