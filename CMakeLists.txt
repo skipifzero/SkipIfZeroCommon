@@ -68,8 +68,13 @@ include_directories(${EXTERNALS_DIR}/catch/include)
 
 # Test executables
 add_executable(Vector_Tests ${TEST_DIR}/sfz/math/Vector_Tests.cpp)
+set_property(TARGET Vector_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+
 add_executable(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
+set_property(TARGET MathConstants_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+
 add_executable(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
+set_property(TARGET BlockingQueue_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 
 # Tests to run
 add_test(Vector_Tests_Name Vector_Tests)
