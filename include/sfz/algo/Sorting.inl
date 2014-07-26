@@ -71,9 +71,9 @@ namespace sfz {
 			RandomIt midFirst = std::partition(first, last, [&pivot](const T& element) { return element < pivot; });
 			RandomIt midLast = std::partition(midFirst, last, [&pivot](const T& element) { return element <= pivot; });
 		 	
-		 	// Does computation in parallel if there are threads left and interval is longer than the threshold
-		 	// constant. The amount of threads created might actually be larger than the specified numThreads
-		 	// parameter due to the way this is implemented.
+		 	// Computes in parallel if there are threads left and interval is longer than the threshold constant. The
+		 	// amount of threads created might actually be larger than the specified numThreads parameter due to the 
+		 	// way this is implemented.
 			if(threadsLeft < 1 || intervalLength < PARALLELIZATION_TRESHOLD) {
 				parallelQuicksortInner(first, midFirst, threadsLeft);
 		 		parallelQuicksortInner(midLast, last, threadsLeft);
@@ -94,10 +94,6 @@ namespace sfz {
 		if(last <= first) {
 			throw std::invalid_argument("first >= last");
 		}
-		// For some reason this is needed if we want fast performance on already sorted arrays.
-		/*if(std::is_sorted(first,last)) {
-			return;
-		}*/
 		for(auto itr = first; itr < last; itr++) {
 			auto insertionPoint = std::upper_bound(first, itr, *itr); // Itr to first element greater than *itr
 			std::rotate(insertionPoint, itr, itr+1);
