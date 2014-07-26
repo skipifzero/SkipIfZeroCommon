@@ -39,9 +39,7 @@ include_directories(${INCLUDE_DIR})
 
 
 # Main executable
-add_executable(SFZCommonMain 
-	 ${SOURCE_DIR}/Main.cpp
-
+add_library(SkipIfZeroCommon 
 	${INCLUDE_DIR}/sfz/algo/Sorting.hpp
 	${INCLUDE_DIR}/sfz/algo/Sorting.inl
 
