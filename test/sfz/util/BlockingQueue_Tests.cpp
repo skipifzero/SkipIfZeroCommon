@@ -20,7 +20,7 @@ TEST_CASE("Pushing and popping elements", "[sfz::BlockingQueue]") {
 	SECTION("Pop blocks until element is available") {
 		std::thread thr{ [&blockingQueue]() {
 			REQUIRE(blockingQueue.empty());
-			int res = *blockingQueue.pop();
+			int res = blockingQueue.pop();
 			REQUIRE(res == 10);
 			REQUIRE(blockingQueue.empty());
 		}};

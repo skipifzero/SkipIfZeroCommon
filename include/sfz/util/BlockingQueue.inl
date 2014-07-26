@@ -2,12 +2,12 @@ namespace sfz {
 
 	template<typename T>
 	BlockingQueue<T>::BlockingQueue() {
-
+		// Do nothing.
 	}
 
 	template<typename T>
 	BlockingQueue<T>::~BlockingQueue() {
-
+		// Do nothing.
 	}
 
 	template<typename T>
@@ -18,12 +18,12 @@ namespace sfz {
 	} 
 
 	template<typename T>
-	std::unique_ptr<T> BlockingQueue<T>::pop() {
+	T BlockingQueue<T>::pop() {
 		std::unique_lock<std::mutex> lock{queueMutex};
 		queueCond.wait(lock, [this]() { return !queue.empty(); });
-		std::unique_ptr<T> ptr{new T{queue.front()}};
+		T poppedObject{std::move(queue.front())};
 		queue.pop();
-		return std::move(ptr);
+		return std::move(poppedObject);
 	}
 
 	template<typename T>
