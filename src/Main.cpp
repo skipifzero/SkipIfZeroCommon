@@ -1,9 +1,6 @@
 #include <iostream>
-#include "sfz/algo/SortingPerfTest.hpp"
 
 int main() {
-
-	sfz::runSortingPerformanceTest();
-
+	std::cout << "Unused main file." << std::endl;
 	return 0;
 }

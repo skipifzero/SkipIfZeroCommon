@@ -44,8 +44,6 @@ add_executable(SFZCommonMain
 
 	${INCLUDE_DIR}/sfz/algo/Sorting.hpp
 	${INCLUDE_DIR}/sfz/algo/Sorting.inl
-	${INCLUDE_DIR}/sfz/algo/SortingPerfTest.hpp
-	 ${SOURCE_DIR}/sfz/algo/SortingPerfTest.cpp
 
 	${INCLUDE_DIR}/sfz/Math.hpp
 	${INCLUDE_DIR}/sfz/math/MathConstants.hpp
@@ -57,29 +55,30 @@ add_executable(SFZCommonMain
 	${INCLUDE_DIR}/sfz/util/ScopedThread.hpp
 	 ${SOURCE_DIR}/sfz/util/ScopedThread.cpp
 	${INCLUDE_DIR}/sfz/util/StopWatch.hpp
-	 ${SOURCE_DIR}/sfz/util/StopWatch.cpp
-	${INCLUDE_DIR}/sfz/util/ThreadPool.hpp
-	${INCLUDE_DIR}/sfz/util/ThreadPool.inl)
+	 ${SOURCE_DIR}/sfz/util/StopWatch.cpp)
 
 
 # Enables testing and adds catch header to project.
 enable_testing(true)
 include_directories(${EXTERNALS_DIR}/catch/include)
 
-# Test executables
+# Tests
 add_executable(Vector_Tests ${TEST_DIR}/sfz/math/Vector_Tests.cpp)
 set_property(TARGET Vector_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+add_test(Vector_Tests_Name Vector_Tests)
 
 add_executable(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
 set_property(TARGET MathConstants_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+add_test(MathConstants_Tests_Name MathConstants_Tests)
 
 add_executable(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
 set_property(TARGET BlockingQueue_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
-
-# Tests to run
-add_test(Vector_Tests_Name Vector_Tests)
-add_test(MathConstants_Tests_Name MathConstants_Tests)
 add_test(BlockingQueue_Tests_Name BlockingQueue_Tests)
+
+add_executable(Sorting_PerfTests 
+	  ${TEST_DIR}/sfz/algo/Sorting_PerfTests.cpp
+	${SOURCE_DIR}/sfz/util/ScopedThread.cpp
+	${SOURCE_DIR}/sfz/util/StopWatch.cpp)
 
 
 # Sets flag that ensures some variables are only set once.
