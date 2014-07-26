@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
-#include "../../catch.hpp"
+#include <catch.hpp>
 
-#include "../../../src/sfz/math/MathConstants.hpp"
+#include "sfz/math/MathConstants.hpp"
 
 TEST_CASE("Pi constants", "[MathConstants]") {
 	SECTION("Float version") {

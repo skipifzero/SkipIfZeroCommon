@@ -25,5 +25,15 @@
 *.out
 *.app
 
+# Precompiled GCC headers
+*.gch
+
+# CMake files
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
 # Build directory
 build/
