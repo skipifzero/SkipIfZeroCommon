@@ -59,7 +59,7 @@ add_library(SkipIfZeroCommon
 	 ${SOURCE_DIR}/sfz/util/StopWatch.cpp)
 
 # Variables for linking library
-set(SFZ_COMMON_INCLUDE_DIRS INCLUDE_DIR PARENT_SCOPE)
+set(SFZ_COMMON_INCLUDE_DIRS ${INCLUDE_DIR} PARENT_SCOPE)
 set(SFZ_COMMON_LIBRARIES SkipIfZeroCommon PARENT_SCOPE)
 
 # Enables testing
