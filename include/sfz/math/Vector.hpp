@@ -31,7 +31,7 @@ namespace sfz {
 	 * @date 2014-06-07
 	 */
 	template<typename T, size_t N>
-	class Vector {
+	class Vector final {
 	public:
 		// Constructors and destructors
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -63,7 +63,7 @@ namespace sfz {
 		 */
 		Vector(std::initializer_list<T> list);
 
-		virtual ~Vector() = default;
+		~Vector() = default;
 
 		// Public member functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
