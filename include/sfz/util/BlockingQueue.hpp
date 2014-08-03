@@ -20,7 +20,7 @@ namespace sfz {
 	 * @date 2014-07-26
 	 */
 	template<typename T>
-	class BlockingQueue {
+	class BlockingQueue final {
 	public:
 		
 		/**
@@ -31,7 +31,7 @@ namespace sfz {
 		// No copy constructor.
 		BlockingQueue(const BlockingQueue&) = delete;
 		
-		virtual ~BlockingQueue();
+		~BlockingQueue() = default;
 		
 		/**
 		 * @brief Pushes an element onto the back of the queue.
