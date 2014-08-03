@@ -227,18 +227,18 @@ namespace sfz {
 	template<typename T>
 	Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) {
 		sfz::Vector<T,3> result;
-		result[x] = vectorA[y]*vectorB[z] - vectorA[z]*vectorB[y];
-		result[y] = vectorA[z]*vectorB[x] - vectorA[x]*vectorB[z];
-		result[z] = vectorA[x]*vectorB[y] - vectorA[y]*vectorB[x];
+		result[0] = vectorA[1]*vectorB[2] - vectorA[2]*vectorB[1];
+		result[1] = vectorA[2]*vectorB[0] - vectorA[0]*vectorB[2];
+		result[2] = vectorA[0]*vectorB[1] - vectorA[1]*vectorB[0];
 		return result;
 	}
 
 	template<typename T>
 	T angle(const Vector<T,2>& vector) {
-		if(vector[x] == 0 && vector[y] == 0) {
+		if(vector[0] == 0 && vector[1] == 0) {
 			throw std::domain_error("Norm of vector is 0");
 		}
-		T angle = std::atan2(vector[y], vector[x]);
+		T angle = std::atan2(vector[1], vector[0]);
 		if(angle < 0) {
 			angle += 2.f*static_cast<T>(PI_DOUBLE);
 		}
@@ -262,7 +262,7 @@ namespace sfz {
 	Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) {
 		T cos = std::cos(angle);
 		T sin = std::sin(angle);	
-		return Vector<T,2>{vector[x]*cos - vector[y]*sin, vector[x]*sin + vector[y]*cos};
+		return Vector<T,2>{vector[0]*cos - vector[1]*sin, vector[0]*sin + vector[1]*cos};
 	}
 
 	template<typename T, size_t N>

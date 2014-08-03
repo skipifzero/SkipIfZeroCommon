@@ -451,34 +451,38 @@ namespace sfz {
 	template<typename T, size_t N>
 	bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right);	
 
-	// Typedefs
+	// Standard typedefs
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	using vec2f = Vector<float,2>;
-	using vec2d = Vector<double,2>;
-	using vec2i = Vector<int,2>;
-	using vec2l = Vector<long,2>;
-	using vec3f = Vector<float,3>;
-	using vec3d = Vector<double,3>;
-	using vec3i = Vector<int,3>;
-	using vec3l = Vector<long,3>;
+	template<typename T>
+	using Vector2 = Vector<T,2>;
+	using Vector2f = Vector2<float>;
+	using Vector2d = Vector2<double>;
+	using Vector2i = Vector2<int>;
+	using Vector2l = Vector2<long>;
 
-	// Element access constants
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	template<typename T>
+	using Vector3 = Vector<T,3>;
+	using Vector3f = Vector3<float>;
+	using Vector3d = Vector3<double>;
+	using Vector3i = Vector3<int>;
+	using Vector3l = Vector3<long>;
+
+	template<typename T, size_t N>
+	using vec = Vector<T,N>;
 	
-	/**
-	 * @brief Constant for accessing the x element of a sfz::Vector (x == 0).
-	 */
-	const size_t x = 0;
+	template<typename T>
+	using vec2 = vec<T,2>;
+	using vec2f = vec2<float>;
+	using vec2d = vec2<double>;
+	using vec2i = vec2<int>;
+	using vec2l = vec2<long>;
 
-	/**
-	 * @brief Constant for accessing the y element of a sfz::Vector (y == 1).
-	 */
-	const size_t y = 1;
-
-	/**
-	 * @brief Constant for accessing the z element of a sfz::Vector (z == 2).
-	 */
-	const size_t z = 2;
+	template<typename T>
+	using vec3 = vec<T,3>;
+	using vec3f = vec3<float>;
+	using vec3d = vec3<double>;
+	using vec3i = vec3<int>;
+	using vec3l = vec3<long>;
 }
 
 // Specializations of standard library for sfz::Vector
