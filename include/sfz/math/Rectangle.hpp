@@ -4,21 +4,9 @@
 
 #include <stdexcept>
 #include "sfz/math/Vector.hpp"
+#include "sfz/math/Alignment.hpp"
 
 namespace sfz {
-
-	enum class HorizontalAlign : char {
-		LEFT = -1, 
-		CENTER = 0, 
-		RIGHT = 1
-	};
-
-	enum class VerticalAlign : char {
-		BOTTOM = -1, 
-		MIDDLE = 0, 
-		TOP = 1
-	};
-
 
 	template<typename T>
 	class Circle;
