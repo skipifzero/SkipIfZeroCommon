@@ -71,7 +71,7 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 }
 
 TEST_CASE("Getters", "[sfz::Rectangle]") {
-	const sfz::Rectangle<int> rect1{1, 2, 3, 4};
+	const sfz::Rectangle<int> rect1{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 	const sfz::Rectangle<int> rect2{4, 3, 2, 1};
 
 	SECTION("getPosition()") {
@@ -98,32 +98,38 @@ TEST_CASE("Getters", "[sfz::Rectangle]") {
 		REQUIRE(rect2.getWidth() == 2);
 		REQUIRE(rect2.getHeight() == 1);
 	}
+	SECTION("getHorizontalAlign() & getVerticalAlign()") {
+		REQUIRE(rect1.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
+		REQUIRE(rect1.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
+		REQUIRE(rect2.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect2.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
+	}
 }
 
 TEST_CASE("Setters", "[sfz::Rectangle]") {
-	sfz::Rectangle<int> rect{0, 0, 0, 0};
+	sfz::Rectangle<int> rect{0, 0, 2, 2};
 
 	SECTION("setPosition(vec2)") {
 		rect.setPosition(sfz::vec2i{-1, 3});
 		REQUIRE(rect.getXPosition() == -1);
 		REQUIRE(rect.getYPosition() == 3);
-		REQUIRE(rect.getWidth() == 0);
-		REQUIRE(rect.getHeight() == 0);
+		REQUIRE(rect.getWidth() == 2);
+		REQUIRE(rect.getHeight() == 2);
 	}
 	SECTION("setPosition(x,y)") {
 		rect.setPosition(9, 1);
 		REQUIRE(rect.getXPosition() == 9);
 		REQUIRE(rect.getYPosition() == 1);
-		REQUIRE(rect.getWidth() == 0);
-		REQUIRE(rect.getHeight() == 0);
+		REQUIRE(rect.getWidth() == 2);
+		REQUIRE(rect.getHeight() == 2);
 	}
 	SECTION("setXPosition() & setYPosition()") {
 		rect.setXPosition(44);
 		rect.setYPosition(-220);
 		REQUIRE(rect.getXPosition() == 44);
 		REQUIRE(rect.getYPosition() == -220);
-		REQUIRE(rect.getWidth() == 0);
-		REQUIRE(rect.getHeight() == 0);
+		REQUIRE(rect.getWidth() == 2);
+		REQUIRE(rect.getHeight() == 2);
 	}
 	SECTION("setDimensions(vec2)") {
 		rect.setDimensions(sfz::vec2i{4, 2});
@@ -152,5 +158,41 @@ TEST_CASE("Setters", "[sfz::Rectangle]") {
 		REQUIRE(rect.getHeight() == 55);
 		REQUIRE_THROWS_AS(rect.setWidth(-1), std::invalid_argument);
 		REQUIRE_THROWS_AS(rect.setHeight(-2), std::invalid_argument);
+	}
+	SECTION("setHorizontalAlign() & setVerticalAlign()") {
+		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
+		rect.setHorizontalAlign(sfz::HorizontalAlign::RIGHT);
+		rect.setVerticalAlign(sfz::VerticalAlign::BOTTOM);
+		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
+	}
+	SECTION("changeHorizontalAlign()") {
+		REQUIRE(sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
+		REQUIRE(sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
+
+		rect.changeHorizontalAlign(sfz::HorizontalAlign::LEFT);
+		REQUIRE(rect.getXPosition() == -1);
+		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
+		rect.changeHorizontalAlign(sfz::HorizontalAlign::RIGHT);
+		REQUIRE(rect.getXPosition() == 1);
+		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
+		rect.changeHorizontalAlign(sfz::HorizontalAlign::CENTER);
+		REQUIRE(rect.getXPosition() == 0);
+		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::CENTER);
+	}
+	SECTION("changeVerticalAlign()") {
+		REQUIRE(sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
+		REQUIRE(sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
+
+		rect.changeVerticalAlign(sfz::VerticalAlign::TOP);
+		REQUIRE(rect.getYPosition() == 1);
+		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::TOP);
+		rect.changeVerticalAlign(sfz::VerticalAlign::BOTTOM);
+		REQUIRE(rect.getYPosition() == -1);
+		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
+		rect.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
+		REQUIRE(rect.getYPosition() == 0);
+		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::MIDDLE);
 	}
 }

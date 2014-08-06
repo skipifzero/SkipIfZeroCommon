@@ -7,20 +7,50 @@
 
 namespace sfz {
 
+	enum class HorizontalAlign : char {
+		LEFT = -1, 
+		CENTER = 0, 
+		RIGHT = 1
+	};
+
+	enum class VerticalAlign : char {
+		BOTTOM = -1, 
+		MIDDLE = 0, 
+		TOP = 1
+	};
+
+
 	template<typename T>
 	class Circle;
 
 	template<typename T>
 	class Rectangle final {
 	public:
+		// Static constants
+		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+		static const HorizontalAlign DEFAULT_HORIZONTAL_ALIGN;
+		static const VerticalAlign DEFAULT_VERTICAL_ALIGN;
+
 		// Constructors and destructors
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Rectangle() = delete;
+
 		Rectangle(const Rectangle<T>& rect);
-		Rectangle(const vec2<T>& position, const vec2<T>& dimensions);
-		Rectangle(const vec2<T>& position, T width, T height);
-		Rectangle(T x, T y, T width, T height);
+
+		Rectangle(const vec2<T>& position, const vec2<T>& dimensions, 
+		          HorizontalAlign horizontalAlign = DEFAULT_HORIZONTAL_ALIGN, 
+		          VerticalAlign verticalAlign = DEFAULT_VERTICAL_ALIGN);
+
+		Rectangle(const vec2<T>& position, T width, T height, 
+		          HorizontalAlign horizontalAlign = DEFAULT_HORIZONTAL_ALIGN, 
+		          VerticalAlign verticalAlign = DEFAULT_VERTICAL_ALIGN);
+
+		Rectangle(T x, T y, T width, T height, 
+		          HorizontalAlign horizontalAlign = DEFAULT_HORIZONTAL_ALIGN, 
+		          VerticalAlign verticalAlign = DEFAULT_VERTICAL_ALIGN);
+
 		~Rectangle() = default;
 
 		// Public member functions
@@ -39,6 +69,8 @@ namespace sfz {
 		vec2<T> getDimensions() const;
 		T getWidth() const;
 		T getHeight() const;
+		HorizontalAlign getHorizontalAlign() const;
+		VerticalAlign getVerticalAlign() const;
 
 		// Setters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -51,10 +83,16 @@ namespace sfz {
 		void setDimensions(T width, T height);
 		void setWidth(T width);
 		void setHeight(T height);
+		void setHorizontalAlign(HorizontalAlign horizontalAlign);
+		void setVerticalAlign(VerticalAlign verticalAlign);
+		void changeHorizontalAlign(HorizontalAlign horizontalAlign);
+		void changeVerticalAlign(VerticalAlign verticalAlign);
 
 	private:
 		vec2<T> position;
 		vec2<T> dimensions;
+		HorizontalAlign horizontalAlign;
+		VerticalAlign verticalAlign;
 	};
 }
 #include "Rectangle.inl"

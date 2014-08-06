@@ -9,7 +9,37 @@ namespace sfz {
 			}
 			return value;
 		}
+
+		// Calculates a constant used to divide the width/height of a rectangle when changing size.
+		// See changeHorizonalAlign() or changeVerticalAlign() for mor info.
+		template<typename Align>
+		char calculateAlignChangeDenominator(Align origin, Align destination) {
+			char diff = static_cast<char>(destination) - static_cast<char>(origin);
+			switch(diff) {
+			case 0:
+				return 0;
+			case -2:
+				return -1;
+			case -1:
+				return -2;
+			case 1:
+				return 2;
+			case 2:
+				return 1;
+			default:
+				throw std::logic_error{"This should not be possible."};
+			}
+		}
 	}
+
+	// Static constants
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	const HorizontalAlign Rectangle<T>::DEFAULT_HORIZONTAL_ALIGN = HorizontalAlign::CENTER;
+
+	template<typename T>
+	const VerticalAlign Rectangle<T>::DEFAULT_VERTICAL_ALIGN = VerticalAlign::MIDDLE;
 
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -17,28 +47,39 @@ namespace sfz {
 	template<typename T>
 	Rectangle<T>::Rectangle(const Rectangle<T>& rect) :
 		position{rect.position}, 
-		dimensions{rect.dimensions} {
+		dimensions{rect.dimensions},
+		horizontalAlign{rect.horizontalAlign},
+		verticalAlign{rect.verticalAlign} {
 			// Initialization done.
 	}
 
 	template<typename T>
-	Rectangle<T>::Rectangle(const vec2<T>& position, const vec2<T>& dimensions) :
+	Rectangle<T>::Rectangle(const vec2<T>& position, const vec2<T>& dimensions, 
+		                    HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		position{position}, 
-		dimensions{requireNonNegative(dimensions[0]), requireNonNegative(dimensions[1])} {
+		dimensions{requireNonNegative(dimensions[0]), requireNonNegative(dimensions[1])},
+		horizontalAlign{horizontalAlign},
+		verticalAlign{verticalAlign} {
 			// Initialization done.
 	}
 	
 	template<typename T>
-	Rectangle<T>::Rectangle(const vec2<T>& position, T width, T height) :
+	Rectangle<T>::Rectangle(const vec2<T>& position, T width, T height,
+		                    HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		position{position},
-		dimensions{requireNonNegative(width), requireNonNegative(height)} {
+		dimensions{requireNonNegative(width), requireNonNegative(height)},
+		horizontalAlign{horizontalAlign},
+		verticalAlign{verticalAlign} {
 			// Initialization done.
 	}
 
 	template<typename T>
-	Rectangle<T>::Rectangle(T x, T y, T width, T height) :
+	Rectangle<T>::Rectangle(T x, T y, T width, T height,
+	                        HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		position{x, y},
-		dimensions{requireNonNegative(width), requireNonNegative(height)} {
+		dimensions{requireNonNegative(width), requireNonNegative(height)},
+		horizontalAlign{horizontalAlign},
+		verticalAlign{verticalAlign} {
 			// Initialization done.
 	}
 
@@ -93,6 +134,16 @@ namespace sfz {
 		return dimensions[1];
 	}
 
+	template<typename T>
+	HorizontalAlign Rectangle<T>::getHorizontalAlign() const {
+		return horizontalAlign;
+	}
+	
+	template<typename T>
+	VerticalAlign Rectangle<T>::getVerticalAlign() const {
+		return verticalAlign;
+	}
+
 	// Setters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -137,5 +188,29 @@ namespace sfz {
 	template<typename T>
 	void Rectangle<T>::setHeight(T height) {
 		dimensions[1] = requireNonNegative(height);
+	}
+
+	template<typename T>
+	void Rectangle<T>::setHorizontalAlign(HorizontalAlign horizontalAlign) {
+		this->horizontalAlign = horizontalAlign;
+	}
+
+	template<typename T>
+	void Rectangle<T>::setVerticalAlign(VerticalAlign verticalAlign) {
+		this->verticalAlign = verticalAlign;
+	}
+
+	template<typename T>
+	void Rectangle<T>::changeHorizontalAlign(HorizontalAlign horizontalAlign) {
+		char denominator = calculateAlignChangeDenominator(this->horizontalAlign, horizontalAlign);
+		position[0] += dimensions[0]/static_cast<T>(denominator);
+		this->horizontalAlign = horizontalAlign;
+	}
+
+	template<typename T>
+	void Rectangle<T>::changeVerticalAlign(VerticalAlign verticalAlign) {
+		char denominator = calculateAlignChangeDenominator(this->verticalAlign, verticalAlign);
+		position[1] += dimensions[1]/static_cast<T>(denominator);
+		this->verticalAlign = verticalAlign;
 	}
 }
