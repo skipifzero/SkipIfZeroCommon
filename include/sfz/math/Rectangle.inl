@@ -1,16 +1,5 @@
 namespace sfz {
 
-	namespace {
-
-		template<typename T>
-		T requireNonNegative(T value) {
-			if(value < 0) {
-				throw std::invalid_argument{"Negative dimensions not allowed."};
-			}
-			return value;
-		}
-	}
-
 	// Static constants
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -181,13 +170,24 @@ namespace sfz {
 
 	template<typename T>
 	void Rectangle<T>::changeHorizontalAlign(HorizontalAlign horizontalAlign) {
-		position[0] = changeAlignAdjustPosition(position[0], dimensions[0], this->horizontalAlign, horizontalAlign);
+		position[0] = calculateNewPosition(position[0], dimensions[0], this->horizontalAlign, horizontalAlign);
 		this->horizontalAlign = horizontalAlign;
 	}
 
 	template<typename T>
 	void Rectangle<T>::changeVerticalAlign(VerticalAlign verticalAlign) {
-		position[1] = changeAlignAdjustPosition(position[1], dimensions[1], this->verticalAlign, verticalAlign);
+		position[1] = calculateNewPosition(position[1], dimensions[1], this->verticalAlign, verticalAlign);
 		this->verticalAlign = verticalAlign;
+	}
+
+	// Private helper functions
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	T Rectangle<T>::requireNonNegative(T value) const {
+		if(value < 0) {
+			throw std::invalid_argument{"Negative dimensions not allowed."};
+		}
+		return value;
 	}
 }

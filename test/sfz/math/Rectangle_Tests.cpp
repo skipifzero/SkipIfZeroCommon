@@ -6,10 +6,12 @@
 
 TEST_CASE("Constructors", "[sfz::Rectangle]") {
 	SECTION("Copy constructor") {
-		sfz::Rectangle<int> rect1{1, 2, 3, 4};
+		sfz::Rectangle<int> rect1{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
 		sfz::Rectangle<int> rect2{rect1};
 		REQUIRE(rect1.getPosition() == rect2.getPosition());
 		REQUIRE(rect1.getDimensions() == rect2.getDimensions());
+		REQUIRE(rect1.getHorizontalAlign() == rect2.getHorizontalAlign());
+		REQUIRE(rect1.getVerticalAlign() == rect2.getVerticalAlign());
 	}
 	SECTION("(vec2 position, vec2 dimensions) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, sfz::vec2i{3, 4}};
@@ -17,6 +19,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 		REQUIRE(rect.getYPosition() == 2);
 		REQUIRE(rect.getWidth() == 3);
 		REQUIRE(rect.getHeight() == 4);
+		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
 		try {
 			sfz::Rectangle<int>{sfz::vec2i{0, 0}, sfz::vec2i{-1, 0}};
 			REQUIRE(false);
@@ -36,6 +40,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 		REQUIRE(rect.getYPosition() == 2);
 		REQUIRE(rect.getWidth() == 3);
 		REQUIRE(rect.getHeight() == 4);
+		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
 		try {
 			sfz::Rectangle<int>{sfz::vec2i{0, 0}, -1, 0};
 			REQUIRE(false);
@@ -55,6 +61,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 		REQUIRE(rect.getYPosition() == 2);
 		REQUIRE(rect.getWidth() == 3);
 		REQUIRE(rect.getHeight() == 4);
+		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
 		try {
 			sfz::Rectangle<int>{0, 0, -1, 0};
 			REQUIRE(false);

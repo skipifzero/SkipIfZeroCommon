@@ -77,10 +77,19 @@ namespace sfz {
 		void changeVerticalAlign(VerticalAlign verticalAlign);
 
 	private:
+		
+		// Members
+		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 		vec2<T> position;
 		vec2<T> dimensions;
 		HorizontalAlign horizontalAlign;
 		VerticalAlign verticalAlign;
+
+		// Private helper functions
+		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+		T requireNonNegative(T value) const;
 	};
 }
 #include "Rectangle.inl"
