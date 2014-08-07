@@ -1,0 +1,147 @@
+#define CATCH_CONFIG_MAIN
+#include <catch.hpp>
+
+#include <stdexcept>
+#include "sfz/math/Circle.hpp"
+
+TEST_CASE("Constructors", "[sfz::Circle]") {
+	SECTION("Copy constructor") {
+		sfz::Circle<int> circ1{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+		sfz::Circle<int> circ2{circ1};
+		REQUIRE(circ1.getPosition() == circ2.getPosition());
+		REQUIRE(circ1.getRadius() == circ2.getRadius());
+		REQUIRE(circ1.getHorizontalAlign() == circ2.getHorizontalAlign());
+		REQUIRE(circ1.getVerticalAlign() == circ2.getVerticalAlign());
+	}
+	SECTION("(vec2, radius) constructor") {
+		sfz::Circle<int> circ{sfz::vec2i{-1, 2}, 2};
+		REQUIRE(circ.getXPosition() == -1);
+		REQUIRE(circ.getYPosition() == 2);
+		REQUIRE(circ.getRadius() == 2);
+		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN);
+		try {
+			sfz::Circle<int>{sfz::vec2i{0, 0}, -1};
+			REQUIRE(false);
+		} catch (std::invalid_argument e) {
+			REQUIRE(true);
+		}
+	}
+	SECTION("(x, y, radius) constructor") {
+		sfz::Circle<int> circ{-1, 2, 2};
+		REQUIRE(circ.getXPosition() == -1);
+		REQUIRE(circ.getYPosition() == 2);
+		REQUIRE(circ.getRadius() == 2);
+		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN);
+		try {
+			sfz::Circle<int>{0, 0, -1};
+			REQUIRE(false);
+		} catch (std::invalid_argument e) {
+			REQUIRE(true);
+		}
+	}
+}
+
+TEST_CASE("Getters", "[sfz::Circle]") {
+	const sfz::Circle<int> circ1{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+	const sfz::Circle<int> circ2{3, 2, 1};
+
+	SECTION("getPosition()") {
+		REQUIRE(circ1.getPosition()[0] == 1);
+		REQUIRE(circ1.getPosition()[1] == 2);
+		REQUIRE(circ2.getPosition()[0] == 3);
+		REQUIRE(circ2.getPosition()[1] == 2);
+	}
+	SECTION("getXPosition() & getYPosition()") {
+		REQUIRE(circ1.getXPosition() == 1);
+		REQUIRE(circ1.getYPosition() == 2);
+		REQUIRE(circ2.getXPosition() == 3);
+		REQUIRE(circ2.getYPosition() == 2);
+	}
+	SECTION("getRadius()") {
+		REQUIRE(circ1.getRadius() == 3);
+		REQUIRE(circ2.getRadius() == 1);
+	}
+	SECTION("getHorizontalAlign() & getVerticalAlign()") {
+		REQUIRE(circ1.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
+		REQUIRE(circ1.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
+		REQUIRE(circ2.getHorizontalAlign() == sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ2.getVerticalAlign() == sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN);
+	}
+}
+
+TEST_CASE("Setters", "[sfz::Circle]") {
+	sfz::Circle<int> circ{0, 0, 2};
+
+	SECTION("setPosition(vec2)") {
+		circ.setPosition(sfz::vec2i{-1, 3});
+		REQUIRE(circ.getXPosition() == -1);
+		REQUIRE(circ.getYPosition() == 3);
+		REQUIRE(circ.getRadius() == 2);
+		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN);
+	}
+	SECTION("setPosition(x,y)") {
+		circ.setPosition(9, 1);
+		REQUIRE(circ.getXPosition() == 9);
+		REQUIRE(circ.getYPosition() == 1);
+		REQUIRE(circ.getRadius() == 2);
+		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN);
+	}
+	SECTION("setXPosition() & setYPosition()") {
+		circ.setXPosition(44);
+		circ.setYPosition(-220);
+		REQUIRE(circ.getXPosition() == 44);
+		REQUIRE(circ.getYPosition() == -220);
+		REQUIRE(circ.getRadius() == 2);
+		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN);
+	}
+	SECTION("setRadius()") {
+		circ.setRadius(5);
+		REQUIRE(circ.getXPosition() == 0);
+		REQUIRE(circ.getYPosition() == 0);
+		REQUIRE(circ.getRadius() == 5);
+		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN);
+		REQUIRE_THROWS_AS(circ.setRadius(-1), std::invalid_argument);
+	}
+	SECTION("setHorizontalAlign() & setVerticalAlign()") {
+		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN);
+		circ.setHorizontalAlign(sfz::HorizontalAlign::RIGHT);
+		circ.setVerticalAlign(sfz::VerticalAlign::BOTTOM);
+		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
+	}
+	SECTION("changeHorizontalAlign()") {
+		REQUIRE(sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
+		REQUIRE(sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
+
+		circ.changeHorizontalAlign(sfz::HorizontalAlign::LEFT);
+		REQUIRE(circ.getXPosition() == -1);
+		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
+		circ.changeHorizontalAlign(sfz::HorizontalAlign::RIGHT);
+		REQUIRE(circ.getXPosition() == 1);
+		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
+		circ.changeHorizontalAlign(sfz::HorizontalAlign::CENTER);
+		REQUIRE(circ.getXPosition() == 0);
+		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::CENTER);
+	}
+	SECTION("changeVerticalAlign()") {
+		REQUIRE(sfz::Circle<int>::DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
+		REQUIRE(sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
+
+		circ.changeVerticalAlign(sfz::VerticalAlign::TOP);
+		REQUIRE(circ.getYPosition() == 1);
+		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::TOP);
+		circ.changeVerticalAlign(sfz::VerticalAlign::BOTTOM);
+		REQUIRE(circ.getYPosition() == -1);
+		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
+		circ.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
+		REQUIRE(circ.getYPosition() == 0);
+		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::MIDDLE);
+	}
+}
