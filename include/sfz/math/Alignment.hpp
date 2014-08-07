@@ -37,77 +37,70 @@ namespace sfz {
 	};
 
 	/**
-	 * @brief Calculates the distance between two HorizontalAlign or VerticalAlign enums.
-	 *
+	 * @brief Calculates the distance between two HorizontalAlign enums.
+	 * 
 	 * Calculates and returns the distance between two enum values as defined by the enums. The answer will be signed
 	 * and may have a positive or negative value depending on the 'direction'. 
-	 *
-	 * The behavior of this function is only defined when using HorizontalAlign or VerticalAlign.
 	 *
 	 * @param origin the origin enum
 	 * @param destination the destination enum
 	 * @return the distance between the two enums
 	 */
-	template<typename Align>
-	char calculateAlignDistance(Align origin, Align destination) {
+	char distance(HorizontalAlign origin, HorizontalAlign destination) {
 		return static_cast<char>(destination) - static_cast<char>(origin);
 	}
 
 	/**
-	 * @brief Returns a denominator to divide the width/height of something to adjust for a change of alignment.
+	 * @brief Calculates the distance between two VerticalAlign enums.
 	 * 
-	 * Assume we have a square with a position and a width. The alignment enums are used to define how the position
-	 * relates to the square. If we for some reason want to change the alignment without moving the square we would
-	 * need to recalculate the position. This is where this function comes in, to adjust the position you just have
-	 * to do the following:
+	 * Calculates and returns the distance between two enum values as defined by the enums. The answer will be signed
+	 * and may have a positive or negative value depending on the 'direction'. 
 	 *
-	 * 'oldPosition += width / alignChangeDenominator(oldAlign, newAlign)'
-	 *
-	 * WARNING: Will return 0 if origin == destination. If this is something that can occur you should check the 
-	 * return value before dividing to avoid division by zero.
-	 *
-	 * The behavior of this function is only defined when using HorizontalAlign or VerticalAlign.
-	 *
-	 * @param origin the orign enum
-	 * @param destination the destination eum
-	 * @return the constant to divide the width/height with when adjusting alignment.
+	 * @param origin the origin enum
+	 * @param destination the destination enum
+	 * @return the distance between the two enums
 	 */
-	template<typename Align>
-	char alignChangeDenominator(Align origin, Align destination) {
-		switch(calculateAlignDistance(origin, destination)) {
-		case 0:
-			return 0;
-		case -2:
-			return -1;
-		case -1:
-			return -2;
-		case 1:
-			return 2;
-		case 2:
-			return 1;
-		default:
-			throw std::logic_error{"This should not be possible."};
-		}
+	char distance(VerticalAlign origin, VerticalAlign destination) {
+		return static_cast<char>(destination) - static_cast<char>(origin);
 	}
 
 	/**
 	 * @brief Calculates the new position when changing alignment.
 	 *
-	 * Uses the method described in alignChangeDenominator() to calculate the new position.
-	 *
-	 * @see alignChangeDenominator()
+	 * Beware that this function will probably cause problems in a coordinate system with inverted y-axis (i.e. (0,0)
+	 * in upper left corner).
+	 * 
 	 * @param oldPosition the old position
 	 * @param size the size of the object in the desired axis
-	 * @param origin the old alignment
-	 * @param destination the new alignment
+	 * @param oldAlignment the old alignment
+	 * @param newAlignment the new alignment
 	 * @return the new position
 	 */
 	template<typename T, typename Align>
-	T changeAlignAdjustPosition(T oldPosition, T size, Align origin, Align destination) {
-		char denominator = alignChangeDenominator(origin, destination);
-		if(denominator == 0) {
+	T calculateNewPosition(T oldPosition, T size, Align oldAlignment, Align newAlignment) {
+		// Calculate the denominator. If the align distance is 2 we don't want to do anything to the size, i.e. divide
+		// by 1. If the distance is 1 we want to adjust by half the size, so we divide by 2. 
+		char denominator;
+		switch(distance(oldAlignment, newAlignment)) {
+		case 0:
+			// origin == destination, so do nothing.
 			return oldPosition;
-		} 
+		case -2:
+			denominator = -1;
+			break;
+		case -1:
+			denominator = -2;
+			break;
+		case 1:
+			denominator = 2;
+			break;
+		case 2:
+			denominator = 1;
+			break;
+		default:
+			throw std::logic_error{"This should not be possible."};
+		}
+		// Adjust the position with the size of the object divided by the previously calculated denominator.
 		return oldPosition + (size / static_cast<T>(denominator));
 	}
  }
