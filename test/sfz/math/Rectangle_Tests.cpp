@@ -80,7 +80,7 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 	}
 }
 
-TEST_CASE("Overlap tests", "[sfz::Circle]") {
+TEST_CASE("Overlap tests", "[sfz::Rectangle]") {
 	sfz::Rectangle<int> rect{0, 0, 2, 2, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 	
 	SECTION("overlap(vec2)") {

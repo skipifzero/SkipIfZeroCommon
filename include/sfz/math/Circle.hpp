@@ -36,8 +36,9 @@ namespace sfz {
 		// Public member functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-
-
+		bool overlap(const vec2<T>& vector) const;
+		bool overlap(const Circle<T>& circle) const;
+		//bool overlap(const Rectangle<T>& rect) const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

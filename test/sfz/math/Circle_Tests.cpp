@@ -2,6 +2,7 @@
 #include <catch.hpp>
 
 #include <stdexcept>
+#include <vector>
 #include "sfz/math/Circle.hpp"
 
 TEST_CASE("Constructors", "[sfz::Circle]") {
@@ -39,6 +40,55 @@ TEST_CASE("Constructors", "[sfz::Circle]") {
 			REQUIRE(false);
 		} catch (std::invalid_argument e) {
 			REQUIRE(true);
+		}
+	}
+}
+
+TEST_CASE("Overlap tests", "[sfz::Circle]") {
+	sfz::Circle<int> circ{1, 1, 1};
+
+	SECTION("overlap(vec2)") {
+		std::vector<sfz::vec2i> insideVecs;
+		insideVecs.push_back({1, 0});
+		insideVecs.push_back({0, 1});
+		insideVecs.push_back({1, 1});
+		insideVecs.push_back({2, 1});
+		insideVecs.push_back({1, 2});
+
+		std::vector<sfz::vec2i> outsideVecs;
+		outsideVecs.push_back({-1, -1});
+		outsideVecs.push_back({-1, 0});
+		outsideVecs.push_back({-1, 1});
+		outsideVecs.push_back({-1, 2});
+		outsideVecs.push_back({-1, 3});
+		outsideVecs.push_back({0, -1});
+		outsideVecs.push_back({0, 3});
+		outsideVecs.push_back({1, -1});
+		outsideVecs.push_back({1, 3});
+		outsideVecs.push_back({2, -1});
+		outsideVecs.push_back({2, 3});
+		outsideVecs.push_back({3, -1});
+		outsideVecs.push_back({3, 0});
+		outsideVecs.push_back({3, 1});
+		outsideVecs.push_back({3, 2});
+		outsideVecs.push_back({3, 3});
+		outsideVecs.push_back({0, 0});
+		outsideVecs.push_back({2, 0});
+		outsideVecs.push_back({0, 2});
+		outsideVecs.push_back({2, 2});
+
+		for(char horAlignChar = -1; horAlignChar <= 1; horAlignChar++) {
+			for(char verAlignChar = -1; verAlignChar <= 1; verAlignChar++) {
+				circ.changeHorizontalAlign(static_cast<sfz::HorizontalAlign>(horAlignChar));
+				circ.changeVerticalAlign(static_cast<sfz::VerticalAlign>(verAlignChar));
+
+				for(auto& inVec : insideVecs) {
+					REQUIRE(circ.overlap(inVec));
+				}
+				for(auto& outVec : outsideVecs) {
+					REQUIRE(!circ.overlap(outVec));
+				}
+			}
 		}
 	}
 }
@@ -121,10 +171,10 @@ TEST_CASE("Setters", "[sfz::Circle]") {
 		REQUIRE(sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
 
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::LEFT);
-		REQUIRE(circ.getXPosition() == -1);
+		REQUIRE(circ.getXPosition() == -2);
 		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::RIGHT);
-		REQUIRE(circ.getXPosition() == 1);
+		REQUIRE(circ.getXPosition() == 2);
 		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::CENTER);
 		REQUIRE(circ.getXPosition() == 0);
@@ -135,10 +185,10 @@ TEST_CASE("Setters", "[sfz::Circle]") {
 		REQUIRE(sfz::Circle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
 
 		circ.changeVerticalAlign(sfz::VerticalAlign::TOP);
-		REQUIRE(circ.getYPosition() == 1);
+		REQUIRE(circ.getYPosition() == 2);
 		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::TOP);
 		circ.changeVerticalAlign(sfz::VerticalAlign::BOTTOM);
-		REQUIRE(circ.getYPosition() == -1);
+		REQUIRE(circ.getYPosition() == -2);
 		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
 		circ.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
 		REQUIRE(circ.getYPosition() == 0);

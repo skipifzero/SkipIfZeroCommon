@@ -42,6 +42,22 @@ namespace sfz {
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	template<typename T>
+	bool Circle<T>::overlap(const vec2<T>& vector) const {
+		Circle<T> centerAlignCircle{*this};
+		centerAlignCircle.changeHorizontalAlign(HorizontalAlign::CENTER);
+		centerAlignCircle.changeVerticalAlign(VerticalAlign::MIDDLE);
+		return (centerAlignCircle.position - vector).squaredNorm() <= radius*radius;
+	}
+
+	template<typename T>
+	bool Circle<T>::overlap(const Circle<T>& circle) const {
+
+	}
+	
+	//template<typename T>
+	//bool Circle<T>::overlap(const Rectangle<T>& rect) const {
+	//}
 
 	// Getters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -117,13 +133,13 @@ namespace sfz {
 
 	template<typename T>
 	void Circle<T>::changeHorizontalAlign(HorizontalAlign horizontalAlign) {
-		position[0] = calculateNewPosition(position[0], radius, this->horizontalAlign, horizontalAlign);
+		position[0] = calculateNewPosition(position[0], radius*2, this->horizontalAlign, horizontalAlign);
 		this->horizontalAlign = horizontalAlign;
 	}
 
 	template<typename T>
 	void Circle<T>::changeVerticalAlign(VerticalAlign verticalAlign) {
-		position[1] = calculateNewPosition(position[1], radius, this->verticalAlign, verticalAlign);
+		position[1] = calculateNewPosition(position[1], radius*2, this->verticalAlign, verticalAlign);
 		this->verticalAlign = verticalAlign;
 	}
 
