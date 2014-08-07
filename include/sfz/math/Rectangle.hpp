@@ -9,9 +9,6 @@
 namespace sfz {
 
 	template<typename T>
-	class Circle;
-
-	template<typename T>
 	class Rectangle final {
 	public:
 		// Static constants
@@ -44,9 +41,9 @@ namespace sfz {
 		// Public member functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-		bool overlap(const Rectangle<T>& rect) const;
-		bool overlap(const Circle<T>& circle) const;
 		bool overlap(const vec2<T>& vector) const;
+		bool overlap(const Rectangle<T>& rect) const;
+		//bool overlap(const Circle<T>& circle) const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -77,7 +74,7 @@ namespace sfz {
 		void changeVerticalAlign(VerticalAlign verticalAlign);
 
 	private:
-		
+
 		// Members
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

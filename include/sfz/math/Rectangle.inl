@@ -55,19 +55,52 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	bool Rectangle<T>::overlap(const Rectangle<T>& rect) const {
+	bool Rectangle<T>::overlap(const vec2<T>& vector) const {
+		Rectangle<T> leftBottomAlignedRect{*this};
+		leftBottomAlignedRect.changeHorizontalAlign(HorizontalAlign::LEFT);
+		leftBottomAlignedRect.changeVerticalAlign(VerticalAlign::BOTTOM);
 
+		T rectXLeft = leftBottomAlignedRect.getXPosition();
+		T rectXRight = rectXLeft + leftBottomAlignedRect.getWidth();
+		T rectYBottom = leftBottomAlignedRect.getYPosition();
+		T rectYTop = rectYBottom + leftBottomAlignedRect.getHeight();
+		T vecX = vector[0];
+		T vecY = vector[1];
+
+		return rectXLeft <= vecX && rectXRight >= vecX &&
+		       rectYBottom <= vecY && rectYTop>= vecY;
 	}
 
 	template<typename T>
+	bool Rectangle<T>::overlap(const Rectangle<T>& rect) const {
+		Rectangle<T> leftBottomAlignedRectThis{*this};
+		leftBottomAlignedRectThis.changeHorizontalAlign(HorizontalAlign::LEFT);
+		leftBottomAlignedRectThis.changeVerticalAlign(VerticalAlign::BOTTOM);
+
+		Rectangle<T> leftBottomAlignedRectOther{rect};
+		leftBottomAlignedRectOther.changeHorizontalAlign(HorizontalAlign::LEFT);
+		leftBottomAlignedRectOther.changeVerticalAlign(VerticalAlign::BOTTOM);
+
+		T thisXLeft = leftBottomAlignedRectThis.getXPosition();
+		T thisXRight = thisXLeft + leftBottomAlignedRectThis.getWidth();
+		T thisYBottom = leftBottomAlignedRectThis.getYPosition();
+		T thisYTop= thisYBottom + leftBottomAlignedRectThis.getHeight();
+
+		T otherXLeft = leftBottomAlignedRectOther.getXPosition();
+		T otherXRight = otherXLeft + leftBottomAlignedRectOther.getWidth();
+		T otherYBottom = leftBottomAlignedRectOther.getYPosition();
+		T otherYTop = otherYBottom + leftBottomAlignedRectOther.getHeight();
+
+		return thisXLeft   <= otherXRight &&
+		       thisXRight  >= otherXLeft &&
+		       thisYBottom <= otherYTop &&
+		       thisYTop    >= otherYBottom;
+	}
+
+	/*template<typename T>
 	bool Rectangle<T>::overlap(const Circle<T>& circle) const {
 
-	}
-
-	template<typename T>
-	bool Rectangle<T>::overlap(const vec2<T>& vector) const {
-
-	}
+	}*/
 
 	// Getters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

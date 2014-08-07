@@ -2,6 +2,8 @@
 #include <catch.hpp>
 
 #include <stdexcept>
+#include <vector>
+#include "sfz/math/Vector.hpp"
 #include "sfz/math/Rectangle.hpp"
 
 TEST_CASE("Constructors", "[sfz::Rectangle]") {
@@ -74,6 +76,90 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 			REQUIRE(false);
 		} catch (std::invalid_argument e) {
 			REQUIRE(true);
+		}
+	}
+}
+
+TEST_CASE("Overlap tests", "[sfz::Circle]") {
+	sfz::Rectangle<int> rect{0, 0, 2, 2, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+	
+	SECTION("overlap(vec2)") {
+		std::vector<sfz::vec2i> insideVecs;
+		insideVecs.push_back({0, 0});
+		insideVecs.push_back({1, 0});
+		insideVecs.push_back({2, 0});
+		insideVecs.push_back({0, 1});
+		insideVecs.push_back({1, 1});
+		insideVecs.push_back({2, 1});
+		insideVecs.push_back({0, 2});
+		insideVecs.push_back({1, 2});
+		insideVecs.push_back({2, 2});
+
+		std::vector<sfz::vec2i> outsideVecs;
+		outsideVecs.push_back({-1, -1});
+		outsideVecs.push_back({-1, 0});
+		outsideVecs.push_back({-1, 1});
+		outsideVecs.push_back({-1, 2});
+		outsideVecs.push_back({-1, 3});
+		outsideVecs.push_back({0, -1});
+		outsideVecs.push_back({0, 3});
+		outsideVecs.push_back({1, -1});
+		outsideVecs.push_back({1, 3});
+		outsideVecs.push_back({2, -1});
+		outsideVecs.push_back({2, 3});
+		outsideVecs.push_back({3, -1});
+		outsideVecs.push_back({3, 0});
+		outsideVecs.push_back({3, 1});
+		outsideVecs.push_back({3, 2});
+		outsideVecs.push_back({3, 3});
+
+		for(char horAlignChar = -1; horAlignChar <= 1; horAlignChar++) {
+			for(char verAlignChar = -1; verAlignChar <= 1; verAlignChar++) {
+				rect.changeHorizontalAlign(static_cast<sfz::HorizontalAlign>(horAlignChar));
+				rect.changeVerticalAlign(static_cast<sfz::VerticalAlign>(verAlignChar));
+
+				for(auto& inVec : insideVecs) {
+					REQUIRE(rect.overlap(inVec));
+				}
+				for(auto& outVec : outsideVecs) {
+					REQUIRE(!rect.overlap(outVec));
+				}
+			}
+		}
+	}
+	SECTION("overlap(Rectangle)") {
+		std::vector<sfz::Rectangle<int>> overlappingRects;
+		overlappingRects.emplace_back(1, 1, 2, 2);
+		overlappingRects.emplace_back(0, 0, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlappingRects.emplace_back(0, 1, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlappingRects.emplace_back(1, 0, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlappingRects.emplace_back(1, 1, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlappingRects.emplace_back(1, 1, 8, 8);
+
+		std::vector<sfz::Rectangle<int>> nonOverlappingRects;
+		nonOverlappingRects.emplace_back(-2, -2, 2, 2);
+		nonOverlappingRects.emplace_back(4, 4, 2, 2);
+		nonOverlappingRects.emplace_back(-2, 4, 2, 2);
+		nonOverlappingRects.emplace_back(4, -2, 2, 2);
+		nonOverlappingRects.emplace_back(-2, 1, 2, 2);
+		nonOverlappingRects.emplace_back(4, 1, 2, 2);
+		nonOverlappingRects.emplace_back(1, 4, 2, 2);
+		nonOverlappingRects.emplace_back(1, -4, 2, 2);
+
+		for(char horAlignChar = -1; horAlignChar <= 1; horAlignChar++) {
+			for(char verAlignChar = -1; verAlignChar <= 1; verAlignChar++) {
+				rect.changeHorizontalAlign(static_cast<sfz::HorizontalAlign>(horAlignChar));
+				rect.changeVerticalAlign(static_cast<sfz::VerticalAlign>(verAlignChar));
+
+				for(auto& tempRect : overlappingRects) {
+					REQUIRE(rect.overlap(tempRect));
+					REQUIRE(tempRect.overlap(rect));
+				}
+				for(auto& tempRect : nonOverlappingRects) {
+					REQUIRE(!rect.overlap(tempRect));
+					REQUIRE(!tempRect.overlap(rect));
+				}
+			}
 		}
 	}
 }
