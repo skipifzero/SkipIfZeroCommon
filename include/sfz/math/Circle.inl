@@ -70,9 +70,10 @@ namespace sfz {
 		return distSquared <= radiusSum * radiusSum;
 	}
 	
-	//template<typename T>
-	//bool Circle<T>::overlap(const Rectangle<T>& rect) const {
-	//}
+	template<typename T>
+	bool Circle<T>::overlap(const Rectangle<T>& rect) const {
+		return rect.overlap(*this);
+	}
 
 	// Getters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

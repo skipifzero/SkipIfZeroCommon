@@ -115,9 +115,46 @@ TEST_CASE("Overlap tests", "[sfz::Circle]") {
 
 				for(auto& overCircle : overlappingCircles) {
 					REQUIRE(circ.overlap(overCircle));
+					REQUIRE(overCircle.overlap(circ));
 				}
 				for(auto& nonOverCircle : nonOverlappingCircles) {
 					REQUIRE(!circ.overlap(nonOverCircle));
+					REQUIRE(!nonOverCircle.overlap(circ));
+				}
+			}
+		}
+	}
+	SECTION("overlap(Rectangle)") {
+		std::vector<sfz::Rectangle<int>> overlapping;
+		overlapping.emplace_back(1, 1, 2, 2);
+		overlapping.emplace_back(0, 0, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlapping.emplace_back(0, 1, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlapping.emplace_back(1, 0, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlapping.emplace_back(1, 1, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlapping.emplace_back(1, 1, 8, 8);
+
+		std::vector<sfz::Rectangle<int>> nonOverlapping;
+		nonOverlapping.emplace_back(-2, -2, 2, 2);
+		nonOverlapping.emplace_back(4, 4, 2, 2);
+		nonOverlapping.emplace_back(-2, 4, 2, 2);
+		nonOverlapping.emplace_back(4, -2, 2, 2);
+		nonOverlapping.emplace_back(-2, 1, 2, 2);
+		nonOverlapping.emplace_back(4, 1, 2, 2);
+		nonOverlapping.emplace_back(1, 4, 2, 2);
+		nonOverlapping.emplace_back(1, -4, 2, 2);
+
+		for(char horAlignChar = -1; horAlignChar <= 1; horAlignChar++) {
+			for(char verAlignChar = -1; verAlignChar <= 1; verAlignChar++) {
+				circ.changeHorizontalAlign(static_cast<sfz::HorizontalAlign>(horAlignChar));
+				circ.changeVerticalAlign(static_cast<sfz::VerticalAlign>(verAlignChar));
+
+				for(auto& rect: overlapping) {
+					REQUIRE(circ.overlap(rect));
+					REQUIRE(rect.overlap(circ));
+				}
+				for(auto& rect : nonOverlapping) {
+					REQUIRE(!circ.overlap(rect));
+					REQUIRE(!rect.overlap(circ));
 				}
 			}
 		}

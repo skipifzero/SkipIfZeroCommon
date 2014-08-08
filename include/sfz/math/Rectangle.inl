@@ -56,14 +56,14 @@ namespace sfz {
 
 	template<typename T>
 	bool Rectangle<T>::overlap(const vec2<T>& point) const {
-		Rectangle<T> leftBottomAlignedRect{*this};
-		leftBottomAlignedRect.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignedRect.changeVerticalAlign(VerticalAlign::BOTTOM);
+		Rectangle<T> leftBottomAlignRect{*this};
+		leftBottomAlignRect.changeHorizontalAlign(HorizontalAlign::LEFT);
+		leftBottomAlignRect.changeVerticalAlign(VerticalAlign::BOTTOM);
 
-		T rectXLeft = leftBottomAlignedRect.getXPosition();
-		T rectXRight = rectXLeft + leftBottomAlignedRect.getWidth();
-		T rectYBottom = leftBottomAlignedRect.getYPosition();
-		T rectYTop = rectYBottom + leftBottomAlignedRect.getHeight();
+		T rectXLeft = leftBottomAlignRect.getXPosition();
+		T rectXRight = rectXLeft + leftBottomAlignRect.getWidth();
+		T rectYBottom = leftBottomAlignRect.getYPosition();
+		T rectYTop = rectYBottom + leftBottomAlignRect.getHeight();
 		T vecX = point[0];
 		T vecY = point[1];
 
@@ -73,23 +73,23 @@ namespace sfz {
 
 	template<typename T>
 	bool Rectangle<T>::overlap(const Rectangle<T>& rect) const {
-		Rectangle<T> leftBottomAlignedRectThis{*this};
-		leftBottomAlignedRectThis.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignedRectThis.changeVerticalAlign(VerticalAlign::BOTTOM);
+		Rectangle<T> leftBottomAlignRectThis{*this};
+		leftBottomAlignRectThis.changeHorizontalAlign(HorizontalAlign::LEFT);
+		leftBottomAlignRectThis.changeVerticalAlign(VerticalAlign::BOTTOM);
 
-		Rectangle<T> leftBottomAlignedRectOther{rect};
-		leftBottomAlignedRectOther.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignedRectOther.changeVerticalAlign(VerticalAlign::BOTTOM);
+		Rectangle<T> leftBottomAlignRectOther{rect};
+		leftBottomAlignRectOther.changeHorizontalAlign(HorizontalAlign::LEFT);
+		leftBottomAlignRectOther.changeVerticalAlign(VerticalAlign::BOTTOM);
 
-		T thisXLeft = leftBottomAlignedRectThis.getXPosition();
-		T thisXRight = thisXLeft + leftBottomAlignedRectThis.getWidth();
-		T thisYBottom = leftBottomAlignedRectThis.getYPosition();
-		T thisYTop= thisYBottom + leftBottomAlignedRectThis.getHeight();
+		T thisXLeft = leftBottomAlignRectThis.getXPosition();
+		T thisXRight = thisXLeft + leftBottomAlignRectThis.getWidth();
+		T thisYBottom = leftBottomAlignRectThis.getYPosition();
+		T thisYTop = thisYBottom + leftBottomAlignRectThis.getHeight();
 
-		T otherXLeft = leftBottomAlignedRectOther.getXPosition();
-		T otherXRight = otherXLeft + leftBottomAlignedRectOther.getWidth();
-		T otherYBottom = leftBottomAlignedRectOther.getYPosition();
-		T otherYTop = otherYBottom + leftBottomAlignedRectOther.getHeight();
+		T otherXLeft = leftBottomAlignRectOther.getXPosition();
+		T otherXRight = otherXLeft + leftBottomAlignRectOther.getWidth();
+		T otherYBottom = leftBottomAlignRectOther.getYPosition();
+		T otherYTop = otherYBottom + leftBottomAlignRectOther.getHeight();
 
 		return thisXLeft   <= otherXRight &&
 		       thisXRight  >= otherXLeft &&
@@ -97,10 +97,45 @@ namespace sfz {
 		       thisYTop    >= otherYBottom;
 	}
 
-	/*template<typename T>
+	template<typename T>
 	bool Rectangle<T>::overlap(const Circle<T>& circle) const {
+		Rectangle<T> leftBottomAlignRect{*this};
+		leftBottomAlignRect.changeHorizontalAlign(HorizontalAlign::LEFT);
+		leftBottomAlignRect.changeVerticalAlign(VerticalAlign::BOTTOM);
 
-	}*/
+		Circle<T> centerAlignCircle{circle};
+		centerAlignCircle.changeHorizontalAlign(HorizontalAlign::CENTER);
+		centerAlignCircle.changeVerticalAlign(VerticalAlign::MIDDLE);
+
+		T rectXLeft = leftBottomAlignRect.getXPosition();
+		T rectXRight = rectXLeft + leftBottomAlignRect.getWidth();
+		T rectYBottom = leftBottomAlignRect.getYPosition();
+		T rectYTop = rectYBottom + leftBottomAlignRect.getHeight();
+
+		T circleX = centerAlignCircle.getXPosition();
+		T circleY = centerAlignCircle.getYPosition();
+		T radius = centerAlignCircle.getRadius();
+
+
+		T closestX = circleX;
+		T closestY = circleY;
+		
+		if(circleX <= rectXLeft) {
+			closestX = rectXLeft;
+		} 
+		else if(circleX >= rectXRight) {
+			closestX = rectXRight;
+		}
+		
+		if(circleY <= rectYBottom) {
+			closestY = rectYBottom;
+		}
+		else if(circleY >= rectYTop) {
+			closestY = rectYTop;
+		}
+		
+		return (sfz::vec2<T>{closestX, closestY} - centerAlignCircle.getPosition()).squaredNorm() /*getPosition().distanceSquared(closestX, closestY)*/ <= radius*radius;
+	}
 
 	// Getters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

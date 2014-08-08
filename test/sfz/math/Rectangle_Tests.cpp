@@ -5,6 +5,7 @@
 #include <vector>
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Rectangle.hpp"
+#include "sfz/math/Circle.hpp"
 
 TEST_CASE("Constructors", "[sfz::Rectangle]") {
 	SECTION("Copy constructor") {
@@ -158,6 +159,41 @@ TEST_CASE("Overlap tests", "[sfz::Rectangle]") {
 				for(auto& tempRect : nonOverlappingRects) {
 					REQUIRE(!rect.overlap(tempRect));
 					REQUIRE(!tempRect.overlap(rect));
+				}
+			}
+		}
+	}
+	SECTION("overlap(Circle)") {
+		std::vector<sfz::Circle<int>> overlapping;
+		overlapping.emplace_back(1, 1, 10);
+		overlapping.emplace_back(0, 0, 1);
+		overlapping.emplace_back(1, 0, 1);
+		overlapping.emplace_back(2, 0, 1);
+		overlapping.emplace_back(0, 1, 1);
+		overlapping.emplace_back(1, 1, 1);
+		overlapping.emplace_back(2, 1, 1);
+		overlapping.emplace_back(0, 2, 1);
+		overlapping.emplace_back(1, 2, 1);
+		overlapping.emplace_back(2, 2, 1);
+
+		std::vector<sfz::Circle<int>> nonOverlapping;
+		nonOverlapping.emplace_back(-2, 1, 1);
+		nonOverlapping.emplace_back(4, 1, 1);
+		nonOverlapping.emplace_back(1, -2, 1);
+		nonOverlapping.emplace_back(1, 4, 1);
+
+		for(char horAlignChar = -1; horAlignChar <= 1; horAlignChar++) {
+			for(char verAlignChar = -1; verAlignChar <= 1; verAlignChar++) {
+				rect.changeHorizontalAlign(static_cast<sfz::HorizontalAlign>(horAlignChar));
+				rect.changeVerticalAlign(static_cast<sfz::VerticalAlign>(verAlignChar));
+
+				for(auto& tempCirc : overlapping) {
+					REQUIRE(rect.overlap(tempCirc));
+					REQUIRE(tempCirc.overlap(rect));
+				}
+				for(auto& tempCirc : nonOverlapping) {
+					REQUIRE(!rect.overlap(tempCirc));
+					REQUIRE(!tempCirc.overlap(rect));
 				}
 			}
 		}

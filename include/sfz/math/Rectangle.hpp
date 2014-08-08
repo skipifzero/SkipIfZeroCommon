@@ -7,6 +7,11 @@
 #include "sfz/math/Alignment.hpp"
 
 namespace sfz {
+	template<typename T>
+	class Circle;
+}
+
+namespace sfz {
 
 	template<typename T>
 	class Rectangle final {
@@ -43,7 +48,7 @@ namespace sfz {
 
 		bool overlap(const vec2<T>& point) const;
 		bool overlap(const Rectangle<T>& rect) const;
-		//bool overlap(const Circle<T>& circle) const;
+		bool overlap(const Circle<T>& circle) const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -89,5 +94,6 @@ namespace sfz {
 		T requireNonNegative(T value) const;
 	};
 }
+#include "sfz/math/Circle.hpp"
 #include "Rectangle.inl"
 #endif
