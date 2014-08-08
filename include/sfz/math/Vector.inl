@@ -111,6 +111,11 @@ namespace sfz {
 	}
 
 	template<typename T, size_t N>
+	Vector<T,N> Vector<T,N>::distance(const Vector<T,N>& other) const {
+		return other - *this;
+	}
+
+	template<typename T, size_t N>
 	size_t Vector<T,N>::hash() const {
 		std::hash<T> hasher;
 		size_t hash = 0;
