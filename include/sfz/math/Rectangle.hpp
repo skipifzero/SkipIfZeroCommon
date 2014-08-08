@@ -54,8 +54,8 @@ namespace sfz {
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		vec2<T> getPosition() const;
-		T getXPosition() const;
-		T getYPosition() const;
+		T getX() const;
+		T getY() const;
 		vec2<T> getDimensions() const;
 		T getWidth() const;
 		T getHeight() const;
@@ -67,8 +67,8 @@ namespace sfz {
 
 		void setPosition(const vec2<T>& position);
 		void setPosition(T x, T y);
-		void setXPosition(T x);
-		void setYPosition(T y);
+		void setX(T x);
+		void setY(T y);
 		void setDimensions(const vec2<T>& dimensions);
 		void setDimensions(T width, T height);
 		void setWidth(T width);

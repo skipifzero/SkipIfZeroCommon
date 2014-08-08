@@ -60,9 +60,9 @@ namespace sfz {
 		leftBottomAlignRect.changeHorizontalAlign(HorizontalAlign::LEFT);
 		leftBottomAlignRect.changeVerticalAlign(VerticalAlign::BOTTOM);
 
-		T rectXLeft = leftBottomAlignRect.getXPosition();
+		T rectXLeft = leftBottomAlignRect.getX();
 		T rectXRight = rectXLeft + leftBottomAlignRect.getWidth();
-		T rectYBottom = leftBottomAlignRect.getYPosition();
+		T rectYBottom = leftBottomAlignRect.getY();
 		T rectYTop = rectYBottom + leftBottomAlignRect.getHeight();
 		T vecX = point[0];
 		T vecY = point[1];
@@ -81,14 +81,14 @@ namespace sfz {
 		leftBottomAlignRectOther.changeHorizontalAlign(HorizontalAlign::LEFT);
 		leftBottomAlignRectOther.changeVerticalAlign(VerticalAlign::BOTTOM);
 
-		T thisXLeft = leftBottomAlignRectThis.getXPosition();
+		T thisXLeft = leftBottomAlignRectThis.getX();
 		T thisXRight = thisXLeft + leftBottomAlignRectThis.getWidth();
-		T thisYBottom = leftBottomAlignRectThis.getYPosition();
+		T thisYBottom = leftBottomAlignRectThis.getY();
 		T thisYTop = thisYBottom + leftBottomAlignRectThis.getHeight();
 
-		T otherXLeft = leftBottomAlignRectOther.getXPosition();
+		T otherXLeft = leftBottomAlignRectOther.getX();
 		T otherXRight = otherXLeft + leftBottomAlignRectOther.getWidth();
-		T otherYBottom = leftBottomAlignRectOther.getYPosition();
+		T otherYBottom = leftBottomAlignRectOther.getY();
 		T otherYTop = otherYBottom + leftBottomAlignRectOther.getHeight();
 
 		return thisXLeft   <= otherXRight &&
@@ -107,13 +107,13 @@ namespace sfz {
 		centerAlignCircle.changeHorizontalAlign(HorizontalAlign::CENTER);
 		centerAlignCircle.changeVerticalAlign(VerticalAlign::MIDDLE);
 
-		T rectXLeft = leftBottomAlignRect.getXPosition();
+		T rectXLeft = leftBottomAlignRect.getX();
 		T rectXRight = rectXLeft + leftBottomAlignRect.getWidth();
-		T rectYBottom = leftBottomAlignRect.getYPosition();
+		T rectYBottom = leftBottomAlignRect.getY();
 		T rectYTop = rectYBottom + leftBottomAlignRect.getHeight();
 
-		T circleX = centerAlignCircle.getXPosition();
-		T circleY = centerAlignCircle.getYPosition();
+		T circleX = centerAlignCircle.getX();
+		T circleY = centerAlignCircle.getY();
 		T radius = centerAlignCircle.getRadius();
 
 		// If the length between the center of the circle and the closest point on the rectangle is less than or equal
@@ -149,12 +149,12 @@ namespace sfz {
 	}
 
 	template<typename T>
-	T Rectangle<T>::getXPosition() const {
+	T Rectangle<T>::getX() const {
 		return position[0];
 	}
 
 	template<typename T>
-	T Rectangle<T>::getYPosition() const {
+	T Rectangle<T>::getY() const {
 		return position[1];
 	}
 
@@ -198,12 +198,12 @@ namespace sfz {
 	}
 
 	template<typename T>
-	void Rectangle<T>::setXPosition(T x) {
+	void Rectangle<T>::setX(T x) {
 		position[0] = x;
 	}
 
 	template<typename T>
-	void Rectangle<T>::setYPosition(T y) {
+	void Rectangle<T>::setY(T y) {
 		position[1] = y;
 	}
 

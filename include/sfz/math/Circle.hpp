@@ -49,19 +49,19 @@ namespace sfz {
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		vec2<T> getPosition() const;
-		T getXPosition() const;
-		T getYPosition() const;
+		T getX() const;
+		T getY() const;
 		T getRadius() const;
 		HorizontalAlign getHorizontalAlign() const;
 		VerticalAlign getVerticalAlign() const;
 
-		// Setters
+		// Settersz
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		void setPosition(const vec2<T>& position);
 		void setPosition(T x, T y);
-		void setXPosition(T x);
-		void setYPosition(T y);
+		void setX(T x);
+		void setY(T y);
 		void setRadius(T radius);
 		void setHorizontalAlign(HorizontalAlign horizontalAlign);
 		void setVerticalAlign(VerticalAlign verticalAlign);

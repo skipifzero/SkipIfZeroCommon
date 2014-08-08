@@ -18,8 +18,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 	}
 	SECTION("(vec2 position, vec2 dimensions) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, sfz::vec2i{3, 4}};
-		REQUIRE(rect.getXPosition() == 1);
-		REQUIRE(rect.getYPosition() == 2);
+		REQUIRE(rect.getX() == 1);
+		REQUIRE(rect.getY() == 2);
 		REQUIRE(rect.getWidth() == 3);
 		REQUIRE(rect.getHeight() == 4);
 		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
@@ -39,8 +39,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 	}
 	SECTION("(vec2 position, width, height) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, 3, 4};
-		REQUIRE(rect.getXPosition() == 1);
-		REQUIRE(rect.getYPosition() == 2);
+		REQUIRE(rect.getX() == 1);
+		REQUIRE(rect.getY() == 2);
 		REQUIRE(rect.getWidth() == 3);
 		REQUIRE(rect.getHeight() == 4);
 		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
@@ -60,8 +60,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 	}
 	SECTION("(x, y, width, height) constructor") {
 		sfz::Rectangle<int> rect{1, 2, 3, 4};
-		REQUIRE(rect.getXPosition() == 1);
-		REQUIRE(rect.getYPosition() == 2);
+		REQUIRE(rect.getX() == 1);
+		REQUIRE(rect.getY() == 2);
 		REQUIRE(rect.getWidth() == 3);
 		REQUIRE(rect.getHeight() == 4);
 		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
@@ -210,11 +210,11 @@ TEST_CASE("Getters", "[sfz::Rectangle]") {
 		REQUIRE(rect2.getPosition()[0] == 4);
 		REQUIRE(rect2.getPosition()[1] == 3);
 	}
-	SECTION("getXPosition() & getYPosition()") {
-		REQUIRE(rect1.getXPosition() == 1);
-		REQUIRE(rect1.getYPosition() == 2);
-		REQUIRE(rect2.getXPosition() == 4);
-		REQUIRE(rect2.getYPosition() == 3);
+	SECTION("getX() & getY()") {
+		REQUIRE(rect1.getX() == 1);
+		REQUIRE(rect1.getY() == 2);
+		REQUIRE(rect2.getX() == 4);
+		REQUIRE(rect2.getY() == 3);
 	}
 	SECTION("getDimensions()") {
 		REQUIRE(rect1.getDimensions()[0] == 3);
@@ -241,30 +241,30 @@ TEST_CASE("Setters", "[sfz::Rectangle]") {
 
 	SECTION("setPosition(vec2)") {
 		rect.setPosition(sfz::vec2i{-1, 3});
-		REQUIRE(rect.getXPosition() == -1);
-		REQUIRE(rect.getYPosition() == 3);
+		REQUIRE(rect.getX() == -1);
+		REQUIRE(rect.getY() == 3);
 		REQUIRE(rect.getWidth() == 2);
 		REQUIRE(rect.getHeight() == 2);
 	}
 	SECTION("setPosition(x,y)") {
 		rect.setPosition(9, 1);
-		REQUIRE(rect.getXPosition() == 9);
-		REQUIRE(rect.getYPosition() == 1);
+		REQUIRE(rect.getX() == 9);
+		REQUIRE(rect.getY() == 1);
 		REQUIRE(rect.getWidth() == 2);
 		REQUIRE(rect.getHeight() == 2);
 	}
-	SECTION("setXPosition() & setYPosition()") {
-		rect.setXPosition(44);
-		rect.setYPosition(-220);
-		REQUIRE(rect.getXPosition() == 44);
-		REQUIRE(rect.getYPosition() == -220);
+	SECTION("setX() & setY()") {
+		rect.setX(44);
+		rect.setY(-220);
+		REQUIRE(rect.getX() == 44);
+		REQUIRE(rect.getY() == -220);
 		REQUIRE(rect.getWidth() == 2);
 		REQUIRE(rect.getHeight() == 2);
 	}
 	SECTION("setDimensions(vec2)") {
 		rect.setDimensions(sfz::vec2i{4, 2});
-		REQUIRE(rect.getXPosition() == 0);
-		REQUIRE(rect.getYPosition() == 0);
+		REQUIRE(rect.getX() == 0);
+		REQUIRE(rect.getY() == 0);
 		REQUIRE(rect.getWidth() == 4);
 		REQUIRE(rect.getHeight() == 2);
 		REQUIRE_THROWS_AS(rect.setDimensions(sfz::vec2i{-1, 0}), std::invalid_argument);
@@ -272,8 +272,8 @@ TEST_CASE("Setters", "[sfz::Rectangle]") {
 	}
 	SECTION("setDimensions(x,y)") {
 		rect.setDimensions(42, 21);
-		REQUIRE(rect.getXPosition() == 0);
-		REQUIRE(rect.getYPosition() == 0);
+		REQUIRE(rect.getX() == 0);
+		REQUIRE(rect.getY() == 0);
 		REQUIRE(rect.getWidth() == 42);
 		REQUIRE(rect.getHeight() == 21);
 		REQUIRE_THROWS_AS(rect.setDimensions(-1, 0), std::invalid_argument);
@@ -282,8 +282,8 @@ TEST_CASE("Setters", "[sfz::Rectangle]") {
 	SECTION("setWidth() & setHeight()") {
 		rect.setWidth(5);
 		rect.setHeight(55);
-		REQUIRE(rect.getXPosition() == 0);
-		REQUIRE(rect.getYPosition() == 0);
+		REQUIRE(rect.getX() == 0);
+		REQUIRE(rect.getY() == 0);
 		REQUIRE(rect.getWidth() == 5);
 		REQUIRE(rect.getHeight() == 55);
 		REQUIRE_THROWS_AS(rect.setWidth(-1), std::invalid_argument);
@@ -302,13 +302,13 @@ TEST_CASE("Setters", "[sfz::Rectangle]") {
 		REQUIRE(sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
 
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::LEFT);
-		REQUIRE(rect.getXPosition() == -1);
+		REQUIRE(rect.getX() == -1);
 		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::RIGHT);
-		REQUIRE(rect.getXPosition() == 1);
+		REQUIRE(rect.getX() == 1);
 		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::CENTER);
-		REQUIRE(rect.getXPosition() == 0);
+		REQUIRE(rect.getX() == 0);
 		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::CENTER);
 	}
 	SECTION("changeVerticalAlign()") {
@@ -316,13 +316,13 @@ TEST_CASE("Setters", "[sfz::Rectangle]") {
 		REQUIRE(sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
 
 		rect.changeVerticalAlign(sfz::VerticalAlign::TOP);
-		REQUIRE(rect.getYPosition() == 1);
+		REQUIRE(rect.getY() == 1);
 		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::TOP);
 		rect.changeVerticalAlign(sfz::VerticalAlign::BOTTOM);
-		REQUIRE(rect.getYPosition() == -1);
+		REQUIRE(rect.getY() == -1);
 		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
 		rect.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
-		REQUIRE(rect.getYPosition() == 0);
+		REQUIRE(rect.getY() == 0);
 		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::MIDDLE);
 	}
 }

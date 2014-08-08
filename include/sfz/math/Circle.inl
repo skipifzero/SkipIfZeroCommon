@@ -84,12 +84,12 @@ namespace sfz {
 	}
 
 	template<typename T>
-	T Circle<T>::getXPosition() const {
+	T Circle<T>::getX() const {
 		return position[0];
 	}
 
 	template<typename T>
-	T Circle<T>::getYPosition() const {
+	T Circle<T>::getY() const {
 		return position[1];
 	}
 
@@ -123,12 +123,12 @@ namespace sfz {
 	}
 
 	template<typename T>
-	void Circle<T>::setXPosition(T x) {
+	void Circle<T>::setX(T x) {
 		this->position[0] = x;
 	}
 
 	template<typename T>
-	void Circle<T>::setYPosition(T y) {
+	void Circle<T>::setY(T y) {
 		this->position[1] = y;
 	}
 
