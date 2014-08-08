@@ -55,7 +55,7 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	bool Rectangle<T>::overlap(const vec2<T>& vector) const {
+	bool Rectangle<T>::overlap(const vec2<T>& point) const {
 		Rectangle<T> leftBottomAlignedRect{*this};
 		leftBottomAlignedRect.changeHorizontalAlign(HorizontalAlign::LEFT);
 		leftBottomAlignedRect.changeVerticalAlign(VerticalAlign::BOTTOM);
@@ -64,8 +64,8 @@ namespace sfz {
 		T rectXRight = rectXLeft + leftBottomAlignedRect.getWidth();
 		T rectYBottom = leftBottomAlignedRect.getYPosition();
 		T rectYTop = rectYBottom + leftBottomAlignedRect.getHeight();
-		T vecX = vector[0];
-		T vecY = vector[1];
+		T vecX = point[0];
+		T vecY = point[1];
 
 		return rectXLeft <= vecX && rectXRight >= vecX &&
 		       rectYBottom <= vecY && rectYTop>= vecY;

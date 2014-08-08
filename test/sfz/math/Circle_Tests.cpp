@@ -91,6 +91,37 @@ TEST_CASE("Overlap tests", "[sfz::Circle]") {
 			}
 		}
 	}
+	SECTION("overlap(Circle)") {
+		std::vector<sfz::Circle<int>> overlappingCircles;
+		overlappingCircles.emplace_back(1, 1, 1);
+		overlappingCircles.emplace_back(0, 0, 1);
+		overlappingCircles.emplace_back(1, 0, 1);
+		overlappingCircles.emplace_back(2, 0, 1);
+		overlappingCircles.emplace_back(0, 1, 1);
+		overlappingCircles.emplace_back(2, 1, 1);
+		overlappingCircles.emplace_back(0, 2, 1);
+		overlappingCircles.emplace_back(2, 2, 1);
+
+		std::vector<sfz::Circle<int>> nonOverlappingCircles;
+		nonOverlappingCircles.emplace_back(-2, 1, 1);
+		nonOverlappingCircles.emplace_back(4, 1, 1);
+		nonOverlappingCircles.emplace_back(1, -2, 1);
+		nonOverlappingCircles.emplace_back(1, 4, 1);
+
+		for(char horAlignChar = -1; horAlignChar <= 1; horAlignChar++) {
+			for(char verAlignChar = -1; verAlignChar <= 1; verAlignChar++) {
+				circ.changeHorizontalAlign(static_cast<sfz::HorizontalAlign>(horAlignChar));
+				circ.changeVerticalAlign(static_cast<sfz::VerticalAlign>(verAlignChar));
+
+				for(auto& overCircle : overlappingCircles) {
+					REQUIRE(circ.overlap(overCircle));
+				}
+				for(auto& nonOverCircle : nonOverlappingCircles) {
+					REQUIRE(!circ.overlap(nonOverCircle));
+				}
+			}
+		}
+	}
 }
 
 TEST_CASE("Getters", "[sfz::Circle]") {
