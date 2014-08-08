@@ -13,7 +13,7 @@ namespace sfz {
 	 * @author Peter Hillerström <peter@hstroem.se>
 	 * @date 2014-06-28
 	 */
-	class ScopedThread {
+	class ScopedThread final {
 	public:
 
 		/**
@@ -30,7 +30,7 @@ namespace sfz {
 		// No copy constructor.
 		ScopedThread(const ScopedThread&) = delete;
 		
-		virtual ~ScopedThread();
+		~ScopedThread();
 
 		/**
 		 * @brief Returns the id of this thread.

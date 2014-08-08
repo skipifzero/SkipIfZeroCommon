@@ -11,7 +11,7 @@ if ( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
   OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
   OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 	# GCC and Clang flags
-	set(compiler_flags "-Wall -Wextra -Wno-c++11-extensions -std=c++11 -O3")
+	set(compiler_flags "-Wall -Wextra -Wno-c++11-extensions -std=c++11 -pthread -O3")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	# MSVC flags
 	set(compiler_flags "/Wall /EHsc /O2")
@@ -47,10 +47,16 @@ add_library(SkipIfZeroCommon
 	${INCLUDE_DIR}/sfz/algo/Sorting.inl
 
 	${INCLUDE_DIR}/sfz/Math.hpp
+	${INCLUDE_DIR}/sfz/math/Alignment.hpp
+	${INCLUDE_DIR}/sfz/math/Circle.hpp
+	${INCLUDE_DIR}/sfz/math/Circle.inl
 	${INCLUDE_DIR}/sfz/math/MathConstants.hpp
+	${INCLUDE_DIR}/sfz/math/Rectangle.hpp
+	${INCLUDE_DIR}/sfz/math/Rectangle.inl
 	${INCLUDE_DIR}/sfz/math/Vector.hpp
 	${INCLUDE_DIR}/sfz/math/Vector.inl
 
+	${INCLUDE_DIR}/sfz/Util.hpp
 	${INCLUDE_DIR}/sfz/util/BlockingQueue.hpp
 	${INCLUDE_DIR}/sfz/util/BlockingQueue.inl
 	${INCLUDE_DIR}/sfz/util/ScopedThread.hpp
@@ -69,6 +75,14 @@ enable_testing(true)
 add_executable(Vector_Tests ${TEST_DIR}/sfz/math/Vector_Tests.cpp)
 set_property(TARGET Vector_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(Vector_Tests_Name Vector_Tests)
+
+add_executable(Circle_Tests ${TEST_DIR}/sfz/math/Circle_Tests.cpp)
+set_property(TARGET Circle_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+add_test(Circle_Tests_Name Circle_Tests)
+
+add_executable(Rectangle_Tests ${TEST_DIR}/sfz/math/Rectangle_Tests.cpp)
+set_property(TARGET Rectangle_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+add_test(Rectangle_Tests_Name Rectangle_Tests)
 
 add_executable(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
 set_property(TARGET MathConstants_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")

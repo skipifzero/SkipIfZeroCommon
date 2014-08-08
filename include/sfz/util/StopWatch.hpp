@@ -15,7 +15,7 @@ namespace sfz {
 	 * @author Peter Hillerström <peter@hstroem.se>
 	 * @date 2014-06-07
 	 */
-	class StopWatch {
+	class StopWatch final {
 	public:
 
 		/**
@@ -23,7 +23,7 @@ namespace sfz {
 		 * @see StopWatch::start()
 		 */
 		StopWatch();
-		virtual ~StopWatch() = default;
+		~StopWatch() = default;
 
 		/**
 		 * @brief Starts the StopWatch.

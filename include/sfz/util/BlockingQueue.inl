@@ -6,11 +6,6 @@ namespace sfz {
 	}
 
 	template<typename T>
-	BlockingQueue<T>::~BlockingQueue() {
-		// Do nothing.
-	}
-
-	template<typename T>
 	void BlockingQueue<T>::push(const T& element) {
 		std::lock_guard<std::mutex> lock{queueMutex};
 		queue.push(element);

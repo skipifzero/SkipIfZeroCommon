@@ -14,9 +14,9 @@ TEST_CASE("Constructors", "[sfz::Vector]") {
 	}
 	SECTION("Initalizer list constructor assigns correct value to elements") {
 		sfz::Vector<int, 4> vector = {-2, 2, 1, 42};
-		REQUIRE(vector[sfz::x] == -2);
-		REQUIRE(vector[sfz::y] == 2);
-		REQUIRE(vector[sfz::z] == 1);
+		REQUIRE(vector[0] == -2);
+		REQUIRE(vector[1] == 2);
+		REQUIRE(vector[2] == 1);
 		REQUIRE(vector[3] == 42);
 	}
 	SECTION("Initializer list constructor throws exception when wrongly sized") {
@@ -30,16 +30,16 @@ TEST_CASE("Constructors", "[sfz::Vector]") {
 	}
 	SECTION("Copy constructor correctly copies vector") {
 		sfz::Vector<int, 4> vector{sfz::Vector<int, 4>{-2, 2, 1, 42}};
-		REQUIRE(vector[sfz::x] == -2);
-		REQUIRE(vector[sfz::y] == 2);
-		REQUIRE(vector[sfz::z] == 1);
+		REQUIRE(vector[0] == -2);
+		REQUIRE(vector[1] == 2);
+		REQUIRE(vector[2] == 1);
 		REQUIRE(vector[3] == 42);
 	}
 	SECTION("Copy cast construcotr correctly copies and casts") {
 		sfz::Vector<int, 4> vector{sfz::Vector<float, 4>{-2.1f, 2.1f, 1.1f, 42.1f}};
-		REQUIRE(vector[sfz::x] == -2);
-		REQUIRE(vector[sfz::y] == 2);
-		REQUIRE(vector[sfz::z] == 1);
+		REQUIRE(vector[0] == -2);
+		REQUIRE(vector[1] == 2);
+		REQUIRE(vector[2] == 1);
 		REQUIRE(vector[3] == 42);
 	}
 }
@@ -47,8 +47,8 @@ TEST_CASE("Constructors", "[sfz::Vector]") {
 TEST_CASE("Assignment and accessing", "[sfz::Vector]") {
 	sfz::Vector<int, 5> vector{-10, 10, 12, 13, -2};
 	SECTION("Correct start values") {
-		REQUIRE(vector[sfz::x] == -10);
-		REQUIRE(vector.get(sfz::y) == 10);
+		REQUIRE(vector[0] == -10);
+		REQUIRE(vector.get(1) == 10);
 		REQUIRE(vector[2] == 12);
 		REQUIRE(vector[3] == 13);
 		REQUIRE(vector[4] == -2);
@@ -87,102 +87,102 @@ TEST_CASE("Arithmetic operators", "[sfz::Vector]") {
 	sfz::Vector<int, 3> v2{0, -2, 1};
 
 	// Integrity check of base vectors
-	REQUIRE(v1[sfz::x] == 1);
-	REQUIRE(v1[sfz::y] == -2);
-	REQUIRE(v1[sfz::z] == 5);
-	REQUIRE(v2[sfz::x] == 0);
-	REQUIRE(v2[sfz::y] == -2);
-	REQUIRE(v2[sfz::z] == 1);
+	REQUIRE(v1[0] == 1);
+	REQUIRE(v1[1] == -2);
+	REQUIRE(v1[2] == 5);
+	REQUIRE(v2[0] == 0);
+	REQUIRE(v2[1] == -2);
+	REQUIRE(v2[2] == 1);
 
 	SECTION("Addition") {
 		auto v3 = v1 + v2;
-		REQUIRE(v3[sfz::x] == 1);
-		REQUIRE(v3[sfz::y] == -4);
-		REQUIRE(v3[sfz::z] == 6);
+		REQUIRE(v3[0] == 1);
+		REQUIRE(v3[1] == -4);
+		REQUIRE(v3[2] == 6);
 		// Integrity check of base vectors
-		REQUIRE(v1[sfz::x] == 1);
-		REQUIRE(v1[sfz::y] == -2);
-		REQUIRE(v1[sfz::z] == 5);
-		REQUIRE(v2[sfz::x] == 0);
-		REQUIRE(v2[sfz::y] == -2);
-		REQUIRE(v2[sfz::z] == 1);
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == -2);
+		REQUIRE(v1[2] == 5);
+		REQUIRE(v2[0] == 0);
+		REQUIRE(v2[1] == -2);
+		REQUIRE(v2[2] == 1);
 	}
 	SECTION("Subtraction") {
 		auto v3 = v1 - v2;
-		REQUIRE(v3[sfz::x] == 1);
-		REQUIRE(v3[sfz::y] == 0);
-		REQUIRE(v3[sfz::z] == 4);
+		REQUIRE(v3[0] == 1);
+		REQUIRE(v3[1] == 0);
+		REQUIRE(v3[2] == 4);
 		auto v4 = v2 - v1;
-		REQUIRE(v4[sfz::x] == -1);
-		REQUIRE(v4[sfz::y] == 0);
-		REQUIRE(v4[sfz::z] == -4);
+		REQUIRE(v4[0] == -1);
+		REQUIRE(v4[1] == 0);
+		REQUIRE(v4[2] == -4);
 		// Integrity check of base vectors
-		REQUIRE(v1[sfz::x] == 1);
-		REQUIRE(v1[sfz::y] == -2);
-		REQUIRE(v1[sfz::z] == 5);
-		REQUIRE(v2[sfz::x] == 0);
-		REQUIRE(v2[sfz::y] == -2);
-		REQUIRE(v2[sfz::z] == 1);
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == -2);
+		REQUIRE(v1[2] == 5);
+		REQUIRE(v2[0] == 0);
+		REQUIRE(v2[1] == -2);
+		REQUIRE(v2[2] == 1);
 	}
 	SECTION("Negating (-x)") {
 		auto v3 = -v1;
-		REQUIRE(v3[sfz::x] == -1);
-		REQUIRE(v3[sfz::y] == 2);
-		REQUIRE(v3[sfz::z] == -5);
+		REQUIRE(v3[0] == -1);
+		REQUIRE(v3[1] == 2);
+		REQUIRE(v3[2] == -5);
 		// Integrity check of base vectors
-		REQUIRE(v1[sfz::x] == 1);
-		REQUIRE(v1[sfz::y] == -2);
-		REQUIRE(v1[sfz::z] == 5);
-		REQUIRE(v2[sfz::x] == 0);
-		REQUIRE(v2[sfz::y] == -2);
-		REQUIRE(v2[sfz::z] == 1);
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == -2);
+		REQUIRE(v1[2] == 5);
+		REQUIRE(v2[0] == 0);
+		REQUIRE(v2[1] == -2);
+		REQUIRE(v2[2] == 1);
 	}
 	SECTION("Multiplication by number") {
 		auto v3 = v1*3;
-		REQUIRE(v3[sfz::x] == 3);
-		REQUIRE(v3[sfz::y] == -6);
-		REQUIRE(v3[sfz::z] == 15);
+		REQUIRE(v3[0] == 3);
+		REQUIRE(v3[1] == -6);
+		REQUIRE(v3[2] == 15);
 		auto v4 = -3*v2;
-		REQUIRE(v4[sfz::x] == 0);
-		REQUIRE(v4[sfz::y] == 6);
-		REQUIRE(v4[sfz::z] == -3);
+		REQUIRE(v4[0] == 0);
+		REQUIRE(v4[1] == 6);
+		REQUIRE(v4[2] == -3);
 		// Integrity check of base vectors
-		REQUIRE(v1[sfz::x] == 1);
-		REQUIRE(v1[sfz::y] == -2);
-		REQUIRE(v1[sfz::z] == 5);
-		REQUIRE(v2[sfz::x] == 0);
-		REQUIRE(v2[sfz::y] == -2);
-		REQUIRE(v2[sfz::z] == 1);
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == -2);
+		REQUIRE(v1[2] == 5);
+		REQUIRE(v2[0] == 0);
+		REQUIRE(v2[1] == -2);
+		REQUIRE(v2[2] == 1);
 	}
 	SECTION("Division by number") {
 		auto v1 = sfz::Vector<int, 2>{2, -2}/2;
-		REQUIRE(v1[sfz::x] == 1);
-		REQUIRE(v1[sfz::y] == -1);
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == -1);
 		REQUIRE_THROWS_AS(v1/0, std::domain_error);
 	}
 	SECTION("Addition assignment") {
 		v1 += v2;
-		REQUIRE(v1[sfz::x] == 1);
-		REQUIRE(v1[sfz::y] == -4);
-		REQUIRE(v1[sfz::z] == 6);
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == -4);
+		REQUIRE(v1[2] == 6);
 	}
 	SECTION("Subtraction assignment") {
 		v1 -= v2;
-		REQUIRE(v1[sfz::x] == 1);
-		REQUIRE(v1[sfz::y] == 0);
-		REQUIRE(v1[sfz::z] == 4);
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == 0);
+		REQUIRE(v1[2] == 4);
 	}
 	SECTION("Multiplication by number assignment") {
 		v1 *= 3;
-		REQUIRE(v1[sfz::x] == 3);
-		REQUIRE(v1[sfz::y] == -6);
-		REQUIRE(v1[sfz::z] == 15);
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -6);
+		REQUIRE(v1[2] == 15);
 	}
 	SECTION("Division by number assignment") {
 		sfz::Vector<int, 2> v3{2, -2};
 		v3 /= 2;
-		REQUIRE(v3[sfz::x] == 1);
-		REQUIRE(v3[sfz::y] == -1);
+		REQUIRE(v3[0] == 1);
+		REQUIRE(v3[1] == -1);
 		REQUIRE_THROWS_AS(v3 /= 0, std::domain_error);
 	}
 }
@@ -241,27 +241,27 @@ TEST_CASE("Cross product", "[sfz::Vector]") {
 	SECTION("Correctness test") {
 		auto res = sfz::cross(v1, v2);
 
-		REQUIRE(res[sfz::x] == 12);
-		REQUIRE(res[sfz::y] == 3);
-		REQUIRE(res[sfz::z] == -2);
+		REQUIRE(res[0] == 12);
+		REQUIRE(res[1] == 3);
+		REQUIRE(res[2] == -2);
 	}
 	SECTION("2nd correctness test") {
 		auto res = sfz::cross(v2, v1);
 
-		REQUIRE(res[sfz::x] == -12);
-		REQUIRE(res[sfz::y] == -3);
-		REQUIRE(res[sfz::z] == 2);
+		REQUIRE(res[0] == -12);
+		REQUIRE(res[1] == -3);
+		REQUIRE(res[2] == 2);
 	}
 	SECTION("A x A = 0") {
 		auto res1 = sfz::cross(v1, v1);
-		REQUIRE(res1[sfz::x] == 0);
-		REQUIRE(res1[sfz::y] == 0);
-		REQUIRE(res1[sfz::z] == 0);
+		REQUIRE(res1[0] == 0);
+		REQUIRE(res1[1] == 0);
+		REQUIRE(res1[2] == 0);
 
 		auto res2 = sfz::cross(v2, v2);
-		REQUIRE(res2[sfz::x] == 0);
-		REQUIRE(res2[sfz::y] == 0);
-		REQUIRE(res2[sfz::z] == 0);
+		REQUIRE(res2[0] == 0);
+		REQUIRE(res2[1] == 0);
+		REQUIRE(res2[2] == 0);
 	}
 }
 
@@ -307,10 +307,10 @@ TEST_CASE("Rotating vectors", "[sfz::Vector]") {
 	
 	SECTION("Rotates in positive direction") {
 		auto res = sfz::rotate(vRight, 3.1415926f);
-		REQUIRE(-1.01f <= res[sfz::x]);
-		REQUIRE(res[sfz::x] <= -0.99f);
-		REQUIRE(-0.01f <= res[sfz::y]);
-		REQUIRE(res[sfz::y] <= 0.01f);
+		REQUIRE(-1.01f <= res[0]);
+		REQUIRE(res[0] <= -0.99f);
+		REQUIRE(-0.01f <= res[1]);
+		REQUIRE(res[1] <= 0.01f);
 
 		auto angleOrg = angle(vRight);
 		auto angleRes = angle(res);
@@ -319,10 +319,10 @@ TEST_CASE("Rotating vectors", "[sfz::Vector]") {
 	}
 	SECTION("Rotates in negative direction") {
 		auto res = sfz::rotate(vUp, -3.1415926f);
-		REQUIRE(-0.01f <= res[sfz::x]);
-		REQUIRE(res[sfz::x] <= 0.01f);
-		REQUIRE(-1.01f <= res[sfz::y]);
-		REQUIRE(res[sfz::y] <= -0.99f);
+		REQUIRE(-0.01f <= res[0]);
+		REQUIRE(res[0] <= 0.01f);
+		REQUIRE(-1.01f <= res[1]);
+		REQUIRE(res[1] <= -0.99f);
 
 		auto angleOrg = angle(vUp);
 		auto angleRes = angle(res);
@@ -378,12 +378,12 @@ TEST_CASE("Dot (scalar) product", "[sfz::Vector]") {
 		
 		REQUIRE(scalarProduct == 2);
 		
-		REQUIRE(v1[sfz::x] == 1);
-		REQUIRE(v1[sfz::y] == 0);
-		REQUIRE(v1[sfz::z] == -2);
-		REQUIRE(v2[sfz::x] == 6);
-		REQUIRE(v2[sfz::y] == 2);
-		REQUIRE(v2[sfz::z] == 2);
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == 0);
+		REQUIRE(v1[2] == -2);
+		REQUIRE(v2[0] == 6);
+		REQUIRE(v2[1] == 2);
+		REQUIRE(v2[2] == 2);
 	}
 	SECTION("Using same vector twice") {	
 		sfz::Vector<int, 2> v1{-3, 2};
@@ -391,8 +391,8 @@ TEST_CASE("Dot (scalar) product", "[sfz::Vector]") {
 		
 		REQUIRE(scalarProduct == 13);
 		
-		REQUIRE(v1[sfz::x] == -3);
-		REQUIRE(v1[sfz::y] == 2);	
+		REQUIRE(v1[0] == -3);
+		REQUIRE(v1[1] == 2);	
 	}
 }
 
@@ -402,15 +402,15 @@ TEST_CASE("Element-wise multiplication", "[sfz::Vector]") {
 
 	SECTION("Correctness test") {
 		auto v3 = v1.elemMult(v2);
-		REQUIRE(v3[sfz::x] == 2);
-		REQUIRE(v3[sfz::y] == 0);
-		REQUIRE(v3[sfz::z] == -6);
+		REQUIRE(v3[0] == 2);
+		REQUIRE(v3[1] == 0);
+		REQUIRE(v3[2] == -6);
 	}
 	SECTION("Same vector") {
 		auto v3 = v1.elemMult(v1);
-		REQUIRE(v3[sfz::x] == 1);
-		REQUIRE(v3[sfz::y] == 0);
-		REQUIRE(v3[sfz::z] == 9);
+		REQUIRE(v3[0] == 1);
+		REQUIRE(v3[1] == 0);
+		REQUIRE(v3[2] == 9);
 	}
 }
 
@@ -426,16 +426,38 @@ TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]") {
 
 	SECTION("Basic test") {
 		auto res = v.projectOnto(vUp);
-		REQUIRE(res[sfz::x] == 0);
-		REQUIRE(res[sfz::y] == 12);
+		REQUIRE(res[0] == 0);
+		REQUIRE(res[1] == 12);
 	}
 	SECTION("Basic test 2") {
 		auto res = v.projectOnto(vRight);
-		REQUIRE(res[sfz::x] == 9);
-		REQUIRE(res[sfz::y] == 0);
+		REQUIRE(res[0] == 9);
+		REQUIRE(res[1] == 0);
 	}
 	SECTION("Throws exception if target is 0") {
 		REQUIRE_THROWS_AS(v.projectOnto(sfz::Vector<int, 2>{0, 0}), std::domain_error);
+	}
+}
+
+TEST_CASE("Calculating distance from on vector to another", "[sfz::Vector]") {
+	sfz::Vector<int, 2> v1{0, 0};
+	sfz::Vector<int, 2> v2{3, -1};
+
+	SECTION("With itself") {
+		auto res1 = v1.distance(v1);
+		auto res2 = v2.distance(v2);
+		REQUIRE(res1[0] == 0);
+		REQUIRE(res1[1] == 0);
+		REQUIRE(res2[0] == 0);
+		REQUIRE(res2[1] == 0);
+	}
+	SECTION("With other vector") {
+		auto res1 = v1.distance(v2);
+		auto res2 = v2.distance(v1);
+		REQUIRE(res1[0] == 3);
+		REQUIRE(res1[1] == -1);
+		REQUIRE(res2[0] == -3);
+		REQUIRE(res2[1] == 1);
 	}
 }
 
