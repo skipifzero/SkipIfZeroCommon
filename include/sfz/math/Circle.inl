@@ -17,7 +17,7 @@ namespace sfz {
 		position{circle.position},
 		radius{circle.radius},
 		horizontalAlign{circle.horizontalAlign},
-		verticalAlign{circle.verticalAlign} {
+		verticalAlign{circle.verticalAlign} {
 			// Initialization done.
 	}
 

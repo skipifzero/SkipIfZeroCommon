@@ -46,7 +46,7 @@ namespace sfz {
 	 * @param destination the destination enum
 	 * @return the distance between the two enums
 	 */
-	char distance(HorizontalAlign origin, HorizontalAlign destination) {
+	inline char distance(HorizontalAlign origin, HorizontalAlign destination) {
 		return static_cast<char>(destination) - static_cast<char>(origin);
 	}
 
@@ -60,7 +60,7 @@ namespace sfz {
 	 * @param destination the destination enum
 	 * @return the distance between the two enums
 	 */
-	char distance(VerticalAlign origin, VerticalAlign destination) {
+	inline char distance(VerticalAlign origin, VerticalAlign destination) {
 		return static_cast<char>(destination) - static_cast<char>(origin);
 	}
 
