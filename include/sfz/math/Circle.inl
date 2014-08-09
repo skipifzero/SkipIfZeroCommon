@@ -22,6 +22,13 @@ namespace sfz {
 	}
 
 	template<typename T>
+	Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
+		Circle<T>{circle} {
+			changeHorizontalAlign(horizontalAlign);
+			changeVerticalAlign(verticalAlign);
+	}
+
+	template<typename T>
 	Circle<T>::Circle(vec2<T> position, T radius, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		position{position},
 		radius{requireNonNegative(radius)},

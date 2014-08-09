@@ -16,6 +16,15 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 		REQUIRE(rect1.getHorizontalAlign() == rect2.getHorizontalAlign());
 		REQUIRE(rect1.getVerticalAlign() == rect2.getVerticalAlign());
 	}
+	SECTION("Copy constructor with alignment change") {
+		sfz::Rectangle<int> rect1{0, 0, 2, 2, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+		sfz::Rectangle<int> rect2{rect1, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
+		REQUIRE(rect2.getX() == 2);
+		REQUIRE(rect2.getY() == 2);
+		REQUIRE(rect2.getDimensions() == rect1.getDimensions());
+		REQUIRE(rect2.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(rect2.getVerticalAlign() == sfz::VerticalAlign::TOP);
+	}
 	SECTION("(vec2 position, vec2 dimensions) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, sfz::vec2i{3, 4}};
 		REQUIRE(rect.getX() == 1);

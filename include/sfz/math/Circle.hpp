@@ -56,6 +56,15 @@ namespace sfz {
 		Circle(const Circle<T>& circle);
 		
 		/**
+		 * @brief Copy constructor that changes alignment.
+		 * The alignment is changed as it would be if changeHorizontalAlign() or changeVerticalAlign() were called.
+		 * @param circle the Circle to copy
+		 * @param horizontalAlign the HorizontalAlign to change to
+		 * @param verticalAlign the VerticalAlign to change to
+		 */
+		Circle(const Circle<T>& circle, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign);
+
+		/**
 		 * @brief Circle constructor.
 		 * If you don't specify the alignment variables they will be set to the default values.
 		 * @throw std::invalid_argument if radius < 0

@@ -22,6 +22,13 @@ namespace sfz {
 	}
 
 	template<typename T>
+	Rectangle<T>::Rectangle(const Rectangle<T>& rect, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
+		Rectangle<T>{rect} {
+			changeHorizontalAlign(horizontalAlign);
+			changeVerticalAlign(verticalAlign);
+	}
+
+	template<typename T>
 	Rectangle<T>::Rectangle(const vec2<T>& position, const vec2<T>& dimensions, 
 		                    HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		position{position}, 
