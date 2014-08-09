@@ -51,9 +51,7 @@ namespace sfz {
 
 	template<typename T>
 	bool Circle<T>::overlap(const vec2<T>& point) const {
-		Circle<T> centerAlignCircle{*this};
-		centerAlignCircle.changeHorizontalAlign(HorizontalAlign::CENTER);
-		centerAlignCircle.changeVerticalAlign(VerticalAlign::MIDDLE);
+		Circle<T> centerAlignCircle{*this, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 
 		// If the length from this circles center to the specified point is shorter than or equal to the radius then
 		// this Circle overlaps the point. Both sides of the equation is squared to avoid expensive sqrt() function.
@@ -62,13 +60,8 @@ namespace sfz {
 
 	template<typename T>
 	bool Circle<T>::overlap(const Circle<T>& circle) const {
-		Circle<T> centerAlignCircleThis{*this};
-		centerAlignCircleThis.changeHorizontalAlign(HorizontalAlign::CENTER);
-		centerAlignCircleThis.changeVerticalAlign(VerticalAlign::MIDDLE);
-
-		Circle<T> centerAlignCircleOther{circle};
-		centerAlignCircleOther.changeHorizontalAlign(HorizontalAlign::CENTER);
-		centerAlignCircleOther.changeVerticalAlign(VerticalAlign::MIDDLE);
+		Circle<T> centerAlignCircleThis{*this, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
+		Circle<T> centerAlignCircleOther{circle, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 
 		// If the length between the center of the two circles is less than or equal to the the sum of the circle's
 		// radiuses they overlap. Both sides of the equation is squared to avoid expensive sqrt() function.

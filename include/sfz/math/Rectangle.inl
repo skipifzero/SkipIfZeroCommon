@@ -63,9 +63,7 @@ namespace sfz {
 
 	template<typename T>
 	bool Rectangle<T>::overlap(const vec2<T>& point) const {
-		Rectangle<T> leftBottomAlignRect{*this};
-		leftBottomAlignRect.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignRect.changeVerticalAlign(VerticalAlign::BOTTOM);
+		Rectangle<T> leftBottomAlignRect{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
 
 		T rectXLeft = leftBottomAlignRect.getX();
 		T rectXRight = rectXLeft + leftBottomAlignRect.getWidth();
@@ -80,13 +78,8 @@ namespace sfz {
 
 	template<typename T>
 	bool Rectangle<T>::overlap(const Rectangle<T>& rect) const {
-		Rectangle<T> leftBottomAlignRectThis{*this};
-		leftBottomAlignRectThis.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignRectThis.changeVerticalAlign(VerticalAlign::BOTTOM);
-
-		Rectangle<T> leftBottomAlignRectOther{rect};
-		leftBottomAlignRectOther.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignRectOther.changeVerticalAlign(VerticalAlign::BOTTOM);
+		Rectangle<T> leftBottomAlignRectThis{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
+		Rectangle<T> leftBottomAlignRectOther{rect, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
 
 		T thisXLeft = leftBottomAlignRectThis.getX();
 		T thisXRight = thisXLeft + leftBottomAlignRectThis.getWidth();
@@ -106,13 +99,8 @@ namespace sfz {
 
 	template<typename T>
 	bool Rectangle<T>::overlap(const Circle<T>& circle) const {
-		Rectangle<T> leftBottomAlignRect{*this};
-		leftBottomAlignRect.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignRect.changeVerticalAlign(VerticalAlign::BOTTOM);
-
-		Circle<T> centerAlignCircle{circle};
-		centerAlignCircle.changeHorizontalAlign(HorizontalAlign::CENTER);
-		centerAlignCircle.changeVerticalAlign(VerticalAlign::MIDDLE);
+		Rectangle<T> leftBottomAlignRect{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
+		Circle<T> centerAlignCircle{circle, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 
 		T rectXLeft = leftBottomAlignRect.getX();
 		T rectXRight = rectXLeft + leftBottomAlignRect.getWidth();
