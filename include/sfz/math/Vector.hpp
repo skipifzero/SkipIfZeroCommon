@@ -4,9 +4,10 @@
 
 #include <array>
 #include <initializer_list>
-#include <stdexcept>
-#include <algorithm>
-#include <cmath>
+#include <stdexcept> // std::invalid_argument, std::out_of_range, std::domain_error
+#include <algorithm> // std::copy
+#include <functional> // std::hash
+#include <cmath> // std::sqrt
 #include <iterator>
 #include <string>
 

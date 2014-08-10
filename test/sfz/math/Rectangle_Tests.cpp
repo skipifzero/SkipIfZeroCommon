@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <vector>
+#include <unordered_map>
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Rectangle.hpp"
 #include "sfz/math/Circle.hpp"
@@ -15,6 +16,15 @@ TEST_CASE("Constructors", "[sfz::Rectangle]") {
 		REQUIRE(rect1.getDimensions() == rect2.getDimensions());
 		REQUIRE(rect1.getHorizontalAlign() == rect2.getHorizontalAlign());
 		REQUIRE(rect1.getVerticalAlign() == rect2.getVerticalAlign());
+	}
+	SECTION("Copy constructor with alignment change") {
+		sfz::Rectangle<int> rect1{0, 0, 2, 2, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+		sfz::Rectangle<int> rect2{rect1, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
+		REQUIRE(rect2.getX() == 2);
+		REQUIRE(rect2.getY() == 2);
+		REQUIRE(rect2.getDimensions() == rect1.getDimensions());
+		REQUIRE(rect2.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(rect2.getVerticalAlign() == sfz::VerticalAlign::TOP);
 	}
 	SECTION("(vec2 position, vec2 dimensions) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, sfz::vec2i{3, 4}};
@@ -324,5 +334,88 @@ TEST_CASE("Setters", "[sfz::Rectangle]") {
 		rect.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
 		REQUIRE(rect.getY() == 0);
 		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::MIDDLE);
+	}
+}
+
+TEST_CASE("Area and circumference", "[sfz::Rectangle]") {
+	sfz::Rectangle<int> r1{0, 0, 10, 10};
+	sfz::Rectangle<int> r2{0, 0, 1, 10};
+	SECTION("area()") {
+		REQUIRE(r1.area() == 100);
+		REQUIRE(r2.area() == 10);
+	}
+	SECTION("circumference()") {
+		REQUIRE(r1.circumference() == 40);
+		REQUIRE(r2.circumference() == 22);
+	}
+}
+
+TEST_CASE("Comparison operators", "[sfz::Rectangle]") {
+	sfz::Rectangle<int> r1{0, 0, 10, 10};
+	sfz::Rectangle<int> r2{0, 0, 10, 10};
+	sfz::Rectangle<int> r3{0, 0, 1, 10};
+	sfz::Rectangle<int> r4{0, 0, 1, 10, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+
+	SECTION("==") {
+		REQUIRE(r1 == r2);
+		REQUIRE(!(r1 == r3));
+		REQUIRE(!(r1 == r4));
+		REQUIRE(!(r2 == r3));
+		REQUIRE(!(r2 == r4));
+		REQUIRE(!(r3 == r4));
+	}
+	SECTION("!=") {
+		REQUIRE(!(r1 != r2));
+		REQUIRE(r1 != r3);
+		REQUIRE(r1 != r4);
+		REQUIRE(r2 != r3);
+		REQUIRE(r2 != r4);
+		REQUIRE(r3 != r4);
+	}
+	SECTION("<") {
+		REQUIRE(!(r1 < r2));
+		REQUIRE(!(r3 < r4));
+		REQUIRE(r3 < r1);
+		REQUIRE(!(r1 < r3));
+	}
+	SECTION(">") {
+		REQUIRE(!(r1 > r2));
+		REQUIRE(!(r3 > r4));
+		REQUIRE(r1 > r3);
+		REQUIRE(!(r3 > r1));
+	}
+	SECTION("<=") {
+		REQUIRE(r1 <= r2);
+		REQUIRE(r3 <= r4);
+		REQUIRE(r3 <= r1);
+		REQUIRE(!(r1 <= r3));
+	}
+	SECTION(">=") {
+		REQUIRE(r1 >= r2);
+		REQUIRE(r3 >= r4);
+		REQUIRE(r1 >= r3);
+		REQUIRE(!(r3 >= r1));
+	}
+}
+
+TEST_CASE("Hashing", "[sfz::Rectangle]") {
+	sfz::Rectangle<int> r1{-1, 100, 32, 32};
+	sfz::Rectangle<int> r2{-1, 100, 32, 32, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
+	sfz::Rectangle<int> r3{0, -9, 14, 2};
+	
+	SECTION("Hash functions") {
+		REQUIRE(r1.hash() != r2.hash());
+		REQUIRE(r2.hash() != r3.hash());
+	}
+	SECTION("Hash map") {
+		// This test checks if unordered_map works as it should. Not a very good test, but the best I can come up with
+		// to test if hashing works as it should at the moment.
+		std::unordered_map<sfz::Rectangle<int>, int> hashMap;
+		hashMap[r1] = 1;
+		hashMap[r2] = 2;
+		hashMap[r3] = 3;
+		REQUIRE(hashMap[r1] == 1);
+		REQUIRE(hashMap[r2] == 2);
+		REQUIRE(hashMap[r3] == 3);
 	}
 }

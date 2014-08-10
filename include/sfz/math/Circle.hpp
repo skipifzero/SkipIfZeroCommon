@@ -2,6 +2,9 @@
 #ifndef SFZ_MATH_CIRCLE_HPP
 #define SFZ_MATH_CIRCLE_HPP
 
+#include <stdexcept> // std::invalid_argument
+#include <functional> // std::hash
+#include "sfz/math/MathConstants.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
 
@@ -56,6 +59,15 @@ namespace sfz {
 		Circle(const Circle<T>& circle);
 		
 		/**
+		 * @brief Copy constructor that changes alignment.
+		 * The alignment is changed as it would be if changeHorizontalAlign() or changeVerticalAlign() were called.
+		 * @param circle the Circle to copy
+		 * @param horizontalAlign the HorizontalAlign to change to
+		 * @param verticalAlign the VerticalAlign to change to
+		 */
+		Circle(const Circle<T>& circle, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign);
+
+		/**
 		 * @brief Circle constructor.
 		 * If you don't specify the alignment variables they will be set to the default values.
 		 * @throw std::invalid_argument if radius < 0
@@ -108,6 +120,24 @@ namespace sfz {
 		 * @return whether the specified Rectangle overlaps with this Circle or not
 		 */
 		bool overlap(const Rectangle<T>& rect) const;
+
+		/**
+		 * @brief Returns the area of this Circle.
+		 * @return the area of this Circle
+		 */
+		T area() const;
+
+		/**
+		 * @brief Returns the circumference of this Circle.
+		 * @return the circumference of this Circle
+		 */
+		T circumference() const;
+
+		/**
+		 * @brief Hashes the rectangle.
+		 * @return hash of rectangle
+		 */
+		size_t hash() const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -219,6 +249,55 @@ namespace sfz {
 		 */
 		void changeVerticalAlign(VerticalAlign verticalAlign);
 
+		// Comparison operators
+		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+		/**
+		 * @brief Equality operator.
+		 * @param other the rhs circle
+		 * @return whether the lhs and rhs circles are equal
+		 */
+		bool operator== (const Circle<T>& other) const;
+
+		/**
+		 * @brief Inequality operator.
+		 * @param other the rhs circle
+		 * @return whether the lhs and rhs circles are not equal
+		 */
+		bool operator!= (const Circle<T>& other) const;
+
+		/**
+		 * @brief Smaller than operator.
+		 * The size of the Circle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs circle
+		 * @return whether the lhs circle is smaller than the rhs circle
+		 */	
+		bool operator< (const Circle<T>& other) const;
+
+		/**
+		 * @brief Larger than operator.
+		 * The size of the Circle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs circle
+		 * @return whether the lhs circle is larger than the rhs circle
+		 */	
+		bool operator> (const Circle<T>& other) const;
+
+		/**
+		 * @brief Smaller than or equal operator.
+		 * The size of the Circle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs circle
+		 * @return whether the lhs circle is smaller than or equal to the rhs circle
+		 */	
+		bool operator<= (const Circle<T>& other) const;
+
+		/**
+		 * @brief Larger than or equal operator.
+		 * The size of the Circle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs circle
+		 * @return whether the lhs circle is larger than or equal to the rhs circle
+		 */
+		bool operator>= (const Circle<T>& other) const;
+
 	private:
 
 		// Members
@@ -235,6 +314,16 @@ namespace sfz {
 		T requireNonNegative(T value) const;
 	};
 }
+
+// Specializations of standard library for sfz::Circle
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<typename T>
+	struct hash<sfz::Circle<T>> {
+		size_t operator() (const sfz::Circle<T>& circle) const;
+	};
+}
+
 #include "sfz/math/Rectangle.hpp"
 #include "Circle.inl"
 #endif

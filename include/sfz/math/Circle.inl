@@ -22,6 +22,13 @@ namespace sfz {
 	}
 
 	template<typename T>
+	Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
+		Circle<T>{circle} {
+			changeHorizontalAlign(horizontalAlign);
+			changeVerticalAlign(verticalAlign);
+	}
+
+	template<typename T>
 	Circle<T>::Circle(vec2<T> position, T radius, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		position{position},
 		radius{requireNonNegative(radius)},
@@ -44,9 +51,7 @@ namespace sfz {
 
 	template<typename T>
 	bool Circle<T>::overlap(const vec2<T>& point) const {
-		Circle<T> centerAlignCircle{*this};
-		centerAlignCircle.changeHorizontalAlign(HorizontalAlign::CENTER);
-		centerAlignCircle.changeVerticalAlign(VerticalAlign::MIDDLE);
+		Circle<T> centerAlignCircle{*this, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 
 		// If the length from this circles center to the specified point is shorter than or equal to the radius then
 		// this Circle overlaps the point. Both sides of the equation is squared to avoid expensive sqrt() function.
@@ -55,13 +60,8 @@ namespace sfz {
 
 	template<typename T>
 	bool Circle<T>::overlap(const Circle<T>& circle) const {
-		Circle<T> centerAlignCircleThis{*this};
-		centerAlignCircleThis.changeHorizontalAlign(HorizontalAlign::CENTER);
-		centerAlignCircleThis.changeVerticalAlign(VerticalAlign::MIDDLE);
-
-		Circle<T> centerAlignCircleOther{circle};
-		centerAlignCircleOther.changeHorizontalAlign(HorizontalAlign::CENTER);
-		centerAlignCircleOther.changeVerticalAlign(VerticalAlign::MIDDLE);
+		Circle<T> centerAlignCircleThis{*this, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
+		Circle<T> centerAlignCircleOther{circle, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 
 		// If the length between the center of the two circles is less than or equal to the the sum of the circle's
 		// radiuses they overlap. Both sides of the equation is squared to avoid expensive sqrt() function.
@@ -73,6 +73,30 @@ namespace sfz {
 	template<typename T>
 	bool Circle<T>::overlap(const Rectangle<T>& rect) const {
 		return rect.overlap(*this);
+	}
+
+	template<typename T>
+	T Circle<T>::area() const {
+		return static_cast<T>(PI_DOUBLE)*radius*radius;
+	}
+
+	template<typename T>
+	T Circle<T>::circumference() const {
+		return static_cast<T>(2)*static_cast<T>(PI_DOUBLE)*radius;
+	}
+
+	template<typename T>
+	size_t Circle<T>::hash() const {
+		std::hash<T> hasher;
+		std::hash<char> enumHasher;
+		size_t hash = 0;
+		// hash_combine algorithm from boost
+		hash ^= hasher(position[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(position[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(radius) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= enumHasher(static_cast<char>(horizontalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= enumHasher(static_cast<char>(verticalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		return hash;
 	}
 
 	// Getters
@@ -159,6 +183,42 @@ namespace sfz {
 		this->verticalAlign = verticalAlign;
 	}
 
+	// Comparison operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	bool Circle<T>::operator== (const Circle<T>& other) const {
+		return this->position == other.position &&
+		       this->radius == other.radius &&
+		       this->horizontalAlign == other.horizontalAlign &&
+		       this->verticalAlign == other.verticalAlign;
+	}
+
+	template<typename T>
+	bool Circle<T>::operator!= (const Circle<T>& other) const {
+		return !((*this) == other);
+	}
+
+	template<typename T>
+	bool Circle<T>::operator< (const Circle<T>& other) const {
+		return this->area() < other.area();
+	}
+
+	template<typename T>
+	bool Circle<T>::operator> (const Circle<T>& other) const {
+		return this->area() > other.area();
+	}
+
+	template<typename T>
+	bool Circle<T>::operator<= (const Circle<T>& other) const {
+		return this->area() <= other.area();
+	}
+
+	template<typename T>
+	bool Circle<T>::operator>= (const Circle<T>& other) const {
+		return this->area() >= other.area();
+	}
+
 	// Private helper functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -168,5 +228,14 @@ namespace sfz {
 			throw std::invalid_argument{"Negative radius not allowed."};
 		}
 		return value;
+	}
+}
+
+// Specializations of standard library for sfz::Circle
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<typename T>
+	size_t hash<sfz::Circle<T>>::operator() (const sfz::Circle<T>& circle) const {
+		return circle.hash();
 	}
 }

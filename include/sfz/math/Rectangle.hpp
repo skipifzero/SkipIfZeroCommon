@@ -2,7 +2,8 @@
 #ifndef SFZ_MATH_RECTANGLE_HPP
 #define SFZ_MATH_RECTANGLE_HPP
 
-#include <stdexcept>
+#include <stdexcept> // std::invalid_argument
+#include <functional> // std::hash
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
 
@@ -53,6 +54,15 @@ namespace sfz {
 		 * @param rect the Rectangle to copy
 		 */
 		Rectangle(const Rectangle<T>& rect);
+
+		/**
+		 * @brief Copy constructor that changes alignment.
+		 * The alignment is changed as it would be if changeHorizontalAlign() or changeVerticalAlign() were called.
+		 * @param rect the Rectangle to copy
+		 * @param horizontalAlign the HorizontalAlign to change to
+		 * @param verticalAlign the VerticalAlign to change to
+		 */
+		Rectangle(const Rectangle<T>& rect, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign);
 
 		/**
 		 * @brief Rectangle constructor.
@@ -122,6 +132,24 @@ namespace sfz {
 		 * @return whether the specified Circle overlaps with this Rectangle or not
 		 */
 		bool overlap(const Circle<T>& circle) const;
+
+		/**
+		 * @brief Returns the area of this Rectangle.
+		 * @return the area of this Rectangle
+		 */
+		T area() const;
+
+		/**
+		 * @brief Returns the circumference of this Rectangle.
+		 * @return the circumference of this Rectangle
+		 */
+		T circumference() const;
+
+		/**
+		 * @brief Hashes the rectangle.
+		 * @return hash of the rectangle
+		 */
+		size_t hash() const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -267,6 +295,55 @@ namespace sfz {
 		 */
 		void changeVerticalAlign(VerticalAlign verticalAlign);
 
+		// Comparison operators
+		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+		/**
+		 * @brief Equality operator.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs and rhs rectangles are equal
+		 */
+		bool operator== (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Inequality operator.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs and rhs rectangles are not equal
+		 */
+		bool operator!= (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Smaller than operator.
+		 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs rectangle is smaller than the rhs rectangle
+		 */	
+		bool operator< (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Larger than operator.
+		 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs rectangle is larger than the rhs rectangle
+		 */	
+		bool operator> (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Smaller than or equal operator.
+		 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs rectangle is smaller than or equal to the rhs rectangle
+		 */	
+		bool operator<= (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Larger than or equal operator.
+		 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs rectangle is larger than or equal to the rhs rectangle
+		 */	
+		bool operator>= (const Rectangle<T>& other) const;
+
 	private:
 
 		// Members
@@ -283,6 +360,16 @@ namespace sfz {
 		T requireNonNegative(T value) const;
 	};
 }
+
+// Specializations of standard library for sfz::Rectangle
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<typename T>
+	struct hash<sfz::Rectangle<T>> {
+		size_t operator() (const sfz::Rectangle<T>& rect) const;
+	};
+}
+
 #include "sfz/math/Circle.hpp"
 #include "Rectangle.inl"
 #endif

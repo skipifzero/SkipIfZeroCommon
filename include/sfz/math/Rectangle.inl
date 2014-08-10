@@ -22,6 +22,13 @@ namespace sfz {
 	}
 
 	template<typename T>
+	Rectangle<T>::Rectangle(const Rectangle<T>& rect, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
+		Rectangle<T>{rect} {
+			changeHorizontalAlign(horizontalAlign);
+			changeVerticalAlign(verticalAlign);
+	}
+
+	template<typename T>
 	Rectangle<T>::Rectangle(const vec2<T>& position, const vec2<T>& dimensions, 
 		                    HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		position{position}, 
@@ -56,9 +63,7 @@ namespace sfz {
 
 	template<typename T>
 	bool Rectangle<T>::overlap(const vec2<T>& point) const {
-		Rectangle<T> leftBottomAlignRect{*this};
-		leftBottomAlignRect.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignRect.changeVerticalAlign(VerticalAlign::BOTTOM);
+		Rectangle<T> leftBottomAlignRect{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
 
 		T rectXLeft = leftBottomAlignRect.getX();
 		T rectXRight = rectXLeft + leftBottomAlignRect.getWidth();
@@ -73,13 +78,8 @@ namespace sfz {
 
 	template<typename T>
 	bool Rectangle<T>::overlap(const Rectangle<T>& rect) const {
-		Rectangle<T> leftBottomAlignRectThis{*this};
-		leftBottomAlignRectThis.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignRectThis.changeVerticalAlign(VerticalAlign::BOTTOM);
-
-		Rectangle<T> leftBottomAlignRectOther{rect};
-		leftBottomAlignRectOther.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignRectOther.changeVerticalAlign(VerticalAlign::BOTTOM);
+		Rectangle<T> leftBottomAlignRectThis{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
+		Rectangle<T> leftBottomAlignRectOther{rect, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
 
 		T thisXLeft = leftBottomAlignRectThis.getX();
 		T thisXRight = thisXLeft + leftBottomAlignRectThis.getWidth();
@@ -99,13 +99,8 @@ namespace sfz {
 
 	template<typename T>
 	bool Rectangle<T>::overlap(const Circle<T>& circle) const {
-		Rectangle<T> leftBottomAlignRect{*this};
-		leftBottomAlignRect.changeHorizontalAlign(HorizontalAlign::LEFT);
-		leftBottomAlignRect.changeVerticalAlign(VerticalAlign::BOTTOM);
-
-		Circle<T> centerAlignCircle{circle};
-		centerAlignCircle.changeHorizontalAlign(HorizontalAlign::CENTER);
-		centerAlignCircle.changeVerticalAlign(VerticalAlign::MIDDLE);
+		Rectangle<T> leftBottomAlignRect{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
+		Circle<T> centerAlignCircle{circle, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 
 		T rectXLeft = leftBottomAlignRect.getX();
 		T rectXRight = rectXLeft + leftBottomAlignRect.getWidth();
@@ -138,6 +133,31 @@ namespace sfz {
 		
 		return centerAlignCircle.getPosition().distance(sfz::vec2<T>{closestX, closestY}).squaredNorm() 
 		       <= radius*radius;
+	}
+
+	template<typename T>
+	T Rectangle<T>::area() const {
+		return dimensions[0]*dimensions[1];
+	}
+
+	template<typename T>
+	T Rectangle<T>::circumference() const {
+		return dimensions[0]*2 + dimensions[1]*2;
+	}
+
+	template<typename T>
+	size_t Rectangle<T>::hash() const {
+		std::hash<T> hasher;
+		std::hash<char> enumHasher;
+		size_t hash = 0;
+		// hash_combine algorithm from boost
+		hash ^= hasher(position[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(position[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(dimensions[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(dimensions[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= enumHasher(static_cast<char>(horizontalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= enumHasher(static_cast<char>(verticalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		return hash;
 	}
 
 	// Getters
@@ -251,6 +271,42 @@ namespace sfz {
 		this->verticalAlign = verticalAlign;
 	}
 
+	// Comparison operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	bool Rectangle<T>::operator== (const Rectangle<T>& other) const {
+		return this->position == other.position &&
+		       this->dimensions == other.dimensions &&
+		       this->horizontalAlign == other.horizontalAlign &&
+		       this->verticalAlign == other.verticalAlign;
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator!= (const Rectangle<T>& other) const {
+		return !((*this) == other);
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator< (const Rectangle<T>& other) const {
+		return this->area() < other.area();
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator> (const Rectangle<T>& other) const {
+		return this->area() > other.area();
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator<= (const Rectangle<T>& other) const {
+		return this->area() <= other.area();
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator>= (const Rectangle<T>& other) const {
+		return this->area() >= other.area();
+	}
+
 	// Private helper functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -260,5 +316,14 @@ namespace sfz {
 			throw std::invalid_argument{"Negative dimensions not allowed."};
 		}
 		return value;
+	}
+}
+
+// Specializations of standard library for sfz::Rectangle
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<typename T>
+	size_t hash<sfz::Rectangle<T>>::operator() (const sfz::Rectangle<T>& rect) const {
+		return rect.hash();
 	}
 }
