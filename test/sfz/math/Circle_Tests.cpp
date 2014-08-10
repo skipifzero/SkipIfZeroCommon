@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <vector>
+#include <unordered_map>
 #include "sfz/math/Circle.hpp"
 
 TEST_CASE("Constructors", "[sfz::Circle]") {
@@ -270,5 +271,88 @@ TEST_CASE("Setters", "[sfz::Circle]") {
 		circ.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
 		REQUIRE(circ.getY() == 0);
 		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::MIDDLE);
+	}
+}
+
+TEST_CASE("Area and circumference", "[sfz::Circle]") {
+	sfz::Circle<int> r1{0, 0, 10};
+	sfz::Circle<int> r2{0, 0, 1};
+	SECTION("area()") {
+		REQUIRE(r1.area() == 300);
+		REQUIRE(r2.area() == 3);
+	}
+	SECTION("circumference()") {
+		REQUIRE(r1.circumference() == 60);
+		REQUIRE(r2.circumference() == 6);
+	}
+}
+
+TEST_CASE("Comparison operators", "[sfz::Circle]") {
+	sfz::Circle<int> r1{0, 0, 10};
+	sfz::Circle<int> r2{0, 0, 10};
+	sfz::Circle<int> r3{0, 0, 1};
+	sfz::Circle<int> r4{0, 0, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+
+	SECTION("==") {
+		REQUIRE(r1 == r2);
+		REQUIRE(!(r1 == r3));
+		REQUIRE(!(r1 == r4));
+		REQUIRE(!(r2 == r3));
+		REQUIRE(!(r2 == r4));
+		REQUIRE(!(r3 == r4));
+	}
+	SECTION("!=") {
+		REQUIRE(!(r1 != r2));
+		REQUIRE(r1 != r3);
+		REQUIRE(r1 != r4);
+		REQUIRE(r2 != r3);
+		REQUIRE(r2 != r4);
+		REQUIRE(r3 != r4);
+	}
+	SECTION("<") {
+		REQUIRE(!(r1 < r2));
+		REQUIRE(!(r3 < r4));
+		REQUIRE(r3 < r1);
+		REQUIRE(!(r1 < r3));
+	}
+	SECTION(">") {
+		REQUIRE(!(r1 > r2));
+		REQUIRE(!(r3 > r4));
+		REQUIRE(r1 > r3);
+		REQUIRE(!(r3 > r1));
+	}
+	SECTION("<=") {
+		REQUIRE(r1 <= r2);
+		REQUIRE(r3 <= r4);
+		REQUIRE(r3 <= r1);
+		REQUIRE(!(r1 <= r3));
+	}
+	SECTION(">=") {
+		REQUIRE(r1 >= r2);
+		REQUIRE(r3 >= r4);
+		REQUIRE(r1 >= r3);
+		REQUIRE(!(r3 >= r1));
+	}
+}
+
+TEST_CASE("Hashing", "[sfz::Cirlce]") {
+	sfz::Circle<int> r1{-1, 100, 32};
+	sfz::Circle<int> r2{-1, 100, 32, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
+	sfz::Circle<int> r3{0, -9, 2};
+	
+	SECTION("Hash functions") {
+		REQUIRE(r1.hash() != r2.hash());
+		REQUIRE(r2.hash() != r3.hash());
+	}
+	SECTION("Hash map") {
+		// This test checks if unordered_map works as it should. Not a very good test, but the best I can come up with
+		// to test if hashing works as it should at the moment.
+		std::unordered_map<sfz::Circle<int>, int> hashMap;
+		hashMap[r1] = 1;
+		hashMap[r2] = 2;
+		hashMap[r3] = 3;
+		REQUIRE(hashMap[r1] == 1);
+		REQUIRE(hashMap[r2] == 2);
+		REQUIRE(hashMap[r3] == 3);
 	}
 }

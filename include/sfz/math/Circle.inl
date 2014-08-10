@@ -183,6 +183,42 @@ namespace sfz {
 		this->verticalAlign = verticalAlign;
 	}
 
+	// Comparison operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	bool Circle<T>::operator== (const Circle<T>& other) const {
+		return this->position == other.position &&
+		       this->radius == other.radius &&
+		       this->horizontalAlign == other.horizontalAlign &&
+		       this->verticalAlign == other.verticalAlign;
+	}
+
+	template<typename T>
+	bool Circle<T>::operator!= (const Circle<T>& other) const {
+		return !((*this) == other);
+	}
+
+	template<typename T>
+	bool Circle<T>::operator< (const Circle<T>& other) const {
+		return this->area() < other.area();
+	}
+
+	template<typename T>
+	bool Circle<T>::operator> (const Circle<T>& other) const {
+		return this->area() > other.area();
+	}
+
+	template<typename T>
+	bool Circle<T>::operator<= (const Circle<T>& other) const {
+		return this->area() <= other.area();
+	}
+
+	template<typename T>
+	bool Circle<T>::operator>= (const Circle<T>& other) const {
+		return this->area() >= other.area();
+	}
+
 	// Private helper functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -192,5 +228,14 @@ namespace sfz {
 			throw std::invalid_argument{"Negative radius not allowed."};
 		}
 		return value;
+	}
+}
+
+// Specializations of standard library for sfz::Circle
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<typename T>
+	size_t hash<sfz::Circle<T>>::operator() (const sfz::Circle<T>& circle) const {
+		return circle.hash();
 	}
 }

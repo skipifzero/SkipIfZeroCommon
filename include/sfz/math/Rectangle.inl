@@ -271,6 +271,42 @@ namespace sfz {
 		this->verticalAlign = verticalAlign;
 	}
 
+	// Comparison operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	bool Rectangle<T>::operator== (const Rectangle<T>& other) const {
+		return this->position == other.position &&
+		       this->dimensions == other.dimensions &&
+		       this->horizontalAlign == other.horizontalAlign &&
+		       this->verticalAlign == other.verticalAlign;
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator!= (const Rectangle<T>& other) const {
+		return !((*this) == other);
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator< (const Rectangle<T>& other) const {
+		return this->area() < other.area();
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator> (const Rectangle<T>& other) const {
+		return this->area() > other.area();
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator<= (const Rectangle<T>& other) const {
+		return this->area() <= other.area();
+	}
+
+	template<typename T>
+	bool Rectangle<T>::operator>= (const Rectangle<T>& other) const {
+		return this->area() >= other.area();
+	}
+
 	// Private helper functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -280,5 +316,14 @@ namespace sfz {
 			throw std::invalid_argument{"Negative dimensions not allowed."};
 		}
 		return value;
+	}
+}
+
+// Specializations of standard library for sfz::Rectangle
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<typename T>
+	size_t hash<sfz::Rectangle<T>>::operator() (const sfz::Rectangle<T>& rect) const {
+		return rect.hash();
 	}
 }

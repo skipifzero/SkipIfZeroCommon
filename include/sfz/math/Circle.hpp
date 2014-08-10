@@ -249,6 +249,55 @@ namespace sfz {
 		 */
 		void changeVerticalAlign(VerticalAlign verticalAlign);
 
+		// Comparison operators
+		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+		/**
+		 * @brief Equality operator.
+		 * @param other the rhs circle
+		 * @return whether the lhs and rhs circles are equal
+		 */
+		bool operator== (const Circle<T>& other) const;
+
+		/**
+		 * @brief Inequality operator.
+		 * @param other the rhs circle
+		 * @return whether the lhs and rhs circles are not equal
+		 */
+		bool operator!= (const Circle<T>& other) const;
+
+		/**
+		 * @brief Smaller than operator.
+		 * The size of the Circle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs circle
+		 * @return whether the lhs circle is smaller than the rhs circle
+		 */	
+		bool operator< (const Circle<T>& other) const;
+
+		/**
+		 * @brief Larger than operator.
+		 * The size of the Circle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs circle
+		 * @return whether the lhs circle is larger than the rhs circle
+		 */	
+		bool operator> (const Circle<T>& other) const;
+
+		/**
+		 * @brief Smaller than or equal operator.
+		 * The size of the Circle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs circle
+		 * @return whether the lhs circle is smaller than or equal to the rhs circle
+		 */	
+		bool operator<= (const Circle<T>& other) const;
+
+		/**
+		 * @brief Larger than or equal operator.
+		 * The size of the Circle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs circle
+		 * @return whether the lhs circle is larger than or equal to the rhs circle
+		 */
+		bool operator>= (const Circle<T>& other) const;
+
 	private:
 
 		// Members
@@ -265,6 +314,16 @@ namespace sfz {
 		T requireNonNegative(T value) const;
 	};
 }
+
+// Specializations of standard library for sfz::Circle
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<typename T>
+	struct hash<sfz::Circle<T>> {
+		size_t operator() (const sfz::Circle<T>& circle) const;
+	};
+}
+
 #include "sfz/math/Rectangle.hpp"
 #include "Circle.inl"
 #endif

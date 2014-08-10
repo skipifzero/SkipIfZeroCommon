@@ -295,6 +295,55 @@ namespace sfz {
 		 */
 		void changeVerticalAlign(VerticalAlign verticalAlign);
 
+		// Comparison operators
+		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+		/**
+		 * @brief Equality operator.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs and rhs rectangles are equal
+		 */
+		bool operator== (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Inequality operator.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs and rhs rectangles are not equal
+		 */
+		bool operator!= (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Smaller than operator.
+		 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs rectangle is smaller than the rhs rectangle
+		 */	
+		bool operator< (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Larger than operator.
+		 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs rectangle is larger than the rhs rectangle
+		 */	
+		bool operator> (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Smaller than or equal operator.
+		 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs rectangle is smaller than or equal to the rhs rectangle
+		 */	
+		bool operator<= (const Rectangle<T>& other) const;
+
+		/**
+		 * @brief Larger than or equal operator.
+		 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+		 * @param other the rhs rectangle
+		 * @return whether the lhs rectangle is larger than or equal to the rhs rectangle
+		 */	
+		bool operator>= (const Rectangle<T>& other) const;
+
 	private:
 
 		// Members
@@ -311,6 +360,16 @@ namespace sfz {
 		T requireNonNegative(T value) const;
 	};
 }
+
+// Specializations of standard library for sfz::Rectangle
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+namespace std {
+	template<typename T>
+	struct hash<sfz::Rectangle<T>> {
+		size_t operator() (const sfz::Rectangle<T>& rect) const;
+	};
+}
+
 #include "sfz/math/Circle.hpp"
 #include "Rectangle.inl"
 #endif
