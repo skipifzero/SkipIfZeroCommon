@@ -135,6 +135,31 @@ namespace sfz {
 		       <= radius*radius;
 	}
 
+	template<typename T>
+	T Rectangle<T>::area() const {
+		return dimensions[0]*dimensions[1];
+	}
+
+	template<typename T>
+	T Rectangle<T>::circumference() const {
+		return dimensions[0]*2 + dimensions[1]*2;
+	}
+
+	template<typename T>
+	size_t Rectangle<T>::hash() const {
+		std::hash<T> hasher;
+		std::hash<char> enumHasher;
+		size_t hash = 0;
+		// hash_combine algorithm from boost
+		hash ^= hasher(position[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(position[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(dimensions[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(dimensions[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= enumHasher(static_cast<char>(horizontalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= enumHasher(static_cast<char>(verticalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		return hash;
+	}
+
 	// Getters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

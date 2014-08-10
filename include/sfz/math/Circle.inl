@@ -75,6 +75,30 @@ namespace sfz {
 		return rect.overlap(*this);
 	}
 
+	template<typename T>
+	T Circle<T>::area() const {
+		return static_cast<T>(PI_DOUBLE)*radius*radius;
+	}
+
+	template<typename T>
+	T Circle<T>::circumference() const {
+		return static_cast<T>(2)*static_cast<T>(PI_DOUBLE)*radius;
+	}
+
+	template<typename T>
+	size_t Circle<T>::hash() const {
+		std::hash<T> hasher;
+		std::hash<char> enumHasher;
+		size_t hash = 0;
+		// hash_combine algorithm from boost
+		hash ^= hasher(position[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(position[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= hasher(radius) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= enumHasher(static_cast<char>(horizontalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		hash ^= enumHasher(static_cast<char>(verticalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+		return hash;
+	}
+
 	// Getters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

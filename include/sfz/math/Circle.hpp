@@ -2,6 +2,9 @@
 #ifndef SFZ_MATH_CIRCLE_HPP
 #define SFZ_MATH_CIRCLE_HPP
 
+#include <stdexcept> // std::invalid_argument
+#include <functional> // std::hash
+#include "sfz/math/MathConstants.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
 
@@ -117,6 +120,24 @@ namespace sfz {
 		 * @return whether the specified Rectangle overlaps with this Circle or not
 		 */
 		bool overlap(const Rectangle<T>& rect) const;
+
+		/**
+		 * @brief Returns the area of this Circle.
+		 * @return the area of this Circle
+		 */
+		T area() const;
+
+		/**
+		 * @brief Returns the circumference of this Circle.
+		 * @return the circumference of this Circle
+		 */
+		T circumference() const;
+
+		/**
+		 * @brief Hashes the rectangle.
+		 * @return hash of rectangle
+		 */
+		size_t hash() const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
