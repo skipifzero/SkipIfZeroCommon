@@ -2,7 +2,7 @@
 SkipIfZero Common is a collection of reusable c++11 code used in SkipIfZero projects. It contains math, algorithms, utilities, etc.
 
 ## Building
-It is advisable to let CMake generate the wanted build solution in a directory called `build` inside the project folder as that folder is ignored by git.
+It is advisable to let CMake generate the wanted build solution in a directory called `build` inside the project folder as this folder is ignored by git.
 
 ### Requirements
 - CMake 3.0 or newer for generating build solution.
@@ -53,4 +53,4 @@ Now you can link SkipIfZero Common with the following commands:
 
 
 ## License
-What license to use has yet to be decided. In the meantime just contact me if you want to use the code.
+Uses zlib, this means that you can basically use the code however you want as long as you give credit and don't claim you wrote it yourself. See LICENSE file for more info.
