@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 # Project name
 project("SkipIfZero Common")
 
-# Huge hack to ensure we always build in release mode.
-set(CMAKE_BUILD_TYPE release)
-
 # Compiler flags
 if ( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
   OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
