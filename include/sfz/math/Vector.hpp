@@ -164,6 +164,12 @@ namespace sfz {
 		 */
 		size_t hash() const;
 
+		/**
+		 * @brief Returns string representation of the vector.
+		 * @return string representation of the vector
+		 */
+		std::string to_string() const;
+
 		// Standard iterator functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
