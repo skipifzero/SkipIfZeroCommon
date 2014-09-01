@@ -4,6 +4,7 @@
 
 #include <stdexcept> // std::invalid_argument
 #include <functional> // std::hash
+#include <string>
 #include "sfz/math/MathConstants.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
@@ -138,6 +139,12 @@ namespace sfz {
 		 * @return hash of rectangle
 		 */
 		size_t hash() const;
+
+		/**
+		 * @brief Returns string representation of the circle.
+		 * @return string representation of the circle
+		 */
+		std::string to_string() const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

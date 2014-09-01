@@ -4,6 +4,7 @@
 
 #include <stdexcept> // std::invalid_argument
 #include <functional> // std::hash
+#include <string>
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
 
@@ -150,6 +151,12 @@ namespace sfz {
 		 * @return hash of the rectangle
 		 */
 		size_t hash() const;
+
+		/**
+		 * @brief Returns string representation of the rectangle.
+		 * @return string representation of the rectangle
+		 */
+		std::string to_string() const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
