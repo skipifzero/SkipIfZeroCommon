@@ -321,15 +321,6 @@ namespace sfz {
 	template<typename T>
 	Vector<T,2> rotate(const Vector<T,2>& vector, const T angle);
 
-	/**
-	 * @relates sfz::Vector
-	 * @brief Creates a string representation of the specified vector.
-	 * @param vector the vector to make a string of
-	 * @return the string representation
-	 */
-	template<typename T, size_t N>
-	std::string to_string(const Vector<T,N>& vector);
-
 	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	

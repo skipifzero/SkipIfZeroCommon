@@ -463,7 +463,7 @@ TEST_CASE("Calculating distance from on vector to another", "[sfz::Vector]") {
 
 TEST_CASE("Converting to string", "[sfz::Vector]") {
 	sfz::Vector<int, 3> v{-1, 2, 10};
-	REQUIRE(sfz::to_string(v) == "[-1, 2, 10]");
+	REQUIRE(v.to_string() == "[-1, 2, 10]");
 }
 
 TEST_CASE("Hashing", "[sfz::Vector]") {

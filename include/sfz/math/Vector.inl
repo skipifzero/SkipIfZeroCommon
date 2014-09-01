@@ -283,11 +283,6 @@ namespace sfz {
 		return Vector<T,2>{vector[0]*cos - vector[1]*sin, vector[0]*sin + vector[1]*cos};
 	}
 
-	template<typename T, size_t N>
-	std::string to_string(const Vector<T,N>& vector) {
-		return vector.to_string();
-	}
-
 	// Free (non-member) operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
