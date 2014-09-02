@@ -238,7 +238,7 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	T Circle<T>::requireNonNegative(T value) const {
+	T Circle<T>::requireNonNegative(T value) {
 		if(value < 0) {
 			throw std::invalid_argument{"Negative radius not allowed."};
 		}

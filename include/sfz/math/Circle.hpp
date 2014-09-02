@@ -318,7 +318,7 @@ namespace sfz {
 		// Private helper functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-		T requireNonNegative(T value) const;
+		static T requireNonNegative(T value);
 	};
 }
 

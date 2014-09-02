@@ -326,7 +326,7 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	T Rectangle<T>::requireNonNegative(T value) const {
+	T Rectangle<T>::requireNonNegative(T value) {
 		if(value < 0) {
 			throw std::invalid_argument{"Negative dimensions not allowed."};
 		}
