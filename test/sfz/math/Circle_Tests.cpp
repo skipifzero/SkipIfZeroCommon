@@ -356,3 +356,8 @@ TEST_CASE("Hashing", "[sfz::Cirlce]") {
 		REQUIRE(hashMap[r3] == 3);
 	}
 }
+
+TEST_CASE("to_string()", "[sfz::Circle]") {
+	sfz::Circle<int> c{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
+	REQUIRE(c.to_string() == "[Circle, pos=[1, 2], r=3, align: HorizontalAlign::LEFT, VerticalAlign::TOP]");
+}

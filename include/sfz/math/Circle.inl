@@ -103,13 +103,13 @@ namespace sfz {
 	std::string Circle<T>::to_string() const {
 		std::string str;
 		str += "[Circle, pos=";
-		str += position;
+		str += position.to_string();
 		str += ", r=";
 		str += std::to_string(radius);
 		str += ", align: ";
-		str += to_string(horizontalAlign);
+		str += sfz::to_string(horizontalAlign);
 		str += ", ";
-		str += to_string(verticalAlign);
+		str += sfz::to_string(verticalAlign);
 		str += "]";
 		return std::move(str);
 	}

@@ -168,9 +168,9 @@ namespace sfz {
 		str += ", dim=";
 		str += dimensions.to_string();
 		str += ", align: ";
-		str += to_string(horizontalAlign);
+		str += sfz::to_string(horizontalAlign);
 		str += ", ";
-		str += to_string(verticalAlign);
+		str += sfz::to_string(verticalAlign);
 		str += "]";
 		return std::move(str);
 	}
