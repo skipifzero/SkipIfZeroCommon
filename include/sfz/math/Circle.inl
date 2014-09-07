@@ -22,6 +22,16 @@ namespace sfz {
 	}
 
 	template<typename T>
+	template<typename T2>
+	Circle<T>::Circle(const Circle<T2>& circle) :
+		position{static_cast<vec2<T2>>(circle.getPosition())},
+		horizontalAlign{circle.getHorizontalAlign()},
+		verticalAlign{circle.getVerticalAlign()} {
+			this->radius = static_cast<T2>(circle.getRadius());
+	}
+
+
+	template<typename T>
 	Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		Circle<T>{circle} {
 			changeHorizontalAlign(horizontalAlign);

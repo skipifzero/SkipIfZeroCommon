@@ -15,6 +15,15 @@ TEST_CASE("Constructors", "[sfz::Circle]") {
 		REQUIRE(circ1.getHorizontalAlign() == circ2.getHorizontalAlign());
 		REQUIRE(circ1.getVerticalAlign() == circ2.getVerticalAlign());
 	}
+	SECTION("Copy cast constructor") {
+		sfz::Circle<float> circlef{1.1f, 2.2f, 3.3f};
+		sfz::Circle<int> circlei{circlef};
+		REQUIRE(circlei.getX() == 1);
+		REQUIRE(circlei.getY() == 2);
+		REQUIRE(circlei.getRadius() == 3);
+		REQUIRE(circlei.getHorizontalAlign() == circlef.getHorizontalAlign());
+		REQUIRE(circlei.getVerticalAlign() == circlef.getVerticalAlign());
+	}
 	SECTION("Copy constructor with alignment change") {
 		sfz::Circle<int> circ1{0, 0, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 		sfz::Circle<int> circ2{circ1, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};

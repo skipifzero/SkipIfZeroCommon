@@ -22,6 +22,16 @@ namespace sfz {
 	}
 
 	template<typename T>
+	template<typename T2>
+	Rectangle<T>::Rectangle(const Rectangle<T2>& rect) :
+		position{static_cast<vec2<T2>>(rect.getPosition())},
+		dimensions{static_cast<vec2<T2>>(rect.getDimensions())},
+		horizontalAlign{rect.getHorizontalAlign()},
+		verticalAlign{rect.getVerticalAlign()} {
+			// Initialization done.
+	}
+
+	template<typename T>
 	Rectangle<T>::Rectangle(const Rectangle<T>& rect, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		Rectangle<T>{rect} {
 			changeHorizontalAlign(horizontalAlign);
