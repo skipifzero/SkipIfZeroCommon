@@ -35,7 +35,7 @@ TEST_CASE("Constructors", "[sfz::Vector]") {
 		REQUIRE(vector[2] == 1);
 		REQUIRE(vector[3] == 42);
 	}
-	SECTION("Copy cast construcotr correctly copies and casts") {
+	SECTION("Copy cast constructor correctly copies and casts") {
 		sfz::Vector<int, 4> vector{sfz::Vector<float, 4>{-2.1f, 2.1f, 1.1f, 42.1f}};
 		REQUIRE(vector[0] == -2);
 		REQUIRE(vector[1] == 2);
@@ -463,7 +463,7 @@ TEST_CASE("Calculating distance from on vector to another", "[sfz::Vector]") {
 
 TEST_CASE("Converting to string", "[sfz::Vector]") {
 	sfz::Vector<int, 3> v{-1, 2, 10};
-	REQUIRE(sfz::to_string(v) == "[-1, 2, 10]");
+	REQUIRE(v.to_string() == "[-1, 2, 10]");
 }
 
 TEST_CASE("Hashing", "[sfz::Vector]") {

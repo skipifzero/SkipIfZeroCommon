@@ -125,6 +125,19 @@ namespace sfz {
 		return hash;
 	}
 
+	template<typename T, size_t N>
+	std::string Vector<T,N>::to_string() const {
+		std::string str;
+		str += "[";
+		for(auto element : elements) {
+			str += std::to_string(element);
+			str += ", ";
+		}
+		str.erase(str.length()-2);
+		str += "]";
+		return std::move(str);
+	}
+
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -268,19 +281,6 @@ namespace sfz {
 		T cos = std::cos(angle);
 		T sin = std::sin(angle);	
 		return Vector<T,2>{vector[0]*cos - vector[1]*sin, vector[0]*sin + vector[1]*cos};
-	}
-
-	template<typename T, size_t N>
-	std::string to_string(const Vector<T,N>& vector) {
-		std::string str;
-		str += "[";
-		for(auto element : vector) {
-			str += std::to_string(element);
-			str += ", ";
-		}
-		str.erase(str.length()-2);
-		str += "]";
-		return str;
 	}
 
 	// Free (non-member) operators (Arithmetic)

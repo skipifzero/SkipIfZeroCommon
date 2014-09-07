@@ -4,6 +4,7 @@
 
 #include <stdexcept> // std::invalid_argument
 #include <functional> // std::hash
+#include <string>
 #include "sfz/math/MathConstants.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
@@ -58,6 +59,14 @@ namespace sfz {
 		 */
 		Circle(const Circle<T>& circle);
 		
+		/**
+		 * @brief Copy cast constructor.
+		 * Attempts to static_cast all types from specified circle to specified type.
+		 * @param circle the circle to copy
+		 */
+		template<typename T2>
+		explicit Circle(const Circle<T2>& circle);
+
 		/**
 		 * @brief Copy constructor that changes alignment.
 		 * The alignment is changed as it would be if changeHorizontalAlign() or changeVerticalAlign() were called.
@@ -138,6 +147,12 @@ namespace sfz {
 		 * @return hash of rectangle
 		 */
 		size_t hash() const;
+
+		/**
+		 * @brief Returns string representation of the circle.
+		 * @return string representation of the circle
+		 */
+		std::string to_string() const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -311,7 +326,7 @@ namespace sfz {
 		// Private helper functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-		T requireNonNegative(T value) const;
+		static T requireNonNegative(T value);
 	};
 }
 

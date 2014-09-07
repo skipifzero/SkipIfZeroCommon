@@ -22,6 +22,16 @@ namespace sfz {
 	}
 
 	template<typename T>
+	template<typename T2>
+	Circle<T>::Circle(const Circle<T2>& circle) :
+		position{static_cast<vec2<T2>>(circle.getPosition())},
+		horizontalAlign{circle.getHorizontalAlign()},
+		verticalAlign{circle.getVerticalAlign()} {
+			this->radius = static_cast<T2>(circle.getRadius());
+	}
+
+
+	template<typename T>
 	Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		Circle<T>{circle} {
 			changeHorizontalAlign(horizontalAlign);
@@ -97,6 +107,21 @@ namespace sfz {
 		hash ^= enumHasher(static_cast<char>(horizontalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		hash ^= enumHasher(static_cast<char>(verticalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		return hash;
+	}
+
+	template<typename T>
+	std::string Circle<T>::to_string() const {
+		std::string str;
+		str += "[Circle, pos=";
+		str += position.to_string();
+		str += ", r=";
+		str += std::to_string(radius);
+		str += ", align: ";
+		str += sfz::to_string(horizontalAlign);
+		str += ", ";
+		str += sfz::to_string(verticalAlign);
+		str += "]";
+		return std::move(str);
 	}
 
 	// Getters
@@ -223,7 +248,7 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	T Circle<T>::requireNonNegative(T value) const {
+	T Circle<T>::requireNonNegative(T value) {
 		if(value < 0) {
 			throw std::invalid_argument{"Negative radius not allowed."};
 		}

@@ -2,6 +2,8 @@
 #ifndef SFZ_MATH_ALIGNMENT_HPP
 #define SFZ_MATH_ALIGNMENT_HPP
 
+#include <string>
+
 namespace sfz {
 
 	/**
@@ -35,6 +37,36 @@ namespace sfz {
 		MIDDLE = 0, 
 		TOP = 1
 	};
+
+	/**
+	 * @brief Returns a string representation of the enum.
+	 * @return string representation of the enum
+	 */
+	inline std::string to_string(HorizontalAlign align) {
+		switch(align) {
+		case HorizontalAlign::LEFT:
+			return std::move(std::string{"HorizontalAlign::LEFT"});
+		case HorizontalAlign::CENTER:
+			return std::move(std::string{"HorizontalAlign::CENTER"});
+		case HorizontalAlign::RIGHT:
+			return std::move(std::string{"HorizontalAlign::RIGHT"});
+		}
+	}
+
+	/**
+	 * @brief Returns a string representation of the enum.
+	 * @return string representation of the enum
+	 */
+	inline std::string to_string(VerticalAlign align) {
+		switch(align) {
+		case VerticalAlign::BOTTOM:
+			return std::move(std::string{"VerticalAlign::BOTTOM"});
+		case VerticalAlign::MIDDLE:
+			return std::move(std::string{"VerticalAlign::MIDDLE"});
+		case VerticalAlign::TOP:
+			return std::move(std::string{"VerticalAlign::TOP"});
+		}
+	}
 
 	/**
 	 * @brief Calculates the distance between two HorizontalAlign enums.

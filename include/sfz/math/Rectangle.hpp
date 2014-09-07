@@ -4,6 +4,7 @@
 
 #include <stdexcept> // std::invalid_argument
 #include <functional> // std::hash
+#include <string>
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
 
@@ -54,6 +55,14 @@ namespace sfz {
 		 * @param rect the Rectangle to copy
 		 */
 		Rectangle(const Rectangle<T>& rect);
+
+		/**
+		 * @brief Copy cast constructor.
+		 * Attempts to static_cast all types from specified rectangle to specified type.
+		 * @param rect the rectangle to copy
+		 */
+		template<typename T2>
+		explicit Rectangle(const Rectangle<T2>& rect);
 
 		/**
 		 * @brief Copy constructor that changes alignment.
@@ -150,6 +159,12 @@ namespace sfz {
 		 * @return hash of the rectangle
 		 */
 		size_t hash() const;
+
+		/**
+		 * @brief Returns string representation of the rectangle.
+		 * @return string representation of the rectangle
+		 */
+		std::string to_string() const;
 
 		// Getters
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -357,7 +372,7 @@ namespace sfz {
 		// Private helper functions
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-		T requireNonNegative(T value) const;
+		static T requireNonNegative(T value);
 	};
 }
 

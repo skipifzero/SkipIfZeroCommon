@@ -22,6 +22,16 @@ namespace sfz {
 	}
 
 	template<typename T>
+	template<typename T2>
+	Rectangle<T>::Rectangle(const Rectangle<T2>& rect) :
+		position{static_cast<vec2<T2>>(rect.getPosition())},
+		dimensions{static_cast<vec2<T2>>(rect.getDimensions())},
+		horizontalAlign{rect.getHorizontalAlign()},
+		verticalAlign{rect.getVerticalAlign()} {
+			// Initialization done.
+	}
+
+	template<typename T>
 	Rectangle<T>::Rectangle(const Rectangle<T>& rect, HorizontalAlign horizontalAlign, VerticalAlign verticalAlign) :
 		Rectangle<T>{rect} {
 			changeHorizontalAlign(horizontalAlign);
@@ -158,6 +168,21 @@ namespace sfz {
 		hash ^= enumHasher(static_cast<char>(horizontalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		hash ^= enumHasher(static_cast<char>(verticalAlign)) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		return hash;
+	}
+
+	template<typename T>
+	std::string Rectangle<T>::to_string() const {
+		std::string str;
+		str += "[Rectangle, pos=";
+		str += position.to_string();
+		str += ", dim=";
+		str += dimensions.to_string();
+		str += ", align: ";
+		str += sfz::to_string(horizontalAlign);
+		str += ", ";
+		str += sfz::to_string(verticalAlign);
+		str += "]";
+		return std::move(str);
 	}
 
 	// Getters
@@ -311,7 +336,7 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	T Rectangle<T>::requireNonNegative(T value) const {
+	T Rectangle<T>::requireNonNegative(T value) {
 		if(value < 0) {
 			throw std::invalid_argument{"Negative dimensions not allowed."};
 		}
