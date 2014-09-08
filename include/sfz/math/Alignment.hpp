@@ -45,11 +45,11 @@ namespace sfz {
 	inline std::string to_string(HorizontalAlign align) {
 		switch(align) {
 		case HorizontalAlign::LEFT:
-			return std::move(std::string{"HorizontalAlign::LEFT"});
+			return std::move(std::string{"LEFT"});
 		case HorizontalAlign::CENTER:
-			return std::move(std::string{"HorizontalAlign::CENTER"});
+			return std::move(std::string{"CENTER"});
 		case HorizontalAlign::RIGHT:
-			return std::move(std::string{"HorizontalAlign::RIGHT"});
+			return std::move(std::string{"RIGHT"});
 		}
 	}
 
@@ -60,11 +60,11 @@ namespace sfz {
 	inline std::string to_string(VerticalAlign align) {
 		switch(align) {
 		case VerticalAlign::BOTTOM:
-			return std::move(std::string{"VerticalAlign::BOTTOM"});
+			return std::move(std::string{"BOTTOM"});
 		case VerticalAlign::MIDDLE:
-			return std::move(std::string{"VerticalAlign::MIDDLE"});
+			return std::move(std::string{"MIDDLE"});
 		case VerticalAlign::TOP:
-			return std::move(std::string{"VerticalAlign::TOP"});
+			return std::move(std::string{"TOP"});
 		}
 	}
 
