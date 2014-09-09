@@ -112,7 +112,7 @@ namespace sfz {
 	template<typename T>
 	std::string Circle<T>::to_string() const {
 		std::string str;
-		str += "[Circle, pos=";
+		str += "[pos=";
 		str += position.to_string();
 		str += ", r=";
 		str += std::to_string(radius);

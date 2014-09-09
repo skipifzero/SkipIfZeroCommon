@@ -173,7 +173,7 @@ namespace sfz {
 	template<typename T>
 	std::string Rectangle<T>::to_string() const {
 		std::string str;
-		str += "[Rectangle, pos=";
+		str += "[pos=";
 		str += position.to_string();
 		str += ", dim=";
 		str += dimensions.to_string();
