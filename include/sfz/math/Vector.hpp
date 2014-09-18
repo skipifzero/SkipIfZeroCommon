@@ -17,13 +17,16 @@ namespace sfz {
 	using std::size_t;
 
 	/**
-	 * @brief A mathematical vector class that functions that imitates a built-in primitive.
+	 * @brief A mathematical vector POD class that imitates a built-in primitive.
 	 *
 	 * The template is designed to be used with float and doubles in first hand, and everything should work as 
 	 * expected with them. Integral types can also be used, but some things will not function as expected due to 
 	 * truncation. Most notably taking the norm will most likely not give the correct result as it involves taking the
 	 * square root. Another trouble with integral types is the risk of overflow. When calculating the norm you have to
 	 * square each element in the vector, which might wery well overflow if you have large elements.
+	 *
+	 * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used with standard
+	 * primitives.
 	 *
 	 * @param T the element type
 	 * @param N the amount of elements in the vector
@@ -38,16 +41,15 @@ namespace sfz {
 		// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 		
 		/**
-		 * @brief Default constructor, initializes all elements to 0.
+		 * @brief Default constructor, value of elements is undefined.
 		 */
-		Vector();
+		Vector() = default;
 
 		/**
 		 * @brief Copy constructor.
-		 * Copies all elements from specified vector to this vector.
 		 * @param vector the vector to copy
 		 */
-		Vector(const Vector<T,N>& vector);
+		Vector(const Vector<T,N>& vector) = default;
 
 		/**
 		 * @brief Copy cast constructor.

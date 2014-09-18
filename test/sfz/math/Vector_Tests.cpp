@@ -4,14 +4,9 @@
 #include "sfz/math/Vector.hpp"
 
 #include <unordered_map>
+#include <type_traits>
 
 TEST_CASE("Constructors", "[sfz::Vector]") {
-	SECTION("Default constructor initializes elements to 0") {
-		sfz::Vector<int, 3> vector;
-		for(std::size_t i = 0; i < 3; i++) {
-			REQUIRE(vector.get(i) == 0);
-		}	
-	}
 	SECTION("Initalizer list constructor assigns correct value to elements") {
 		sfz::Vector<int, 4> vector = {-2, 2, 1, 42};
 		REQUIRE(vector[0] == -2);
@@ -483,4 +478,42 @@ TEST_CASE("Hashing", "[sfz::Vector]") {
 
 	REQUIRE(v1.hash() != v2.hash());
 	REQUIRE(v2.hash() != v3.hash());
+}
+
+TEST_CASE("Is proper POD", "[sfz::Vector]") {
+	REQUIRE(std::is_trivially_copyable<sfz::vec2f>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec2d>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec2i>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec2l>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec3f>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec3d>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec3i>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec3l>::value);
+
+	REQUIRE(std::is_trivial<sfz::vec2f>::value);
+	REQUIRE(std::is_trivial<sfz::vec2d>::value);
+	REQUIRE(std::is_trivial<sfz::vec2i>::value);
+	REQUIRE(std::is_trivial<sfz::vec2l>::value);
+	REQUIRE(std::is_trivial<sfz::vec3f>::value);
+	REQUIRE(std::is_trivial<sfz::vec3d>::value);
+	REQUIRE(std::is_trivial<sfz::vec3i>::value);
+	REQUIRE(std::is_trivial<sfz::vec3l>::value);
+
+	REQUIRE(std::is_standard_layout<sfz::vec2f>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec2d>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec2i>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec2l>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec3f>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec3d>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec3i>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec3l>::value);
+
+	REQUIRE(std::is_pod<sfz::vec2f>::value);
+	REQUIRE(std::is_pod<sfz::vec2d>::value);
+	REQUIRE(std::is_pod<sfz::vec2i>::value);
+	REQUIRE(std::is_pod<sfz::vec2l>::value);
+	REQUIRE(std::is_pod<sfz::vec3f>::value);
+	REQUIRE(std::is_pod<sfz::vec3d>::value);
+	REQUIRE(std::is_pod<sfz::vec3i>::value);
+	REQUIRE(std::is_pod<sfz::vec3l>::value);
 }

@@ -2,16 +2,6 @@ namespace sfz {
 	
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	
-	template<typename T, size_t N>
-	Vector<T,N>::Vector() {
-		elements.fill(0);
-	}
-
-	template<typename T, size_t N>
-	Vector<T,N>::Vector(const Vector<T,N>& vector) {
-		elements = vector.elements;
-	}
 
 	template<typename T, size_t N>
 	template<typename T2>
