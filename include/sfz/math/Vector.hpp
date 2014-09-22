@@ -476,6 +476,7 @@ namespace sfz {
 
 	// Standard typedefs
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	
 	template<typename T>
 	using Vector2 = Vector<T,2>;
 	using Vector2f = Vector2<float>;

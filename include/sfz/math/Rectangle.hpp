@@ -389,6 +389,20 @@ namespace sfz {
 	 */	
 	template<typename T>
 	std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect);
+
+	// Standard typedefs
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	using RectangleF = Rectangle<float>;
+	using RectangleD = Rectangle<double>;
+	using RectangleI = Rectangle<int>;
+	using RectangleL = Rectangle<long>;
+
+	template<typename T>
+	using rect = Rectangle<T>;
+	using rectf = rect<float>;
+	using rectd = rect<double>;
+	using recti = rect<int>;
+	using rectl = rect<long>;
 }
 
 // Specializations of standard library for sfz::Rectangle

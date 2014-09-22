@@ -342,6 +342,20 @@ namespace sfz {
 	 */	
 	template<typename T>
 	std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle);
+
+	// Standard typedefs
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	using CircleF = Circle<float>;
+	using CircleD = Circle<double>;
+	using CircleI = Circle<int>;
+	using CircleL = Circle<long>;
+
+	template<typename T>
+	using circ = Circle<T>;
+	using circf = circ<float>;
+	using circd = circ<double>;
+	using circi = circ<int>;
+	using circl = circ<long>;
 }
 
 // Specializations of standard library for sfz::Circle
