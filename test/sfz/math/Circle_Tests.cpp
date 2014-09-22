@@ -344,7 +344,7 @@ TEST_CASE("Comparison operators", "[sfz::Circle]") {
 	}
 }
 
-TEST_CASE("Hashing", "[sfz::Cirlce]") {
+TEST_CASE("Hashing", "[sfz::Circle]") {
 	sfz::Circle<int> r1{-1, 100, 32};
 	sfz::Circle<int> r2{-1, 100, 32, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
 	sfz::Circle<int> r3{0, -9, 2};
@@ -368,5 +368,5 @@ TEST_CASE("Hashing", "[sfz::Cirlce]") {
 
 TEST_CASE("to_string()", "[sfz::Circle]") {
 	sfz::Circle<int> c{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
-	REQUIRE(c.to_string() == "[Circle, pos=[1, 2], r=3, align: HorizontalAlign::LEFT, VerticalAlign::TOP]");
+	REQUIRE(c.to_string() == "[pos=[1, 2], r=3, align: LEFT, TOP]");
 }

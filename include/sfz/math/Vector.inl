@@ -2,16 +2,6 @@ namespace sfz {
 	
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	
-	template<typename T, size_t N>
-	Vector<T,N>::Vector() {
-		elements.fill(0);
-	}
-
-	template<typename T, size_t N>
-	Vector<T,N>::Vector(const Vector<T,N>& vector) {
-		elements = vector.elements;
-	}
 
 	template<typename T, size_t N>
 	template<typename T2>
@@ -353,6 +343,14 @@ namespace sfz {
 	template<typename T, size_t N>
 	bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return right <= left;
+	}
+
+	// Free (non-member) operators (Other)
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T, size_t N>
+	std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) {
+		return ostream << vector.to_string();
 	}
 }
 

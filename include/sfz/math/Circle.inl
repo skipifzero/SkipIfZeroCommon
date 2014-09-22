@@ -13,15 +13,6 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	Circle<T>::Circle(const Circle<T>& circle) :
-		position{circle.position},
-		radius{circle.radius},
-		horizontalAlign{circle.horizontalAlign},
-		verticalAlign{circle.verticalAlign} {
-			// Initialization done.
-	}
-
-	template<typename T>
 	template<typename T2>
 	Circle<T>::Circle(const Circle<T2>& circle) :
 		position{static_cast<vec2<T2>>(circle.getPosition())},
@@ -112,7 +103,7 @@ namespace sfz {
 	template<typename T>
 	std::string Circle<T>::to_string() const {
 		std::string str;
-		str += "[Circle, pos=";
+		str += "[pos=";
 		str += position.to_string();
 		str += ", r=";
 		str += std::to_string(radius);
@@ -253,6 +244,14 @@ namespace sfz {
 			throw std::invalid_argument{"Negative radius not allowed."};
 		}
 		return value;
+	}
+
+	// Free (non-member) operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle) {
+		return ostream << circle.to_string();
 	}
 }
 

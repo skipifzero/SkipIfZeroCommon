@@ -5,6 +5,7 @@
 #include <stdexcept> // std::invalid_argument
 #include <functional> // std::hash
 #include <string>
+#include <iostream> // ostream
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
 
@@ -54,7 +55,7 @@ namespace sfz {
 		 * @brief Basic copy-constructor.
 		 * @param rect the Rectangle to copy
 		 */
-		Rectangle(const Rectangle<T>& rect);
+		Rectangle(const Rectangle<T>& rect) = default;
 
 		/**
 		 * @brief Copy cast constructor.
@@ -374,6 +375,34 @@ namespace sfz {
 
 		static T requireNonNegative(T value);
 	};
+
+	// Free (non-member) operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	/**
+	 * @relates sfz::Rectangle
+	 * @brief Ostream operator
+	 * The serialization of the rectangle is defined by its to_string() function.
+	 * @param ostream the output stream
+	 * @param rect the rectangle to serialize
+	 * @return ostream the output straem
+	 */	
+	template<typename T>
+	std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect);
+
+	// Standard typedefs
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	using RectangleF = Rectangle<float>;
+	using RectangleD = Rectangle<double>;
+	using RectangleI = Rectangle<int>;
+	using RectangleL = Rectangle<long>;
+
+	template<typename T>
+	using rect = Rectangle<T>;
+	using rectf = rect<float>;
+	using rectd = rect<double>;
+	using recti = rect<int>;
+	using rectl = rect<long>;
 }
 
 // Specializations of standard library for sfz::Rectangle

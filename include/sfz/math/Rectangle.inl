@@ -13,15 +13,6 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	Rectangle<T>::Rectangle(const Rectangle<T>& rect) :
-		position{rect.position}, 
-		dimensions{rect.dimensions},
-		horizontalAlign{rect.horizontalAlign},
-		verticalAlign{rect.verticalAlign} {
-			// Initialization done.
-	}
-
-	template<typename T>
 	template<typename T2>
 	Rectangle<T>::Rectangle(const Rectangle<T2>& rect) :
 		position{static_cast<vec2<T2>>(rect.getPosition())},
@@ -173,7 +164,7 @@ namespace sfz {
 	template<typename T>
 	std::string Rectangle<T>::to_string() const {
 		std::string str;
-		str += "[Rectangle, pos=";
+		str += "[pos=";
 		str += position.to_string();
 		str += ", dim=";
 		str += dimensions.to_string();
@@ -341,6 +332,14 @@ namespace sfz {
 			throw std::invalid_argument{"Negative dimensions not allowed."};
 		}
 		return value;
+	}
+
+	// Free (non-member) operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect) {
+		return ostream << rect.to_string();
 	}
 }
 
