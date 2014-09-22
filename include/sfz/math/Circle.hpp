@@ -57,7 +57,7 @@ namespace sfz {
 		 * @brief Basic copy-constructor.
 		 * @param circle the Circle to copy
 		 */
-		Circle(const Circle<T>& circle);
+		Circle(const Circle<T>& circle) = default;
 		
 		/**
 		 * @brief Copy cast constructor.

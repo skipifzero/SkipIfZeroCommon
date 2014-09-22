@@ -13,15 +13,6 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	Rectangle<T>::Rectangle(const Rectangle<T>& rect) :
-		position{rect.position}, 
-		dimensions{rect.dimensions},
-		horizontalAlign{rect.horizontalAlign},
-		verticalAlign{rect.verticalAlign} {
-			// Initialization done.
-	}
-
-	template<typename T>
 	template<typename T2>
 	Rectangle<T>::Rectangle(const Rectangle<T2>& rect) :
 		position{static_cast<vec2<T2>>(rect.getPosition())},

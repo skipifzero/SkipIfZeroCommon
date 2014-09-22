@@ -13,15 +13,6 @@ namespace sfz {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	template<typename T>
-	Circle<T>::Circle(const Circle<T>& circle) :
-		position{circle.position},
-		radius{circle.radius},
-		horizontalAlign{circle.horizontalAlign},
-		verticalAlign{circle.verticalAlign} {
-			// Initialization done.
-	}
-
-	template<typename T>
 	template<typename T2>
 	Circle<T>::Circle(const Circle<T2>& circle) :
 		position{static_cast<vec2<T2>>(circle.getPosition())},

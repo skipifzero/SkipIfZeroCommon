@@ -54,7 +54,7 @@ namespace sfz {
 		 * @brief Basic copy-constructor.
 		 * @param rect the Rectangle to copy
 		 */
-		Rectangle(const Rectangle<T>& rect);
+		Rectangle(const Rectangle<T>& rect) = default;
 
 		/**
 		 * @brief Copy cast constructor.
