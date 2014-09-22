@@ -344,7 +344,7 @@ TEST_CASE("Comparison operators", "[sfz::Circle]") {
 	}
 }
 
-TEST_CASE("Hashing", "[sfz::Cirlce]") {
+TEST_CASE("Hashing", "[sfz::Circle]") {
 	sfz::Circle<int> r1{-1, 100, 32};
 	sfz::Circle<int> r2{-1, 100, 32, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
 	sfz::Circle<int> r3{0, -9, 2};

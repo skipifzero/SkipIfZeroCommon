@@ -431,6 +431,6 @@ TEST_CASE("Hashing", "[sfz::Rectangle]") {
 }
 
 TEST_CASE("to_string()", "[sfz::Rectangle]") {
-	sfz::Rectangle<int> c{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
-	REQUIRE(c.to_string() == "[pos=[1, 2], dim=[3, 4], align: LEFT, TOP]");
+	sfz::Rectangle<int> r{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
+	REQUIRE(r.to_string() == "[pos=[1, 2], dim=[3, 4], align: LEFT, TOP]");
 }
