@@ -10,6 +10,7 @@
 #include <cmath> // std::sqrt
 #include <iterator>
 #include <string>
+#include <iostream> // std::ostream
 
 #include "sfz/math/MathConstants.hpp"
 
@@ -457,7 +458,21 @@ namespace sfz {
 	 * @return whether the lhs vector is larger than or equal to the rhs vector
 	 */	
 	template<typename T, size_t N>
-	bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right);	
+	bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right);
+
+	// Free (non-member) operators (Other)
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	
+	/**
+	 * @relates sfz::Vector
+	 * @brief Ostream operator
+	 * The serialization of the vector is defined by its to_string() function.
+	 * @param ostream the output stream
+	 * @param vector the vector to serialize
+	 * @return ostream the output straem
+	 */	
+	template<typename T, size_t N>
+	std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector);
 
 	// Standard typedefs
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

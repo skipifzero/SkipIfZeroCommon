@@ -344,6 +344,14 @@ namespace sfz {
 	bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) {
 		return right <= left;
 	}
+
+	// Free (non-member) operators (Other)
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T, size_t N>
+	std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) {
+		return ostream << vector.to_string();
+	}
 }
 
 // Specializations of standard library for sfz::Vector
