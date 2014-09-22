@@ -333,6 +333,14 @@ namespace sfz {
 		}
 		return value;
 	}
+
+	// Free (non-member) operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<typename T>
+	std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect) {
+		return ostream << rect.to_string();
+	}
 }
 
 // Specializations of standard library for sfz::Rectangle

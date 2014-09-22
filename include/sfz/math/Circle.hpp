@@ -328,6 +328,20 @@ namespace sfz {
 
 		static T requireNonNegative(T value);
 	};
+
+	// Free (non-member) operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	/**
+	 * @relates sfz::Circle
+	 * @brief Ostream operator
+	 * The serialization of the circle is defined by its to_string() function.
+	 * @param ostream the output stream
+	 * @param circle the circle to serialize
+	 * @return ostream the output straem
+	 */	
+	template<typename T>
+	std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle);
 }
 
 // Specializations of standard library for sfz::Circle

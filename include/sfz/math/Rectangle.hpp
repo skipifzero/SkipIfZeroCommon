@@ -5,6 +5,7 @@
 #include <stdexcept> // std::invalid_argument
 #include <functional> // std::hash
 #include <string>
+#include <iostream> // ostream
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
 
@@ -374,6 +375,20 @@ namespace sfz {
 
 		static T requireNonNegative(T value);
 	};
+
+	// Free (non-member) operators
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	/**
+	 * @relates sfz::Rectangle
+	 * @brief Ostream operator
+	 * The serialization of the rectangle is defined by its to_string() function.
+	 * @param ostream the output stream
+	 * @param rect the rectangle to serialize
+	 * @return ostream the output straem
+	 */	
+	template<typename T>
+	std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect);
 }
 
 // Specializations of standard library for sfz::Rectangle
