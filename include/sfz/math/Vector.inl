@@ -181,15 +181,15 @@ typename Vector<T,N>::const_iterator Vector<T,N>::cend() const
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-T& Vector<T,N>::operator[] (const size_t index)
+T& Vector<T,N>::operator[] (const size_t index) noexcept
 {
-	return mElements.at(index);
+	return mElements[index];
 }
 
 template<typename T, size_t N>
-const T& Vector<T,N>::operator[] (const size_t index) const
+const T& Vector<T,N>::operator[] (const size_t index) const noexcept
 {
-	return mElements.at(index);
+	return mElements[index];
 }
 
 // Member operators (Arithmetic & Assignment)

@@ -192,19 +192,19 @@ public:
 
 	/**
 	 * @brief Returns a reference to element at the specified index.
-	 * @throws std::out_of_range if index is out of range
+	 * Unlike get() if index is out of range undefined behavior occurs.
 	 * @param index the index of the element
 	 * @return reference to element at the specified index
 	 */
-	T& operator[] (const size_t index);
+	T& operator[] (const size_t index) noexcept;
 
 	/**
 	 * @brief Returns a const reference to element at the specified index.
-	 * @throws std::out_of_range if index is out of range
+	 * Unlike get() if index is out of range undefined behavior occurs.
 	 * @param index the index of the element
 	 * @return const reference to element at the specified index
 	 */
-	const T& operator[] (const size_t index) const;
+	const T& operator[] (const size_t index) const noexcept;
 
 	// Member operators (Arithmetic & Assignment)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

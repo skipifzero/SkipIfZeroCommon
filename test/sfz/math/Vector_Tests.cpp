@@ -61,7 +61,7 @@ TEST_CASE("Assignment and accessing", "[sfz::Vector]") {
 		REQUIRE(vector[4] == 54);
 	}
 	SECTION("Throws std::out_of_range when accessing invalid index") {
-		REQUIRE_THROWS_AS(vector[5], std::out_of_range);
+		REQUIRE_THROWS_AS(vector.get(5), std::out_of_range);
 	}
 }
 
