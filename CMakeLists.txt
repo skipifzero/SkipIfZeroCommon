@@ -40,9 +40,6 @@ include_directories(${CATCH_INCLUDE_DIRS})
 
 # Sources and headers needed to compile library
 add_library(SkipIfZeroCommon
-	${INCLUDE_DIR}/sfz/algo/Sorting.hpp
-	${INCLUDE_DIR}/sfz/algo/Sorting.inl
-
 	${INCLUDE_DIR}/sfz/Math.hpp
 	${INCLUDE_DIR}/sfz/math/Alignment.hpp
 	${INCLUDE_DIR}/sfz/math/Circle.hpp
@@ -88,12 +85,6 @@ add_test(MathConstants_Tests_Name MathConstants_Tests)
 add_executable(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
 set_property(TARGET BlockingQueue_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(BlockingQueue_Tests_Name BlockingQueue_Tests)
-
-add_executable(Sorting_PerfTests 
-	  ${TEST_DIR}/sfz/algo/Sorting_PerfTests.cpp
-	${SOURCE_DIR}/sfz/util/ScopedThread.cpp
-	${SOURCE_DIR}/sfz/util/StopWatch.cpp)
-
 
 # Sets flag that ensures some variables are only set once.
 set(SFZC_CONFIGURED_ONCE TRUE CACHE INTERNAL "A flag showing that CMake has configured at least once.")
