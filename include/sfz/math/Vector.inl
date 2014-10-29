@@ -39,19 +39,19 @@ void Vector<T,N>::set(const size_t index, T value)
 }
 
 template<typename T, size_t N>
-void Vector<T,N>::fill(const T value)
+void Vector<T,N>::fill(const T value) noexcept
 {
 	mElements.fill(value);
 }
 
 template<typename T, size_t N>
-T Vector<T,N>::norm() const
+T Vector<T,N>::norm() const noexcept
 {
 	return std::sqrt(squaredNorm());
 }
 
 template<typename T, size_t N>
-T Vector<T,N>::squaredNorm() const
+T Vector<T,N>::squaredNorm() const noexcept
 {
 	T squaredSum = 0;
 	for (auto element : mElements) {
@@ -61,7 +61,7 @@ T Vector<T,N>::squaredNorm() const
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::normalize() const
+Vector<T,N> Vector<T,N>::normalize() const noexcept
 {
 	T normTmp = norm();
 	if (normTmp == 0) return *this;
@@ -69,7 +69,7 @@ Vector<T,N> Vector<T,N>::normalize() const
 }
 
 template<typename T, size_t N>
-T Vector<T,N>::dot(const Vector<T,N>& other) const
+T Vector<T,N>::dot(const Vector<T,N>& other) const noexcept
 {
 	T product = 0;
 	auto itr = other.begin();
@@ -80,7 +80,7 @@ T Vector<T,N>::dot(const Vector<T,N>& other) const
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::elemMult(const Vector<T,N>& other) const
+Vector<T,N> Vector<T,N>::elemMult(const Vector<T,N>& other) const noexcept
 {
 	Vector<T,N> result = *this;
 	auto itr = other.begin();
@@ -91,7 +91,7 @@ Vector<T,N> Vector<T,N>::elemMult(const Vector<T,N>& other) const
 }
 
 template<typename T, size_t N>
-T Vector<T,N>::sum() const
+T Vector<T,N>::sum() const noexcept
 {
 	T result = 0;
 	for (auto element : mElements) {
@@ -108,13 +108,13 @@ Vector<T,N> Vector<T,N>::projectOnto(const Vector<T,N>& target) const {
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::distance(const Vector<T,N>& other) const
+Vector<T,N> Vector<T,N>::distance(const Vector<T,N>& other) const noexcept
 {
 	return other - *this;
 }
 
 template<typename T, size_t N>
-size_t Vector<T,N>::hash() const
+size_t Vector<T,N>::hash() const noexcept
 {
 	std::hash<T> hasher;
 	size_t hash = 0;
@@ -125,7 +125,7 @@ size_t Vector<T,N>::hash() const
 }
 
 template<typename T, size_t N>
-std::string Vector<T,N>::to_string() const
+std::string Vector<T,N>::to_string() const noexcept
 {
 	std::string str;
 	str += "[";
@@ -196,7 +196,7 @@ const T& Vector<T,N>::operator[] (const size_t index) const
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T,N>& Vector<T,N>::operator+= (const Vector<T,N>& right)
+Vector<T,N>& Vector<T,N>::operator+= (const Vector<T,N>& right) noexcept
 {
 	auto itr = right.begin();
 	for (auto& element : mElements) {
@@ -206,7 +206,7 @@ Vector<T,N>& Vector<T,N>::operator+= (const Vector<T,N>& right)
 }
 
 template<typename T, size_t N>
-Vector<T,N>& Vector<T,N>::operator-= (const Vector<T,N>& right)
+Vector<T,N>& Vector<T,N>::operator-= (const Vector<T,N>& right) noexcept
 {
 	auto itr = right.begin();
 	for (auto& element : mElements) {
@@ -216,7 +216,7 @@ Vector<T,N>& Vector<T,N>::operator-= (const Vector<T,N>& right)
 }
 
 template<typename T, size_t N>
-Vector<T,N>& Vector<T,N>::operator*= (const T& right)
+Vector<T,N>& Vector<T,N>::operator*= (const T& right) noexcept
 {
 	for (auto& element : mElements) {
 		element *= right;
@@ -238,25 +238,25 @@ Vector<T,N>& Vector<T,N>::operator/= (const T& right)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-T norm(const Vector<T,N>& vector)
+T norm(const Vector<T,N>& vector) noexcept
 {
 	return vector.norm();
 }
 
 template<typename T, size_t N>
-Vector<T,N> normalize(const Vector<T,N>& vector)
+Vector<T,N> normalize(const Vector<T,N>& vector) noexcept
 {
 	return vector.normalize();
 }
 
 template<typename T, size_t N>
-T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB)
+T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept
 {
 	return vectorA.dot(vectorB);
 }
 
 template<typename T>
-Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB)
+Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) noexcept
 {
 	sfz::Vector<T,3> result;
 	result[0] = vectorA[1]*vectorB[2] - vectorA[2]*vectorB[1];
@@ -289,7 +289,7 @@ T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB)
 }
 
 template<typename T>
-Vector<T,2> rotate(const Vector<T,2>& vector, const T angle)
+Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept
 {
 	T cos = std::cos(angle);
 	T sin = std::sin(angle);	
@@ -300,31 +300,31 @@ Vector<T,2> rotate(const Vector<T,2>& vector, const T angle)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right)
+Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	return (Vector<T,N>{left} += right);
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right)
+Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	return (Vector<T,N>{left} -= right);
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T,N>& right)
+Vector<T,N> operator- (const Vector<T,N>& right) noexcept
 {
 	return (Vector<T,N>{right} *= -1);
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator* (const Vector<T,N>& left, const T& right)
+Vector<T,N> operator* (const Vector<T,N>& left, const T& right) noexcept
 {
 	return (Vector<T,N>{left} *= right);
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator* (const T& left, const Vector<T,N>& right)
+Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept
 {
 	return (Vector<T,N>{right} *= left);
 }
@@ -339,7 +339,7 @@ Vector<T,N> operator/ (const Vector<T,N>& left, const T& right)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-bool operator== (const Vector<T,N>& left, const Vector<T,N>& right)
+bool operator== (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	auto itr = right.begin();
 	for (auto element : left) {
@@ -351,31 +351,31 @@ bool operator== (const Vector<T,N>& left, const Vector<T,N>& right)
 }
 
 template<typename T, size_t N>
-bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right)
+bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	return !(left == right);
 }
 
 template<typename T, size_t N>
-bool operator< (const Vector<T,N>& left, const Vector<T,N>& right)
+bool operator< (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	return left.squaredNorm() < right.squaredNorm();
 }
 
 template<typename T, size_t N>
-bool operator> (const Vector<T,N>& left, const Vector<T,N>& right)
+bool operator> (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	return right < left;
 }
 
 template<typename T, size_t N>
-bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right)
+bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	return left.squaredNorm() <= right.squaredNorm();
 }
 
 template<typename T, size_t N>
-bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right)
+bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	return right <= left;
 }
@@ -384,7 +384,7 @@ bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector)
+std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept
 {
 	return ostream << vector.to_string();
 }

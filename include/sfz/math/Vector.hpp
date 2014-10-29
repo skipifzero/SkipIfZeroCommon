@@ -93,7 +93,7 @@ public:
 	 * Assigns each elemnt in the vector the specified value
 	 * @param value the value to fill vector with
 	 */
-	void fill(const T value);
+	void fill(const T value) noexcept;
 
 	/**
 	 * @brief Calculates the norm (length) of the vector.
@@ -104,7 +104,7 @@ public:
 	 * do the square root yourself.
 	 * @return norm of the vector
 	 */
-	T norm() const;
+	T norm() const noexcept;
 
 	/**
 	 * @brief Calculates the squared norm (length) of the vector.
@@ -112,7 +112,7 @@ public:
 	 * This function is useful if you only need to compare vectors as you can skip the expensive sqrt operation.
 	 * @return squared norm of the vector
 	 */
-	T squaredNorm() const;
+	T squaredNorm() const noexcept;
 
 	/**
 	 * @brief Normalizes the vector and produces a unit vector.
@@ -120,7 +120,7 @@ public:
 	 * direction with the norm 1.
 	 * @return the unit vector
 	 */
-	Vector<T,N> normalize() const;
+	Vector<T,N> normalize() const noexcept;
 
 	/**
 	 * @brief Calculates the dot (scalar) product between this vector and the other vector.
@@ -128,20 +128,20 @@ public:
 	 * @param other the other vector
 	 * @return the dot product
 	 */
-	T dot(const Vector<T,N>& other) const;
+	T dot(const Vector<T,N>& other) const noexcept;
 
 	/**
 	 * @brief Does an element-wise multiplication of two vectors.
 	 * @param the other vector
 	 * @return the resulting vector
 	 */
-	Vector<T,N> elemMult(const Vector<T,N>& other) const;
+	Vector<T,N> elemMult(const Vector<T,N>& other) const noexcept;
 
 	/**
 	 * @brief Sums the elements in the vector.
 	 * @return the sum of all the elements in the vector
 	 */
-	T sum() const;
+	T sum() const noexcept;
 
 	/**
 	 * @brief Projects the vector onto another vector.
@@ -159,19 +159,19 @@ public:
 	 * @param other the other vector
 	 * @return the resulting vector
 	 */
-	Vector<T,N> distance(const Vector<T,N>& other) const;
+	Vector<T,N> distance(const Vector<T,N>& other) const noexcept;
 
 	/**
 	 * @brief Hashes the vector.
 	 * @return hash of the vector
 	 */
-	size_t hash() const;
+	size_t hash() const noexcept;
 
 	/**
 	 * @brief Returns string representation of the vector.
 	 * @return string representation of the vector
 	 */
-	std::string to_string() const;
+	std::string to_string() const noexcept;
 
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -215,7 +215,7 @@ public:
 	 * @param right the rhs vector
 	 * @return reference to the modified vector
 	 */
-	Vector<T,N>& operator+= (const Vector<T,N>& right);
+	Vector<T,N>& operator+= (const Vector<T,N>& right) noexcept;
 
 	/**
 	 * @brief Assignment subtraction operator.
@@ -223,7 +223,7 @@ public:
 	 * @param right the rhs vector
 	 * @return reference to the modified vector
 	 */
-	Vector<T,N>& operator-= (const Vector<T,N>& right);
+	Vector<T,N>& operator-= (const Vector<T,N>& right) noexcept;
 
 	/**
 	 * @brief Assignment multiplication operator.
@@ -231,7 +231,7 @@ public:
 	 * @param right the rhs element
 	 * @return reference to the modified vector
 	 */
-	Vector<T,N>& operator*= (const T& right);
+	Vector<T,N>& operator*= (const T& right) noexcept;
 
 	/**
 	 * @brief Assignment division operator.
@@ -257,7 +257,7 @@ private:
  * @return norm of the vector
  */
 template<typename T, size_t N>
-T norm(const Vector<T,N>& vector);
+T norm(const Vector<T,N>& vector) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -268,7 +268,7 @@ T norm(const Vector<T,N>& vector);
  * @return the unit vector
  */
 template<typename T, size_t N>
-Vector<T,N> normalize(const Vector<T,N>& vector);
+Vector<T,N> normalize(const Vector<T,N>& vector) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -278,7 +278,7 @@ Vector<T,N> normalize(const Vector<T,N>& vector);
  * @return the dot product
  */
 template<typename T, size_t N>
-T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
+T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -289,7 +289,7 @@ T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
  * @return the resulting vector
  */
 template<typename T>
-Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB);
+Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -322,7 +322,7 @@ T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
  * @return the resulting vector
  */
 template<typename T>
-Vector<T,2> rotate(const Vector<T,2>& vector, const T angle);
+Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept;
 
 // Free (non-member) operators (Arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -336,7 +336,7 @@ Vector<T,2> rotate(const Vector<T,2>& vector, const T angle);
  * @return the resulting vector
  */
 template<typename T, size_t N>
-Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right);
+Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -347,7 +347,7 @@ Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right);
  * @return the resulting vector
  */
 template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right);
+Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -357,7 +357,7 @@ Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right);
  * @return the resulting vector
  */
 template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T,N>& right);
+Vector<T,N> operator- (const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -368,7 +368,7 @@ Vector<T,N> operator- (const Vector<T,N>& right);
  * @return the resulting vector
  */
 template<typename T, size_t N>
-Vector<T,N> operator* (const Vector<T,N>& left, const T& right);
+Vector<T,N> operator* (const Vector<T,N>& left, const T& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -379,7 +379,7 @@ Vector<T,N> operator* (const Vector<T,N>& left, const T& right);
  * @return the resulting vector
  */
 template<typename T, size_t N>
-Vector<T,N> operator* (const T& left, const Vector<T,N>& right);
+Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -404,7 +404,7 @@ Vector<T,N> operator/ (const Vector<T,N>& left, const T& right);
  * @return whether the lhs and rhs vectors are equal
  */
 template<typename T, size_t N>
-bool operator== (const Vector<T,N>& left, const Vector<T,N>& right);
+bool operator== (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -414,7 +414,7 @@ bool operator== (const Vector<T,N>& left, const Vector<T,N>& right);
  * @return whether the lhs and rhs vectors aren't equal
  */
 template<typename T, size_t N>
-bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right);
+bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -425,7 +425,7 @@ bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right);
  * @return whether the lhs vector is smaller than the rhs vector
  */	
 template<typename T, size_t N>
-bool operator< (const Vector<T,N>& left, const Vector<T,N>& right);
+bool operator< (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -436,7 +436,7 @@ bool operator< (const Vector<T,N>& left, const Vector<T,N>& right);
  * @return whether the lhs vector is larger than the rhs vector
  */	
 template<typename T, size_t N>
-bool operator> (const Vector<T,N>& left, const Vector<T,N>& right);
+bool operator> (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -447,7 +447,7 @@ bool operator> (const Vector<T,N>& left, const Vector<T,N>& right);
  * @return whether the lhs vector is smaller than or equal to the rhs vector
  */	
 template<typename T, size_t N>
-bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right);
+bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -458,7 +458,7 @@ bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right);
  * @return whether the lhs vector is larger than or equal to the rhs vector
  */	
 template<typename T, size_t N>
-bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right);
+bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 // Free (non-member) operators (Other)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -472,7 +472,7 @@ bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right);
  * @return ostream the output straem
  */	
 template<typename T, size_t N>
-std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector);
+std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept;
 
 // Standard typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
