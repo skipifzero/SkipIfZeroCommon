@@ -512,6 +512,7 @@ using vec3l = vec3<long>;
 
 // Specializations of standard library for sfz::Vector
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 namespace std {
 
 template<typename T, size_t N>
