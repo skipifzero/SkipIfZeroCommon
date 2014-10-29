@@ -8,7 +8,7 @@ template<typename T2>
 Vector<T,N>::Vector(const Vector<T2,N>& vector)
 {
 	auto itr = vector.begin();
-	for (auto& element : elements) {
+	for (auto& element : mElements) {
 		element = static_cast<T>(*itr++);
 	}
 }
@@ -20,7 +20,7 @@ Vector<T,N>::Vector(std::initializer_list<T> list)
 		throw std::invalid_argument{
 		           std::to_string(list.size()) + " arguments to " + std::to_string(N) + "-dimensional vector"};
 	}
-	std::copy(list.begin(), list.end(), elements.begin());
+	std::copy(list.begin(), list.end(), mElements.begin());
 }
 
 // Public member functions
@@ -29,19 +29,19 @@ Vector<T,N>::Vector(std::initializer_list<T> list)
 template<typename T, size_t N>
 T Vector<T,N>::get(const size_t index) const
 {
-	return elements.at(index);
+	return mElements.at(index);
 }
 
 template<typename T, size_t N>
 void Vector<T,N>::set(const size_t index, T value)
 {
-	elements.at(index) = value;
+	mElements.at(index) = value;
 }
 
 template<typename T, size_t N>
 void Vector<T,N>::fill(const T value)
 {
-	elements.fill(value);
+	mElements.fill(value);
 }
 
 template<typename T, size_t N>
@@ -54,7 +54,7 @@ template<typename T, size_t N>
 T Vector<T,N>::squaredNorm() const
 {
 	T squaredSum = 0;
-	for (auto element : elements) {
+	for (auto element : mElements) {
 		squaredSum += element*element;
 	}
 	return squaredSum;
@@ -73,7 +73,7 @@ T Vector<T,N>::dot(const Vector<T,N>& other) const
 {
 	T product = 0;
 	auto itr = other.begin();
-	for (auto element : elements) {
+	for (auto element : mElements) {
 		product += (element*(*itr++));
 	}
 	return product;
@@ -94,7 +94,7 @@ template<typename T, size_t N>
 T Vector<T,N>::sum() const
 {
 	T result = 0;
-	for (auto element : elements) {
+	for (auto element : mElements) {
 		result += element;
 	}
 	return result;
@@ -118,7 +118,7 @@ size_t Vector<T,N>::hash() const
 {
 	std::hash<T> hasher;
 	size_t hash = 0;
-	for (auto element : elements) {
+	for (auto element : mElements) {
 		hash ^= hasher(element) + 0x9e3779b9 + (hash << 6) + (hash >> 2); // hash_combine algorithm from boost
 	}
 	return hash;
@@ -129,7 +129,7 @@ std::string Vector<T,N>::to_string() const
 {
 	std::string str;
 	str += "[";
-	for (auto element : elements) {
+	for (auto element : mElements) {
 		str += std::to_string(element);
 		str += ", ";
 	}
@@ -144,37 +144,37 @@ std::string Vector<T,N>::to_string() const
 template<typename T, size_t N>
 typename Vector<T,N>::iterator Vector<T,N>::begin()
 {
-	return elements.begin();
+	return mElements.begin();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::const_iterator Vector<T,N>::begin() const
 {
-	return elements.begin();
+	return mElements.begin();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::const_iterator Vector<T,N>::cbegin() const
 {
-	return elements.cbegin();
+	return mElements.cbegin();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::iterator Vector<T,N>::end()
 {
-	return elements.end();
+	return mElements.end();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::const_iterator Vector<T,N>::end() const
 {
-	return elements.end();
+	return mElements.end();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::const_iterator Vector<T,N>::cend() const
 {
-	return elements.cend();
+	return mElements.cend();
 }
 
 // Member operators (access)
@@ -183,13 +183,13 @@ typename Vector<T,N>::const_iterator Vector<T,N>::cend() const
 template<typename T, size_t N>
 T& Vector<T,N>::operator[] (const size_t index)
 {
-	return elements.at(index);
+	return mElements.at(index);
 }
 
 template<typename T, size_t N>
 const T& Vector<T,N>::operator[] (const size_t index) const
 {
-	return elements.at(index);
+	return mElements.at(index);
 }
 
 // Member operators (Arithmetic & Assignment)
@@ -199,7 +199,7 @@ template<typename T, size_t N>
 Vector<T,N>& Vector<T,N>::operator+= (const Vector<T,N>& right)
 {
 	auto itr = right.begin();
-	for (auto& element : elements) {
+	for (auto& element : mElements) {
 		element += *itr++;
 	}
 	return *this;
@@ -209,7 +209,7 @@ template<typename T, size_t N>
 Vector<T,N>& Vector<T,N>::operator-= (const Vector<T,N>& right)
 {
 	auto itr = right.begin();
-	for (auto& element : elements) {
+	for (auto& element : mElements) {
 		element -= *itr++;
 	}
 	return *this;
@@ -218,7 +218,7 @@ Vector<T,N>& Vector<T,N>::operator-= (const Vector<T,N>& right)
 template<typename T, size_t N>
 Vector<T,N>& Vector<T,N>::operator*= (const T& right)
 {
-	for (auto& element : elements) {
+	for (auto& element : mElements) {
 		element *= right;
 	}
 	return *this;
@@ -228,7 +228,7 @@ template<typename T, size_t N>
 Vector<T,N>& Vector<T,N>::operator/= (const T& right)
 {
 	if (right == 0) throw std::domain_error{"Division by zero"};
-	for (auto& element : elements) {
+	for (auto& element : mElements) {
 		element /= right;
 	}
 	return *this;

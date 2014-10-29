@@ -243,7 +243,7 @@ public:
 	Vector<T,N>& operator/= (const T& right);
 
 private:
-	std::array<T,N> elements;
+	std::array<T,N> mElements;
 };
 
 // Free (non-member) functions
