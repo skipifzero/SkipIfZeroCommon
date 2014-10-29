@@ -53,6 +53,7 @@ add_library(SkipIfZeroCommon
 	${INCLUDE_DIR}/sfz/Util.hpp
 	${INCLUDE_DIR}/sfz/util/BlockingQueue.hpp
 	${INCLUDE_DIR}/sfz/util/BlockingQueue.inl
+	${INCLUDE_DIR}/sfz/util/ConditionalThrow.hpp
 	${INCLUDE_DIR}/sfz/util/ScopedThread.hpp
 	 ${SOURCE_DIR}/sfz/util/ScopedThread.cpp
 	${INCLUDE_DIR}/sfz/util/StopWatch.hpp
@@ -85,6 +86,10 @@ add_test(MathConstants_Tests_Name MathConstants_Tests)
 add_executable(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
 set_property(TARGET BlockingQueue_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(BlockingQueue_Tests_Name BlockingQueue_Tests)
+
+add_executable(ConditionalThrow_Tests ${TEST_DIR}/sfz/util/ConditionalThrow_Tests.cpp)
+set_property(TARGET ConditionalThrow_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+add_test(ConditionalThrow_Tests_Name ConditionalThrow_Tests)
 
 # Sets flag that ensures some variables are only set once.
 set(SFZC_CONFIGURED_ONCE TRUE CACHE INTERNAL "A flag showing that CMake has configured at least once.")
