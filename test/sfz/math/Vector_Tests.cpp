@@ -6,7 +6,8 @@
 #include <unordered_map>
 #include <type_traits>
 
-TEST_CASE("Constructors", "[sfz::Vector]") {
+TEST_CASE("Constructors", "[sfz::Vector]")
+{
 	SECTION("Initalizer list constructor assigns correct value to elements") {
 		sfz::Vector<int, 4> vector = {-2, 2, 1, 42};
 		REQUIRE(vector[0] == -2);
@@ -39,7 +40,8 @@ TEST_CASE("Constructors", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Assignment and accessing", "[sfz::Vector]") {
+TEST_CASE("Assignment and accessing", "[sfz::Vector]")
+{
 	sfz::Vector<int, 5> vector{-10, 10, 12, 13, -2};
 	SECTION("Correct start values") {
 		REQUIRE(vector[0] == -10);
@@ -61,23 +63,25 @@ TEST_CASE("Assignment and accessing", "[sfz::Vector]") {
 		REQUIRE(vector[4] == 54);
 	}
 	SECTION("Throws std::out_of_range when accessing invalid index") {
-		REQUIRE_THROWS_AS(vector[5], std::out_of_range);
+		REQUIRE_THROWS_AS(vector.get(5), std::out_of_range);
 	}
 }
 
-TEST_CASE("fill", "[sfz::Vector]") {
+TEST_CASE("fill", "[sfz::Vector]")
+{
 	sfz::Vector<int,4> v;
 	v.fill(4);
-	for(auto e : v) {
+	for (auto e : v) {
 		REQUIRE(e == 4);
 	}
 	v.fill(2);
-	for(auto e : v) {
+	for (auto e : v) {
 		REQUIRE(e == 2);
 	}
 }
 
-TEST_CASE("Arithmetic operators", "[sfz::Vector]") {
+TEST_CASE("Arithmetic operators", "[sfz::Vector]")
+{
 	sfz::Vector<int, 3> v1{1, -2, 5};
 	sfz::Vector<int, 3> v2{0, -2, 1};
 
@@ -182,7 +186,8 @@ TEST_CASE("Arithmetic operators", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Norm (length) of vector", "[sfz::Vector]") {
+TEST_CASE("Norm (length) of vector", "[sfz::Vector]")
+{
 	sfz::Vector<int, 2> v1{2, 0};
 	sfz::Vector<int, 5> v2{-2, 2, 2, -2, 3};
 
@@ -205,7 +210,8 @@ TEST_CASE("Norm (length) of vector", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]") {
+TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]")
+{
 	sfz::Vector<float, 4> v1 = normalize(sfz::Vector<float, 4>{-2.f, 2.f, -2.f, 2.f});
 	const float delta = 1e-3f;
 
@@ -229,7 +235,8 @@ TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Cross product", "[sfz::Vector]") {
+TEST_CASE("Cross product", "[sfz::Vector]")
+{
 	sfz::Vector<int, 3> v1{-1, 4, 0};
 	sfz::Vector<int, 3> v2{1, -2, 3};
 
@@ -260,7 +267,8 @@ TEST_CASE("Cross product", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Angle of vectors", "[sfz::Vector]") {
+TEST_CASE("Angle of vectors", "[sfz::Vector]")
+{
 	sfz::Vector<float, 2> vRight{1, 0};
 	sfz::Vector<float, 2> vUp{0, 1};
 	sfz::Vector<float, 2> vDown{0, -1};
@@ -296,7 +304,8 @@ TEST_CASE("Angle of vectors", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Rotating vectors", "[sfz::Vector]") {
+TEST_CASE("Rotating vectors", "[sfz::Vector]")
+{
 	sfz::Vector<float, 2> vRight{1, 0};
 	sfz::Vector<float, 2> vUp{0, 1};
 	
@@ -333,7 +342,8 @@ TEST_CASE("Rotating vectors", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Comparison operators", "[sfz::Vector]") {
+TEST_CASE("Comparison operators", "[sfz::Vector]")
+{
 	sfz::Vector<int, 3> v1{-4, 0, 0};
 	sfz::Vector<int, 3> v2{0, 2, 0};
 	sfz::Vector<int, 3> v3{0, 2, 0};
@@ -365,7 +375,8 @@ TEST_CASE("Comparison operators", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Dot (scalar) product", "[sfz::Vector]") {
+TEST_CASE("Dot (scalar) product", "[sfz::Vector]")
+{
 	SECTION("Correctness test") {
 		sfz::Vector<int, 3> v1{1, 0, -2};
 		sfz::Vector<int, 3> v2{6, 2, 2};
@@ -391,7 +402,8 @@ TEST_CASE("Dot (scalar) product", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Element-wise multiplication", "[sfz::Vector]") {
+TEST_CASE("Element-wise multiplication", "[sfz::Vector]")
+{
 	sfz::Vector<int, 3> v1{1, 0, -3};
 	sfz::Vector<int, 3> v2{2, 0, 2};
 
@@ -409,12 +421,14 @@ TEST_CASE("Element-wise multiplication", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Sum of vector", "[sfz::Vector]") {
+TEST_CASE("Sum of vector", "[sfz::Vector]")
+{
 	sfz::Vector<int, 4> v1{1, 2, -4, 9};
 	REQUIRE(v1.sum() == 8);
 }
 
-TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]") {
+TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]")
+{
 	sfz::Vector<int, 2> vUp{0, 2};
 	sfz::Vector<int, 2> vRight{3, 0};
 	sfz::Vector<int, 2> v{9, 12};
@@ -434,7 +448,8 @@ TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Calculating distance from on vector to another", "[sfz::Vector]") {
+TEST_CASE("Calculating distance from on vector to another", "[sfz::Vector]")
+{
 	sfz::Vector<int, 2> v1{0, 0};
 	sfz::Vector<int, 2> v2{3, -1};
 
@@ -456,12 +471,14 @@ TEST_CASE("Calculating distance from on vector to another", "[sfz::Vector]") {
 	}
 }
 
-TEST_CASE("Converting to string", "[sfz::Vector]") {
+TEST_CASE("Converting to string", "[sfz::Vector]")
+{
 	sfz::Vector<int, 3> v{-1, 2, 10};
 	REQUIRE(v.to_string() == "[-1, 2, 10]");
 }
 
-TEST_CASE("Hashing", "[sfz::Vector]") {
+TEST_CASE("Hashing", "[sfz::Vector]")
+{
 	sfz::Vector<int, 3> v1{2, 100, 32};
 	sfz::Vector<int, 3> v2{-1, 0, -10};
 	sfz::Vector<int, 3> v3{0, -9, 14};
@@ -480,7 +497,8 @@ TEST_CASE("Hashing", "[sfz::Vector]") {
 	REQUIRE(v2.hash() != v3.hash());
 }
 
-TEST_CASE("Is proper POD", "[sfz::Vector]") {
+TEST_CASE("Is proper POD", "[sfz::Vector]")
+{
 	REQUIRE(std::is_trivially_copyable<sfz::vec2f>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec2d>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec2i>::value);
