@@ -15,15 +15,6 @@ TEST_CASE("Constructors", "[sfz::Vector]")
 		REQUIRE(vector[2] == 1);
 		REQUIRE(vector[3] == 42);
 	}
-	SECTION("Initializer list constructor throws exception when wrongly sized") {
-		bool exceptionSuccess = false;
-		try {
-			sfz::Vector<int, 10> vector = {-2, 1, 1};
-		} catch (std::invalid_argument exc) {
-			exceptionSuccess = true;
-		}
-		REQUIRE(exceptionSuccess);
-	}
 	SECTION("Copy constructor correctly copies vector") {
 		sfz::Vector<int, 4> vector{sfz::Vector<int, 4>{-2, 2, 1, 42}};
 		REQUIRE(vector[0] == -2);
@@ -61,9 +52,6 @@ TEST_CASE("Assignment and accessing", "[sfz::Vector]")
 		REQUIRE(vector[1] == 4242);
 		vector[4] = 54;
 		REQUIRE(vector[4] == 54);
-	}
-	SECTION("Throws std::out_of_range when accessing invalid index") {
-		REQUIRE_THROWS_AS(vector.get(5), std::out_of_range);
 	}
 }
 
@@ -157,7 +145,6 @@ TEST_CASE("Arithmetic operators", "[sfz::Vector]")
 		auto v1 = sfz::Vector<int, 2>{2, -2}/2;
 		REQUIRE(v1[0] == 1);
 		REQUIRE(v1[1] == -1);
-		REQUIRE_THROWS_AS(v1/0, std::domain_error);
 	}
 	SECTION("Addition assignment") {
 		v1 += v2;
@@ -182,7 +169,6 @@ TEST_CASE("Arithmetic operators", "[sfz::Vector]")
 		v3 /= 2;
 		REQUIRE(v3[0] == 1);
 		REQUIRE(v3[1] == -1);
-		REQUIRE_THROWS_AS(v3 /= 0, std::domain_error);
 	}
 }
 
@@ -294,13 +280,6 @@ TEST_CASE("Angle of vectors", "[sfz::Vector]")
 		auto angle = sfz::angle(vDown);
 		REQUIRE((3.f*3.1415f/2.f) <= angle);
 		REQUIRE(angle <= (3.f*3.1416f/2.f));
-	}
-	SECTION("Vectors with norm == 0") {
-		sfz::Vector<float, 2> vZero{0, 0};
-		REQUIRE_THROWS_AS(angle(vZero), std::domain_error);
-		REQUIRE_THROWS_AS(angle(vZero, vUp), std::domain_error);
-		REQUIRE_THROWS_AS(angle(vRight, vZero), std::domain_error);
-		REQUIRE_THROWS_AS(angle(vZero, vZero), std::domain_error);
 	}
 }
 
@@ -443,8 +422,10 @@ TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]")
 		REQUIRE(res[0] == 9);
 		REQUIRE(res[1] == 0);
 	}
-	SECTION("Throws exception if target is 0") {
-		REQUIRE_THROWS_AS(v.projectOnto(sfz::Vector<int, 2>{0, 0}), std::domain_error);
+	SECTION("Returns 0 vector if target is 0 vector.") {
+		auto zero = sfz::Vector<int,2>{0,0};
+		auto res = v.projectOnto(zero);
+		REQUIRE(res == zero);
 	}
 }
 

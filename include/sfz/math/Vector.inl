@@ -5,7 +5,7 @@ namespace sfz {
 
 template<typename T, size_t N>
 template<typename T2>
-Vector<T,N>::Vector(const Vector<T2,N>& vector)
+Vector<T,N>::Vector(const Vector<T2,N>& vector) noexcept
 {
 	auto itr = vector.begin();
 	for (auto& element : mElements) {
@@ -14,12 +14,9 @@ Vector<T,N>::Vector(const Vector<T2,N>& vector)
 }
 
 template<typename T, size_t N>
-Vector<T,N>::Vector(std::initializer_list<T> list)
+Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
 {
-	if(list.size() != N) {
-		throw std::invalid_argument{std::to_string(list.size()) + " arguments to " + 
-		                            std::to_string(N) + "-dimensional vector"};
-	}
+	assert(list.size() == N);
 	std::copy(list.begin(), list.end(), mElements.begin());
 }
 
@@ -27,15 +24,17 @@ Vector<T,N>::Vector(std::initializer_list<T> list)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-T Vector<T,N>::get(const size_t index) const
+T Vector<T,N>::get(const size_t index) const noexcept
 {
-	return mElements.at(index);
+	assert(index < N);
+	return mElements[index];
 }
 
 template<typename T, size_t N>
 void Vector<T,N>::set(const size_t index, T value)
 {
-	mElements.at(index) = value;
+	assert(index < N);
+	mElements[index] = value;
 }
 
 template<typename T, size_t N>
@@ -101,9 +100,9 @@ T Vector<T,N>::sum() const noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::projectOnto(const Vector<T,N>& target) const {
+Vector<T,N> Vector<T,N>::projectOnto(const Vector<T,N>& target) const noexcept {
 	auto targetSquaredNorm = target.squaredNorm();
-	if (targetSquaredNorm == 0) throw std::domain_error{"Target vector may not be 0."};
+	if (targetSquaredNorm == 0) return target; // Returns 0 vector, target == 0 vector.
 	return target * (this->dot(target)/targetSquaredNorm);
 }
 
@@ -143,37 +142,37 @@ std::string Vector<T,N>::to_string() const noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-typename Vector<T,N>::iterator Vector<T,N>::begin()
+typename Vector<T,N>::iterator Vector<T,N>::begin() noexcept
 {
 	return mElements.begin();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::const_iterator Vector<T,N>::begin() const
+typename Vector<T,N>::const_iterator Vector<T,N>::begin() const noexcept
 {
 	return mElements.begin();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::const_iterator Vector<T,N>::cbegin() const
+typename Vector<T,N>::const_iterator Vector<T,N>::cbegin() const noexcept
 {
 	return mElements.cbegin();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::iterator Vector<T,N>::end()
+typename Vector<T,N>::iterator Vector<T,N>::end() noexcept
 {
 	return mElements.end();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::const_iterator Vector<T,N>::end() const
+typename Vector<T,N>::const_iterator Vector<T,N>::end() const noexcept
 {
 	return mElements.end();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::const_iterator Vector<T,N>::cend() const
+typename Vector<T,N>::const_iterator Vector<T,N>::cend() const noexcept
 {
 	return mElements.cend();
 }
@@ -226,9 +225,9 @@ Vector<T,N>& Vector<T,N>::operator*= (const T& right) noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N>& Vector<T,N>::operator/= (const T& right)
+Vector<T,N>& Vector<T,N>::operator/= (const T& right) noexcept
 {
-	if (right == 0) throw std::domain_error{"Division by zero"};
+	assert(right != 0);
 	for (auto& element : mElements) {
 		element /= right;
 	}
@@ -267,25 +266,23 @@ Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) noexce
 }
 
 template<typename T>
-T angle(const Vector<T,2>& vector)
+T angle(const Vector<T,2>& vector) noexcept
 {
-	if (vector[0] == 0 && vector[1] == 0) {
-		throw std::domain_error("Norm of vector is 0");
-	}
+	assert(!(vector[0] == 0 && vector[1] == 0));
 	T angle = std::atan2(vector[1], vector[0]);
 	if (angle < 0) {
-		angle += 2.f*static_cast<T>(PI_DOUBLE);
+		angle += static_cast<T>(2)*static_cast<T>(PI_DOUBLE);
 	}
 	return angle;
 }
 
 template<typename T, size_t N>
-T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB)
+T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept
 {
 	auto squaredNormA = vectorA.squaredNorm();
+	assert(squaredNormA != 0);
 	auto squaredNormB = vectorB.squaredNorm();
-	if (squaredNormA == 0) throw std::domain_error{"Norm of vectorA is 0"};
-	if (squaredNormB == 0) throw std::domain_error{"Norm of vectorB is 0"};
+	assert(squaredNormB != 0);
 	return std::acos(vectorA.dot(vectorB)/(std::sqrt(squaredNormA*squaredNormB)));
 }
 
@@ -331,7 +328,7 @@ Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator/ (const Vector<T,N>& left, const T& right)
+Vector<T,N> operator/ (const Vector<T,N>& left, const T& right) noexcept
 {
 	return (Vector<T,N>{left} /= right);
 }
@@ -398,7 +395,7 @@ std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noex
 namespace std {
 
 template<typename T, size_t N>
-size_t hash<sfz::Vector<T,N>>::operator() (const sfz::Vector<T,N>& vector) const
+size_t hash<sfz::Vector<T,N>>::operator() (const sfz::Vector<T,N>& vector) const noexcept
 {
 	return vector.hash();
 }

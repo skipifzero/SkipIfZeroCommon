@@ -4,7 +4,7 @@
 
 #include <array>
 #include <initializer_list>
-#include <stdexcept> // std::invalid_argument, std::out_of_range, std::domain_error
+#include <cassert>
 #include <algorithm> // std::copy
 #include <functional> // std::hash
 #include <cmath> // std::sqrt
@@ -60,14 +60,14 @@ public:
 	 * @param vector the vector to copy
 	 */
 	template<typename T2>
-	explicit Vector(const Vector<T2,N>& vector);
+	explicit Vector(const Vector<T2,N>& vector) noexcept;
 
 	/**
 	 * @brief Initializer list constructor.
-	 * @throws std::invalid_argument if vector and initializer list are different sizes
+	 * @assert vector and initializer list must be same size
 	 * @param list the initializer_list with values to fill the vector with
 	 */
-	Vector(std::initializer_list<T> list);
+	Vector(std::initializer_list<T> list) noexcept;
 
 	~Vector() = default;
 
@@ -76,19 +76,19 @@ public:
 	
 	/**
 	 * @brief Returns the element at the specified index.
-	 * @throws std::out_of_range if index is out of range
+	 * @assert index must be in range
 	 * @param index the index of the element
 	 * @return the element at the specified index
 	 */
-	T get(const size_t index) const;
+	T get(const size_t index) const noexcept;
 
 	/**
 	 * @brief Assigns value to the specified index.
-	 * @throws std::out_of_range if index is out of range
+	 * @assert index must be in range
 	 * @param index the index to assign value to
 	 * @param value the value to assign
 	 */
-	void set(const size_t index, const T value);
+	void set(const size_t index, const T value) noexcept;
 
 	/**
 	 * @brief Fills the vector with the specified value.
@@ -148,12 +148,12 @@ public:
 	/**
 	 * @brief Projects the vector onto another vector.
 	 * Makes a scalar projection of the vector onto the specifed target vector. The resulting
-	 * vector will be equal to the target vector times a scalar constant.
-	 * @throws std::domain_error if target vector is 0
+	 * vector will be equal to the target vector times a scalar constant. If the target vector is
+	 * 0 the 0 vector will be returned.
 	 * @param target the vector to project onto
 	 * @return the resulting projection in vector form
 	 */
-	Vector<T,N> projectOnto(const Vector<T,N>& target) const;
+	Vector<T,N> projectOnto(const Vector<T,N>& target) const noexcept;
 
 	/**
 	 * @brief Calculates distance vector from this vector to another vector.
@@ -181,13 +181,13 @@ public:
 	using iterator = typename std::array<T,N>::iterator;
 	using const_iterator = typename std::array<T,N>::const_iterator;
 
-	iterator begin();
-	const_iterator begin() const;
-	const_iterator cbegin() const;
+	iterator begin() noexcept;
+	const_iterator begin() const noexcept;
+	const_iterator cbegin() const noexcept;
 
-	iterator end();
-	const_iterator end() const;
-	const_iterator cend() const;
+	iterator end() noexcept;
+	const_iterator end() const noexcept;
+	const_iterator cend() const noexcept;
 
 	// Member operators (access)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -238,11 +238,11 @@ public:
 	/**
 	 * @brief Assignment division operator.
 	 * Divides the lhs vector with the rhs element and saves the result in the lhs operand.
-	 * @throws std::domain_error if rhs element is zero
+	 * @assert rhs != 0
 	 * @param right the rhs element
 	 * @return reference to the modified vector
 	 */
-	Vector<T,N>& operator/= (const T& right);
+	Vector<T,N>& operator/= (const T& right) noexcept;
 
 private:
 	std::array<T,N> mElements;
@@ -297,25 +297,25 @@ Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) noexce
  * @relates sfz::Vector
  * @brief Calculates the positive angle between the specified vector and the x-axis in radians.
  * The angle will be in the range [0, 2*Pi).
- * @throws std::domain_error if norm of vector is 0
+ * @assert norm of vector != 0
  * @param vector the 2-dimensional vector to calculate angle of
  * @return the angle between the vector and the x-axis
  */
 template<typename T>
-T angle(const Vector<T,2>& vector);
+T angle(const Vector<T,2>& vector) noexcept;
 
 /**
  * @relates sfz::Vector
  * @brief Calculates the positive angle between two vectors.
  * The angle will be in range [0, Pi] and will always be the smallest possible angle between the
  * vectors.
- * @throws std::domain_error if norm of vectorA or B is 0
+ * @assert norm of vectorA or B != 0
  * @param vectorA the first vector
  * @param vectorB the second vector
  * @return the angle between the two vectors
  */
 template<typename T, size_t N>
-T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
+T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -388,13 +388,13 @@ Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept;
  * @relates sfz::Vector
  * @brief Division operator.
  * Divides the lhs vector with the rhs element and returns the result in a new vector.
- * @throws std::domain_error if rhs element is zero
+ * @assert rhs element != 0
  * @param left the lhs vector
  * @param right the rhs element
  * @return the resulting vector
  */
 template<typename T, size_t N>
-Vector<T,N> operator/ (const Vector<T,N>& left, const T& right);
+Vector<T,N> operator/ (const Vector<T,N>& left, const T& right) noexcept;
 
 // Free (non-member) operators (Comparison)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -524,7 +524,7 @@ namespace std {
 
 template<typename T, size_t N>
 struct hash<sfz::Vector<T,N>> {
-	size_t operator() (const sfz::Vector<T,N>& vector) const;
+	size_t operator() (const sfz::Vector<T,N>& vector) const noexcept;
 };
 
 } // namespace std
