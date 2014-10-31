@@ -4,7 +4,7 @@
 
 #include <array>
 #include <initializer_list>
-#include <stdexcept> // std::invalid_argument, std::out_of_range, std::domain_error
+#include <cassert>
 #include <algorithm> // std::copy
 #include <functional> // std::hash
 #include <cmath> // std::sqrt
@@ -21,14 +21,15 @@ using std::size_t;
 /**
  * @brief A mathematical vector POD class that imitates a built-in primitive.
  *
- * The template is designed to be used with float and doubles in first hand, and everything should work as expected
- * with them. Integral types can also be used, but some things will not function as expected due to truncation. Most
- * notably taking the norm will most likely not give the correct result as it involves taking the square root. Another
- * trouble with integral types is the risk of overflow. When calculating the norm you have to square each element in
- * the vector, which might wery well overflow if you have large elements.
- *
- * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used with standard
- * primitives.
+ * The template is designed to be used with float and doubles in first hand, and everything should
+ * work as expected with them. Integral types can also be used, but some things will not function
+ * as expected due to truncation. Most notably taking the norm will most likely not give the
+ * correct result as it involves taking the square root. Another trouble with integral types is the
+ * risk of overflow. When calculating the norm you have to square each element in the vector, which
+ * might wery well overflow if you have large elements.
+
+ * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used
+ * with standard primitives.
  *
  * @param T the element type
  * @param N the amount of elements in the vector
@@ -39,7 +40,7 @@ template<typename T, size_t N>
 class Vector final {
 public:
 	// Constructors and destructors
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
 	/**
 	 * @brief Default constructor, value of elements is undefined.
@@ -54,39 +55,40 @@ public:
 
 	/**
 	 * @brief Copy cast constructor.
-	 * Copies all elements from specified vector and attempts to static_cast them to this vectors type.
+	 * Copies all elements from specified vector and attempts to static_cast them to this vectors
+	 * type.
 	 * @param vector the vector to copy
 	 */
 	template<typename T2>
-	explicit Vector(const Vector<T2,N>& vector);
+	explicit Vector(const Vector<T2,N>& vector) noexcept;
 
 	/**
 	 * @brief Initializer list constructor.
-	 * @throws std::invalid_argument if vector and initializer list are different sizes
+	 * @assert vector and initializer list must be same size
 	 * @param list the initializer_list with values to fill the vector with
 	 */
-	Vector(std::initializer_list<T> list);
+	Vector(std::initializer_list<T> list) noexcept;
 
 	~Vector() = default;
 
 	// Public member functions
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	
 	/**
 	 * @brief Returns the element at the specified index.
-	 * @throws std::out_of_range if index is out of range
+	 * @assert index must be in range
 	 * @param index the index of the element
 	 * @return the element at the specified index
 	 */
-	T get(const size_t index) const;
+	T get(const size_t index) const noexcept;
 
 	/**
 	 * @brief Assigns value to the specified index.
-	 * @throws std::out_of_range if index is out of range
+	 * @assert index must be in range
 	 * @param index the index to assign value to
 	 * @param value the value to assign
 	 */
-	void set(const size_t index, const T value);
+	void set(const size_t index, const T value) noexcept;
 
 	/**
 	 * @brief Fills the vector with the specified value.
@@ -97,27 +99,27 @@ public:
 
 	/**
 	 * @brief Calculates the norm (length) of the vector.
-	 * Note when using discrete types (int, long, etc): This method will square each element of the vector and add
-	 * them together before taking the square root. This might result in an overflow if the elements are too large. In
-	 * that case the result of this function will be undefined. Also, the return type will still be a discrete type,
-	 * meaning that the result will be truncated. If this is a problem you should use the squaredNorm() function and
-	 * do the square root yourself.
+	 * Note when using discrete types (int, long, etc): This method will square each element of the
+	 * vector and add them together before taking the square root. This might result in an overflow
+	 * if the elements are too large. In that case the result of this function will be undefined.
+	 * Also, the return type will still be a discrete type, meaning that the result will be
+	 * truncated. If this is a problem you should use the squaredNorm() function and do the square
+	 * root operation yourself.
 	 * @return norm of the vector
 	 */
 	T norm() const noexcept;
 
 	/**
 	 * @brief Calculates the squared norm (length) of the vector.
-	 * Sums the squares of each element in the vector. Take the sqrt of this sum and you get the norm (length).
-	 * This function is useful if you only need to compare vectors as you can skip the expensive sqrt operation.
+	 * Sums the squares of each element in the vector.
 	 * @return squared norm of the vector
 	 */
 	T squaredNorm() const noexcept;
 
 	/**
 	 * @brief Normalizes the vector and produces a unit vector.
-	 * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing in the same
-	 * direction with the norm 1.
+	 * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing
+	 * in the same direction with the norm 1.
 	 * @return the unit vector
 	 */
 	Vector<T,N> normalize() const noexcept;
@@ -145,13 +147,13 @@ public:
 
 	/**
 	 * @brief Projects the vector onto another vector.
-	 * Makes a scalar projection of the vector onto the specifed target vector. The resulting vector will be equal to
-	 * the target vector times a scalar constant.
-	 * @throws std::domain_error if target vector is 0
+	 * Makes a scalar projection of the vector onto the specifed target vector. The resulting
+	 * vector will be equal to the target vector times a scalar constant. If the target vector is
+	 * 0 the 0 vector will be returned.
 	 * @param target the vector to project onto
 	 * @return the resulting projection in vector form
 	 */
-	Vector<T,N> projectOnto(const Vector<T,N>& target) const;
+	Vector<T,N> projectOnto(const Vector<T,N>& target) const noexcept;
 
 	/**
 	 * @brief Calculates distance vector from this vector to another vector.
@@ -174,21 +176,21 @@ public:
 	std::string to_string() const noexcept;
 
 	// Standard iterator functions
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	using iterator = typename std::array<T,N>::iterator;
 	using const_iterator = typename std::array<T,N>::const_iterator;
 
-	iterator begin();
-	const_iterator begin() const;
-	const_iterator cbegin() const;
+	iterator begin() noexcept;
+	const_iterator begin() const noexcept;
+	const_iterator cbegin() const noexcept;
 
-	iterator end();
-	const_iterator end() const;
-	const_iterator cend() const;
+	iterator end() noexcept;
+	const_iterator end() const noexcept;
+	const_iterator cend() const noexcept;
 
 	// Member operators (access)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
 	 * @brief Returns a reference to element at the specified index.
@@ -207,7 +209,7 @@ public:
 	const T& operator[] (const size_t index) const noexcept;
 
 	// Member operators (Arithmetic & Assignment)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
 	 * @brief Assignment addition operator.
@@ -236,18 +238,18 @@ public:
 	/**
 	 * @brief Assignment division operator.
 	 * Divides the lhs vector with the rhs element and saves the result in the lhs operand.
-	 * @throws std::domain_error if rhs element is zero
+	 * @assert rhs != 0
 	 * @param right the rhs element
 	 * @return reference to the modified vector
 	 */
-	Vector<T,N>& operator/= (const T& right);
+	Vector<T,N>& operator/= (const T& right) noexcept;
 
 private:
 	std::array<T,N> mElements;
 };
 
 // Free (non-member) functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
  * @relates sfz::Vector
@@ -262,8 +264,8 @@ T norm(const Vector<T,N>& vector) noexcept;
 /**
  * @relates sfz::Vector
  * @brief Normalizes the vector and produces a unit vector.
- * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing in the same
- * direction with the norm 1.
+ * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing in
+ * the same direction with the norm 1.
  * @param vector the vector to normalize
  * @return the unit vector
  */
@@ -295,24 +297,25 @@ Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) noexce
  * @relates sfz::Vector
  * @brief Calculates the positive angle between the specified vector and the x-axis in radians.
  * The angle will be in the range [0, 2*Pi).
- * @throws std::domain_error if norm of vector is 0
+ * @assert norm of vector != 0
  * @param vector the 2-dimensional vector to calculate angle of
  * @return the angle between the vector and the x-axis
  */
 template<typename T>
-T angle(const Vector<T,2>& vector);
+T angle(const Vector<T,2>& vector) noexcept;
 
 /**
  * @relates sfz::Vector
  * @brief Calculates the positive angle between two vectors.
- * The angle will be in range [0, Pi] and will always be the smallest possible angle between the vectors.
- * @throws std::domain_error if norm of vectorA or B is 0
+ * The angle will be in range [0, Pi] and will always be the smallest possible angle between the
+ * vectors.
+ * @assert norm of vectorA or B != 0
  * @param vectorA the first vector
  * @param vectorB the second vector
  * @return the angle between the two vectors
  */
 template<typename T, size_t N>
-T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB);
+T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept;
 
 /**
  * @relates sfz::Vector
@@ -325,7 +328,7 @@ template<typename T>
 Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept;
 
 // Free (non-member) operators (Arithmetic)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
  * @relates sfz::Vector
@@ -385,16 +388,16 @@ Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept;
  * @relates sfz::Vector
  * @brief Division operator.
  * Divides the lhs vector with the rhs element and returns the result in a new vector.
- * @throws std::domain_error if rhs element is zero
+ * @assert rhs element != 0
  * @param left the lhs vector
  * @param right the rhs element
  * @return the resulting vector
  */
 template<typename T, size_t N>
-Vector<T,N> operator/ (const Vector<T,N>& left, const T& right);
+Vector<T,N> operator/ (const Vector<T,N>& left, const T& right) noexcept;
 
 // Free (non-member) operators (Comparison)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
  * @relates sfz::Vector
@@ -419,7 +422,8 @@ bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 /**
  * @relates sfz::Vector
  * @brief Smaller than operator.
- * The size of the vectors is defined by the length() function, which is also what is compared in this function.
+ * The size of the vectors is defined by the length() function, which is also what is compared in
+ * this function.
  * @param left the lhs vector
  * @param right the rhs vector
  * @return whether the lhs vector is smaller than the rhs vector
@@ -430,7 +434,8 @@ bool operator< (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 /**
  * @relates sfz::Vector
  * @brief Larger than operator.
- * The size of the vectors is defined by the length() function, which is also what is compared in this function.
+ * The size of the vectors is defined by the length() function, which is also what is compared in
+ * this function.
  * @param left the lhs vector
  * @param right the rhs vector
  * @return whether the lhs vector is larger than the rhs vector
@@ -441,7 +446,8 @@ bool operator> (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 /**
  * @relates sfz::Vector
  * @brief Smaller than or equal operator.
- * The size of the vectors is defined by the length() function, which is also what is compared in this function.
+ * The size of the vectors is defined by the length() function, which is also what is compared in
+ * this function.
  * @param left the lhs vector
  * @param right the rhs vector
  * @return whether the lhs vector is smaller than or equal to the rhs vector
@@ -452,7 +458,8 @@ bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 /**
  * @relates sfz::Vector
  * @brief Larger than or equal operator.
- * The size of the vectors is defined by the length() function, which is also what is compared in this function.
+ * The size of the vectors is defined by the length() function, which is also what is compared in
+ * this function.
  * @param left the lhs vector
  * @param right the rhs vector
  * @return whether the lhs vector is larger than or equal to the rhs vector
@@ -461,7 +468,7 @@ template<typename T, size_t N>
 bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 // Free (non-member) operators (Other)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
  * @relates sfz::Vector
@@ -475,7 +482,7 @@ template<typename T, size_t N>
 std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept;
 
 // Standard typedefs
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
 using Vector2 = Vector<T,2>;
@@ -511,13 +518,13 @@ using vec3l = vec3<long>;
 } // namespace sfz
 
 // Specializations of standard library for sfz::Vector
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 namespace std {
 
 template<typename T, size_t N>
 struct hash<sfz::Vector<T,N>> {
-	size_t operator() (const sfz::Vector<T,N>& vector) const;
+	size_t operator() (const sfz::Vector<T,N>& vector) const noexcept;
 };
 
 } // namespace std
