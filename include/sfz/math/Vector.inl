@@ -1,7 +1,7 @@
 namespace sfz {
 	
 // Constructors and destructors
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 template<typename T2>
@@ -17,14 +17,14 @@ template<typename T, size_t N>
 Vector<T,N>::Vector(std::initializer_list<T> list)
 {
 	if(list.size() != N) {
-		throw std::invalid_argument{
-		           std::to_string(list.size()) + " arguments to " + std::to_string(N) + "-dimensional vector"};
+		throw std::invalid_argument{std::to_string(list.size()) + " arguments to " + 
+		                            std::to_string(N) + "-dimensional vector"};
 	}
 	std::copy(list.begin(), list.end(), mElements.begin());
 }
 
 // Public member functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 T Vector<T,N>::get(const size_t index) const
@@ -119,7 +119,8 @@ size_t Vector<T,N>::hash() const noexcept
 	std::hash<T> hasher;
 	size_t hash = 0;
 	for (auto element : mElements) {
-		hash ^= hasher(element) + 0x9e3779b9 + (hash << 6) + (hash >> 2); // hash_combine algorithm from boost
+		// hash_combine algorithm from boost
+		hash ^= hasher(element) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 	}
 	return hash;
 }
@@ -139,7 +140,7 @@ std::string Vector<T,N>::to_string() const noexcept
 }
 
 // Standard iterator functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 typename Vector<T,N>::iterator Vector<T,N>::begin()
@@ -178,7 +179,7 @@ typename Vector<T,N>::const_iterator Vector<T,N>::cend() const
 }
 
 // Member operators (access)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 T& Vector<T,N>::operator[] (const size_t index) noexcept
@@ -193,7 +194,7 @@ const T& Vector<T,N>::operator[] (const size_t index) const noexcept
 }
 
 // Member operators (Arithmetic & Assignment)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 Vector<T,N>& Vector<T,N>::operator+= (const Vector<T,N>& right) noexcept
@@ -235,7 +236,7 @@ Vector<T,N>& Vector<T,N>::operator/= (const T& right)
 }
 
 // Free (non-member) functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 T norm(const Vector<T,N>& vector) noexcept
@@ -297,7 +298,7 @@ Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept
 }
 
 // Free (non-member) operators (Arithmetic)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
@@ -336,7 +337,7 @@ Vector<T,N> operator/ (const Vector<T,N>& left, const T& right)
 }
 
 // Free (non-member) operators (Comparison)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 bool operator== (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
@@ -381,7 +382,7 @@ bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 }
 
 // Free (non-member) operators (Other)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept
@@ -392,7 +393,7 @@ std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noex
 } // namespace sfz
 
 // Specializations of standard library for sfz::Vector
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 namespace std {
 

@@ -483,8 +483,8 @@ TEST_CASE("Hashing", "[sfz::Vector]")
 	sfz::Vector<int, 3> v2{-1, 0, -10};
 	sfz::Vector<int, 3> v3{0, -9, 14};
 
-	// This test checks if unordered_map works as it should. Not a very good test, but the best I can come up with
-	// to test if hashing works as it should at the moment.
+	// This test checks if unordered_map works as it should. Not a very good test, but the best I
+	// can come up with to test if hashing works as it should at the moment.
 	std::unordered_map<sfz::Vector<int, 3>, int> hashMap;
 	hashMap[v1] = 1;
 	hashMap[v2] = 2;
