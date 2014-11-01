@@ -78,12 +78,12 @@ namespace sfz {
 
 	template<typename T>
 	T Circle<T>::area() const {
-		return static_cast<T>(PI_DOUBLE)*radius*radius;
+		return static_cast<T>(g_PI_DOUBLE)*radius*radius;
 	}
 
 	template<typename T>
 	T Circle<T>::circumference() const {
-		return static_cast<T>(2)*static_cast<T>(PI_DOUBLE)*radius;
+		return static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE)*radius;
 	}
 
 	template<typename T>
