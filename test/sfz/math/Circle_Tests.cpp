@@ -6,40 +6,41 @@
 #include <unordered_map>
 #include "sfz/math/Circle.hpp"
 
-TEST_CASE("Constructors", "[sfz::Circle]") {
+TEST_CASE("Constructors", "[sfz::Circle]")
+{
 	SECTION("Copy constructor") {
 		sfz::Circle<int> circ1{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 		sfz::Circle<int> circ2{circ1};
-		REQUIRE(circ1.getPosition() == circ2.getPosition());
-		REQUIRE(circ1.getRadius() == circ2.getRadius());
-		REQUIRE(circ1.getHorizontalAlign() == circ2.getHorizontalAlign());
-		REQUIRE(circ1.getVerticalAlign() == circ2.getVerticalAlign());
+		REQUIRE(circ1.mPos == circ2.mPos);
+		REQUIRE(circ1.mRadius == circ2.mRadius);
+		REQUIRE(circ1.mHorizontalAlign == circ2.mHorizontalAlign);
+		REQUIRE(circ1.mVerticalAlign == circ2.mVerticalAlign);
 	}
 	SECTION("Copy cast constructor") {
 		sfz::Circle<float> circlef{1.1f, 2.2f, 3.3f};
 		sfz::Circle<int> circlei{circlef};
-		REQUIRE(circlei.getX() == 1);
-		REQUIRE(circlei.getY() == 2);
-		REQUIRE(circlei.getRadius() == 3);
-		REQUIRE(circlei.getHorizontalAlign() == circlef.getHorizontalAlign());
-		REQUIRE(circlei.getVerticalAlign() == circlef.getVerticalAlign());
+		REQUIRE(circlei.x() == 1);
+		REQUIRE(circlei.y() == 2);
+		REQUIRE(circlei.mRadius == 3);
+		REQUIRE(circlei.mHorizontalAlign == circlef.mHorizontalAlign);
+		REQUIRE(circlei.mVerticalAlign == circlef.mVerticalAlign);
 	}
 	SECTION("Copy constructor with alignment change") {
 		sfz::Circle<int> circ1{0, 0, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 		sfz::Circle<int> circ2{circ1, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
-		REQUIRE(circ2.getX() == 2);
-		REQUIRE(circ2.getY() == 2);
-		REQUIRE(circ2.getRadius() == circ1.getRadius());
-		REQUIRE(circ2.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
-		REQUIRE(circ2.getVerticalAlign() == sfz::VerticalAlign::TOP);
+		REQUIRE(circ2.x() == 2);
+		REQUIRE(circ2.y() == 2);
+		REQUIRE(circ2.mRadius == circ1.mRadius);
+		REQUIRE(circ2.mHorizontalAlign == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(circ2.mVerticalAlign == sfz::VerticalAlign::TOP);
 	}
 	SECTION("(vec2, radius) constructor") {
 		sfz::Circle<int> circ{sfz::vec2i{-1, 2}, 2};
-		REQUIRE(circ.getX() == -1);
-		REQUIRE(circ.getY() == 2);
-		REQUIRE(circ.getRadius() == 2);
-		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
+		REQUIRE(circ.x() == -1);
+		REQUIRE(circ.y() == 2);
+		REQUIRE(circ.mRadius == 2);
+		REQUIRE(circ.mHorizontalAlign == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.mVerticalAlign == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
 		try {
 			sfz::Circle<int>{sfz::vec2i{0, 0}, -1};
 			REQUIRE(false);
@@ -49,11 +50,11 @@ TEST_CASE("Constructors", "[sfz::Circle]") {
 	}
 	SECTION("(x, y, radius) constructor") {
 		sfz::Circle<int> circ{-1, 2, 2};
-		REQUIRE(circ.getX() == -1);
-		REQUIRE(circ.getY() == 2);
-		REQUIRE(circ.getRadius() == 2);
-		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
+		REQUIRE(circ.x() == -1);
+		REQUIRE(circ.y() == 2);
+		REQUIRE(circ.mRadius == 2);
+		REQUIRE(circ.mHorizontalAlign == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.mVerticalAlign == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
 		try {
 			sfz::Circle<int>{0, 0, -1};
 			REQUIRE(false);
@@ -63,7 +64,8 @@ TEST_CASE("Constructors", "[sfz::Circle]") {
 	}
 }
 
-TEST_CASE("Overlap tests", "[sfz::Circle]") {
+TEST_CASE("Overlap tests", "[sfz::Circle]")
+{
 	sfz::Circle<int> circ{1, 1, 1};
 
 	SECTION("overlap(vec2)") {
@@ -146,10 +148,14 @@ TEST_CASE("Overlap tests", "[sfz::Circle]") {
 	SECTION("overlap(Rectangle)") {
 		std::vector<sfz::Rectangle<int>> overlapping;
 		overlapping.emplace_back(1, 1, 2, 2);
-		overlapping.emplace_back(0, 0, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
-		overlapping.emplace_back(0, 1, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
-		overlapping.emplace_back(1, 0, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
-		overlapping.emplace_back(1, 1, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlapping.emplace_back(0, 0, 1, 1, sfz::HorizontalAlign::LEFT,
+		                                     sfz::VerticalAlign::BOTTOM);
+		overlapping.emplace_back(0, 1, 1, 1, sfz::HorizontalAlign::LEFT,
+		                                     sfz::VerticalAlign::BOTTOM);
+		overlapping.emplace_back(1, 0, 1, 1, sfz::HorizontalAlign::LEFT,
+		                                     sfz::VerticalAlign::BOTTOM);
+		overlapping.emplace_back(1, 1, 1, 1, sfz::HorizontalAlign::LEFT,
+		                                     sfz::VerticalAlign::BOTTOM);
 		overlapping.emplace_back(1, 1, 8, 8);
 
 		std::vector<sfz::Rectangle<int>> nonOverlapping;
@@ -180,110 +186,40 @@ TEST_CASE("Overlap tests", "[sfz::Circle]") {
 	}
 }
 
-TEST_CASE("Getters", "[sfz::Circle]") {
-	const sfz::Circle<int> circ1{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
-	const sfz::Circle<int> circ2{3, 2, 1};
-
-	SECTION("getPosition()") {
-		REQUIRE(circ1.getPosition()[0] == 1);
-		REQUIRE(circ1.getPosition()[1] == 2);
-		REQUIRE(circ2.getPosition()[0] == 3);
-		REQUIRE(circ2.getPosition()[1] == 2);
-	}
-	SECTION("getX() & getY()") {
-		REQUIRE(circ1.getX() == 1);
-		REQUIRE(circ1.getY() == 2);
-		REQUIRE(circ2.getX() == 3);
-		REQUIRE(circ2.getY() == 2);
-	}
-	SECTION("getRadius()") {
-		REQUIRE(circ1.getRadius() == 3);
-		REQUIRE(circ2.getRadius() == 1);
-	}
-	SECTION("getHorizontalAlign() & getVerticalAlign()") {
-		REQUIRE(circ1.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
-		REQUIRE(circ1.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
-		REQUIRE(circ2.getHorizontalAlign() == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ2.getVerticalAlign() == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
-	}
-}
-
 TEST_CASE("Setters", "[sfz::Circle]") {
 	sfz::Circle<int> circ{0, 0, 2};
-
-	SECTION("setPosition(vec2)") {
-		circ.setPosition(sfz::vec2i{-1, 3});
-		REQUIRE(circ.getX() == -1);
-		REQUIRE(circ.getY() == 3);
-		REQUIRE(circ.getRadius() == 2);
-		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
-	}
-	SECTION("setPosition(x,y)") {
-		circ.setPosition(9, 1);
-		REQUIRE(circ.getX() == 9);
-		REQUIRE(circ.getY() == 1);
-		REQUIRE(circ.getRadius() == 2);
-		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
-	}
-	SECTION("setX() & setY()") {
-		circ.setX(44);
-		circ.setY(-220);
-		REQUIRE(circ.getX() == 44);
-		REQUIRE(circ.getY() == -220);
-		REQUIRE(circ.getRadius() == 2);
-		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
-	}
-	SECTION("setRadius()") {
-		circ.setRadius(5);
-		REQUIRE(circ.getX() == 0);
-		REQUIRE(circ.getY() == 0);
-		REQUIRE(circ.getRadius() == 5);
-		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
-		REQUIRE_THROWS_AS(circ.setRadius(-1), std::invalid_argument);
-	}
-	SECTION("setHorizontalAlign() & setVerticalAlign()") {
-		REQUIRE(circ.getHorizontalAlign() == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.getVerticalAlign() == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
-		circ.setHorizontalAlign(sfz::HorizontalAlign::RIGHT);
-		circ.setVerticalAlign(sfz::VerticalAlign::BOTTOM);
-		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
-		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
-	}
 	SECTION("changeHorizontalAlign()") {
 		REQUIRE(sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
 		REQUIRE(sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
 
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::LEFT);
-		REQUIRE(circ.getX() == -2);
-		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
+		REQUIRE(circ.x() == -2);
+		REQUIRE(circ.mHorizontalAlign == sfz::HorizontalAlign::LEFT);
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::RIGHT);
-		REQUIRE(circ.getX() == 2);
-		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(circ.x() == 2);
+		REQUIRE(circ.mHorizontalAlign == sfz::HorizontalAlign::RIGHT);
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::CENTER);
-		REQUIRE(circ.getX() == 0);
-		REQUIRE(circ.getHorizontalAlign() == sfz::HorizontalAlign::CENTER);
+		REQUIRE(circ.x() == 0);
+		REQUIRE(circ.mHorizontalAlign == sfz::HorizontalAlign::CENTER);
 	}
 	SECTION("changeVerticalAlign()") {
 		REQUIRE(sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
 		REQUIRE(sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
 
 		circ.changeVerticalAlign(sfz::VerticalAlign::TOP);
-		REQUIRE(circ.getY() == 2);
-		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::TOP);
+		REQUIRE(circ.y() == 2);
+		REQUIRE(circ.mVerticalAlign == sfz::VerticalAlign::TOP);
 		circ.changeVerticalAlign(sfz::VerticalAlign::BOTTOM);
-		REQUIRE(circ.getY() == -2);
-		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
+		REQUIRE(circ.y() == -2);
+		REQUIRE(circ.mVerticalAlign == sfz::VerticalAlign::BOTTOM);
 		circ.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
-		REQUIRE(circ.getY() == 0);
-		REQUIRE(circ.getVerticalAlign() == sfz::VerticalAlign::MIDDLE);
+		REQUIRE(circ.y() == 0);
+		REQUIRE(circ.mVerticalAlign == sfz::VerticalAlign::MIDDLE);
 	}
 }
 
-TEST_CASE("Area and circumference", "[sfz::Circle]") {
+TEST_CASE("Area and circumference", "[sfz::Circle]")
+{
 	sfz::Circle<int> r1{0, 0, 10};
 	sfz::Circle<int> r2{0, 0, 1};
 	SECTION("area()") {
@@ -296,7 +232,8 @@ TEST_CASE("Area and circumference", "[sfz::Circle]") {
 	}
 }
 
-TEST_CASE("Comparison operators", "[sfz::Circle]") {
+TEST_CASE("Comparison operators", "[sfz::Circle]")
+{
 	sfz::Circle<int> r1{0, 0, 10};
 	sfz::Circle<int> r2{0, 0, 10};
 	sfz::Circle<int> r3{0, 0, 1};
@@ -344,7 +281,8 @@ TEST_CASE("Comparison operators", "[sfz::Circle]") {
 	}
 }
 
-TEST_CASE("Hashing", "[sfz::Circle]") {
+TEST_CASE("Hashing", "[sfz::Circle]")
+{
 	sfz::Circle<int> r1{-1, 100, 32};
 	sfz::Circle<int> r2{-1, 100, 32, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
 	sfz::Circle<int> r3{0, -9, 2};
@@ -366,7 +304,8 @@ TEST_CASE("Hashing", "[sfz::Circle]") {
 	}
 }
 
-TEST_CASE("to_string()", "[sfz::Circle]") {
+TEST_CASE("to_string()", "[sfz::Circle]")
+{
 	sfz::Circle<int> c{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
 	REQUIRE(c.to_string() == "[pos=[1, 2], r=3, align: LEFT, TOP]");
 }

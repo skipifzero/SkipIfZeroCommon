@@ -16,11 +16,11 @@ template<typename T>
 template<typename T2>
 Circle<T>::Circle(const Circle<T2>& circle)
 :
-	mPosition{static_cast<vec2<T2>>(circle.getPosition())},
-	mHorizontalAlign{circle.getHorizontalAlign()},
-	mVerticalAlign{circle.getVerticalAlign()}
+	mPos{static_cast<vec2<T2>>(circle.mPos)},
+	mHorizontalAlign{circle.mHorizontalAlign},
+	mVerticalAlign{circle.mVerticalAlign}
 {
-	mRadius = static_cast<T2>(circle.getRadius());
+	mRadius = static_cast<T2>(circle.mRadius);
 }
 
 
@@ -36,7 +36,7 @@ Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign hAlign, VerticalAlign
 template<typename T>
 Circle<T>::Circle(vec2<T> position, T radius, HorizontalAlign hAlign, VerticalAlign vAlign)
 :
-	mPosition{position},
+	mPos{position},
 	mRadius{requireNonNegative(radius)},
 	mHorizontalAlign{hAlign},
 	mVerticalAlign{vAlign}
@@ -47,7 +47,7 @@ Circle<T>::Circle(vec2<T> position, T radius, HorizontalAlign hAlign, VerticalAl
 template<typename T>
 Circle<T>::Circle(T x, T y, T radius, HorizontalAlign hAlign, VerticalAlign vAlign)
 :
-	mPosition{x, y},
+	mPos{x, y},
 	mRadius{requireNonNegative(radius)},
 	mHorizontalAlign{hAlign},
 	mVerticalAlign{vAlign}
@@ -66,7 +66,7 @@ bool Circle<T>::overlap(const vec2<T>& point) const
 	// If the length from this circles center to the specified point is shorter than or equal to
 	// the radius then this Circle overlaps the point. Both sides of the equation is squared to
 	// avoid somewhat expensive sqrt() function.
-	return centerAlignCircle.mPosition.distance(point).squaredNorm() <= mRadius*mRadius;
+	return centerAlignCircle.mPos.distance(point).squaredNorm() <= mRadius*mRadius;
 }
 
 template<typename T>
@@ -78,8 +78,7 @@ bool Circle<T>::overlap(const Circle<T>& circle) const
 	// If the length between the center of the two circles is less than or equal to the the sum of
 	// the circle's radiuses they overlap. Both sides of the equation is squared to avoid somewhat 
 	// expensive sqrt() function.
-	T distSquared = centerAlignCircleThis.mPosition.distance(centerAlignCircleOther.mPosition)
-	                .squaredNorm();
+	T distSquared = centerAlignCircleThis.mPos.distance(centerAlignCircleOther.mPos).squaredNorm();
 	T radiusSum = centerAlignCircleThis.mRadius + centerAlignCircleOther.mRadius;
 	return distSquared <= radiusSum * radiusSum;
 }
@@ -109,8 +108,8 @@ size_t Circle<T>::hash() const
 	std::hash<char> enumHasher;
 	size_t hash = 0;
 	// hash_combine algorithm from boost
-	hash ^= hasher(mPosition[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= hasher(mPosition[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+	hash ^= hasher(mPos[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+	hash ^= hasher(mPos[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 	hash ^= hasher(mRadius) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 	hash ^= enumHasher(static_cast<char>(mHorizontalAlign)) +
 	                   0x9e3779b9 + (hash << 6) + (hash >> 2);
@@ -124,7 +123,7 @@ std::string Circle<T>::to_string() const
 {
 	std::string str;
 	str += "[pos=";
-	str += mPosition.to_string();
+	str += mPos.to_string();
 	str += ", r=";
 	str += std::to_string(mRadius);
 	str += ", align: ";
@@ -135,112 +134,42 @@ std::string Circle<T>::to_string() const
 	return std::move(str);
 }
 
+template<typename T>
+void Circle<T>::changeHorizontalAlign(HorizontalAlign hAlign)
+{
+	mPos[0] = calculateNewPosition(mPos[0], mRadius*2, mHorizontalAlign, hAlign);
+	mHorizontalAlign = hAlign;
+}
+
+template<typename T>
+void Circle<T>::changeVerticalAlign(VerticalAlign vAlign)
+{
+	mPos[1] = calculateNewPosition(mPos[1], mRadius*2, mVerticalAlign, vAlign);
+	mVerticalAlign = vAlign;
+}
+
 // Getters
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-vec2<T> Circle<T>::getPosition() const
+T Circle<T>::x() const noexcept
 {
-	return mPosition;
+	return mPos[0];
 }
 
 template<typename T>
-T Circle<T>::getX() const
+T Circle<T>::y() const noexcept
 {
-	return mPosition[0];
-}
-
-template<typename T>
-T Circle<T>::getY() const
-{
-	return mPosition[1];
-}
-
-template<typename T>
-T Circle<T>::getRadius() const
-{
-	return mRadius;
-}
-
-template<typename T>
-HorizontalAlign Circle<T>::getHorizontalAlign() const
-{
-	return mHorizontalAlign;
-}
-
-template<typename T>
-VerticalAlign Circle<T>::getVerticalAlign() const
-{
-	return mVerticalAlign;
-}
-
-// Setters
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T>
-void Circle<T>::setPosition(const vec2<T>& position)
-{
-	mPosition = position;
-}
-
-template<typename T>
-void Circle<T>::setPosition(T x, T y)
-{
-	mPosition[0] = x;
-	mPosition[1] = y;
-}
-
-template<typename T>
-void Circle<T>::setX(T x)
-{
-	mPosition[0] = x;
-}
-
-template<typename T>
-void Circle<T>::setY(T y)
-{
-	mPosition[1] = y;
-}
-
-template<typename T>
-void Circle<T>::setRadius(T radius)
-{
-	mRadius = requireNonNegative(radius);
-}
-
-template<typename T>
-void Circle<T>::setHorizontalAlign(HorizontalAlign horizontalAlign)
-{
-	mHorizontalAlign = horizontalAlign;
-}
-
-template<typename T>
-void Circle<T>::setVerticalAlign(VerticalAlign verticalAlign)
-{
-	mVerticalAlign = verticalAlign;
-}
-
-template<typename T>
-void Circle<T>::changeHorizontalAlign(HorizontalAlign horizontalAlign)
-{
-	mPosition[0] = calculateNewPosition(mPosition[0], mRadius*2, mHorizontalAlign, horizontalAlign);
-	mHorizontalAlign = horizontalAlign;
-}
-
-template<typename T>
-void Circle<T>::changeVerticalAlign(VerticalAlign verticalAlign)
-{
-	mPosition[1] = calculateNewPosition(mPosition[1], mRadius*2, mVerticalAlign, verticalAlign);
-	mVerticalAlign = verticalAlign;
+	return mPos[1];
 }
 
 // Comparison operators
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
 bool Circle<T>::operator== (const Circle<T>& other) const
 {
-	return mPosition == other.mPosition &&
+	return mPos == other.mPos &&
 	       mRadius == other.mRadius &&
 	       mHorizontalAlign == other.mHorizontalAlign &&
 	       mVerticalAlign == other.mVerticalAlign;
@@ -277,7 +206,7 @@ bool Circle<T>::operator>= (const Circle<T>& other) const
 }
 
 // Private helper functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
 T Circle<T>::requireNonNegative(T value)
@@ -289,7 +218,7 @@ T Circle<T>::requireNonNegative(T value)
 }
 
 // Free (non-member) operators
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
 template<typename T>
 std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle)

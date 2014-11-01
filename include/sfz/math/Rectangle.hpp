@@ -10,10 +10,7 @@
 #include "sfz/math/Alignment.hpp"
 
 // Forward declares Circle, is included after complete declaration of Rectangle.
-namespace sfz {
-	template<typename T>
-	class Circle;
-}
+namespace sfz { template<typename T> class Circle; }
 
 namespace sfz {
 

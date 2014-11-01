@@ -149,117 +149,34 @@ public:
 	 */
 	std::string to_string() const;
 
-	// Getters
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 	/**
-	 * @brief Returns the position of this Circle.
-	 * @return position of this Circle
-	 */
-	vec2<T> getPosition() const;
-
-	/**
-	 * @brief Returns the x-position of this Circle.
-	 * @return x-position of this Circle
-	 */
-	T getX() const;
-	
-	/**
-	 * @brief Returns the y-position of this Circle.
-	 * @return y-position of this Circle
-	 */
-	T getY() const;
-
-	/**
-	 * @brief Returns the radius of this Circle.
-	 * @return radius of this Circle
-	 */
-	T getRadius() const;
-
-	/**
-	 * @brief Returns the HorizontalAlign of this Circle.
-	 * @return HorizontalAlign of this Circle
-	 */
-	HorizontalAlign getHorizontalAlign() const;
-
-	/**
-	 * @brief Returns the VerticalAlign of this Circle.
-	 * @return VerticalAlign of this Circle
-	 */
-	VerticalAlign getVerticalAlign() const;
-
-	// Setters
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	/**
-	 * @brief Sets the position.
-	 * @param position the position to set
-	 */
-	void setPosition(const vec2<T>& position);
-
-	/**
-	 * @brief Sets the position.
-	 * @param x the x-position to set
-	 * @param y the y-position to set
-	 */
-	void setPosition(T x, T y);
-
-	/**
-	 * @brief Sets the x-position.
-	 * @param x the x-position to set
-	 */
-	void setX(T x);
-
-	/**
-	 * @brief Sets the y-position.
-	 * @param y the y-position to set
-	 */
-	void setY(T y);
-
-	/**
-	 * @brief Sets the radius.
-	 * @throw std::invalid_argument if radius < 0
-	 * @param radius the radius to set
-	 */
-	void setRadius(T radius);
-
-	/**
-	 * @brief Simply sets the HorizontalAlign wihout doing anything else.
-	 * Doesn't update the position, so the Circle is actually shifted slightly by this function. If
-	 * this is unintended you should call changeHorizontalAlign() instead which also updates the
-	 * position.
-	 * @see changeHorizontalAlign()
-	 * @param hAlign the HorizontalAlign to set
-	 */
-	void setHorizontalAlign(HorizontalAlign hAlign);
-
-	/**
-	 * @brief Simply sets the VerticalAlign wihout doing anything else.
-	 * Doesn't update the position, so the Circle is actually shifted slightly by this function. If
-	 * this is unintended you should call changeVerticalAlign() instead which also updates the 
-	 * position.
-	 * @see changeVerticalAlign()
-	 * @param vAlign the VerticalAlign to set
-	 */
-	void setVerticalAlign(VerticalAlign vAlign);
-
-	/**
-	 * @brief Changes the HorizontalAlign and updates the internal position reflecting this.
+	 * @brief Changes the HorizontalAlign and updates the position to reflect this.
 	 * The position is updated so the Circle's actual position is the same afterwards, i.e. not
-	 * shifted. If this is not wanted setHorizontalAlign() should be used.
-	 * @see setHorizontalAlign()
+	 * shifted. If this is not wanted mHorizontalAlign should be set directly.
 	 * @param hAlign the HorizontalAlign to set
 	 */
 	void changeHorizontalAlign(HorizontalAlign hAlign);
 
 	/**
-	 * @brief Changes the VerticalAlign and updates the internal position reflecting this.
+	 * @brief Changes the VerticalAlign and updates the position to reflect this.
 	 * The position is updated so the Circle's actual position is the same afterwards, i.e. not
-	 * shifted. If this is not wanted setVerticalAlign() should be used.
-	 * @see setVerticalAlign()
+	 * shifted. If this is not wanted mVerticalAlign should be set directly.
 	 * @param vAlign the VerticalAlign to set
 	 */
 	void changeVerticalAlign(VerticalAlign vAlign);
+
+	// Getters
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	/**
+	 * @return x-position of this Circle.
+	 */
+	T x() const noexcept;
+
+	/**
+	 * @return y-position of this Circle.
+	 */
+	T y() const noexcept;
 
 	// Comparison operators
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -314,18 +231,17 @@ public:
 	 */
 	bool operator>= (const Circle<T>& other) const;
 
-private:
-
 	// Members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	vec2<T> mPosition;
+	vec2<T> mPos;
 	T mRadius;
 	HorizontalAlign mHorizontalAlign;
 	VerticalAlign mVerticalAlign;
 
 	// Private helper functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+private:
 
 	static T requireNonNegative(T value);
 };

@@ -108,9 +108,9 @@ namespace sfz {
 		T rectYBottom = leftBottomAlignRect.getY();
 		T rectYTop = rectYBottom + leftBottomAlignRect.getHeight();
 
-		T circleX = centerAlignCircle.getX();
-		T circleY = centerAlignCircle.getY();
-		T radius = centerAlignCircle.getRadius();
+		T circleX = centerAlignCircle.x();
+		T circleY = centerAlignCircle.y();
+		T radius = centerAlignCircle.mRadius;
 
 		// If the length between the center of the circle and the closest point on the rectangle is less than or equal
 		// to the circles radius they overlap. Both sides of the equation is squared to avoid expensive sqrt() 
@@ -132,7 +132,7 @@ namespace sfz {
 			closestY = rectYTop;
 		}
 		
-		return centerAlignCircle.getPosition().distance(sfz::vec2<T>{closestX, closestY}).squaredNorm() 
+		return centerAlignCircle.mPos.distance(sfz::vec2<T>{closestX, closestY}).squaredNorm() 
 		       <= radius*radius;
 	}
 
