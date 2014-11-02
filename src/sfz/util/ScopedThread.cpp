@@ -2,18 +2,21 @@
 
 namespace sfz {
 
-	ScopedThread::ScopedThread(std::thread t) :
-		thread{std::move(t)} {
-			if(!thread.joinable()) {
-				throw std::invalid_argument{"Thread not joinable."};
-			}
-	}
-
-	ScopedThread::~ScopedThread() {
-		thread.join();
-	}
-
-	std::thread::id ScopedThread::getID() const {
-		return thread.get_id();
-	}
+ScopedThread::ScopedThread(std::thread t)
+:
+	mThread{std::move(t)}
+{
+	assert(mThread.joinable());
 }
+
+ScopedThread::~ScopedThread()
+{
+	mThread.join();
+}
+
+std::thread::id ScopedThread::getID() const noexcept
+{
+	return mThread.get_id();
+}
+
+} // namespace sfz
