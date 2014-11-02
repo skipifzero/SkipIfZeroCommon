@@ -1,6 +1,6 @@
 namespace sfz {
 
-// Static constants
+// Static constants & public members
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
@@ -14,7 +14,7 @@ const VerticalAlign Rectangle<T>::s_DEFAULT_VERTICAL_ALIGN = VerticalAlign::MIDD
 
 template<typename T>
 template<typename T2>
-Rectangle<T>::Rectangle(const Rectangle<T2>& rect)
+Rectangle<T>::Rectangle(const Rectangle<T2>& rect) noexcept
 :
 	mPos{static_cast<vec2<T2>>(rect.mPos)},
 	mDimensions{static_cast<vec2<T2>>(rect.mDimensions)},
@@ -25,7 +25,8 @@ Rectangle<T>::Rectangle(const Rectangle<T2>& rect)
 }
 
 template<typename T>
-Rectangle<T>::Rectangle(const Rectangle<T>& rect, HorizontalAlign hAlign, VerticalAlign vAlign)
+Rectangle<T>::Rectangle(const Rectangle<T>& rect,
+                        HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	Rectangle<T>{rect}
 {
@@ -33,8 +34,8 @@ Rectangle<T>::Rectangle(const Rectangle<T>& rect, HorizontalAlign hAlign, Vertic
 }
 
 template<typename T>
-Rectangle<T>::Rectangle(const vec2<T>& position, const vec2<T>& dimensions, HorizontalAlign hAlign,
-                                                                            VerticalAlign vAlign)
+Rectangle<T>::Rectangle(const vec2<T>& position, const vec2<T>& dimensions,
+                        HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{position},
 	mDimensions{dimensions},
@@ -45,8 +46,8 @@ Rectangle<T>::Rectangle(const vec2<T>& position, const vec2<T>& dimensions, Hori
 }
 
 template<typename T>
-Rectangle<T>::Rectangle(const vec2<T>& position, T width, T height, HorizontalAlign hAlign,
-                                                                    VerticalAlign vAlign)
+Rectangle<T>::Rectangle(const vec2<T>& position, T width, T height, 
+                        HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{position},
 	mDimensions{width, height},
@@ -57,7 +58,8 @@ Rectangle<T>::Rectangle(const vec2<T>& position, T width, T height, HorizontalAl
 }
 
 template<typename T>
-Rectangle<T>::Rectangle(T x, T y, T width, T height, HorizontalAlign hAlign, VerticalAlign vAlign)
+Rectangle<T>::Rectangle(T x, T y, T width, T height,
+                        HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{x, y},
 	mDimensions{width, height},
@@ -71,14 +73,14 @@ Rectangle<T>::Rectangle(T x, T y, T width, T height, HorizontalAlign hAlign, Ver
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-bool Rectangle<T>::overlap(const vec2<T>& point) const
+bool Rectangle<T>::overlap(const vec2<T>& point) const noexcept
 {
 	Rectangle<T> leftBottomAlignRect{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
 
 	T rectXLeft = leftBottomAlignRect.x();
-	T rectXRight = rectXLeft + leftBottomAlignRect.width();
+	T rectXRight = rectXLeft + std::abs(leftBottomAlignRect.width());
 	T rectYBottom = leftBottomAlignRect.y();
-	T rectYTop = rectYBottom + leftBottomAlignRect.height();
+	T rectYTop = rectYBottom + std::abs(leftBottomAlignRect.height());
 	T vecX = point[0];
 	T vecY = point[1];
 
@@ -87,20 +89,20 @@ bool Rectangle<T>::overlap(const vec2<T>& point) const
 }
 
 template<typename T>
-bool Rectangle<T>::overlap(const Rectangle<T>& rect) const
+bool Rectangle<T>::overlap(const Rectangle<T>& rect) const noexcept
 {
 	Rectangle<T> leftBottomAlignRectThis{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
 	Rectangle<T> leftBottomAlignRectOther{rect, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
 
 	T thisXLeft = leftBottomAlignRectThis.x();
-	T thisXRight = thisXLeft + leftBottomAlignRectThis.width();
+	T thisXRight = thisXLeft + std::abs(leftBottomAlignRectThis.width());
 	T thisYBottom = leftBottomAlignRectThis.y();
-	T thisYTop = thisYBottom + leftBottomAlignRectThis.height();
+	T thisYTop = thisYBottom + std::abs(leftBottomAlignRectThis.height());
 
 	T otherXLeft = leftBottomAlignRectOther.x();
-	T otherXRight = otherXLeft + leftBottomAlignRectOther.width();
+	T otherXRight = otherXLeft + std::abs(leftBottomAlignRectOther.width());
 	T otherYBottom = leftBottomAlignRectOther.y();
-	T otherYTop = otherYBottom + leftBottomAlignRectOther.height();
+	T otherYTop = otherYBottom + std::abs(leftBottomAlignRectOther.height());
 
 	return thisXLeft   <= otherXRight &&
 	       thisXRight  >= otherXLeft &&
@@ -109,19 +111,19 @@ bool Rectangle<T>::overlap(const Rectangle<T>& rect) const
 }
 
 template<typename T>
-bool Rectangle<T>::overlap(const Circle<T>& circle) const
+bool Rectangle<T>::overlap(const Circle<T>& circle) const noexcept
 {
 	Rectangle<T> leftBottomAlignRect{*this, HorizontalAlign::LEFT, VerticalAlign::BOTTOM};
 	Circle<T> centerAlignCircle{circle, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 
 	T rectXLeft = leftBottomAlignRect.x();
-	T rectXRight = rectXLeft + leftBottomAlignRect.width();
+	T rectXRight = rectXLeft + std::abs(leftBottomAlignRect.width());
 	T rectYBottom = leftBottomAlignRect.y();
-	T rectYTop = rectYBottom + leftBottomAlignRect.height();
+	T rectYTop = rectYBottom + std::abs(leftBottomAlignRect.height());
 
 	T circleX = centerAlignCircle.x();
 	T circleY = centerAlignCircle.y();
-	T radius = centerAlignCircle.mRadius;
+	T radius = std::abs(centerAlignCircle.mRadius);
 
 	// If the length between the center of the circle and the closest point on the rectangle is
 	// less than or equal to the circles radius they overlap. Both sides of the equation is 
@@ -148,19 +150,19 @@ bool Rectangle<T>::overlap(const Circle<T>& circle) const
 }
 
 template<typename T>
-T Rectangle<T>::area() const
+T Rectangle<T>::area() const noexcept
 {
-	return width()*height();
+	return std::abs(width())*std::abs(height());
 }
 
 template<typename T>
-T Rectangle<T>::circumference() const
+T Rectangle<T>::circumference() const noexcept
 {
-	return width()*2 + height()*2;
+	return std::abs(width())*2 + std::abs(height())*2;
 }
 
 template<typename T>
-size_t Rectangle<T>::hash() const
+size_t Rectangle<T>::hash() const noexcept
 {
 	std::hash<T> hasher;
 	std::hash<char> enumHasher;
@@ -178,7 +180,7 @@ size_t Rectangle<T>::hash() const
 }
 
 template<typename T>
-std::string Rectangle<T>::to_string() const
+std::string Rectangle<T>::to_string() const noexcept
 {
 	std::string str;
 	str += "[pos=";
@@ -194,21 +196,21 @@ std::string Rectangle<T>::to_string() const
 }
 
 template<typename T>
-void Rectangle<T>::changeHorizontalAlign(HorizontalAlign hAlign)
+void Rectangle<T>::changeHorizontalAlign(HorizontalAlign hAlign) noexcept
 {
 	mPos[0] = calculateNewPosition(mPos[0], std::abs(mDimensions[0]), mHorizontalAlign, hAlign);
 	mHorizontalAlign = hAlign;
 }
 
 template<typename T>
-void Rectangle<T>::changeVerticalAlign(VerticalAlign vAlign)
+void Rectangle<T>::changeVerticalAlign(VerticalAlign vAlign) noexcept
 {
 	mPos[1] = calculateNewPosition(mPos[1], std::abs(mDimensions[1]), mVerticalAlign, vAlign);
 	mVerticalAlign = vAlign;
 }
 
 template<typename T>
-void Rectangle<T>::changeAlign(HorizontalAlign hAlign, VerticalAlign vAlign)
+void Rectangle<T>::changeAlign(HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 {
 	changeHorizontalAlign(hAlign);
 	changeVerticalAlign(vAlign);
@@ -218,25 +220,25 @@ void Rectangle<T>::changeAlign(HorizontalAlign hAlign, VerticalAlign vAlign)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-T Rectangle<T>::x() const
+T Rectangle<T>::x() const noexcept
 {
 	return mPos[0];
 }
 
 template<typename T>
-T Rectangle<T>::y() const
+T Rectangle<T>::y() const noexcept
 {
 	return mPos[1];
 }
 
 template<typename T>
-T Rectangle<T>::width() const
+T Rectangle<T>::width() const noexcept
 {
 	return mDimensions[0];
 }
 
 template<typename T>
-T Rectangle<T>::height() const
+T Rectangle<T>::height() const noexcept
 {
 	return mDimensions[1];
 }
@@ -245,7 +247,7 @@ T Rectangle<T>::height() const
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-bool Rectangle<T>::operator== (const Rectangle<T>& other) const
+bool Rectangle<T>::operator== (const Rectangle<T>& other) const noexcept
 {
 	return mPos == other.mPos &&
 	       mDimensions == other.mDimensions &&
@@ -254,31 +256,31 @@ bool Rectangle<T>::operator== (const Rectangle<T>& other) const
 }
 
 template<typename T>
-bool Rectangle<T>::operator!= (const Rectangle<T>& other) const
+bool Rectangle<T>::operator!= (const Rectangle<T>& other) const noexcept
 {
 	return !((*this) == other);
 }
 
 template<typename T>
-bool Rectangle<T>::operator< (const Rectangle<T>& other) const
+bool Rectangle<T>::operator< (const Rectangle<T>& other) const noexcept
 {
 	return this->area() < other.area();
 }
 
 template<typename T>
-bool Rectangle<T>::operator> (const Rectangle<T>& other) const
+bool Rectangle<T>::operator> (const Rectangle<T>& other) const noexcept
 {
 	return this->area() > other.area();
 }
 
 template<typename T>
-bool Rectangle<T>::operator<= (const Rectangle<T>& other) const
+bool Rectangle<T>::operator<= (const Rectangle<T>& other) const noexcept
 {
 	return this->area() <= other.area();
 }
 
 template<typename T>
-bool Rectangle<T>::operator>= (const Rectangle<T>& other) const
+bool Rectangle<T>::operator>= (const Rectangle<T>& other) const noexcept
 {
 	return this->area() >= other.area();
 }
@@ -287,7 +289,7 @@ bool Rectangle<T>::operator>= (const Rectangle<T>& other) const
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect)
+std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect) noexcept
 {
 	return ostream << rect.to_string();
 }
@@ -299,7 +301,7 @@ std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect)
 namespace std {
 
 template<typename T>
-size_t hash<sfz::Rectangle<T>>::operator() (const sfz::Rectangle<T>& rect) const
+size_t hash<sfz::Rectangle<T>>::operator() (const sfz::Rectangle<T>& rect) const noexcept
 {
 	return rect.hash();
 }

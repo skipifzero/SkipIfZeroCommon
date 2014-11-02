@@ -4,6 +4,7 @@
 
 #include <functional> // std::hash
 #include <string>
+#include <cmath> // std::abs
 #include "sfz/math/MathConstants.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
@@ -24,6 +25,10 @@ namespace sfz {
  * Beware if using integral types, some things like changing alignment and overlap checks might
  * mess up due to truncation.
  *
+ * Most functions wrap the radius in std::abs(), so they will treat a negative radius as a positive
+ * one. But you should still be careful and avoid a negative radius if possible, the results might
+ * still be a bit unpredictable.
+ *
  * @param T the element type
  *
  * @author Peter Hillerström <peter@hstroem.se>
@@ -31,21 +36,11 @@ namespace sfz {
 template<typename T>
 class Circle final {
 public:
-	// Static constants
+	// Static constants & public members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	/**
-	 * @brief The default HorizontalAlign.
-	 */
 	static const HorizontalAlign s_DEFAULT_HORIZONTAL_ALIGN;
-
-	/**
-	 * @brief The default VerticalAlign.
-	 */
 	static const VerticalAlign s_DEFAULT_VERTICAL_ALIGN;
-
-	// Public members
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	vec2<T> mPos;
 	T mRadius;

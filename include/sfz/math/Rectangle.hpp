@@ -2,7 +2,6 @@
 #ifndef SFZ_MATH_RECTANGLE_HPP
 #define SFZ_MATH_RECTANGLE_HPP
 
-#include <stdexcept> // std::invalid_argument
 #include <functional> // std::hash
 #include <string>
 #include <iostream> // ostream
@@ -25,6 +24,10 @@ namespace sfz {
  * Beware if using integral types, some things like changing alignment and overlap checks might
  * mess up due to truncation.
  *
+ * Most functions wrap the width and height in std::abs(), so they will treat a negative width or 
+ * height as a positive one. But you should still be careful and avoid negative widths and heights
+ * if possible, the results might still be a bit unpredictable.
+ *
  * @param T the element type
  *
  * @author Peter Hillerström <peter@hstroem.se>
@@ -33,21 +36,11 @@ namespace sfz {
 template<typename T>
 class Rectangle final {
 public:
-	// Static constants
+	// Static constants & public members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	/**
-	 * @brief The default HorizontalAlign.
-	 */
 	static const HorizontalAlign s_DEFAULT_HORIZONTAL_ALIGN;
-
-	/**
-	 * @brief The default VerticalAlign.
-	 */
 	static const VerticalAlign s_DEFAULT_VERTICAL_ALIGN;
-
-	// Public members
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	vec2<T> mPos;
 	vec2<T> mDimensions;
@@ -71,7 +64,7 @@ public:
 	 * @param rect the rectangle to copy
 	 */
 	template<typename T2>
-	explicit Rectangle(const Rectangle<T2>& rect);
+	explicit Rectangle(const Rectangle<T2>& rect) noexcept;
 
 	/**
 	 * @brief Copy constructor that changes alignment.
@@ -81,12 +74,11 @@ public:
 	 * @param hAlign the HorizontalAlign to change to
 	 * @param vAlign the VerticalAlign to change to
 	 */
-	Rectangle(const Rectangle<T>& rect, HorizontalAlign hAlign, VerticalAlign vAlign);
+	Rectangle(const Rectangle<T>& rect, HorizontalAlign hAlign, VerticalAlign vAlign) noexcept;
 
 	/**
 	 * @brief Rectangle constructor.
 	 * If you don't specify the alignment variables they will be set to the default values.
-	 * @throw std::invalid_argument if width or height < 0
 	 * @param position the position
 	 * @param dimensions the dimensions
 	 * @param hAlign the HorizontalAlign
@@ -94,12 +86,11 @@ public:
 	 */
 	Rectangle(const vec2<T>& position, const vec2<T>& dimensions, 
 	          HorizontalAlign hAlign = s_DEFAULT_HORIZONTAL_ALIGN, 
-	          VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN);
+	          VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN) noexcept;
 
 	/**
 	 * @brief Rectangle constructor.
 	 * If you don't specify the alignment variables they will be set to the default values.
-	 * @throw std::invalid_argument if width or height < 0
 	 * @param position the position
 	 * @param width the width
 	 * @param height the height
@@ -108,12 +99,11 @@ public:
 	 */
 	Rectangle(const vec2<T>& position, T width, T height, 
 	          HorizontalAlign hAlign = s_DEFAULT_HORIZONTAL_ALIGN, 
-	          VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN);
+	          VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN) noexcept;
 
 	/**
 	 * @brief Rectangle constructor.
 	 * If you don't specify the alignment variables they will be set to the default values.
-	 * @throw std::invalid_argument if width or height < 0
 	 * @param x the x-position
 	 * @param y the y-position
 	 * @param width the width
@@ -123,7 +113,7 @@ public:
 	 */
 	Rectangle(T x, T y, T width, T height, 
 	          HorizontalAlign hAlign = s_DEFAULT_HORIZONTAL_ALIGN, 
-	          VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN);
+	          VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN) noexcept;
 
 	~Rectangle() = default;
 
@@ -136,45 +126,45 @@ public:
 	 * @param point the specified vector
 	 * @return whether the specified vector is inside this Rectangle or not
 	 */
-	bool overlap(const vec2<T>& point) const;
+	bool overlap(const vec2<T>& point) const noexcept;
 
 	/**
 	 * @brief Returns whether the specified Rectangle overlaps with this Rectangle or not.
 	 * @param rectangle the specified rectangle
 	 * @return whether the specified Rectangle overlaps with this Rectangle or not
 	 */
-	bool overlap(const Rectangle<T>& rect) const;
+	bool overlap(const Rectangle<T>& rect) const noexcept;
 
 	/**
 	 * @brief Returns whether the specified Circle overlaps with this Rectangle or not.
 	 * @param circle the specified circle
 	 * @return whether the specified Circle overlaps with this Rectangle or not
 	 */
-	bool overlap(const Circle<T>& circle) const;
+	bool overlap(const Circle<T>& circle) const noexcept;
 
 	/**
 	 * @brief Returns the area of this Rectangle.
 	 * @return the area of this Rectangle
 	 */
-	T area() const;
+	T area() const noexcept;
 
 	/**
 	 * @brief Returns the circumference of this Rectangle.
 	 * @return the circumference of this Rectangle
 	 */
-	T circumference() const;
+	T circumference() const noexcept;
 
 	/**
 	 * @brief Hashes the rectangle.
 	 * @return hash of the rectangle
 	 */
-	size_t hash() const;
+	size_t hash() const noexcept;
 
 	/**
 	 * @brief Returns string representation of the rectangle.
 	 * @return string representation of the rectangle
 	 */
-	std::string to_string() const;
+	std::string to_string() const noexcept;
 
 	/**
 	 * @brief Changes the HorizontalAlign of this Rectangle and updates the position.
@@ -183,7 +173,7 @@ public:
 	 * Even if the width is negative this function will behave as if it's positive.
 	 * @param hAlign the HorizontalAlign to set
 	 */
-	void changeHorizontalAlign(HorizontalAlign hAlign);
+	void changeHorizontalAlign(HorizontalAlign hAlign) noexcept;
 
 	/**
 	 * @brief Changes the VerticalAlign of this Rectangle and updates the position.
@@ -192,14 +182,14 @@ public:
 	 * Even if the height is negative this function will behave as if it's positive.
 	 * @param vAlign the VerticalAlign to set
 	 */
-	void changeVerticalAlign(VerticalAlign vAlign);
+	void changeVerticalAlign(VerticalAlign vAlign) noexcept;
 
 	/**
 	 * @brief Changes the Horizontal and VerticalAlign of this Rectangle and updates position
 	 * @see changeHorizontalAlign()
 	 * @see changeVerticalAlign()
 	 */
-	void changeAlign(HorizontalAlign hAlign, VerticalAlign vAlign);
+	void changeAlign(HorizontalAlign hAlign, VerticalAlign vAlign) noexcept;
 
 	// Getters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -207,22 +197,22 @@ public:
 	/**
 	 * @return x-position of this Rectangle
 	 */
-	T x() const;
+	T x() const noexcept;
 
 	/**
 	 * @return y-position of this Rectangle
 	 */
-	T y() const;
+	T y() const noexcept;
 
 	/**
 	 * @return width of this Rectangle
 	 */
-	T width() const;
+	T width() const noexcept;
 
 	/**
 	 * @return height of this Rectangle
 	 */
-	T height() const;
+	T height() const noexcept;
 
 	// Comparison operators
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -232,46 +222,50 @@ public:
 	 * @param other the rhs rectangle
 	 * @return whether the lhs and rhs rectangles are equal
 	 */
-	bool operator== (const Rectangle<T>& other) const;
+	bool operator== (const Rectangle<T>& other) const noexcept;
 
 	/**
 	 * @brief Inequality operator.
 	 * @param other the rhs rectangle
 	 * @return whether the lhs and rhs rectangles are not equal
 	 */
-	bool operator!= (const Rectangle<T>& other) const;
+	bool operator!= (const Rectangle<T>& other) const noexcept;
 
 	/**
 	 * @brief Smaller than operator.
-	 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+	 * The size of the Rectangle is defined by the area() function, which is also what is compared
+	 * in this function.
 	 * @param other the rhs rectangle
 	 * @return whether the lhs rectangle is smaller than the rhs rectangle
 	 */	
-	bool operator< (const Rectangle<T>& other) const;
+	bool operator< (const Rectangle<T>& other) const noexcept;
 
 	/**
 	 * @brief Larger than operator.
-	 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+	 * The size of the Rectangle is defined by the area() function, which is also what is compared
+	 * in this function.
 	 * @param other the rhs rectangle
 	 * @return whether the lhs rectangle is larger than the rhs rectangle
 	 */	
-	bool operator> (const Rectangle<T>& other) const;
+	bool operator> (const Rectangle<T>& other) const noexcept;
 
 	/**
 	 * @brief Smaller than or equal operator.
-	 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+	 * The size of the Rectangle is defined by the area() function, which is also what is compared
+	 * in this function.
 	 * @param other the rhs rectangle
 	 * @return whether the lhs rectangle is smaller than or equal to the rhs rectangle
 	 */	
-	bool operator<= (const Rectangle<T>& other) const;
+	bool operator<= (const Rectangle<T>& other) const noexcept;
 
 	/**
 	 * @brief Larger than or equal operator.
-	 * The size of the Rectangle is defined by the area() function, which is also what is compared in this function.
+	 * The size of the Rectangle is defined by the area() function, which is also what is compared
+	 * in this function.
 	 * @param other the rhs rectangle
 	 * @return whether the lhs rectangle is larger than or equal to the rhs rectangle
 	 */	
-	bool operator>= (const Rectangle<T>& other) const;
+	bool operator>= (const Rectangle<T>& other) const noexcept;
 };
 
 // Free (non-member) operators
@@ -286,7 +280,7 @@ public:
  * @return ostream the output straem
  */	
 template<typename T>
-std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect);
+std::ostream& operator<< (std::ostream& ostream, const Rectangle<T> rect) noexcept;
 
 // Standard typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -310,7 +304,7 @@ namespace std {
 
 template<typename T>
 struct hash<sfz::Rectangle<T>> {
-	size_t operator() (const sfz::Rectangle<T>& rect) const;
+	size_t operator() (const sfz::Rectangle<T>& rect) const noexcept;
 };
 
 } // namespace std

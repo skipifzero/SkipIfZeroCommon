@@ -1,6 +1,6 @@
 namespace sfz {
 
-// Static constants
+// Static constants & public members
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
@@ -79,7 +79,7 @@ bool Circle<T>::overlap(const Circle<T>& circle) const noexcept
 	// the circle's radiuses they overlap. Both sides of the equation is squared to avoid somewhat 
 	// expensive sqrt() function.
 	T distSquared = centerAlignCircleThis.mPos.distance(centerAlignCircleOther.mPos).squaredNorm();
-	T radiusSum = centerAlignCircleThis.mRadius + centerAlignCircleOther.mRadius;
+	T radiusSum = std::abs(centerAlignCircleThis.mRadius) + std::abs(centerAlignCircleOther.mRadius);
 	return distSquared <= radiusSum * radiusSum;
 }
 
@@ -98,7 +98,7 @@ T Circle<T>::area() const noexcept
 template<typename T>
 T Circle<T>::circumference() const noexcept
 {
-	return static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE)*mRadius;
+	return static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE)*std::abs(mRadius);
 }
 
 template<typename T>
