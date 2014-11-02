@@ -137,6 +137,9 @@ std::string Circle<T>::to_string() const noexcept
 template<typename T>
 void Circle<T>::changeHorizontalAlign(HorizontalAlign hAlign) noexcept
 {
+	assert(mHorizontalAlign == HorizontalAlign::LEFT ||
+	       mHorizontalAlign == HorizontalAlign::CENTER ||
+	       mHorizontalAlign == HorizontalAlign::RIGHT);
 	mPos[0] = calculateNewPosition(mPos[0], mRadius*2, mHorizontalAlign, hAlign);
 	mHorizontalAlign = hAlign;
 }
@@ -144,6 +147,9 @@ void Circle<T>::changeHorizontalAlign(HorizontalAlign hAlign) noexcept
 template<typename T>
 void Circle<T>::changeVerticalAlign(VerticalAlign vAlign) noexcept
 {
+	assert(mVerticalAlign == VerticalAlign::BOTTOM ||
+	       mVerticalAlign == VerticalAlign::MIDDLE ||
+	       mVerticalAlign == VerticalAlign::TOP);
 	mPos[1] = calculateNewPosition(mPos[1], mRadius*2, mVerticalAlign, vAlign);
 	mVerticalAlign = vAlign;
 }

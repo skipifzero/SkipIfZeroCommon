@@ -198,6 +198,9 @@ std::string Rectangle<T>::to_string() const noexcept
 template<typename T>
 void Rectangle<T>::changeHorizontalAlign(HorizontalAlign hAlign) noexcept
 {
+	assert(mHorizontalAlign == HorizontalAlign::LEFT ||
+	       mHorizontalAlign == HorizontalAlign::CENTER ||
+	       mHorizontalAlign == HorizontalAlign::RIGHT);
 	mPos[0] = calculateNewPosition(mPos[0], std::abs(mDimensions[0]), mHorizontalAlign, hAlign);
 	mHorizontalAlign = hAlign;
 }
@@ -205,6 +208,9 @@ void Rectangle<T>::changeHorizontalAlign(HorizontalAlign hAlign) noexcept
 template<typename T>
 void Rectangle<T>::changeVerticalAlign(VerticalAlign vAlign) noexcept
 {
+	assert(mVerticalAlign == VerticalAlign::BOTTOM ||
+	       mVerticalAlign == VerticalAlign::MIDDLE ||
+	       mVerticalAlign == VerticalAlign::TOP);
 	mPos[1] = calculateNewPosition(mPos[1], std::abs(mDimensions[1]), mVerticalAlign, vAlign);
 	mVerticalAlign = vAlign;
 }

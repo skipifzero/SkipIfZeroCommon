@@ -333,3 +333,31 @@ TEST_CASE("to_string()", "[sfz::Rectangle]")
 	sfz::Rectangle<int> r{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
 	REQUIRE(r.to_string() == "[pos=[1, 2], dim=[3, 4], align: LEFT, TOP]");
 }
+
+TEST_CASE("Is proper POD", "[sfz::Rectangle]")
+{
+	REQUIRE(std::is_trivially_default_constructible<sfz::rectf>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::rectd>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::recti>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::rectl>::value);
+
+	REQUIRE(std::is_trivially_copyable<sfz::rectf>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::rectd>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::recti>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::rectl>::value);
+
+	REQUIRE(std::is_trivial<sfz::rectf>::value);
+	REQUIRE(std::is_trivial<sfz::rectd>::value);
+	REQUIRE(std::is_trivial<sfz::recti>::value);
+	REQUIRE(std::is_trivial<sfz::rectl>::value);
+
+	REQUIRE(std::is_standard_layout<sfz::rectf>::value);
+	REQUIRE(std::is_standard_layout<sfz::rectd>::value);
+	REQUIRE(std::is_standard_layout<sfz::recti>::value);
+	REQUIRE(std::is_standard_layout<sfz::rectl>::value);
+
+	REQUIRE(std::is_pod<sfz::rectf>::value);
+	REQUIRE(std::is_pod<sfz::rectd>::value);
+	REQUIRE(std::is_pod<sfz::recti>::value);
+	REQUIRE(std::is_pod<sfz::rectl>::value);
+}

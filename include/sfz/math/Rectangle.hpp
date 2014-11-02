@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream> // ostream
 #include <cmath> // std::abs
+#include <cassert>
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
 
@@ -15,7 +16,7 @@ namespace sfz { template<typename T> class Circle; }
 namespace sfz {
 
 /**
- * @brief A class representing a Rectangle.
+ * @brief A POD class representing a Rectangle.
  *
  * All members are public and should be directly accessed, but there are a few convenience getters.
  *
@@ -42,7 +43,13 @@ public:
 	static const HorizontalAlign s_DEFAULT_HORIZONTAL_ALIGN;
 	static const VerticalAlign s_DEFAULT_VERTICAL_ALIGN;
 
+	/**
+	 * @brief [0] -> x-pos, [1] -> y-pos
+	 */
 	vec2<T> mPos;
+	/**
+	 * @brief [0] -> width, [1] -> height
+	 */
 	vec2<T> mDimensions;
 	HorizontalAlign mHorizontalAlign;
 	VerticalAlign mVerticalAlign;
@@ -50,7 +57,12 @@ public:
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	Rectangle() = delete;
+	/**
+	 * @brief Default constructor, value of elements undefined.
+	 * WARNING: The alignment members may end up with values outside their domain. A default
+	 * constructed rectangle should be considered uninitialized and should not be used or copied.
+	 */
+	Rectangle() = default;
 
 	/**
 	 * @brief Basic copy-constructor.

@@ -52,6 +52,8 @@ inline std::string to_string(HorizontalAlign align) noexcept
 		return std::move(std::string{"CENTER"});
 	case HorizontalAlign::RIGHT:
 		return std::move(std::string{"RIGHT"});
+	default:
+		assert(false);
 	}
 }
 
@@ -68,6 +70,8 @@ inline std::string to_string(VerticalAlign align) noexcept
 		return std::move(std::string{"MIDDLE"});
 	case VerticalAlign::TOP:
 		return std::move(std::string{"TOP"});
+	default:
+		assert(false);
 	}
 }
 

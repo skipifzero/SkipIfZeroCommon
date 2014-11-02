@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <type_traits>
 #include "sfz/math/Circle.hpp"
 
 TEST_CASE("Constructors", "[sfz::Circle]")
@@ -295,4 +296,32 @@ TEST_CASE("to_string()", "[sfz::Circle]")
 {
 	sfz::Circle<int> c{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
 	REQUIRE(c.to_string() == "[pos=[1, 2], r=3, align: LEFT, TOP]");
+}
+
+TEST_CASE("Is proper POD", "[sfz::Circle]")
+{
+	REQUIRE(std::is_trivially_default_constructible<sfz::circf>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::circd>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::circi>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::circl>::value);
+
+	REQUIRE(std::is_trivially_copyable<sfz::circf>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::circd>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::circi>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::circl>::value);
+
+	REQUIRE(std::is_trivial<sfz::circf>::value);
+	REQUIRE(std::is_trivial<sfz::circd>::value);
+	REQUIRE(std::is_trivial<sfz::circi>::value);
+	REQUIRE(std::is_trivial<sfz::circl>::value);
+
+	REQUIRE(std::is_standard_layout<sfz::circf>::value);
+	REQUIRE(std::is_standard_layout<sfz::circd>::value);
+	REQUIRE(std::is_standard_layout<sfz::circi>::value);
+	REQUIRE(std::is_standard_layout<sfz::circl>::value);
+
+	REQUIRE(std::is_pod<sfz::circf>::value);
+	REQUIRE(std::is_pod<sfz::circd>::value);
+	REQUIRE(std::is_pod<sfz::circi>::value);
+	REQUIRE(std::is_pod<sfz::circl>::value);
 }

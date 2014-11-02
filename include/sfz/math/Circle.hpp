@@ -5,6 +5,7 @@
 #include <functional> // std::hash
 #include <string>
 #include <cmath> // std::abs
+#include <cassert>
 #include "sfz/math/MathConstants.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Alignment.hpp"
@@ -15,7 +16,7 @@ namespace sfz { template<typename T> class Rectangle; }
 namespace sfz {
 
 /**
- * @brief A class representing a Circle.
+ * @brief A POD class representing a Circle.
  *
  * All members are public and should be directly accessed, but there are a few convenience getters.
  *
@@ -42,6 +43,9 @@ public:
 	static const HorizontalAlign s_DEFAULT_HORIZONTAL_ALIGN;
 	static const VerticalAlign s_DEFAULT_VERTICAL_ALIGN;
 
+	/**
+	 * @brief [0] -> x-pos, [1] -> y-pos
+	 */
 	vec2<T> mPos;
 	T mRadius;
 	HorizontalAlign mHorizontalAlign;
@@ -50,8 +54,12 @@ public:
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	// No default constructor.
-	Circle() = delete;
+	/**
+	 * @brief Default constructor, value of elements undefined.
+	 * WARNING: The alignment members may end up with values outside their domain. A default
+	 * constructed circle should be considered uninitialized and should not be used or copied.
+	 */
+	Circle() = default;
 	
 	/**
 	 * @brief Basic copy-constructor.
@@ -155,6 +163,7 @@ public:
 	 * @brief Changes the HorizontalAlign and updates the position to reflect this.
 	 * The position is updated so the Circle's actual position is the same afterwards, i.e. not
 	 * shifted. If this is not wanted mHorizontalAlign should be set directly.
+	 * @assert mHorizontalAlign has a valid alignment
 	 * @param hAlign the HorizontalAlign to set
 	 */
 	void changeHorizontalAlign(HorizontalAlign hAlign) noexcept;
@@ -163,6 +172,7 @@ public:
 	 * @brief Changes the VerticalAlign and updates the position to reflect this.
 	 * The position is updated so the Circle's actual position is the same afterwards, i.e. not
 	 * shifted. If this is not wanted mVerticalAlign should be set directly.
+	 * @assert mVerticalAlign has a valid alignment
 	 * @param vAlign the VerticalAlign to set
 	 */
 	void changeVerticalAlign(VerticalAlign vAlign) noexcept;
