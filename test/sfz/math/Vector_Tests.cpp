@@ -480,6 +480,15 @@ TEST_CASE("Hashing", "[sfz::Vector]")
 
 TEST_CASE("Is proper POD", "[sfz::Vector]")
 {
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec2f>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec2d>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec2i>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec2l>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec3f>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec3d>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec3i>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec3l>::value);
+
 	REQUIRE(std::is_trivially_copyable<sfz::vec2f>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec2d>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec2i>::value);

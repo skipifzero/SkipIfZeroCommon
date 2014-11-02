@@ -271,7 +271,7 @@ T angle(const Vector<T,2>& vector) noexcept
 	assert(!(vector[0] == 0 && vector[1] == 0));
 	T angle = std::atan2(vector[1], vector[0]);
 	if (angle < 0) {
-		angle += static_cast<T>(2)*static_cast<T>(PI_DOUBLE);
+		angle += static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE);
 	}
 	return angle;
 }

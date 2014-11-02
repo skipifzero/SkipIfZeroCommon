@@ -1,107 +1,71 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 
-#include <stdexcept>
 #include <vector>
 #include <unordered_map>
-#include "sfz/math/Vector.hpp"
 #include "sfz/math/Rectangle.hpp"
-#include "sfz/math/Circle.hpp"
 
-TEST_CASE("Constructors", "[sfz::Rectangle]") {
+TEST_CASE("Constructors", "[sfz::Rectangle]")
+{
 	SECTION("Copy constructor") {
 		sfz::Rectangle<int> rect1{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
 		sfz::Rectangle<int> rect2{rect1};
-		REQUIRE(rect1.getPosition() == rect2.getPosition());
-		REQUIRE(rect1.getDimensions() == rect2.getDimensions());
-		REQUIRE(rect1.getHorizontalAlign() == rect2.getHorizontalAlign());
-		REQUIRE(rect1.getVerticalAlign() == rect2.getVerticalAlign());
+		REQUIRE(rect1.mPos == rect2.mPos);
+		REQUIRE(rect1.mDimensions == rect2.mDimensions);
+		REQUIRE(rect1.mHorizontalAlign == rect2.mHorizontalAlign);
+		REQUIRE(rect1.mVerticalAlign == rect2.mVerticalAlign);
 	}
 	SECTION("Copy cast constructor") {
 		sfz::Rectangle<float> rectf{1.1f, 2.2f, 3.3f, 4.4f};
 		sfz::Rectangle<int> recti{rectf};
-		REQUIRE(recti.getX() == 1);
-		REQUIRE(recti.getY() == 2);
-		REQUIRE(recti.getWidth() == 3);
-		REQUIRE(recti.getHeight() == 4);
-		REQUIRE(recti.getHorizontalAlign() == rectf.getHorizontalAlign());
-		REQUIRE(recti.getVerticalAlign() == rectf.getVerticalAlign());
+		REQUIRE(recti.x() == 1);
+		REQUIRE(recti.y() == 2);
+		REQUIRE(recti.width() == 3);
+		REQUIRE(recti.height() == 4);
+		REQUIRE(recti.mHorizontalAlign == rectf.mHorizontalAlign);
+		REQUIRE(recti.mVerticalAlign == rectf.mVerticalAlign);
 	}
 	SECTION("Copy constructor with alignment change") {
-		sfz::Rectangle<int> rect1{0, 0, 2, 2, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+		sfz::Rectangle<int> rect1{0, 0, 2, 2, sfz::HorizontalAlign::LEFT,
+		                                      sfz::VerticalAlign::BOTTOM};
 		sfz::Rectangle<int> rect2{rect1, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
-		REQUIRE(rect2.getX() == 2);
-		REQUIRE(rect2.getY() == 2);
-		REQUIRE(rect2.getDimensions() == rect1.getDimensions());
-		REQUIRE(rect2.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
-		REQUIRE(rect2.getVerticalAlign() == sfz::VerticalAlign::TOP);
+		REQUIRE(rect2.x() == 2);
+		REQUIRE(rect2.y() == 2);
+		REQUIRE(rect2.mDimensions == rect1.mDimensions);
+		REQUIRE(rect2.mHorizontalAlign == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(rect2.mVerticalAlign == sfz::VerticalAlign::TOP);
 	}
 	SECTION("(vec2 position, vec2 dimensions) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, sfz::vec2i{3, 4}};
-		REQUIRE(rect.getX() == 1);
-		REQUIRE(rect.getY() == 2);
-		REQUIRE(rect.getWidth() == 3);
-		REQUIRE(rect.getHeight() == 4);
-		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(rect.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
-		try {
-			sfz::Rectangle<int>{sfz::vec2i{0, 0}, sfz::vec2i{-1, 0}};
-			REQUIRE(false);
-		} catch (std::invalid_argument e) {
-			REQUIRE(true);
-		}
-		try {
-			sfz::Rectangle<int>{sfz::vec2i{0, 0}, sfz::vec2i{0, -1}};
-			REQUIRE(false);
-		} catch (std::invalid_argument e) {
-			REQUIRE(true);
-		}
+		REQUIRE(rect.x() == 1);
+		REQUIRE(rect.y() == 2);
+		REQUIRE(rect.width() == 3);
+		REQUIRE(rect.height() == 4);
+		REQUIRE(rect.mHorizontalAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.mVerticalAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
 	}
 	SECTION("(vec2 position, width, height) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, 3, 4};
-		REQUIRE(rect.getX() == 1);
-		REQUIRE(rect.getY() == 2);
-		REQUIRE(rect.getWidth() == 3);
-		REQUIRE(rect.getHeight() == 4);
-		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(rect.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
-		try {
-			sfz::Rectangle<int>{sfz::vec2i{0, 0}, -1, 0};
-			REQUIRE(false);
-		} catch (std::invalid_argument e) {
-			REQUIRE(true);
-		}
-		try {
-			sfz::Rectangle<int>{sfz::vec2i{0, 0}, 0, -1};
-			REQUIRE(false);
-		} catch (std::invalid_argument e) {
-			REQUIRE(true);
-		}
+		REQUIRE(rect.x() == 1);
+		REQUIRE(rect.y() == 2);
+		REQUIRE(rect.width() == 3);
+		REQUIRE(rect.height() == 4);
+		REQUIRE(rect.mHorizontalAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.mVerticalAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
 	}
 	SECTION("(x, y, width, height) constructor") {
 		sfz::Rectangle<int> rect{1, 2, 3, 4};
-		REQUIRE(rect.getX() == 1);
-		REQUIRE(rect.getY() == 2);
-		REQUIRE(rect.getWidth() == 3);
-		REQUIRE(rect.getHeight() == 4);
-		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(rect.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
-		try {
-			sfz::Rectangle<int>{0, 0, -1, 0};
-			REQUIRE(false);
-		} catch (std::invalid_argument e) {
-			REQUIRE(true);
-		}
-		try {
-			sfz::Rectangle<int>{0, 0, 0, -1};
-			REQUIRE(false);
-		} catch (std::invalid_argument e) {
-			REQUIRE(true);
-		}
+		REQUIRE(rect.x() == 1);
+		REQUIRE(rect.y() == 2);
+		REQUIRE(rect.width() == 3);
+		REQUIRE(rect.height() == 4);
+		REQUIRE(rect.mHorizontalAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.mVerticalAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
 	}
 }
 
-TEST_CASE("Overlap tests", "[sfz::Rectangle]") {
+TEST_CASE("Overlap tests", "[sfz::Rectangle]")
+{
 	sfz::Rectangle<int> rect{0, 0, 2, 2, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 	
 	SECTION("overlap(vec2)") {
@@ -151,10 +115,14 @@ TEST_CASE("Overlap tests", "[sfz::Rectangle]") {
 	SECTION("overlap(Rectangle)") {
 		std::vector<sfz::Rectangle<int>> overlappingRects;
 		overlappingRects.emplace_back(1, 1, 2, 2);
-		overlappingRects.emplace_back(0, 0, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
-		overlappingRects.emplace_back(0, 1, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
-		overlappingRects.emplace_back(1, 0, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
-		overlappingRects.emplace_back(1, 1, 1, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM);
+		overlappingRects.emplace_back(0, 0, 1, 1, sfz::HorizontalAlign::LEFT,
+		                                          sfz::VerticalAlign::BOTTOM);
+		overlappingRects.emplace_back(0, 1, 1, 1, sfz::HorizontalAlign::LEFT,
+		                                          sfz::VerticalAlign::BOTTOM);
+		overlappingRects.emplace_back(1, 0, 1, 1, sfz::HorizontalAlign::LEFT,
+		                                          sfz::VerticalAlign::BOTTOM);
+		overlappingRects.emplace_back(1, 1, 1, 1, sfz::HorizontalAlign::LEFT,
+		                                          sfz::VerticalAlign::BOTTOM);
 		overlappingRects.emplace_back(1, 1, 8, 8);
 
 		std::vector<sfz::Rectangle<int>> nonOverlappingRects;
@@ -220,134 +188,62 @@ TEST_CASE("Overlap tests", "[sfz::Rectangle]") {
 	}
 }
 
-TEST_CASE("Getters", "[sfz::Rectangle]") {
-	const sfz::Rectangle<int> rect1{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
+TEST_CASE("Getters", "[sfz::Rectangle]")
+{
+	const sfz::Rectangle<int> rect1{1, 2, 3, 4, sfz::HorizontalAlign::LEFT,
+	                                            sfz::VerticalAlign::BOTTOM};
 	const sfz::Rectangle<int> rect2{4, 3, 2, 1};
 
-	SECTION("getPosition()") {
-		REQUIRE(rect1.getPosition()[0] == 1);
-		REQUIRE(rect1.getPosition()[1] == 2);
-		REQUIRE(rect2.getPosition()[0] == 4);
-		REQUIRE(rect2.getPosition()[1] == 3);
+	SECTION("x() & y()") {
+		REQUIRE(rect1.x() == 1);
+		REQUIRE(rect1.y() == 2);
+		REQUIRE(rect2.x() == 4);
+		REQUIRE(rect2.y() == 3);
 	}
-	SECTION("getX() & getY()") {
-		REQUIRE(rect1.getX() == 1);
-		REQUIRE(rect1.getY() == 2);
-		REQUIRE(rect2.getX() == 4);
-		REQUIRE(rect2.getY() == 3);
-	}
-	SECTION("getDimensions()") {
-		REQUIRE(rect1.getDimensions()[0] == 3);
-		REQUIRE(rect1.getDimensions()[1] == 4);
-		REQUIRE(rect2.getDimensions()[0] == 2);
-		REQUIRE(rect2.getDimensions()[1] == 1);
-	}
-	SECTION("getWidth() & getHeight()") {
-		REQUIRE(rect1.getWidth() == 3);
-		REQUIRE(rect1.getHeight() == 4);
-		REQUIRE(rect2.getWidth() == 2);
-		REQUIRE(rect2.getHeight() == 1);
-	}
-	SECTION("getHorizontalAlign() & getVerticalAlign()") {
-		REQUIRE(rect1.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
-		REQUIRE(rect1.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
-		REQUIRE(rect2.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(rect2.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
+	SECTION("width() & height()") {
+		REQUIRE(rect1.width() == 3);
+		REQUIRE(rect1.height() == 4);
+		REQUIRE(rect2.width() == 2);
+		REQUIRE(rect2.height() == 1);
 	}
 }
 
-TEST_CASE("Setters", "[sfz::Rectangle]") {
+TEST_CASE("Setters", "[sfz::Rectangle]")
+{
 	sfz::Rectangle<int> rect{0, 0, 2, 2};
 
-	SECTION("setPosition(vec2)") {
-		rect.setPosition(sfz::vec2i{-1, 3});
-		REQUIRE(rect.getX() == -1);
-		REQUIRE(rect.getY() == 3);
-		REQUIRE(rect.getWidth() == 2);
-		REQUIRE(rect.getHeight() == 2);
-	}
-	SECTION("setPosition(x,y)") {
-		rect.setPosition(9, 1);
-		REQUIRE(rect.getX() == 9);
-		REQUIRE(rect.getY() == 1);
-		REQUIRE(rect.getWidth() == 2);
-		REQUIRE(rect.getHeight() == 2);
-	}
-	SECTION("setX() & setY()") {
-		rect.setX(44);
-		rect.setY(-220);
-		REQUIRE(rect.getX() == 44);
-		REQUIRE(rect.getY() == -220);
-		REQUIRE(rect.getWidth() == 2);
-		REQUIRE(rect.getHeight() == 2);
-	}
-	SECTION("setDimensions(vec2)") {
-		rect.setDimensions(sfz::vec2i{4, 2});
-		REQUIRE(rect.getX() == 0);
-		REQUIRE(rect.getY() == 0);
-		REQUIRE(rect.getWidth() == 4);
-		REQUIRE(rect.getHeight() == 2);
-		REQUIRE_THROWS_AS(rect.setDimensions(sfz::vec2i{-1, 0}), std::invalid_argument);
-		REQUIRE_THROWS_AS(rect.setDimensions(sfz::vec2i{0, -1}), std::invalid_argument);
-	}
-	SECTION("setDimensions(x,y)") {
-		rect.setDimensions(42, 21);
-		REQUIRE(rect.getX() == 0);
-		REQUIRE(rect.getY() == 0);
-		REQUIRE(rect.getWidth() == 42);
-		REQUIRE(rect.getHeight() == 21);
-		REQUIRE_THROWS_AS(rect.setDimensions(-1, 0), std::invalid_argument);
-		REQUIRE_THROWS_AS(rect.setDimensions(0, -1), std::invalid_argument);
-	}
-	SECTION("setWidth() & setHeight()") {
-		rect.setWidth(5);
-		rect.setHeight(55);
-		REQUIRE(rect.getX() == 0);
-		REQUIRE(rect.getY() == 0);
-		REQUIRE(rect.getWidth() == 5);
-		REQUIRE(rect.getHeight() == 55);
-		REQUIRE_THROWS_AS(rect.setWidth(-1), std::invalid_argument);
-		REQUIRE_THROWS_AS(rect.setHeight(-2), std::invalid_argument);
-	}
-	SECTION("setHorizontalAlign() & setVerticalAlign()") {
-		REQUIRE(rect.getHorizontalAlign() == sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(rect.getVerticalAlign() == sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN);
-		rect.setHorizontalAlign(sfz::HorizontalAlign::RIGHT);
-		rect.setVerticalAlign(sfz::VerticalAlign::BOTTOM);
-		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
-		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
-	}
 	SECTION("changeHorizontalAlign()") {
-		REQUIRE(sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
-		REQUIRE(sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
+		REQUIRE(sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
+		REQUIRE(sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
 
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::LEFT);
-		REQUIRE(rect.getX() == -1);
-		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::LEFT);
+		REQUIRE(rect.x() == -1);
+		REQUIRE(rect.mHorizontalAlign == sfz::HorizontalAlign::LEFT);
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::RIGHT);
-		REQUIRE(rect.getX() == 1);
-		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(rect.x() == 1);
+		REQUIRE(rect.mHorizontalAlign == sfz::HorizontalAlign::RIGHT);
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::CENTER);
-		REQUIRE(rect.getX() == 0);
-		REQUIRE(rect.getHorizontalAlign() == sfz::HorizontalAlign::CENTER);
+		REQUIRE(rect.x() == 0);
+		REQUIRE(rect.mHorizontalAlign == sfz::HorizontalAlign::CENTER);
 	}
 	SECTION("changeVerticalAlign()") {
-		REQUIRE(sfz::Rectangle<int>::DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
-		REQUIRE(sfz::Rectangle<int>::DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
+		REQUIRE(sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
+		REQUIRE(sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN == sfz::VerticalAlign::MIDDLE);
 
 		rect.changeVerticalAlign(sfz::VerticalAlign::TOP);
-		REQUIRE(rect.getY() == 1);
-		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::TOP);
+		REQUIRE(rect.y() == 1);
+		REQUIRE(rect.mVerticalAlign == sfz::VerticalAlign::TOP);
 		rect.changeVerticalAlign(sfz::VerticalAlign::BOTTOM);
-		REQUIRE(rect.getY() == -1);
-		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::BOTTOM);
+		REQUIRE(rect.y() == -1);
+		REQUIRE(rect.mVerticalAlign == sfz::VerticalAlign::BOTTOM);
 		rect.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
-		REQUIRE(rect.getY() == 0);
-		REQUIRE(rect.getVerticalAlign() == sfz::VerticalAlign::MIDDLE);
+		REQUIRE(rect.y() == 0);
+		REQUIRE(rect.mVerticalAlign == sfz::VerticalAlign::MIDDLE);
 	}
 }
 
-TEST_CASE("Area and circumference", "[sfz::Rectangle]") {
+TEST_CASE("Area and circumference", "[sfz::Rectangle]")
+{
 	sfz::Rectangle<int> r1{0, 0, 10, 10};
 	sfz::Rectangle<int> r2{0, 0, 1, 10};
 	SECTION("area()") {
@@ -360,7 +256,8 @@ TEST_CASE("Area and circumference", "[sfz::Rectangle]") {
 	}
 }
 
-TEST_CASE("Comparison operators", "[sfz::Rectangle]") {
+TEST_CASE("Comparison operators", "[sfz::Rectangle]")
+{
 	sfz::Rectangle<int> r1{0, 0, 10, 10};
 	sfz::Rectangle<int> r2{0, 0, 10, 10};
 	sfz::Rectangle<int> r3{0, 0, 1, 10};
@@ -408,7 +305,8 @@ TEST_CASE("Comparison operators", "[sfz::Rectangle]") {
 	}
 }
 
-TEST_CASE("Hashing", "[sfz::Rectangle]") {
+TEST_CASE("Hashing", "[sfz::Rectangle]")
+{
 	sfz::Rectangle<int> r1{-1, 100, 32, 32};
 	sfz::Rectangle<int> r2{-1, 100, 32, 32, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
 	sfz::Rectangle<int> r3{0, -9, 14, 2};
@@ -418,8 +316,8 @@ TEST_CASE("Hashing", "[sfz::Rectangle]") {
 		REQUIRE(r2.hash() != r3.hash());
 	}
 	SECTION("Hash map") {
-		// This test checks if unordered_map works as it should. Not a very good test, but the best I can come up with
-		// to test if hashing works as it should at the moment.
+		// This test checks if unordered_map works as it should. Not a very good test, but the best
+		// I can come up with to test if hashing works as it should at the moment.
 		std::unordered_map<sfz::Rectangle<int>, int> hashMap;
 		hashMap[r1] = 1;
 		hashMap[r2] = 2;
@@ -430,7 +328,36 @@ TEST_CASE("Hashing", "[sfz::Rectangle]") {
 	}
 }
 
-TEST_CASE("to_string()", "[sfz::Rectangle]") {
+TEST_CASE("to_string()", "[sfz::Rectangle]")
+{
 	sfz::Rectangle<int> r{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
 	REQUIRE(r.to_string() == "[pos=[1, 2], dim=[3, 4], align: LEFT, TOP]");
+}
+
+TEST_CASE("Is proper POD", "[sfz::Rectangle]")
+{
+	REQUIRE(std::is_trivially_default_constructible<sfz::rectf>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::rectd>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::recti>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::rectl>::value);
+
+	REQUIRE(std::is_trivially_copyable<sfz::rectf>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::rectd>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::recti>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::rectl>::value);
+
+	REQUIRE(std::is_trivial<sfz::rectf>::value);
+	REQUIRE(std::is_trivial<sfz::rectd>::value);
+	REQUIRE(std::is_trivial<sfz::recti>::value);
+	REQUIRE(std::is_trivial<sfz::rectl>::value);
+
+	REQUIRE(std::is_standard_layout<sfz::rectf>::value);
+	REQUIRE(std::is_standard_layout<sfz::rectd>::value);
+	REQUIRE(std::is_standard_layout<sfz::recti>::value);
+	REQUIRE(std::is_standard_layout<sfz::rectl>::value);
+
+	REQUIRE(std::is_pod<sfz::rectf>::value);
+	REQUIRE(std::is_pod<sfz::rectd>::value);
+	REQUIRE(std::is_pod<sfz::recti>::value);
+	REQUIRE(std::is_pod<sfz::rectl>::value);
 }
