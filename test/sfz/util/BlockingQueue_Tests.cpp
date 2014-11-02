@@ -7,7 +7,8 @@
 #include <chrono>
 #include <vector>
 
-TEST_CASE("Pushing and popping elements", "[sfz::BlockingQueue]") {
+TEST_CASE("Pushing and popping elements", "[sfz::BlockingQueue]")
+{
 	sfz::BlockingQueue<int> blockingQueue;
 	SECTION("empty() returns correct state") {
 		REQUIRE(blockingQueue.empty());
