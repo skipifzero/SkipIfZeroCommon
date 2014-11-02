@@ -2,7 +2,6 @@
 #ifndef SFZ_MATH_CIRCLE_HPP
 #define SFZ_MATH_CIRCLE_HPP
 
-#include <stdexcept> // std::invalid_argument
 #include <functional> // std::hash
 #include <string>
 #include "sfz/math/MathConstants.hpp"
@@ -16,6 +15,8 @@ namespace sfz {
 
 /**
  * @brief A class representing a Circle.
+ *
+ * All members are public and should be directly accessed, but there are a few convenience getters.
  *
  * The two alignment variables decide how the Circle is anchored to the position. Basically imagine
  * an invsible square around the circle, BOTTOM LEFT is the bottom left corner on that square, etc.
@@ -43,6 +44,14 @@ public:
 	 */
 	static const VerticalAlign s_DEFAULT_VERTICAL_ALIGN;
 
+	// Public Members
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	vec2<T> mPos;
+	T mRadius;
+	HorizontalAlign mHorizontalAlign;
+	VerticalAlign mVerticalAlign;
+
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -61,34 +70,32 @@ public:
 	 * @param circle the circle to copy
 	 */
 	template<typename T2>
-	explicit Circle(const Circle<T2>& circle);
+	explicit Circle(const Circle<T2>& circle) noexcept;
 
 	/**
 	 * @brief Copy constructor that changes alignment.
-	 * The alignment is changed as it would be if changeHorizontalAlign() or changeVerticalAlign()
-	 * were called.
+	 * The alignment is changed as it would be if changeAlign() were called.
+	 * @see changeAlign()
 	 * @param circle the Circle to copy
 	 * @param hAlign the HorizontalAlign to change to
 	 * @param vAlign the VerticalAlign to change to
 	 */
-	Circle(const Circle<T>& circle, HorizontalAlign hAlign, VerticalAlign vAlign);
+	Circle(const Circle<T>& circle, HorizontalAlign hAlign, VerticalAlign vAlign) noexcept;
 
 	/**
 	 * @brief Circle constructor.
 	 * If you don't specify the alignment variables they will be set to the default values.
-	 * @throw std::invalid_argument if radius < 0
 	 * @param position the position
 	 * @param radius the radius
 	 * @param hAlign the HorizontalAlign
 	 * @param vAlign the VerticalAlign
 	 */
 	Circle(vec2<T> position, T radius, HorizontalAlign hAlign = s_DEFAULT_HORIZONTAL_ALIGN, 
-	                                   VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN);
+	                                   VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN) noexcept;
 
 	/**
 	 * @brief Circle constructor.
 	 * If you don't specify the alignment variables they will be set to the default values.
-	 * @throw std::invalid_argument if radius < 0
 	 * @param x the x-position
 	 * @param y the y-position
 	 * @param radius the radius
@@ -96,7 +103,7 @@ public:
 	 * @param vAlign the VerticalAlign
 	 */
 	Circle(T x, T y, T radius, HorizontalAlign hAlign = s_DEFAULT_HORIZONTAL_ALIGN,
-	                           VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN);
+	                           VerticalAlign vAlign = s_DEFAULT_VERTICAL_ALIGN) noexcept;
 
 	~Circle() = default;
 
@@ -109,45 +116,45 @@ public:
 	 * @param point the specified vector
 	 * @return whether the specified vector is inside this Circle or not
 	 */
-	bool overlap(const vec2<T>& point) const;
+	bool overlap(const vec2<T>& point) const noexcept;
 
 	/**
 	 * @brief Returns whether the specified Circle overlaps with this Circle or not.
 	 * @param circle the specified circle
 	 * @return whether the specified Circle overlaps with this Circle or not
 	 */
-	bool overlap(const Circle<T>& circle) const;
+	bool overlap(const Circle<T>& circle) const noexcept;
 
 	/**
 	 * @brief Returns whether the specified Rectangle overlaps with this Circle or not.
 	 * @param rectangle the specified rectangle
 	 * @return whether the specified Rectangle overlaps with this Circle or not
 	 */
-	bool overlap(const Rectangle<T>& rect) const;
+	bool overlap(const Rectangle<T>& rect) const noexcept;
 
 	/**
 	 * @brief Returns the area of this Circle.
 	 * @return the area of this Circle
 	 */
-	T area() const;
+	T area() const noexcept;
 
 	/**
 	 * @brief Returns the circumference of this Circle.
 	 * @return the circumference of this Circle
 	 */
-	T circumference() const;
+	T circumference() const noexcept;
 
 	/**
 	 * @brief Hashes the rectangle.
 	 * @return hash of rectangle
 	 */
-	size_t hash() const;
+	size_t hash() const noexcept;
 
 	/**
 	 * @brief Returns string representation of the circle.
 	 * @return string representation of the circle
 	 */
-	std::string to_string() const;
+	std::string to_string() const noexcept;
 
 	/**
 	 * @brief Changes the HorizontalAlign and updates the position to reflect this.
@@ -155,7 +162,7 @@ public:
 	 * shifted. If this is not wanted mHorizontalAlign should be set directly.
 	 * @param hAlign the HorizontalAlign to set
 	 */
-	void changeHorizontalAlign(HorizontalAlign hAlign);
+	void changeHorizontalAlign(HorizontalAlign hAlign) noexcept;
 
 	/**
 	 * @brief Changes the VerticalAlign and updates the position to reflect this.
@@ -163,7 +170,16 @@ public:
 	 * shifted. If this is not wanted mVerticalAlign should be set directly.
 	 * @param vAlign the VerticalAlign to set
 	 */
-	void changeVerticalAlign(VerticalAlign vAlign);
+	void changeVerticalAlign(VerticalAlign vAlign) noexcept;
+
+	/**
+	 * @brief Changes the Horizontal and VerticalAlign and updates position to reflect this.
+	 * @see changeHorizontalAlign()
+	 * @see changeVerticalALign()
+	 * @param hAlign the HorizontalAlign to set
+	 * @param vAlign the VerticalAlign to set
+	 */
+	void changeAlign(HorizontalAlign hAlign, VerticalAlign vAlign) noexcept;
 
 	// Getters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -186,14 +202,14 @@ public:
 	 * @param other the rhs circle
 	 * @return whether the lhs and rhs circles are equal
 	 */
-	bool operator== (const Circle<T>& other) const;
+	bool operator== (const Circle<T>& other) const noexcept;
 
 	/**
 	 * @brief Inequality operator.
 	 * @param other the rhs circle
 	 * @return whether the lhs and rhs circles are not equal
 	 */
-	bool operator!= (const Circle<T>& other) const;
+	bool operator!= (const Circle<T>& other) const noexcept;
 
 	/**
 	 * @brief Smaller than operator.
@@ -202,7 +218,7 @@ public:
 	 * @param other the rhs circle
 	 * @return whether the lhs circle is smaller than the rhs circle
 	 */	
-	bool operator< (const Circle<T>& other) const;
+	bool operator< (const Circle<T>& other) const noexcept;
 
 	/**
 	 * @brief Larger than operator.
@@ -211,7 +227,7 @@ public:
 	 * @param other the rhs circle
 	 * @return whether the lhs circle is larger than the rhs circle
 	 */	
-	bool operator> (const Circle<T>& other) const;
+	bool operator> (const Circle<T>& other) const noexcept;
 
 	/**
 	 * @brief Smaller than or equal operator.
@@ -220,7 +236,7 @@ public:
 	 * @param other the rhs circle
 	 * @return whether the lhs circle is smaller than or equal to the rhs circle
 	 */	
-	bool operator<= (const Circle<T>& other) const;
+	bool operator<= (const Circle<T>& other) const noexcept;
 
 	/**
 	 * @brief Larger than or equal operator.
@@ -229,21 +245,7 @@ public:
 	 * @param other the rhs circle
 	 * @return whether the lhs circle is larger than or equal to the rhs circle
 	 */
-	bool operator>= (const Circle<T>& other) const;
-
-	// Members
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	vec2<T> mPos;
-	T mRadius;
-	HorizontalAlign mHorizontalAlign;
-	VerticalAlign mVerticalAlign;
-
-	// Private helper functions
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-private:
-
-	static T requireNonNegative(T value);
+	bool operator>= (const Circle<T>& other) const noexcept;
 };
 
 // Free (non-member) operators
@@ -258,7 +260,7 @@ private:
  * @return ostream the output straem
  */	
 template<typename T>
-std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle);
+std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle) noexcept;
 
 // Standard typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -282,7 +284,7 @@ namespace std {
 
 template<typename T>
 struct hash<sfz::Circle<T>> {
-	size_t operator() (const sfz::Circle<T>& circle) const;
+	size_t operator() (const sfz::Circle<T>& circle) const noexcept;
 };
 
 } // namespace std

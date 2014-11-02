@@ -41,12 +41,6 @@ TEST_CASE("Constructors", "[sfz::Circle]")
 		REQUIRE(circ.mRadius == 2);
 		REQUIRE(circ.mHorizontalAlign == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
 		REQUIRE(circ.mVerticalAlign == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
-		try {
-			sfz::Circle<int>{sfz::vec2i{0, 0}, -1};
-			REQUIRE(false);
-		} catch (std::invalid_argument e) {
-			REQUIRE(true);
-		}
 	}
 	SECTION("(x, y, radius) constructor") {
 		sfz::Circle<int> circ{-1, 2, 2};
@@ -55,12 +49,6 @@ TEST_CASE("Constructors", "[sfz::Circle]")
 		REQUIRE(circ.mRadius == 2);
 		REQUIRE(circ.mHorizontalAlign == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
 		REQUIRE(circ.mVerticalAlign == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
-		try {
-			sfz::Circle<int>{0, 0, -1};
-			REQUIRE(false);
-		} catch (std::invalid_argument e) {
-			REQUIRE(true);
-		}
 	}
 }
 

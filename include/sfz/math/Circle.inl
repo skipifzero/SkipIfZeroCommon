@@ -14,7 +14,7 @@ const VerticalAlign Circle<T>::s_DEFAULT_VERTICAL_ALIGN = VerticalAlign::MIDDLE;
 
 template<typename T>
 template<typename T2>
-Circle<T>::Circle(const Circle<T2>& circle)
+Circle<T>::Circle(const Circle<T2>& circle) noexcept
 :
 	mPos{static_cast<vec2<T2>>(circle.mPos)},
 	mHorizontalAlign{circle.mHorizontalAlign},
@@ -25,7 +25,7 @@ Circle<T>::Circle(const Circle<T2>& circle)
 
 
 template<typename T>
-Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign hAlign, VerticalAlign vAlign)
+Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	Circle<T>{circle}
 {
@@ -34,10 +34,10 @@ Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign hAlign, VerticalAlign
 }
 
 template<typename T>
-Circle<T>::Circle(vec2<T> position, T radius, HorizontalAlign hAlign, VerticalAlign vAlign)
+Circle<T>::Circle(vec2<T> position, T radius, HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{position},
-	mRadius{requireNonNegative(radius)},
+	mRadius{radius},
 	mHorizontalAlign{hAlign},
 	mVerticalAlign{vAlign}
 {
@@ -45,10 +45,10 @@ Circle<T>::Circle(vec2<T> position, T radius, HorizontalAlign hAlign, VerticalAl
 }
 
 template<typename T>
-Circle<T>::Circle(T x, T y, T radius, HorizontalAlign hAlign, VerticalAlign vAlign)
+Circle<T>::Circle(T x, T y, T radius, HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{x, y},
-	mRadius{requireNonNegative(radius)},
+	mRadius{radius},
 	mHorizontalAlign{hAlign},
 	mVerticalAlign{vAlign}
 {
@@ -59,7 +59,7 @@ Circle<T>::Circle(T x, T y, T radius, HorizontalAlign hAlign, VerticalAlign vAli
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-bool Circle<T>::overlap(const vec2<T>& point) const
+bool Circle<T>::overlap(const vec2<T>& point) const noexcept
 {
 	Circle<T> centerAlignCircle{*this, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 
@@ -70,7 +70,7 @@ bool Circle<T>::overlap(const vec2<T>& point) const
 }
 
 template<typename T>
-bool Circle<T>::overlap(const Circle<T>& circle) const
+bool Circle<T>::overlap(const Circle<T>& circle) const noexcept
 {
 	Circle<T> centerAlignCircleThis{*this, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
 	Circle<T> centerAlignCircleOther{circle, HorizontalAlign::CENTER, VerticalAlign::MIDDLE};
@@ -84,25 +84,25 @@ bool Circle<T>::overlap(const Circle<T>& circle) const
 }
 
 template<typename T>
-bool Circle<T>::overlap(const Rectangle<T>& rect) const
+bool Circle<T>::overlap(const Rectangle<T>& rect) const noexcept
 {
 	return rect.overlap(*this);
 }
 
 template<typename T>
-T Circle<T>::area() const
+T Circle<T>::area() const noexcept
 {
 	return static_cast<T>(g_PI_DOUBLE)*mRadius*mRadius;
 }
 
 template<typename T>
-T Circle<T>::circumference() const
+T Circle<T>::circumference() const noexcept
 {
 	return static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE)*mRadius;
 }
 
 template<typename T>
-size_t Circle<T>::hash() const
+size_t Circle<T>::hash() const noexcept
 {
 	std::hash<T> hasher;
 	std::hash<char> enumHasher;
@@ -119,7 +119,7 @@ size_t Circle<T>::hash() const
 }
 
 template<typename T>
-std::string Circle<T>::to_string() const
+std::string Circle<T>::to_string() const noexcept
 {
 	std::string str;
 	str += "[pos=";
@@ -135,17 +135,24 @@ std::string Circle<T>::to_string() const
 }
 
 template<typename T>
-void Circle<T>::changeHorizontalAlign(HorizontalAlign hAlign)
+void Circle<T>::changeHorizontalAlign(HorizontalAlign hAlign) noexcept
 {
 	mPos[0] = calculateNewPosition(mPos[0], mRadius*2, mHorizontalAlign, hAlign);
 	mHorizontalAlign = hAlign;
 }
 
 template<typename T>
-void Circle<T>::changeVerticalAlign(VerticalAlign vAlign)
+void Circle<T>::changeVerticalAlign(VerticalAlign vAlign) noexcept
 {
 	mPos[1] = calculateNewPosition(mPos[1], mRadius*2, mVerticalAlign, vAlign);
 	mVerticalAlign = vAlign;
+}
+
+template<typename T>
+void Circle<T>::changeAlign(HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
+{
+	changeHorizontalAlign(hAlign);
+	changeVerticalAlign(vAlign);
 }
 
 // Getters
@@ -167,7 +174,7 @@ T Circle<T>::y() const noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-bool Circle<T>::operator== (const Circle<T>& other) const
+bool Circle<T>::operator== (const Circle<T>& other) const noexcept
 {
 	return mPos == other.mPos &&
 	       mRadius == other.mRadius &&
@@ -176,52 +183,40 @@ bool Circle<T>::operator== (const Circle<T>& other) const
 }
 
 template<typename T>
-bool Circle<T>::operator!= (const Circle<T>& other) const
+bool Circle<T>::operator!= (const Circle<T>& other) const noexcept
 {
 	return !((*this) == other);
 }
 
 template<typename T>
-bool Circle<T>::operator< (const Circle<T>& other) const
+bool Circle<T>::operator< (const Circle<T>& other) const noexcept
 {
 	return this->area() < other.area();
 }
 
 template<typename T>
-bool Circle<T>::operator> (const Circle<T>& other) const
+bool Circle<T>::operator> (const Circle<T>& other) const noexcept
 {
 	return this->area() > other.area();
 }
 
 template<typename T>
-bool Circle<T>::operator<= (const Circle<T>& other) const
+bool Circle<T>::operator<= (const Circle<T>& other) const noexcept
 {
 	return this->area() <= other.area();
 }
 
 template<typename T>
-bool Circle<T>::operator>= (const Circle<T>& other) const
+bool Circle<T>::operator>= (const Circle<T>& other) const noexcept
 {
 	return this->area() >= other.area();
-}
-
-// Private helper functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T>
-T Circle<T>::requireNonNegative(T value)
-{
-	if (value < 0) {
-		throw std::invalid_argument{"Negative radius not allowed."};
-	}
-	return value;
 }
 
 // Free (non-member) operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 
 template<typename T>
-std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle)
+std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle) noexcept
 {
 	return ostream << circle.to_string();
 }
@@ -233,7 +228,7 @@ std::ostream& operator<< (std::ostream& ostream, const Circle<T> circle)
 namespace std {
 
 template<typename T>
-size_t hash<sfz::Circle<T>>::operator() (const sfz::Circle<T>& circle) const
+size_t hash<sfz::Circle<T>>::operator() (const sfz::Circle<T>& circle) const noexcept
 {
 	return circle.hash();
 }
