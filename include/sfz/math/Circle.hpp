@@ -44,7 +44,7 @@ public:
 	 */
 	static const VerticalAlign s_DEFAULT_VERTICAL_ALIGN;
 
-	// Public Members
+	// Public members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	vec2<T> mPos;

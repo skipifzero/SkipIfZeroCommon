@@ -1,7 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 
-#include <stdexcept>
 #include <vector>
 #include <unordered_map>
 #include "sfz/math/Circle.hpp"
