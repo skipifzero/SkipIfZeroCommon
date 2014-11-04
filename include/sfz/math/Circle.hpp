@@ -199,6 +199,11 @@ public:
 	 */
 	T y() const noexcept;
 
+	/**
+	 * @return radius of this Circle.
+	 */
+	T radius() const noexcept;
+
 	// Comparison operators
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

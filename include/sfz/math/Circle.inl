@@ -176,6 +176,12 @@ T Circle<T>::y() const noexcept
 	return mPos[1];
 }
 
+template<typename T>
+T Circle<T>::radius() const noexcept
+{
+	return mRadius;
+}
+
 // Comparison operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
