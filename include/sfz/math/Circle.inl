@@ -17,10 +17,10 @@ template<typename T2>
 Circle<T>::Circle(const Circle<T2>& circle) noexcept
 :
 	mPos{static_cast<vec2<T2>>(circle.mPos)},
-	mHorizontalAlign{circle.mHorizontalAlign},
-	mVerticalAlign{circle.mVerticalAlign}
+	mHAlign{circle.mHAlign},
+	mVAlign{circle.mVAlign}
 {
-	mRadius = static_cast<T2>(circle.mRadius);
+	mRad = static_cast<T2>(circle.mRad);
 }
 
 
@@ -37,9 +37,9 @@ template<typename T>
 Circle<T>::Circle(vec2<T> position, T radius, HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{position},
-	mRadius{radius},
-	mHorizontalAlign{hAlign},
-	mVerticalAlign{vAlign}
+	mRad{radius},
+	mHAlign{hAlign},
+	mVAlign{vAlign}
 {
 	// Initialization done.
 }
@@ -48,9 +48,9 @@ template<typename T>
 Circle<T>::Circle(T x, T y, T radius, HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{x, y},
-	mRadius{radius},
-	mHorizontalAlign{hAlign},
-	mVerticalAlign{vAlign}
+	mRad{radius},
+	mHAlign{hAlign},
+	mVAlign{vAlign}
 {
 	// Initialization done.
 }
@@ -66,7 +66,7 @@ bool Circle<T>::overlap(const vec2<T>& point) const noexcept
 	// If the length from this circles center to the specified point is shorter than or equal to
 	// the radius then this Circle overlaps the point. Both sides of the equation is squared to
 	// avoid somewhat expensive sqrt() function.
-	return centerAlignCircle.mPos.distance(point).squaredNorm() <= mRadius*mRadius;
+	return centerAlignCircle.mPos.distance(point).squaredNorm() <= mRad*mRad;
 }
 
 template<typename T>
@@ -79,7 +79,7 @@ bool Circle<T>::overlap(const Circle<T>& circle) const noexcept
 	// the circle's radiuses they overlap. Both sides of the equation is squared to avoid somewhat 
 	// expensive sqrt() function.
 	T distSquared = centerAlignCircleThis.mPos.distance(centerAlignCircleOther.mPos).squaredNorm();
-	T radiusSum = std::abs(centerAlignCircleThis.mRadius) + std::abs(centerAlignCircleOther.mRadius);
+	T radiusSum = std::abs(centerAlignCircleThis.mRad) + std::abs(centerAlignCircleOther.mRad);
 	return distSquared <= radiusSum * radiusSum;
 }
 
@@ -92,13 +92,13 @@ bool Circle<T>::overlap(const Rectangle<T>& rect) const noexcept
 template<typename T>
 T Circle<T>::area() const noexcept
 {
-	return static_cast<T>(g_PI_DOUBLE)*mRadius*mRadius;
+	return static_cast<T>(g_PI_DOUBLE)*mRad*mRad;
 }
 
 template<typename T>
 T Circle<T>::circumference() const noexcept
 {
-	return static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE)*std::abs(mRadius);
+	return static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE)*std::abs(mRad);
 }
 
 template<typename T>
@@ -110,10 +110,10 @@ size_t Circle<T>::hash() const noexcept
 	// hash_combine algorithm from boost
 	hash ^= hasher(mPos[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 	hash ^= hasher(mPos[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= hasher(mRadius) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= enumHasher(static_cast<char>(mHorizontalAlign)) +
+	hash ^= hasher(mRad) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+	hash ^= enumHasher(static_cast<char>(mHAlign)) +
 	                   0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= enumHasher(static_cast<char>(mVerticalAlign)) + 
+	hash ^= enumHasher(static_cast<char>(mVAlign)) + 
 	                   0x9e3779b9 + (hash << 6) + (hash >> 2);
 	return hash;
 }
@@ -125,11 +125,11 @@ std::string Circle<T>::to_string() const noexcept
 	str += "[pos=";
 	str += mPos.to_string();
 	str += ", r=";
-	str += std::to_string(mRadius);
+	str += std::to_string(mRad);
 	str += ", align: ";
-	str += sfz::to_string(mHorizontalAlign);
+	str += sfz::to_string(mHAlign);
 	str += ", ";
-	str += sfz::to_string(mVerticalAlign);
+	str += sfz::to_string(mVAlign);
 	str += "]";
 	return std::move(str);
 }
@@ -137,21 +137,21 @@ std::string Circle<T>::to_string() const noexcept
 template<typename T>
 void Circle<T>::changeHorizontalAlign(HorizontalAlign hAlign) noexcept
 {
-	assert(mHorizontalAlign == HorizontalAlign::LEFT ||
-	       mHorizontalAlign == HorizontalAlign::CENTER ||
-	       mHorizontalAlign == HorizontalAlign::RIGHT);
-	mPos[0] = calculateNewPosition(mPos[0], mRadius*2, mHorizontalAlign, hAlign);
-	mHorizontalAlign = hAlign;
+	assert(mHAlign == HorizontalAlign::LEFT ||
+	       mHAlign == HorizontalAlign::CENTER ||
+	       mHAlign == HorizontalAlign::RIGHT);
+	mPos[0] = calculateNewPosition(mPos[0], mRad*2, mHAlign, hAlign);
+	mHAlign = hAlign;
 }
 
 template<typename T>
 void Circle<T>::changeVerticalAlign(VerticalAlign vAlign) noexcept
 {
-	assert(mVerticalAlign == VerticalAlign::BOTTOM ||
-	       mVerticalAlign == VerticalAlign::MIDDLE ||
-	       mVerticalAlign == VerticalAlign::TOP);
-	mPos[1] = calculateNewPosition(mPos[1], mRadius*2, mVerticalAlign, vAlign);
-	mVerticalAlign = vAlign;
+	assert(mVAlign == VerticalAlign::BOTTOM ||
+	       mVAlign == VerticalAlign::MIDDLE ||
+	       mVAlign == VerticalAlign::TOP);
+	mPos[1] = calculateNewPosition(mPos[1], mRad*2, mVAlign, vAlign);
+	mVAlign = vAlign;
 }
 
 template<typename T>
@@ -179,7 +179,7 @@ T Circle<T>::y() const noexcept
 template<typename T>
 T Circle<T>::radius() const noexcept
 {
-	return mRadius;
+	return mRad;
 }
 
 // Comparison operators
@@ -189,9 +189,9 @@ template<typename T>
 bool Circle<T>::operator== (const Circle<T>& other) const noexcept
 {
 	return mPos == other.mPos &&
-	       mRadius == other.mRadius &&
-	       mHorizontalAlign == other.mHorizontalAlign &&
-	       mVerticalAlign == other.mVerticalAlign;
+	       mRad == other.mRad &&
+	       mHAlign == other.mHAlign &&
+	       mVAlign == other.mVAlign;
 }
 
 template<typename T>

@@ -123,7 +123,7 @@ bool Rectangle<T>::overlap(const Circle<T>& circle) const noexcept
 
 	T circleX = centerAlignCircle.x();
 	T circleY = centerAlignCircle.y();
-	T radius = std::abs(centerAlignCircle.mRadius);
+	T radius = std::abs(centerAlignCircle.radius());
 
 	// If the length between the center of the circle and the closest point on the rectangle is
 	// less than or equal to the circles radius they overlap. Both sides of the equation is 
