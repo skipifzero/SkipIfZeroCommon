@@ -12,43 +12,43 @@ TEST_CASE("Constructors", "[sfz::Circle]")
 		sfz::Circle<int> circ1{1, 2, 3, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 		sfz::Circle<int> circ2{circ1};
 		REQUIRE(circ1.mPos == circ2.mPos);
-		REQUIRE(circ1.mRadius == circ2.mRadius);
-		REQUIRE(circ1.mHorizontalAlign == circ2.mHorizontalAlign);
-		REQUIRE(circ1.mVerticalAlign == circ2.mVerticalAlign);
+		REQUIRE(circ1.mRad == circ2.mRad);
+		REQUIRE(circ1.mHAlign == circ2.mHAlign);
+		REQUIRE(circ1.mVAlign == circ2.mVAlign);
 	}
 	SECTION("Copy cast constructor") {
 		sfz::Circle<float> circlef{1.1f, 2.2f, 3.3f};
 		sfz::Circle<int> circlei{circlef};
 		REQUIRE(circlei.x() == 1);
 		REQUIRE(circlei.y() == 2);
-		REQUIRE(circlei.mRadius == 3);
-		REQUIRE(circlei.mHorizontalAlign == circlef.mHorizontalAlign);
-		REQUIRE(circlei.mVerticalAlign == circlef.mVerticalAlign);
+		REQUIRE(circlei.mRad == 3);
+		REQUIRE(circlei.mHAlign == circlef.mHAlign);
+		REQUIRE(circlei.mVAlign == circlef.mVAlign);
 	}
 	SECTION("Copy constructor with alignment change") {
 		sfz::Circle<int> circ1{0, 0, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 		sfz::Circle<int> circ2{circ1, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
 		REQUIRE(circ2.x() == 2);
 		REQUIRE(circ2.y() == 2);
-		REQUIRE(circ2.mRadius == circ1.mRadius);
-		REQUIRE(circ2.mHorizontalAlign == sfz::HorizontalAlign::RIGHT);
-		REQUIRE(circ2.mVerticalAlign == sfz::VerticalAlign::TOP);
+		REQUIRE(circ2.mRad == circ1.mRad);
+		REQUIRE(circ2.mHAlign == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(circ2.mVAlign == sfz::VerticalAlign::TOP);
 	}
 	SECTION("(vec2, radius) constructor") {
 		sfz::Circle<int> circ{sfz::vec2i{-1, 2}, 2};
 		REQUIRE(circ.x() == -1);
 		REQUIRE(circ.y() == 2);
-		REQUIRE(circ.mRadius == 2);
-		REQUIRE(circ.mHorizontalAlign == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.mVerticalAlign == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
+		REQUIRE(circ.mRad == 2);
+		REQUIRE(circ.mHAlign == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.mVAlign == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
 	}
 	SECTION("(x, y, radius) constructor") {
 		sfz::Circle<int> circ{-1, 2, 2};
 		REQUIRE(circ.x() == -1);
 		REQUIRE(circ.y() == 2);
-		REQUIRE(circ.mRadius == 2);
-		REQUIRE(circ.mHorizontalAlign == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(circ.mVerticalAlign == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
+		REQUIRE(circ.mRad == 2);
+		REQUIRE(circ.mHAlign == sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(circ.mVAlign == sfz::Circle<int>::s_DEFAULT_VERTICAL_ALIGN);
 	}
 }
 
@@ -182,13 +182,13 @@ TEST_CASE("Setters", "[sfz::Circle]") {
 
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::LEFT);
 		REQUIRE(circ.x() == -2);
-		REQUIRE(circ.mHorizontalAlign == sfz::HorizontalAlign::LEFT);
+		REQUIRE(circ.mHAlign == sfz::HorizontalAlign::LEFT);
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::RIGHT);
 		REQUIRE(circ.x() == 2);
-		REQUIRE(circ.mHorizontalAlign == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(circ.mHAlign == sfz::HorizontalAlign::RIGHT);
 		circ.changeHorizontalAlign(sfz::HorizontalAlign::CENTER);
 		REQUIRE(circ.x() == 0);
-		REQUIRE(circ.mHorizontalAlign == sfz::HorizontalAlign::CENTER);
+		REQUIRE(circ.mHAlign == sfz::HorizontalAlign::CENTER);
 	}
 	SECTION("changeVerticalAlign()") {
 		REQUIRE(sfz::Circle<int>::s_DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
@@ -196,13 +196,13 @@ TEST_CASE("Setters", "[sfz::Circle]") {
 
 		circ.changeVerticalAlign(sfz::VerticalAlign::TOP);
 		REQUIRE(circ.y() == 2);
-		REQUIRE(circ.mVerticalAlign == sfz::VerticalAlign::TOP);
+		REQUIRE(circ.mVAlign == sfz::VerticalAlign::TOP);
 		circ.changeVerticalAlign(sfz::VerticalAlign::BOTTOM);
 		REQUIRE(circ.y() == -2);
-		REQUIRE(circ.mVerticalAlign == sfz::VerticalAlign::BOTTOM);
+		REQUIRE(circ.mVAlign == sfz::VerticalAlign::BOTTOM);
 		circ.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
 		REQUIRE(circ.y() == 0);
-		REQUIRE(circ.mVerticalAlign == sfz::VerticalAlign::MIDDLE);
+		REQUIRE(circ.mVAlign == sfz::VerticalAlign::MIDDLE);
 	}
 }
 

@@ -47,9 +47,9 @@ public:
 	 * @brief [0] -> x-pos, [1] -> y-pos
 	 */
 	vec2<T> mPos;
-	T mRadius;
-	HorizontalAlign mHorizontalAlign;
-	VerticalAlign mVerticalAlign;
+	T mRad;
+	HorizontalAlign mHAlign;
+	VerticalAlign mVAlign;
 
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -162,8 +162,8 @@ public:
 	/**
 	 * @brief Changes the HorizontalAlign and updates the position to reflect this.
 	 * The position is updated so the Circle's actual position is the same afterwards, i.e. not
-	 * shifted. If this is not wanted mHorizontalAlign should be set directly.
-	 * @assert mHorizontalAlign has a valid alignment
+	 * shifted. If this is not wanted mHAlign should be set directly.
+	 * @assert mHAlign has a valid alignment
 	 * @param hAlign the HorizontalAlign to set
 	 */
 	void changeHorizontalAlign(HorizontalAlign hAlign) noexcept;
@@ -171,8 +171,8 @@ public:
 	/**
 	 * @brief Changes the VerticalAlign and updates the position to reflect this.
 	 * The position is updated so the Circle's actual position is the same afterwards, i.e. not
-	 * shifted. If this is not wanted mVerticalAlign should be set directly.
-	 * @assert mVerticalAlign has a valid alignment
+	 * shifted. If this is not wanted mVAlign should be set directly.
+	 * @assert mVAlign has a valid alignment
 	 * @param vAlign the VerticalAlign to set
 	 */
 	void changeVerticalAlign(VerticalAlign vAlign) noexcept;
@@ -198,6 +198,11 @@ public:
 	 * @return y-position of this Circle.
 	 */
 	T y() const noexcept;
+
+	/**
+	 * @return radius of this Circle.
+	 */
+	T radius() const noexcept;
 
 	// Comparison operators
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
