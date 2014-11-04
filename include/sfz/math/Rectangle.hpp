@@ -50,9 +50,9 @@ public:
 	/**
 	 * @brief [0] -> width, [1] -> height
 	 */
-	vec2<T> mDimensions;
-	HorizontalAlign mHorizontalAlign;
-	VerticalAlign mVerticalAlign;
+	vec2<T> mDim;
+	HorizontalAlign mHAlign;
+	VerticalAlign mVAlign;
 
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -181,7 +181,7 @@ public:
 	/**
 	 * @brief Changes the HorizontalAlign of this Rectangle and updates the position.
 	 * The position is updated so the Rectangle's actual position is the same afterwards, i.e. not
-	 * shifted. If this is not wanted mHorizontalAlign should be set directly.
+	 * shifted. If this is not wanted mHAlign should be set directly.
 	 * Even if the width is negative this function will behave as if it's positive.
 	 * @param hAlign the HorizontalAlign to set
 	 */
@@ -190,7 +190,7 @@ public:
 	/**
 	 * @brief Changes the VerticalAlign of this Rectangle and updates the position.
 	 * The position is updated so the Rectangle's actual position is the same afterwards, i.e. not
-	 * shifted. If this is not wanted mVeritcalAlign should be set directly.
+	 * shifted. If this is not wanted mVAlign should be set directly.
 	 * Even if the height is negative this function will behave as if it's positive.
 	 * @param vAlign the VerticalAlign to set
 	 */

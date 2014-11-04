@@ -11,9 +11,9 @@ TEST_CASE("Constructors", "[sfz::Rectangle]")
 		sfz::Rectangle<int> rect1{1, 2, 3, 4, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::TOP};
 		sfz::Rectangle<int> rect2{rect1};
 		REQUIRE(rect1.mPos == rect2.mPos);
-		REQUIRE(rect1.mDimensions == rect2.mDimensions);
-		REQUIRE(rect1.mHorizontalAlign == rect2.mHorizontalAlign);
-		REQUIRE(rect1.mVerticalAlign == rect2.mVerticalAlign);
+		REQUIRE(rect1.mDim == rect2.mDim);
+		REQUIRE(rect1.mHAlign == rect2.mHAlign);
+		REQUIRE(rect1.mVAlign == rect2.mVAlign);
 	}
 	SECTION("Copy cast constructor") {
 		sfz::Rectangle<float> rectf{1.1f, 2.2f, 3.3f, 4.4f};
@@ -22,8 +22,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]")
 		REQUIRE(recti.y() == 2);
 		REQUIRE(recti.width() == 3);
 		REQUIRE(recti.height() == 4);
-		REQUIRE(recti.mHorizontalAlign == rectf.mHorizontalAlign);
-		REQUIRE(recti.mVerticalAlign == rectf.mVerticalAlign);
+		REQUIRE(recti.mHAlign == rectf.mHAlign);
+		REQUIRE(recti.mVAlign == rectf.mVAlign);
 	}
 	SECTION("Copy constructor with alignment change") {
 		sfz::Rectangle<int> rect1{0, 0, 2, 2, sfz::HorizontalAlign::LEFT,
@@ -31,9 +31,9 @@ TEST_CASE("Constructors", "[sfz::Rectangle]")
 		sfz::Rectangle<int> rect2{rect1, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};
 		REQUIRE(rect2.x() == 2);
 		REQUIRE(rect2.y() == 2);
-		REQUIRE(rect2.mDimensions == rect1.mDimensions);
-		REQUIRE(rect2.mHorizontalAlign == sfz::HorizontalAlign::RIGHT);
-		REQUIRE(rect2.mVerticalAlign == sfz::VerticalAlign::TOP);
+		REQUIRE(rect2.mDim == rect1.mDim);
+		REQUIRE(rect2.mHAlign == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(rect2.mVAlign == sfz::VerticalAlign::TOP);
 	}
 	SECTION("(vec2 position, vec2 dimensions) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, sfz::vec2i{3, 4}};
@@ -41,8 +41,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]")
 		REQUIRE(rect.y() == 2);
 		REQUIRE(rect.width() == 3);
 		REQUIRE(rect.height() == 4);
-		REQUIRE(rect.mHorizontalAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(rect.mVerticalAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
+		REQUIRE(rect.mHAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.mVAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
 	}
 	SECTION("(vec2 position, width, height) constructor") {
 		sfz::Rectangle<int> rect{sfz::vec2i{1, 2}, 3, 4};
@@ -50,8 +50,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]")
 		REQUIRE(rect.y() == 2);
 		REQUIRE(rect.width() == 3);
 		REQUIRE(rect.height() == 4);
-		REQUIRE(rect.mHorizontalAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(rect.mVerticalAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
+		REQUIRE(rect.mHAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.mVAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
 	}
 	SECTION("(x, y, width, height) constructor") {
 		sfz::Rectangle<int> rect{1, 2, 3, 4};
@@ -59,8 +59,8 @@ TEST_CASE("Constructors", "[sfz::Rectangle]")
 		REQUIRE(rect.y() == 2);
 		REQUIRE(rect.width() == 3);
 		REQUIRE(rect.height() == 4);
-		REQUIRE(rect.mHorizontalAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
-		REQUIRE(rect.mVerticalAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
+		REQUIRE(rect.mHAlign == sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN);
+		REQUIRE(rect.mVAlign == sfz::Rectangle<int>::s_DEFAULT_VERTICAL_ALIGN);
 	}
 }
 
@@ -218,13 +218,13 @@ TEST_CASE("Setters", "[sfz::Rectangle]")
 
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::LEFT);
 		REQUIRE(rect.x() == -1);
-		REQUIRE(rect.mHorizontalAlign == sfz::HorizontalAlign::LEFT);
+		REQUIRE(rect.mHAlign == sfz::HorizontalAlign::LEFT);
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::RIGHT);
 		REQUIRE(rect.x() == 1);
-		REQUIRE(rect.mHorizontalAlign == sfz::HorizontalAlign::RIGHT);
+		REQUIRE(rect.mHAlign == sfz::HorizontalAlign::RIGHT);
 		rect.changeHorizontalAlign(sfz::HorizontalAlign::CENTER);
 		REQUIRE(rect.x() == 0);
-		REQUIRE(rect.mHorizontalAlign == sfz::HorizontalAlign::CENTER);
+		REQUIRE(rect.mHAlign == sfz::HorizontalAlign::CENTER);
 	}
 	SECTION("changeVerticalAlign()") {
 		REQUIRE(sfz::Rectangle<int>::s_DEFAULT_HORIZONTAL_ALIGN == sfz::HorizontalAlign::CENTER);
@@ -232,13 +232,13 @@ TEST_CASE("Setters", "[sfz::Rectangle]")
 
 		rect.changeVerticalAlign(sfz::VerticalAlign::TOP);
 		REQUIRE(rect.y() == 1);
-		REQUIRE(rect.mVerticalAlign == sfz::VerticalAlign::TOP);
+		REQUIRE(rect.mVAlign == sfz::VerticalAlign::TOP);
 		rect.changeVerticalAlign(sfz::VerticalAlign::BOTTOM);
 		REQUIRE(rect.y() == -1);
-		REQUIRE(rect.mVerticalAlign == sfz::VerticalAlign::BOTTOM);
+		REQUIRE(rect.mVAlign == sfz::VerticalAlign::BOTTOM);
 		rect.changeVerticalAlign(sfz::VerticalAlign::MIDDLE);
 		REQUIRE(rect.y() == 0);
-		REQUIRE(rect.mVerticalAlign == sfz::VerticalAlign::MIDDLE);
+		REQUIRE(rect.mVAlign == sfz::VerticalAlign::MIDDLE);
 	}
 }
 

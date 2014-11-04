@@ -17,9 +17,9 @@ template<typename T2>
 Rectangle<T>::Rectangle(const Rectangle<T2>& rect) noexcept
 :
 	mPos{static_cast<vec2<T2>>(rect.mPos)},
-	mDimensions{static_cast<vec2<T2>>(rect.mDimensions)},
-	mHorizontalAlign{rect.mHorizontalAlign},
-	mVerticalAlign{rect.mVerticalAlign}
+	mDim{static_cast<vec2<T2>>(rect.mDim)},
+	mHAlign{rect.mHAlign},
+	mVAlign{rect.mVAlign}
 {
 	// Initialization done.
 }
@@ -38,9 +38,9 @@ Rectangle<T>::Rectangle(const vec2<T>& position, const vec2<T>& dimensions,
                         HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{position},
-	mDimensions{dimensions},
-	mHorizontalAlign{hAlign},
-	mVerticalAlign{vAlign}
+	mDim{dimensions},
+	mHAlign{hAlign},
+	mVAlign{vAlign}
 {
 	// Initialization done.
 }
@@ -50,9 +50,9 @@ Rectangle<T>::Rectangle(const vec2<T>& position, T width, T height,
                         HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{position},
-	mDimensions{width, height},
-	mHorizontalAlign{hAlign},
-	mVerticalAlign{vAlign}
+	mDim{width, height},
+	mHAlign{hAlign},
+	mVAlign{vAlign}
 {
 	// Initialization done.
 }
@@ -62,9 +62,9 @@ Rectangle<T>::Rectangle(T x, T y, T width, T height,
                         HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	mPos{x, y},
-	mDimensions{width, height},
-	mHorizontalAlign{hAlign},
-	mVerticalAlign{vAlign}
+	mDim{width, height},
+	mHAlign{hAlign},
+	mVAlign{vAlign}
 {
 	// Initialization done.
 }
@@ -170,11 +170,11 @@ size_t Rectangle<T>::hash() const noexcept
 	// hash_combine algorithm from boost
 	hash ^= hasher(mPos[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 	hash ^= hasher(mPos[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= hasher(mDimensions[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= hasher(mDimensions[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= enumHasher(static_cast<char>(mHorizontalAlign)) +
+	hash ^= hasher(mDim[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+	hash ^= hasher(mDim[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+	hash ^= enumHasher(static_cast<char>(mHAlign)) +
 	                   0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= enumHasher(static_cast<char>(mVerticalAlign)) +
+	hash ^= enumHasher(static_cast<char>(mVAlign)) +
 	                   0x9e3779b9 + (hash << 6) + (hash >> 2);
 	return hash;
 }
@@ -186,11 +186,11 @@ std::string Rectangle<T>::to_string() const noexcept
 	str += "[pos=";
 	str += mPos.to_string();
 	str += ", dim=";
-	str += mDimensions.to_string();
+	str += mDim.to_string();
 	str += ", align: ";
-	str += sfz::to_string(mHorizontalAlign);
+	str += sfz::to_string(mHAlign);
 	str += ", ";
-	str += sfz::to_string(mVerticalAlign);
+	str += sfz::to_string(mVAlign);
 	str += "]";
 	return std::move(str);
 }
@@ -198,21 +198,21 @@ std::string Rectangle<T>::to_string() const noexcept
 template<typename T>
 void Rectangle<T>::changeHorizontalAlign(HorizontalAlign hAlign) noexcept
 {
-	assert(mHorizontalAlign == HorizontalAlign::LEFT ||
-	       mHorizontalAlign == HorizontalAlign::CENTER ||
-	       mHorizontalAlign == HorizontalAlign::RIGHT);
-	mPos[0] = calculateNewPosition(mPos[0], std::abs(mDimensions[0]), mHorizontalAlign, hAlign);
-	mHorizontalAlign = hAlign;
+	assert(mHAlign == HorizontalAlign::LEFT ||
+	       mHAlign == HorizontalAlign::CENTER ||
+	       mHAlign == HorizontalAlign::RIGHT);
+	mPos[0] = calculateNewPosition(mPos[0], std::abs(mDim[0]), mHAlign, hAlign);
+	mHAlign = hAlign;
 }
 
 template<typename T>
 void Rectangle<T>::changeVerticalAlign(VerticalAlign vAlign) noexcept
 {
-	assert(mVerticalAlign == VerticalAlign::BOTTOM ||
-	       mVerticalAlign == VerticalAlign::MIDDLE ||
-	       mVerticalAlign == VerticalAlign::TOP);
-	mPos[1] = calculateNewPosition(mPos[1], std::abs(mDimensions[1]), mVerticalAlign, vAlign);
-	mVerticalAlign = vAlign;
+	assert(mVAlign == VerticalAlign::BOTTOM ||
+	       mVAlign == VerticalAlign::MIDDLE ||
+	       mVAlign == VerticalAlign::TOP);
+	mPos[1] = calculateNewPosition(mPos[1], std::abs(mDim[1]), mVAlign, vAlign);
+	mVAlign = vAlign;
 }
 
 template<typename T>
@@ -240,13 +240,13 @@ T Rectangle<T>::y() const noexcept
 template<typename T>
 T Rectangle<T>::width() const noexcept
 {
-	return mDimensions[0];
+	return mDim[0];
 }
 
 template<typename T>
 T Rectangle<T>::height() const noexcept
 {
-	return mDimensions[1];
+	return mDim[1];
 }
 
 // Comparison operators
@@ -256,9 +256,9 @@ template<typename T>
 bool Rectangle<T>::operator== (const Rectangle<T>& other) const noexcept
 {
 	return mPos == other.mPos &&
-	       mDimensions == other.mDimensions &&
-	       mHorizontalAlign == other.mHorizontalAlign &&
-	       mVerticalAlign == other.mVerticalAlign;
+	       mDim == other.mDim &&
+	       mHAlign == other.mHAlign &&
+	       mVAlign == other.mVAlign;
 }
 
 template<typename T>
