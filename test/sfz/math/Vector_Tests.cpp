@@ -14,6 +14,12 @@ TEST_CASE("Constructors", "[sfz::Vector]")
 		REQUIRE(vector[1] == 2);
 		REQUIRE(vector[2] == 1);
 		REQUIRE(vector[3] == 42);
+
+		sfz::Vector<int, 4> v2 = {-2, 2, 1};
+		REQUIRE(v2[0] == -2);
+		REQUIRE(v2[1] == 2);
+		REQUIRE(v2[2] == 1);
+		REQUIRE(v2[3] == 0);
 	}
 	SECTION("Copy constructor correctly copies vector") {
 		sfz::Vector<int, 4> vector{sfz::Vector<int, 4>{-2, 2, 1, 42}};

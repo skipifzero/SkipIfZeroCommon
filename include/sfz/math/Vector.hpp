@@ -6,7 +6,6 @@
 #include <cassert>
 #include <functional> // std::hash
 #include <cmath> // std::sqrt
-#include <iterator>
 #include <string>
 #include <iostream> // std::ostream
 
@@ -67,7 +66,9 @@ struct Vector final {
 
 	/**
 	 * @brief Initializer list constructor.
-	 * @assert vector and initializer list must be same size
+	 * If the initializer list contains less element than the size of the vector the remaining
+	 * elements will be set to 0.
+	 * @assert vector and initializer list must fit in the vector
 	 * @param list the initializer_list with values to fill the vector with
 	 */
 	Vector(std::initializer_list<T> list) noexcept;
@@ -181,16 +182,13 @@ struct Vector final {
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	using iterator = T*;
-	using const_iterator = const T*;
+	T* begin() noexcept;
+	const T* begin() const noexcept;
+	const T* cbegin() const noexcept;
 
-	iterator begin() noexcept;
-	const_iterator begin() const noexcept;
-	const_iterator cbegin() const noexcept;
-
-	iterator end() noexcept;
-	const_iterator end() const noexcept;
-	const_iterator cend() const noexcept;
+	T* end() noexcept;
+	const T* end() const noexcept;
+	const T* cend() const noexcept;
 
 	// Member operators (access)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

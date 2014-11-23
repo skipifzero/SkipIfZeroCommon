@@ -16,10 +16,16 @@ Vector<T,N>::Vector(const Vector<T2,N>& vector) noexcept
 template<typename T, size_t N>
 Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
 {
-	assert(list.size() == N);
+	size_t listSize = list.size();
+	assert(listSize <= N);
+	// Sets elements to values from initializer list.
 	T* elementItr = mElements;
 	for (auto listElement : list) {
 		*elementItr++ = listElement;
+	}
+	// Sets remaining elements to 0.
+	for (size_t i = listSize; i < N; i++) {
+		mElements[i] = 0;
 	}
 }
 
@@ -46,7 +52,6 @@ void Vector<T,N>::fill(const T value) noexcept
 	for (auto& element : mElements) {
 		element = value;
 	}
-	//mElements.fill(value);
 }
 
 template<typename T, size_t N>
@@ -148,45 +153,39 @@ std::string Vector<T,N>::to_string() const noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-typename Vector<T,N>::iterator Vector<T,N>::begin() noexcept
+T* Vector<T,N>::begin() noexcept
 {
 	return mElements;
-	//return mElements.begin();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::const_iterator Vector<T,N>::begin() const noexcept
+const T* Vector<T,N>::begin() const noexcept
 {
 	return mElements;
-	//return mElements.begin();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::const_iterator Vector<T,N>::cbegin() const noexcept
+const T* Vector<T,N>::cbegin() const noexcept
 {
 	return mElements;
-	//return mElements.cbegin();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::iterator Vector<T,N>::end() noexcept
+T* Vector<T,N>::end() noexcept
 {
 	return mElements + N;
-	//return mElements.end();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::const_iterator Vector<T,N>::end() const noexcept
+const T* Vector<T,N>::end() const noexcept
 {
 	return mElements + N;
-	//return mElements.end();
 }
 
 template<typename T, size_t N>
-typename Vector<T,N>::const_iterator Vector<T,N>::cend() const noexcept
+const T* Vector<T,N>::cend() const noexcept
 {
 	return mElements + N;
-	//return mElements.cend();
 }
 
 // Member operators (access)
