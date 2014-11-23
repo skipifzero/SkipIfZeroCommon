@@ -17,7 +17,10 @@ template<typename T, size_t N>
 Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
 {
 	assert(list.size() == N);
-	std::copy(list.begin(), list.end(), mElements.begin());
+	T* elementItr = mElements;
+	for (auto listElement : list) {
+		*elementItr++ = listElement;
+	}
 }
 
 // Public member functions
@@ -40,7 +43,10 @@ void Vector<T,N>::set(const size_t index, T value)
 template<typename T, size_t N>
 void Vector<T,N>::fill(const T value) noexcept
 {
-	mElements.fill(value);
+	for (auto& element : mElements) {
+		element = value;
+	}
+	//mElements.fill(value);
 }
 
 template<typename T, size_t N>
@@ -144,37 +150,43 @@ std::string Vector<T,N>::to_string() const noexcept
 template<typename T, size_t N>
 typename Vector<T,N>::iterator Vector<T,N>::begin() noexcept
 {
-	return mElements.begin();
+	return mElements;
+	//return mElements.begin();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::const_iterator Vector<T,N>::begin() const noexcept
 {
-	return mElements.begin();
+	return mElements;
+	//return mElements.begin();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::const_iterator Vector<T,N>::cbegin() const noexcept
 {
-	return mElements.cbegin();
+	return mElements;
+	//return mElements.cbegin();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::iterator Vector<T,N>::end() noexcept
 {
-	return mElements.end();
+	return mElements + N;
+	//return mElements.end();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::const_iterator Vector<T,N>::end() const noexcept
 {
-	return mElements.end();
+	return mElements + N;
+	//return mElements.end();
 }
 
 template<typename T, size_t N>
 typename Vector<T,N>::const_iterator Vector<T,N>::cend() const noexcept
 {
-	return mElements.cend();
+	return mElements + N;
+	//return mElements.cend();
 }
 
 // Member operators (access)

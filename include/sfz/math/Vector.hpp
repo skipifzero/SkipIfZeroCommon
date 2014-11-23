@@ -2,10 +2,8 @@
 #ifndef SFZ_MATH_VECTOR_HPP
 #define SFZ_MATH_VECTOR_HPP
 
-#include <array>
 #include <initializer_list>
 #include <cassert>
-#include <algorithm> // std::copy
 #include <functional> // std::hash
 #include <cmath> // std::sqrt
 #include <iterator>
@@ -37,8 +35,13 @@ using std::size_t;
  * @author Peter Hillerström <peter@hstroem.se>
  */
 template<typename T, size_t N>
-class Vector final {
-public:
+struct Vector final {
+	
+	// Public members
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	T mElements[N];
+
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
@@ -178,8 +181,8 @@ public:
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	using iterator = typename std::array<T,N>::iterator;
-	using const_iterator = typename std::array<T,N>::const_iterator;
+	using iterator = T*;
+	using const_iterator = const T*;
 
 	iterator begin() noexcept;
 	const_iterator begin() const noexcept;
@@ -243,9 +246,6 @@ public:
 	 * @return reference to the modified vector
 	 */
 	Vector<T,N>& operator/= (const T& right) noexcept;
-
-private:
-	std::array<T,N> mElements;
 };
 
 // Free (non-member) functions
