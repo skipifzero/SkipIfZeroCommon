@@ -2,13 +2,10 @@
 #ifndef SFZ_MATH_VECTOR_HPP
 #define SFZ_MATH_VECTOR_HPP
 
-#include <array>
 #include <initializer_list>
 #include <cassert>
-#include <algorithm> // std::copy
 #include <functional> // std::hash
 #include <cmath> // std::sqrt
-#include <iterator>
 #include <string>
 #include <iostream> // std::ostream
 
@@ -37,8 +34,17 @@ using std::size_t;
  * @author Peter Hillerström <peter@hstroem.se>
  */
 template<typename T, size_t N>
-class Vector final {
-public:
+struct Vector final {
+	
+	// Public members
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	/** 
+	 * @brief The internal array holding the elements of this Vector.
+	 * Provided for compatibility with c-style API's like OpenGL.
+	 */
+	T mElements[N];
+
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
@@ -64,7 +70,9 @@ public:
 
 	/**
 	 * @brief Initializer list constructor.
-	 * @assert vector and initializer list must be same size
+	 * If the initializer list contains less element than the size of the vector the remaining
+	 * elements will be set to 0.
+	 * @assert vector and initializer list must fit in the vector
 	 * @param list the initializer_list with values to fill the vector with
 	 */
 	Vector(std::initializer_list<T> list) noexcept;
@@ -178,16 +186,13 @@ public:
 	// Standard iterator functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	using iterator = typename std::array<T,N>::iterator;
-	using const_iterator = typename std::array<T,N>::const_iterator;
+	T* begin() noexcept;
+	const T* begin() const noexcept;
+	const T* cbegin() const noexcept;
 
-	iterator begin() noexcept;
-	const_iterator begin() const noexcept;
-	const_iterator cbegin() const noexcept;
-
-	iterator end() noexcept;
-	const_iterator end() const noexcept;
-	const_iterator cend() const noexcept;
+	T* end() noexcept;
+	const T* end() const noexcept;
+	const T* cend() const noexcept;
 
 	// Member operators (access)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -243,9 +248,6 @@ public:
 	 * @return reference to the modified vector
 	 */
 	Vector<T,N>& operator/= (const T& right) noexcept;
-
-private:
-	std::array<T,N> mElements;
 };
 
 // Free (non-member) functions
