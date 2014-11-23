@@ -39,6 +39,10 @@ struct Vector final {
 	// Public members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	/** 
+	 * @brief The internal array holding the elements of this Vector.
+	 * Provided for compatibility with c-style API's like OpenGL.
+	 */
 	T mElements[N];
 
 	// Constructors and destructors
