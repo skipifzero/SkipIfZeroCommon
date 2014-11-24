@@ -2,6 +2,9 @@
 #ifndef SFZ_MATH_MATRIX_HPP
 #define SFZ_MATH_MATRIX_HPP
 
+#include <initializer_list>
+#include <string>
+
 #include "sfz/math/Vector.hpp"
 
 namespace sfz {
@@ -16,19 +19,62 @@ struct Matrix final {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
-	 * @brief The internal array of N columns of size M representing this Matrix.
-	 * This is column-major order, so the 'mElements' pointer can be supplied to OpenGL directly
-	 * with the transpose flag set to GL_FALSE.
+	 * @brief The internal COLUMN-MAJOR order array of this Matrix.
+	 * This is column-major order (i.e. N columns of size M), so the pointer can be supplied to
+	 * OpenGL directly with the transpose flag set to GL_FALSE.
 	 */
 	Vector<T,M> mElements[N];
 
-	// Constructors and destructors
+	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
 	 * @brief Default constructor, value of elements is undefined.
 	 */
 	Matrix() = default;
+
+	Matrix(const Matrix<T,M,N>&) = default;
+
+	/**
+	 * @brief Constructs a matrix with the given elements given in ROW-MAJOR order.
+	 * The elements are given in row-major order because it's more natural to write and read a
+	 * matrix that way in source. This is however not how the elements will be saved as the
+	 * internal representation uses column-major order. Any unspecified elements will be set to 0.
+	 * @assert if any of the lists are larger than the row or column it's trying to fill
+	 * @param list the (column) initializer list of (row) initializer lists
+	 */
+	Matrix(std::initializer_list<std::initializer_list<T>> list) noexcept;
+
+	~Matrix() = default;
+
+	// Member functions
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	/**
+	 * @brief Returns a reference to element at the specified location.
+	 * No range checking is done, zero-indexing is used.
+	 * @param i the i:th row
+	 * @param j the j:th column
+	 * @return reference to element at the specified location
+	 */
+	T& get(size_t i, size_t j) noexcept;
+
+	/**
+	 * @brief Returns the element at the specified location.
+	 * No range checking is done, zero-indexing is used.
+	 * @param i the i:th row
+	 * @param j the j:th column
+	 * @return the element at the specified location
+	 */
+	T get(size_t i, size_t j) const noexcept;
+
+	/**
+	 * @return readable string representation of the matrix
+	 */
+	std::string to_string() const noexcept;
+
+	// Operators (access)
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 };
 
 // Standard typedefs
