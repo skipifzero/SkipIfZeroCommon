@@ -48,6 +48,45 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 	}
 }
 
+TEST_CASE("Arhitmetic & assignment operators", "[sfz::Matrix]")
+{
+	sfz::mat2i m1{{1, 2},
+	              {3, 4}};
+	sfz::mat2i m2{{1, 2},
+	              {3, 4}};
+	sfz::mat2i m3{{-2, -1},
+	              {3, 33}};
+
+	SECTION("+=") {
+		m1 += m2;
+		m2 += m3;
+
+		REQUIRE(m1.get(0, 0) == 2);
+		REQUIRE(m1.get(0, 1) == 4);
+		REQUIRE(m1.get(1, 0) == 6);
+		REQUIRE(m1.get(1, 1) == 8);
+
+		REQUIRE(m2.get(0, 0) == -1);
+		REQUIRE(m2.get(0, 1) == 1);
+		REQUIRE(m2.get(1, 0) == 6);
+		REQUIRE(m2.get(1, 1) == 37);
+	}
+	SECTION("-=") {
+		m1 -= m2;
+		m2 -= m3;
+
+		REQUIRE(m1.get(0, 0) == 0);
+		REQUIRE(m1.get(0, 1) == 0);
+		REQUIRE(m1.get(1, 0) == 0);
+		REQUIRE(m1.get(1, 1) == 0);
+
+		REQUIRE(m2.get(0, 0) == 3);
+		REQUIRE(m2.get(0, 1) == 3);
+		REQUIRE(m2.get(1, 0) == 0);
+		REQUIRE(m2.get(1, 1) == -29);
+	}
+}
+
 TEST_CASE("Comparison operators", "[sfz::Matrix]")
 {
 	sfz::mat2i m1{{1, 2},

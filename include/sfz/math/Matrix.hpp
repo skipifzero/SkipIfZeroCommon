@@ -68,21 +68,24 @@ struct Matrix final {
 	 */
 	T get(size_t i, size_t j) const noexcept;
 
-	/**
-	 * @return hash of the matrix
-	 */
 	size_t hash() const noexcept;
 
-	/**
-	 * @return readable string representation of the matrix
-	 */
 	std::string to_string() const noexcept;
+
+	// Operators (Arithmetic & Assignment)
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	Matrix<T,M,N>& operator= (const Matrix<T,M,N>&) = default;
+
+	Matrix<T,M,N>& operator+= (const Matrix<T,M,N>& other) noexcept;
+
+	Matrix<T,M,N>& operator-= (const Matrix<T,M,N>& other) noexcept;
 
 	// Operators (comparison)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	bool operator== (const Matrix<T,M,N>& other) const noexcept;
-	
+
 	bool operator!= (const Matrix<T,M,N>& other) const noexcept;
 };
 
