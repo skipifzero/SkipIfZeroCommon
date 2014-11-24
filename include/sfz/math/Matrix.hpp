@@ -69,12 +69,21 @@ struct Matrix final {
 	T get(size_t i, size_t j) const noexcept;
 
 	/**
+	 * @return hash of the matrix
+	 */
+	size_t hash() const noexcept;
+
+	/**
 	 * @return readable string representation of the matrix
 	 */
 	std::string to_string() const noexcept;
 
-	// Operators (access)
+	// Operators (comparison)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	bool operator== (const Matrix<T,M,N>& other) const noexcept;
+	
+	bool operator!= (const Matrix<T,M,N>& other) const noexcept;
 };
 
 // Standard typedefs
@@ -123,6 +132,18 @@ using mat4i = mat4<int>;
 using mat4l = mat4<long>;
 
 } // namespace sfz
+
+// Specializations of standard library for sfz::Matrix
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+namespace std {
+
+template<typename T, size_t M, size_t N>
+struct hash<sfz::Matrix<T,M,N>> {
+	size_t operator() (const sfz::Matrix<T,M,N>& matrix) const noexcept;
+};
+
+} // namespace std
 
 #include "sfz/math/Matrix.inl"
 #endif
