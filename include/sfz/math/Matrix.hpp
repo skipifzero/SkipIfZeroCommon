@@ -84,6 +84,10 @@ struct Matrix final {
 	// Operators (Arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	Matrix<T,M,N> operator+ (const Matrix<T,M,N>& other) const noexcept;
+
+	Matrix<T,M,N> operator- (const Matrix<T,M,N>& other) const noexcept;
+
 	template<size_t P>
 	Matrix<T,M,P> operator* (const Matrix<T,N,P>& other) const noexcept;
 
@@ -119,22 +123,25 @@ using Matrix4d = Matrix4<double>;
 using Matrix4i = Matrix4<int>;
 using Matrix4l = Matrix4<long>;
 
+template<typename T, size_t M, size_t N>
+using mat = Matrix<T, M, N>;
+
 template<typename T>
-using mat2 = Matrix<T, 2, 2>;
+using mat2 = mat<T, 2, 2>;
 using mat2f = mat2<float>;
 using mat2d = mat2<double>;
 using mat2i = mat2<int>;
 using mat2l = mat2<long>;
 
 template<typename T>
-using mat3 = Matrix<T, 3, 3>;
+using mat3 = mat<T, 3, 3>;
 using mat3f = mat3<float>;
 using mat3d = mat3<double>;
 using mat3i = mat3<int>;
 using mat3l = mat3<long>;
 
 template<typename T>
-using mat4 = Matrix<T, 4, 4>;
+using mat4 = mat<T, 4, 4>;
 using mat4f = mat4<float>;
 using mat4d = mat4<double>;
 using mat4i = mat4<int>;

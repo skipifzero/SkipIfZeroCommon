@@ -126,6 +126,40 @@ TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
 	sfz::Matrix<int, 2, 3> m3{{1, 2, 3}, {4, 5, 6}};
 	sfz::Matrix<int, 3, 2> m4{{1, 0}, {0, 1}, {0, 0}};
 
+	SECTION("+") {
+		auto res1 = m1 + m2;
+		auto res2 = m2 + m1;
+
+		REQUIRE(res1 == res2);
+		REQUIRE(res1.get(0, 0) == 1);
+		REQUIRE(res1.get(0, 1) == 3);
+		REQUIRE(res1.get(1, 0) == 3);
+		REQUIRE(res1.get(1, 1) == 4);
+
+		auto res3 = m3 + m3;
+		REQUIRE(res3.get(0, 0) == 2);
+		REQUIRE(res3.get(0, 1) == 4);
+		REQUIRE(res3.get(0, 2) == 6);
+		REQUIRE(res3.get(1, 0) == 8);
+		REQUIRE(res3.get(1, 1) == 10);
+		REQUIRE(res3.get(1, 2) == 12);
+	}
+	SECTION("-") {
+		auto res1 = m1 - m2;
+		auto res2 = m2 - m1;
+
+		REQUIRE(res1 != res2);
+		
+		REQUIRE(res1.get(0, 0) == 1);
+		REQUIRE(res1.get(0, 1) == 1);
+		REQUIRE(res1.get(1, 0) == 3);
+		REQUIRE(res1.get(1, 1) == 4);
+		
+		REQUIRE(res2.get(0, 0) == -1);
+		REQUIRE(res2.get(0, 1) == -1);
+		REQUIRE(res2.get(1, 0) == -3);
+		REQUIRE(res2.get(1, 1) == -4);
+	}
 	SECTION("*") {
 		auto res1 = m1*m2;
 		REQUIRE(res1.get(0, 0) == 0);

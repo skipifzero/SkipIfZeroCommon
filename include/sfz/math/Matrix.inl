@@ -98,6 +98,30 @@ Matrix<T,M,N>& Matrix<T,M,N>::operator-= (const Matrix<T,M,N>& other) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
+Matrix<T,M,N> Matrix<T,M,N>::operator+ (const Matrix<T,M,N>& other) const noexcept
+{
+	Matrix<T,M,N> resMatrix;
+	for (size_t i = 0; i < M; i++) {
+		for (size_t j = 0; j < N; j++) {
+			resMatrix.mElements[j][i] = mElements[j][i] + other.mElements[j][i];
+		}
+	}
+	return resMatrix;
+}
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> Matrix<T,M,N>::operator- (const Matrix<T,M,N>& other) const noexcept
+{
+	Matrix<T,M,N> resMatrix;
+	for (size_t i = 0; i < M; i++) {
+		for (size_t j = 0; j < N; j++) {
+			resMatrix.mElements[j][i] = mElements[j][i] - other.mElements[j][i];
+		}
+	}
+	return resMatrix;
+}
+
+template<typename T, size_t M, size_t N>
 template<size_t P>
 Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexcept
 {
