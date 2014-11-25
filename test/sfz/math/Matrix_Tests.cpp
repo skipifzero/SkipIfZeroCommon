@@ -119,6 +119,34 @@ TEST_CASE("Arhitmetic & assignment operators", "[sfz::Matrix]")
 	}
 }
 
+TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
+{
+	sfz::mat2i m1{{1, 2}, {3, 4}};
+	sfz::mat2i m2{{0, 1}, {0, 0}};
+	sfz::Matrix<int, 2, 3> m3{{1, 2, 3}, {4, 5, 6}};
+	sfz::Matrix<int, 3, 2> m4{{1, 0}, {0, 1}, {0, 0}};
+
+	SECTION("*") {
+		auto res1 = m1*m2;
+		REQUIRE(res1.get(0, 0) == 0);
+		REQUIRE(res1.get(0, 1) == 1);
+		REQUIRE(res1.get(1, 0) == 0);
+		REQUIRE(res1.get(1, 1) == 3);
+
+		auto res2 = m2*m1;
+		REQUIRE(res2.get(0, 0) == 3);
+		REQUIRE(res2.get(0, 1) == 4);
+		REQUIRE(res2.get(1, 0) == 0);
+		REQUIRE(res2.get(1, 1) == 0);
+
+		sfz::mat2i res3 = m3*m4;
+		REQUIRE(res3.get(0, 0) == 1);
+		REQUIRE(res3.get(0, 1) == 2);
+		REQUIRE(res3.get(1, 0) == 4);
+		REQUIRE(res3.get(1, 1) == 5);
+	}
+}
+
 TEST_CASE("Comparison operators", "[sfz::Matrix]")
 {
 	sfz::mat2i m1{{1, 2},

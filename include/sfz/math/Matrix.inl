@@ -94,6 +94,30 @@ Matrix<T,M,N>& Matrix<T,M,N>::operator-= (const Matrix<T,M,N>& other) noexcept
 	return *this;
 }
 
+// Operators (Arithmetic)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+template<size_t P>
+Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexcept
+{
+	Matrix<T,M,P> resMatrix;
+	for (size_t i = 0; i < M; i++) {
+		for (size_t j = 0; j < P; j++) {
+			T temp = 0;
+			size_t jInnerThis = 0;
+			size_t iInnerOther = 0;
+			while (jInnerThis < M) {
+				temp += mElements[jInnerThis][i] * other.mElements[j][iInnerOther];
+				jInnerThis++;
+				iInnerOther++;
+			}
+			resMatrix.mElements[j][i] = temp;
+		}
+	}
+	return resMatrix;
+}
+
 // Operators (comparison)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

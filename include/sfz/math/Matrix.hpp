@@ -81,6 +81,12 @@ struct Matrix final {
 
 	Matrix<T,M,N>& operator-= (const Matrix<T,M,N>& other) noexcept;
 
+	// Operators (Arithmetic)
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	template<size_t P>
+	Matrix<T,M,P> operator* (const Matrix<T,N,P>& other) const noexcept;
+
 	// Operators (comparison)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
