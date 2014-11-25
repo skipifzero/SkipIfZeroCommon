@@ -6,10 +6,10 @@ namespace sfz {
 template<typename T, size_t M, size_t N>
 Matrix<T,M,N>::Matrix(std::initializer_list<std::initializer_list<T>> list) noexcept
 {
-	assert(list.size() <= N);
+	assert(list.size() <= M);
 	size_t i = 0;
 	for (auto& rowList : list) {
-		assert(rowList.size() <= M);
+		assert(rowList.size() <= N);
 		size_t j = 0;
 		for (auto element : rowList) {
 			mElements[j][i] = element;

@@ -45,6 +45,38 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 		REQUIRE(m2.mElements[0][1] == 0);
 		REQUIRE(m2.mElements[1][0] == 0);
 		REQUIRE(m2.mElements[1][1] == 0);
+
+		sfz::Matrix<int, 2, 3> m3{{1, 2, 3}, {4, 5, 6}};
+
+		REQUIRE(m3.get(0, 0) == 1);
+		REQUIRE(m3.get(0, 1) == 2);
+		REQUIRE(m3.get(0, 2) == 3);
+		REQUIRE(m3.get(1, 0) == 4);
+		REQUIRE(m3.get(1, 1) == 5);
+		REQUIRE(m3.get(1, 2) == 6);
+
+		REQUIRE(m3.mElements[0][0] == 1);
+		REQUIRE(m3.mElements[0][1] == 4);
+		REQUIRE(m3.mElements[1][0] == 2);
+		REQUIRE(m3.mElements[1][1] == 5);
+		REQUIRE(m3.mElements[2][0] == 3);
+		REQUIRE(m3.mElements[2][1] == 6);
+
+		sfz::Matrix<int, 3, 2> m4{{1, 0}, {0, 1}, {0, 0}};
+
+		REQUIRE(m4.get(0, 0) == 1);
+		REQUIRE(m4.get(0, 1) == 0);
+		REQUIRE(m4.get(1, 0) == 0);
+		REQUIRE(m4.get(1, 1) == 1);
+		REQUIRE(m4.get(2, 0) == 0);
+		REQUIRE(m4.get(2, 1) == 0);
+
+		REQUIRE(m4.mElements[0][0] == 1);
+		REQUIRE(m4.mElements[0][1] == 0);
+		REQUIRE(m4.mElements[0][2] == 0);
+		REQUIRE(m4.mElements[1][0] == 0);
+		REQUIRE(m4.mElements[1][1] == 1);
+		REQUIRE(m4.mElements[1][2] == 0);
 	}
 }
 
