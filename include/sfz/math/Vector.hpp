@@ -500,6 +500,13 @@ using Vector3d = Vector3<double>;
 using Vector3i = Vector3<int>;
 using Vector3l = Vector3<long>;
 
+template<typename T>
+using Vector4 = Vector<T,4>;
+using Vector4f = Vector4<float>;
+using Vector4d = Vector4<double>;
+using Vector4i = Vector4<int>;
+using Vector4l = Vector4<long>;
+
 template<typename T, size_t N>
 using vec = Vector<T,N>;
 
@@ -516,6 +523,13 @@ using vec3f = vec3<float>;
 using vec3d = vec3<double>;
 using vec3i = vec3<int>;
 using vec3l = vec3<long>;
+
+template<typename T>
+using vec4 = vec<T,4>;
+using vec4f = vec4<float>;
+using vec4d = vec4<double>;
+using vec4i = vec4<int>;
+using vec4l = vec4<long>;
 
 } // namespace sfz
 
