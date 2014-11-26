@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <string>
 #include <iostream> // std::ostream
+#include <cassert>
 
 #include "sfz/math/Vector.hpp"
 
