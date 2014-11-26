@@ -72,16 +72,24 @@ std::string Matrix<T,M,N>::to_string() const noexcept
 {
 	using std::to_string;
 	std::string str;
+	str += "{ ";
 	for (size_t i = 0; i < M; i++) {
-		str += "Row ";
-		str += to_string(i);
-		str += ": ";
+		if (i > 0) {
+			str += "  ";
+		}
+		str += "{";
 		for (size_t j = 0; j < N; j++) {
 			str += to_string(get(i, j));
-			str += ", ";
+			if (j < N-1) {
+				str += ", ";
+			}
 		}
-		str += "\n";
+		str += "}";
+		if (i < M-1) {
+			str += ",\n";
+		}
 	}
+	str += " }";
 	return std::move(str);
 }
 
@@ -174,6 +182,15 @@ template<typename T, size_t M, size_t N>
 bool Matrix<T,M,N>::operator!= (const Matrix<T,M,N>& other) const noexcept
 {
 	return !((*this) == other);
+}
+
+// Non-member operators (others)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+std::ostream& operator<< (std::ostream& ostream, const Matrix<T,M,N>& matrix) noexcept
+{
+	return ostream << matrix.to_string();
 }
 
 } // namespace sfz

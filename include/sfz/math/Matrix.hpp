@@ -4,6 +4,7 @@
 
 #include <initializer_list>
 #include <string>
+#include <iostream> // std::ostream
 
 #include "sfz/math/Vector.hpp"
 
@@ -104,6 +105,12 @@ struct Matrix final {
 
 	bool operator!= (const Matrix<T,M,N>& other) const noexcept;
 };
+
+// Non-member operators (others)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+std::ostream& operator<< (std::ostream& ostream, const Matrix<T,M,N>& matrix) noexcept;
 
 // Standard typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
