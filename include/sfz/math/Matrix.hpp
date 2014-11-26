@@ -90,6 +90,8 @@ struct Matrix final {
 
 	Matrix<T,M,N>& operator-= (const Matrix<T,M,N>& other) noexcept;
 
+	Matrix<T,M,N>& operator*= (const T& other) noexcept;
+
 	// Operators (arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

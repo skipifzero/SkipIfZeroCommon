@@ -109,7 +109,7 @@ std::string Matrix<T,M,N>::to_string() const noexcept
 	return std::move(str);
 }
 
-// Operators (Arithmetic & Assignment)
+// Operators (arithmetic & sssignment)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
@@ -126,6 +126,17 @@ Matrix<T,M,N>& Matrix<T,M,N>::operator-= (const Matrix<T,M,N>& other) noexcept
 {
 	for (size_t j = 0; j < N; j++) {
 		mElements[j] -= other.mElements[j];
+	}
+	return *this;
+}
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N>& Matrix<T,M,N>::operator*= (const T& other) noexcept
+{
+	for (auto& column : mElements) {
+		for (auto& element : column) {
+			element *= other;
+		}
 	}
 	return *this;
 }

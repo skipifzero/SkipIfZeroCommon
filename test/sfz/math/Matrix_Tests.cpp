@@ -161,6 +161,19 @@ TEST_CASE("Arhitmetic & assignment operators", "[sfz::Matrix]")
 		REQUIRE(m2.get(1, 0) == 0);
 		REQUIRE(m2.get(1, 1) == -29);
 	}
+	SECTION("*= (scalar)") {
+		m1 *= 2;
+		REQUIRE(m1.get(0, 0) == 2);
+		REQUIRE(m1.get(0, 1) == 4);
+		REQUIRE(m1.get(1, 0) == 6);
+		REQUIRE(m1.get(1, 1) == 8);	
+
+		m3 *= -1;
+		REQUIRE(m3.get(0, 0) == 2);
+		REQUIRE(m3.get(0, 1) == 1);
+		REQUIRE(m3.get(1, 0) == -3);
+		REQUIRE(m3.get(1, 1) == -33);
+	}
 }
 
 TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
