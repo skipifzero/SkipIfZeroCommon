@@ -45,6 +45,8 @@ add_library(SkipIfZeroCommon
 	${INCLUDE_DIR}/sfz/math/Circle.hpp
 	${INCLUDE_DIR}/sfz/math/Circle.inl
 	${INCLUDE_DIR}/sfz/math/MathConstants.hpp
+	${INCLUDE_DIR}/sfz/math/Matrix.hpp
+	${INCLUDE_DIR}/sfz/math/Matrix.inl
 	${INCLUDE_DIR}/sfz/math/Rectangle.hpp
 	${INCLUDE_DIR}/sfz/math/Rectangle.inl
 	${INCLUDE_DIR}/sfz/math/Vector.hpp
@@ -73,6 +75,10 @@ add_test(Vector_Tests_Name Vector_Tests)
 add_executable(Circle_Tests ${TEST_DIR}/sfz/math/Circle_Tests.cpp)
 set_property(TARGET Circle_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(Circle_Tests_Name Circle_Tests)
+
+add_executable(Matrix_Tests ${TEST_DIR}/sfz/math/Matrix_Tests.cpp)
+set_property(TARGET Matrix_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+add_test(Matrix_Tests_Name Matrix_Tests)
 
 add_executable(Rectangle_Tests ${TEST_DIR}/sfz/math/Rectangle_Tests.cpp)
 set_property(TARGET Rectangle_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
