@@ -130,7 +130,7 @@ Matrix<T,M,N>& Matrix<T,M,N>::operator-= (const Matrix<T,M,N>& other) noexcept
 	return *this;
 }
 
-// Operators (Arithmetic)
+// Operators (arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
@@ -178,6 +178,18 @@ Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexce
 	return resMatrix;
 }
 
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> Matrix<T,M,N>::operator* (const T& other) const noexcept
+{
+	Matrix<T,M,N> resMatrix = *this;
+	for (auto& column : resMatrix.mElements) {
+		for (auto& element : column) {
+			element *= other;
+		}
+	}
+	return resMatrix;
+}
+
 // Operators (comparison)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -198,6 +210,15 @@ template<typename T, size_t M, size_t N>
 bool Matrix<T,M,N>::operator!= (const Matrix<T,M,N>& other) const noexcept
 {
 	return !((*this) == other);
+}
+
+// Non-member operators (arithmetic)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> operator* (const T& lhs, const Matrix<T,M,N>& rhs) noexcept
+{
+	return rhs * lhs;
 }
 
 // Non-member operators (others)

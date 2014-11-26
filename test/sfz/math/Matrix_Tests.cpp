@@ -204,7 +204,7 @@ TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
 		REQUIRE(res2.get(1, 0) == -3);
 		REQUIRE(res2.get(1, 1) == -4);
 	}
-	SECTION("*") {
+	SECTION("* (matrix)") {
 		auto res1 = m1*m2;
 		REQUIRE(res1.get(0, 0) == 0);
 		REQUIRE(res1.get(0, 1) == 1);
@@ -222,6 +222,19 @@ TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
 		REQUIRE(res3.get(0, 1) == 2);
 		REQUIRE(res3.get(1, 0) == 4);
 		REQUIRE(res3.get(1, 1) == 5);
+	}
+	SECTION("* (scalar)") {
+		auto res1 = m1*2;
+		REQUIRE(res1.get(0, 0) == 2);
+		REQUIRE(res1.get(0, 1) == 4);
+		REQUIRE(res1.get(1, 0) == 6);
+		REQUIRE(res1.get(1, 1) == 8);
+
+		auto res2 = -1*m2;
+		REQUIRE(res2.get(0, 0) == 0);
+		REQUIRE(res2.get(0, 1) == -1);
+		REQUIRE(res2.get(1, 0) == 0);
+		REQUIRE(res2.get(1, 1) == 0);
 	}
 }
 

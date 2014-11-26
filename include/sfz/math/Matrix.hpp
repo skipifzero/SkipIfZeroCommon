@@ -81,7 +81,7 @@ struct Matrix final {
 
 	std::string to_string() const noexcept;
 
-	// Operators (Arithmetic & Assignment)
+	// Operators (arithmetic & assignment)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	Matrix<T,M,N>& operator= (const Matrix<T,M,N>&) = default;
@@ -90,7 +90,7 @@ struct Matrix final {
 
 	Matrix<T,M,N>& operator-= (const Matrix<T,M,N>& other) noexcept;
 
-	// Operators (Arithmetic)
+	// Operators (arithmetic)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	Matrix<T,M,N> operator+ (const Matrix<T,M,N>& other) const noexcept;
@@ -100,6 +100,8 @@ struct Matrix final {
 	template<size_t P>
 	Matrix<T,M,P> operator* (const Matrix<T,N,P>& other) const noexcept;
 
+	Matrix<T,M,N> operator* (const T& other) const noexcept;
+
 	// Operators (comparison)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -107,6 +109,12 @@ struct Matrix final {
 
 	bool operator!= (const Matrix<T,M,N>& other) const noexcept;
 };
+
+// Non-member operators (arithmetic)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> operator* (const T& lhs, const Matrix<T,M,N>& rhs) noexcept;
 
 // Non-member operators (others)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
