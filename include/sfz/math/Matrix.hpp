@@ -75,6 +75,8 @@ struct Matrix final {
 	 */
 	Matrix<T,M,N> elemMult(const Matrix<T,M,N>& other) const noexcept;
 
+	Matrix<T,N,M> transpose() const noexcept;
+
 	size_t hash() const noexcept;
 
 	std::string to_string() const noexcept;

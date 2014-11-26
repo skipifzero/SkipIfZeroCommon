@@ -97,6 +97,33 @@ TEST_CASE("Element-wise multiplication", "[sfz::Matrix]")
 	REQUIRE(res1.get(1, 1) == 16);
 }
 
+TEST_CASE("Transpose", "[sfz::Matrix]")
+{
+	sfz::mat2i m1{{1, 2},
+	              {3, 4}};
+	sfz::Matrix<int, 2, 3> m2{{1, 2, 3},
+	                          {4, 5, 6}};
+
+	sfz::mat2i res1 = m1.transpose();
+	REQUIRE(res1 != m1);
+	REQUIRE(res1.transpose() == m1);
+
+	REQUIRE(res1.get(0, 0) == 1);
+	REQUIRE(res1.get(0, 1) == 3);
+	REQUIRE(res1.get(1, 0) == 2);
+	REQUIRE(res1.get(1, 1) == 4);
+
+	sfz::Matrix<int, 3, 2> res2 = m2.transpose();
+	REQUIRE(res2.transpose() == m2);
+
+	REQUIRE(res2.get(0, 0) == 1);
+	REQUIRE(res2.get(0, 1) == 4);
+	REQUIRE(res2.get(1, 0) == 2);
+	REQUIRE(res2.get(1, 1) == 5);
+	REQUIRE(res2.get(2, 0) == 3);
+	REQUIRE(res2.get(2, 1) == 6);
+}
+
 TEST_CASE("Arhitmetic & assignment operators", "[sfz::Matrix]")
 {
 	sfz::mat2i m1{{1, 2},

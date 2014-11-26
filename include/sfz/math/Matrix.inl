@@ -57,6 +57,22 @@ Matrix<T,M,N> Matrix<T,M,N>::elemMult(const Matrix<T,M,N>& other) const noexcept
 }
 
 template<typename T, size_t M, size_t N>
+Matrix<T,N,M> Matrix<T,M,N>::transpose() const noexcept
+{
+	Matrix<T,N,M> resMatrix;
+	size_t iRes = 0;
+	for (auto& column : mElements) {
+		size_t jRes = 0;
+		for (T colElement : column) {
+			resMatrix.mElements[jRes][iRes] = colElement;
+			jRes++;
+		}
+		iRes++;
+	}
+	return resMatrix;
+}
+
+template<typename T, size_t M, size_t N>
 size_t Matrix<T,M,N>::hash() const noexcept
 {
 	size_t hash = 0;
