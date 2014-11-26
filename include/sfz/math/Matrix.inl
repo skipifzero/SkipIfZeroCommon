@@ -134,9 +134,7 @@ template<typename T, size_t M, size_t N>
 Matrix<T,M,N>& Matrix<T,M,N>::operator*= (const T& other) noexcept
 {
 	for (auto& column : mElements) {
-		for (auto& element : column) {
-			element *= other;
-		}
+		column *= other;
 	}
 	return *this;
 }
@@ -147,25 +145,13 @@ Matrix<T,M,N>& Matrix<T,M,N>::operator*= (const T& other) noexcept
 template<typename T, size_t M, size_t N>
 Matrix<T,M,N> Matrix<T,M,N>::operator+ (const Matrix<T,M,N>& other) const noexcept
 {
-	Matrix<T,M,N> resMatrix;
-	for (size_t i = 0; i < M; i++) {
-		for (size_t j = 0; j < N; j++) {
-			resMatrix.mElements[j][i] = mElements[j][i] + other.mElements[j][i];
-		}
-	}
-	return resMatrix;
+	return Matrix<T,M,N>{*this} += other;
 }
 
 template<typename T, size_t M, size_t N>
 Matrix<T,M,N> Matrix<T,M,N>::operator- (const Matrix<T,M,N>& other) const noexcept
 {
-	Matrix<T,M,N> resMatrix;
-	for (size_t i = 0; i < M; i++) {
-		for (size_t j = 0; j < N; j++) {
-			resMatrix.mElements[j][i] = mElements[j][i] - other.mElements[j][i];
-		}
-	}
-	return resMatrix;
+	return Matrix<T,M,N>{*this} -= other;
 }
 
 template<typename T, size_t M, size_t N>
@@ -192,13 +178,7 @@ Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexce
 template<typename T, size_t M, size_t N>
 Matrix<T,M,N> Matrix<T,M,N>::operator* (const T& other) const noexcept
 {
-	Matrix<T,M,N> resMatrix = *this;
-	for (auto& column : resMatrix.mElements) {
-		for (auto& element : column) {
-			element *= other;
-		}
-	}
-	return resMatrix;
+	return Matrix<T,M,N>{*this} *= other;
 }
 
 // Operators (comparison)
@@ -207,11 +187,9 @@ Matrix<T,M,N> Matrix<T,M,N>::operator* (const T& other) const noexcept
 template<typename T, size_t M, size_t N>
 bool Matrix<T,M,N>::operator== (const Matrix<T,M,N>& other) const noexcept
 {
-	for (size_t i = 0; i < M; i++) {
-		for (size_t j = 0; j < N; j++) {
-			if (mElements[j][i] != other.mElements[j][i]) {
-				return false;
-			}
+	for (size_t j = 0; j < N; j++) {
+		if (mElements[j] != other.mElements[j]) {
+			return false;
 		}
 	}
 	return true;
