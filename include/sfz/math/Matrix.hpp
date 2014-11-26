@@ -89,6 +89,10 @@ struct Matrix final {
 	 */
 	T get(size_t i, size_t j) const noexcept;
 
+	size_t rows() const noexcept { return M; }
+
+	size_t cols() const noexcept { return N; }
+
 	/**
 	 * @brief Element-wise multiplication
 	 * @return the resulting matrix
