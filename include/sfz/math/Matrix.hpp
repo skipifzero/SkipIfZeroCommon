@@ -12,7 +12,27 @@ namespace sfz {
 
 using std::size_t;
 
-// m rows, n cols
+/**
+ * @brief A mathematical Matrix POD class that imitates a built-in primitive.
+ * 
+ * It's important to note that the implementation of this Matrix is column-major order (and
+ * publically accessable). The reason for this is that this seems to be the most natural way to
+ * interact with OpenGL. What might be confusing is that some parts of the interface (most notably
+ * the initalizer_list constructor) uses row-major order as it's more natural to write matrices
+ * in code that way. Be extra careful when accesing or setting specific values in a matrix.
+ *
+ * The template is designed to be used with floating point types in first hand. It's possible that
+ * using integer types might lead to truncation in some instances.
+ *
+ * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used
+ * with standard primitives.
+ *
+ * @param T the element type
+ * @param M the amount of rows in the Matrix
+ * @param N the amount of columns in the Matrix
+ *
+ * @author Peter Hillerström
+ */
 template<typename T, size_t M, size_t N>
 struct Matrix final {
 

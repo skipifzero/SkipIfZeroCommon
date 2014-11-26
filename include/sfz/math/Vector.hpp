@@ -24,7 +24,7 @@ using std::size_t;
  * correct result as it involves taking the square root. Another trouble with integral types is the
  * risk of overflow. When calculating the norm you have to square each element in the vector, which
  * might wery well overflow if you have large elements.
-
+ *
  * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used
  * with standard primitives.
  *
