@@ -68,6 +68,12 @@ struct Matrix final {
 	 */
 	T get(size_t i, size_t j) const noexcept;
 
+	/**
+	 * @brief Element-wise multiplication
+	 * @return the resulting matrix
+	 */
+	Matrix<T,M,N> elemMult(const Matrix<T,M,N>& other) const noexcept;
+
 	size_t hash() const noexcept;
 
 	std::string to_string() const noexcept;

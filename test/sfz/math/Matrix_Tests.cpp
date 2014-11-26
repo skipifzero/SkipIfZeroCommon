@@ -80,6 +80,23 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 	}
 }
 
+TEST_CASE("Element-wise multiplication", "[sfz::Matrix]")
+{
+	sfz::mat2i m1{{1, 2},
+	              {3, 4}};
+	sfz::mat2i m2{{1, 2},
+	              {3, 4}};
+
+	auto res1 = m1.elemMult(m2);
+	auto res2 = m2.elemMult(m1);
+
+	REQUIRE(res1 == res2);
+	REQUIRE(res1.get(0, 0) == 1);
+	REQUIRE(res1.get(0, 1) == 4);
+	REQUIRE(res1.get(1, 0) == 9);
+	REQUIRE(res1.get(1, 1) == 16);
+}
+
 TEST_CASE("Arhitmetic & assignment operators", "[sfz::Matrix]")
 {
 	sfz::mat2i m1{{1, 2},

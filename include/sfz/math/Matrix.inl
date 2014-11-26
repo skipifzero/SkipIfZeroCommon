@@ -45,6 +45,18 @@ T Matrix<T,M,N>::get(size_t i, size_t j) const noexcept
 }
 
 template<typename T, size_t M, size_t N>
+Matrix<T,M,N> Matrix<T,M,N>::elemMult(const Matrix<T,M,N>& other) const noexcept
+{
+	Matrix<T,M,N> resMatrix;
+	for (size_t i = 0; i < M; i++) {
+		for (size_t j = 0; j < N; j++) {
+			resMatrix.mElements[j][i] = mElements[j][i] * other.mElements[j][i];
+		}
+	}
+	return resMatrix;
+}
+
+template<typename T, size_t M, size_t N>
 size_t Matrix<T,M,N>::hash() const noexcept
 {
 	size_t hash = 0;
