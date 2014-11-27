@@ -236,6 +236,18 @@ TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
 		REQUIRE(res3.get(1, 0) == 4);
 		REQUIRE(res3.get(1, 1) == 5);
 	}
+	SECTION("* (vector)") {
+		sfz::vec2i v1{1, -2};
+
+		sfz::vec2i res1 = m1*v1;
+		REQUIRE(res1[0] == -3);
+		REQUIRE(res1[1] == -5);
+
+		sfz::vec3i res2 = m4*v1;
+		REQUIRE(res2[0] == 1);
+		REQUIRE(res2[1] == -2);
+		REQUIRE(res2[2] == 0);
+	}
 	SECTION("* (scalar)") {
 		auto res1 = m1*2;
 		REQUIRE(res1.get(0, 0) == 2);

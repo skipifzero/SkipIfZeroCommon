@@ -176,6 +176,14 @@ Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexce
 }
 
 template<typename T, size_t M, size_t N>
+Vector<T,M> Matrix<T,M,N>::operator* (const Vector<T,N>& vector) const noexcept
+{
+	const Matrix<T,N,1>* vecAsMatPtr = reinterpret_cast<const Matrix<T,N,1>*>(&vector);
+	Matrix<T,M,1> resMatrix = (*this) * (*vecAsMatPtr);
+	return *reinterpret_cast<Vector<T,M>*>(&resMatrix);
+}
+
+template<typename T, size_t M, size_t N>
 Matrix<T,M,N> Matrix<T,M,N>::operator* (const T& other) const noexcept
 {
 	return Matrix<T,M,N>{*this} *= other;
