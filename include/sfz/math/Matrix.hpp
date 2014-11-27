@@ -73,13 +73,13 @@ struct Matrix final {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
-	 * @brief Returns a reference to element at the specified location.
-	 * No range checking is done, zero-indexing is used.
+	 * @brief General accessor returning the reference to element at the specified location.
+	 * No range checking is done, zero-indexing is used. Can be used for both reading and writing.
 	 * @param i the i:th row
 	 * @param j the j:th column
 	 * @return reference to element at the specified location
 	 */
-	T& get(size_t i, size_t j) noexcept;
+	T& at(size_t i, size_t j) noexcept;
 
 	/**
 	 * @brief Returns the element at the specified location.
@@ -88,7 +88,7 @@ struct Matrix final {
 	 * @param j the j:th column
 	 * @return the element at the specified location
 	 */
-	T get(size_t i, size_t j) const noexcept;
+	T at(size_t i, size_t j) const noexcept;
 
 	size_t rows() const noexcept { return M; }
 
@@ -126,6 +126,8 @@ struct Matrix final {
 
 	template<size_t P>
 	Matrix<T,M,P> operator* (const Matrix<T,N,P>& other) const noexcept;
+
+	Vector<T,M> operator* (const Vector<T,N>& vector) const noexcept;
 
 	Matrix<T,M,N> operator* (const T& other) const noexcept;
 

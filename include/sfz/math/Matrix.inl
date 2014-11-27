@@ -33,13 +33,13 @@ Matrix<T,M,N>::Matrix(std::initializer_list<std::initializer_list<T>> list) noex
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
-T& Matrix<T,M,N>::get(size_t i, size_t j) noexcept
+T& Matrix<T,M,N>::at(size_t i, size_t j) noexcept
 {
 	return mElements[j][i];
 }
 
 template<typename T, size_t M, size_t N>
-T Matrix<T,M,N>::get(size_t i, size_t j) const noexcept
+T Matrix<T,M,N>::at(size_t i, size_t j) const noexcept
 {
 	return mElements[j][i];
 }
@@ -95,7 +95,7 @@ std::string Matrix<T,M,N>::to_string() const noexcept
 		}
 		str += "{";
 		for (size_t j = 0; j < N; j++) {
-			str += to_string(get(i, j));
+			str += to_string(at(i, j));
 			if (j < N-1) {
 				str += ", ";
 			}
@@ -173,6 +173,14 @@ Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexce
 		}
 	}
 	return resMatrix;
+}
+
+template<typename T, size_t M, size_t N>
+Vector<T,M> Matrix<T,M,N>::operator* (const Vector<T,N>& vector) const noexcept
+{
+	const Matrix<T,N,1>* vecAsMatPtr = reinterpret_cast<const Matrix<T,N,1>*>(&vector);
+	Matrix<T,M,1> resMatrix = (*this) * (*vecAsMatPtr);
+	return resMatrix.mElements[0];
 }
 
 template<typename T, size_t M, size_t N>
