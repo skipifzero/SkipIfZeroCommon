@@ -33,13 +33,13 @@ Matrix<T,M,N>::Matrix(std::initializer_list<std::initializer_list<T>> list) noex
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
-T& Matrix<T,M,N>::get(size_t i, size_t j) noexcept
+T& Matrix<T,M,N>::at(size_t i, size_t j) noexcept
 {
 	return mElements[j][i];
 }
 
 template<typename T, size_t M, size_t N>
-T Matrix<T,M,N>::get(size_t i, size_t j) const noexcept
+T Matrix<T,M,N>::at(size_t i, size_t j) const noexcept
 {
 	return mElements[j][i];
 }
@@ -95,7 +95,7 @@ std::string Matrix<T,M,N>::to_string() const noexcept
 		}
 		str += "{";
 		for (size_t j = 0; j < N; j++) {
-			str += to_string(get(i, j));
+			str += to_string(at(i, j));
 			if (j < N-1) {
 				str += ", ";
 			}

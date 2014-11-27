@@ -14,15 +14,15 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 		              {4, 5, 6},
 		              {7, 8, 9}};
 
-		REQUIRE(m1.get(0, 0) == 1);
-		REQUIRE(m1.get(0, 1) == 2);
-		REQUIRE(m1.get(0, 2) == 3);
-		REQUIRE(m1.get(1, 0) == 4);
-		REQUIRE(m1.get(1, 1) == 5);
-		REQUIRE(m1.get(1, 2) == 6);
-		REQUIRE(m1.get(2, 0) == 7);
-		REQUIRE(m1.get(2, 1) == 8);
-		REQUIRE(m1.get(2, 2) == 9);
+		REQUIRE(m1.at(0, 0) == 1);
+		REQUIRE(m1.at(0, 1) == 2);
+		REQUIRE(m1.at(0, 2) == 3);
+		REQUIRE(m1.at(1, 0) == 4);
+		REQUIRE(m1.at(1, 1) == 5);
+		REQUIRE(m1.at(1, 2) == 6);
+		REQUIRE(m1.at(2, 0) == 7);
+		REQUIRE(m1.at(2, 1) == 8);
+		REQUIRE(m1.at(2, 2) == 9);
 
 		REQUIRE(m1.mElements[0][0] == 1);
 		REQUIRE(m1.mElements[0][1] == 4);
@@ -36,10 +36,10 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 
 		sfz::mat2i m2{{1}};
 
-		REQUIRE(m2.get(0, 0) == 1);
-		REQUIRE(m2.get(0, 1) == 0);
-		REQUIRE(m2.get(1, 0) == 0);
-		REQUIRE(m2.get(1, 1) == 0);
+		REQUIRE(m2.at(0, 0) == 1);
+		REQUIRE(m2.at(0, 1) == 0);
+		REQUIRE(m2.at(1, 0) == 0);
+		REQUIRE(m2.at(1, 1) == 0);
 
 		REQUIRE(m2.mElements[0][0] == 1);
 		REQUIRE(m2.mElements[0][1] == 0);
@@ -48,12 +48,12 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 
 		sfz::Matrix<int, 2, 3> m3{{1, 2, 3}, {4, 5, 6}};
 
-		REQUIRE(m3.get(0, 0) == 1);
-		REQUIRE(m3.get(0, 1) == 2);
-		REQUIRE(m3.get(0, 2) == 3);
-		REQUIRE(m3.get(1, 0) == 4);
-		REQUIRE(m3.get(1, 1) == 5);
-		REQUIRE(m3.get(1, 2) == 6);
+		REQUIRE(m3.at(0, 0) == 1);
+		REQUIRE(m3.at(0, 1) == 2);
+		REQUIRE(m3.at(0, 2) == 3);
+		REQUIRE(m3.at(1, 0) == 4);
+		REQUIRE(m3.at(1, 1) == 5);
+		REQUIRE(m3.at(1, 2) == 6);
 
 		REQUIRE(m3.mElements[0][0] == 1);
 		REQUIRE(m3.mElements[0][1] == 4);
@@ -64,12 +64,12 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 
 		sfz::Matrix<int, 3, 2> m4{{1, 0}, {0, 1}, {0, 0}};
 
-		REQUIRE(m4.get(0, 0) == 1);
-		REQUIRE(m4.get(0, 1) == 0);
-		REQUIRE(m4.get(1, 0) == 0);
-		REQUIRE(m4.get(1, 1) == 1);
-		REQUIRE(m4.get(2, 0) == 0);
-		REQUIRE(m4.get(2, 1) == 0);
+		REQUIRE(m4.at(0, 0) == 1);
+		REQUIRE(m4.at(0, 1) == 0);
+		REQUIRE(m4.at(1, 0) == 0);
+		REQUIRE(m4.at(1, 1) == 1);
+		REQUIRE(m4.at(2, 0) == 0);
+		REQUIRE(m4.at(2, 1) == 0);
 
 		REQUIRE(m4.mElements[0][0] == 1);
 		REQUIRE(m4.mElements[0][1] == 0);
@@ -91,10 +91,10 @@ TEST_CASE("Element-wise multiplication", "[sfz::Matrix]")
 	auto res2 = m2.elemMult(m1);
 
 	REQUIRE(res1 == res2);
-	REQUIRE(res1.get(0, 0) == 1);
-	REQUIRE(res1.get(0, 1) == 4);
-	REQUIRE(res1.get(1, 0) == 9);
-	REQUIRE(res1.get(1, 1) == 16);
+	REQUIRE(res1.at(0, 0) == 1);
+	REQUIRE(res1.at(0, 1) == 4);
+	REQUIRE(res1.at(1, 0) == 9);
+	REQUIRE(res1.at(1, 1) == 16);
 }
 
 TEST_CASE("Transpose", "[sfz::Matrix]")
@@ -108,20 +108,20 @@ TEST_CASE("Transpose", "[sfz::Matrix]")
 	REQUIRE(res1 != m1);
 	REQUIRE(res1.transpose() == m1);
 
-	REQUIRE(res1.get(0, 0) == 1);
-	REQUIRE(res1.get(0, 1) == 3);
-	REQUIRE(res1.get(1, 0) == 2);
-	REQUIRE(res1.get(1, 1) == 4);
+	REQUIRE(res1.at(0, 0) == 1);
+	REQUIRE(res1.at(0, 1) == 3);
+	REQUIRE(res1.at(1, 0) == 2);
+	REQUIRE(res1.at(1, 1) == 4);
 
 	sfz::Matrix<int, 3, 2> res2 = m2.transpose();
 	REQUIRE(res2.transpose() == m2);
 
-	REQUIRE(res2.get(0, 0) == 1);
-	REQUIRE(res2.get(0, 1) == 4);
-	REQUIRE(res2.get(1, 0) == 2);
-	REQUIRE(res2.get(1, 1) == 5);
-	REQUIRE(res2.get(2, 0) == 3);
-	REQUIRE(res2.get(2, 1) == 6);
+	REQUIRE(res2.at(0, 0) == 1);
+	REQUIRE(res2.at(0, 1) == 4);
+	REQUIRE(res2.at(1, 0) == 2);
+	REQUIRE(res2.at(1, 1) == 5);
+	REQUIRE(res2.at(2, 0) == 3);
+	REQUIRE(res2.at(2, 1) == 6);
 }
 
 TEST_CASE("Arhitmetic & assignment operators", "[sfz::Matrix]")
@@ -137,42 +137,42 @@ TEST_CASE("Arhitmetic & assignment operators", "[sfz::Matrix]")
 		m1 += m2;
 		m2 += m3;
 
-		REQUIRE(m1.get(0, 0) == 2);
-		REQUIRE(m1.get(0, 1) == 4);
-		REQUIRE(m1.get(1, 0) == 6);
-		REQUIRE(m1.get(1, 1) == 8);
+		REQUIRE(m1.at(0, 0) == 2);
+		REQUIRE(m1.at(0, 1) == 4);
+		REQUIRE(m1.at(1, 0) == 6);
+		REQUIRE(m1.at(1, 1) == 8);
 
-		REQUIRE(m2.get(0, 0) == -1);
-		REQUIRE(m2.get(0, 1) == 1);
-		REQUIRE(m2.get(1, 0) == 6);
-		REQUIRE(m2.get(1, 1) == 37);
+		REQUIRE(m2.at(0, 0) == -1);
+		REQUIRE(m2.at(0, 1) == 1);
+		REQUIRE(m2.at(1, 0) == 6);
+		REQUIRE(m2.at(1, 1) == 37);
 	}
 	SECTION("-=") {
 		m1 -= m2;
 		m2 -= m3;
 
-		REQUIRE(m1.get(0, 0) == 0);
-		REQUIRE(m1.get(0, 1) == 0);
-		REQUIRE(m1.get(1, 0) == 0);
-		REQUIRE(m1.get(1, 1) == 0);
+		REQUIRE(m1.at(0, 0) == 0);
+		REQUIRE(m1.at(0, 1) == 0);
+		REQUIRE(m1.at(1, 0) == 0);
+		REQUIRE(m1.at(1, 1) == 0);
 
-		REQUIRE(m2.get(0, 0) == 3);
-		REQUIRE(m2.get(0, 1) == 3);
-		REQUIRE(m2.get(1, 0) == 0);
-		REQUIRE(m2.get(1, 1) == -29);
+		REQUIRE(m2.at(0, 0) == 3);
+		REQUIRE(m2.at(0, 1) == 3);
+		REQUIRE(m2.at(1, 0) == 0);
+		REQUIRE(m2.at(1, 1) == -29);
 	}
 	SECTION("*= (scalar)") {
 		m1 *= 2;
-		REQUIRE(m1.get(0, 0) == 2);
-		REQUIRE(m1.get(0, 1) == 4);
-		REQUIRE(m1.get(1, 0) == 6);
-		REQUIRE(m1.get(1, 1) == 8);	
+		REQUIRE(m1.at(0, 0) == 2);
+		REQUIRE(m1.at(0, 1) == 4);
+		REQUIRE(m1.at(1, 0) == 6);
+		REQUIRE(m1.at(1, 1) == 8);	
 
 		m3 *= -1;
-		REQUIRE(m3.get(0, 0) == 2);
-		REQUIRE(m3.get(0, 1) == 1);
-		REQUIRE(m3.get(1, 0) == -3);
-		REQUIRE(m3.get(1, 1) == -33);
+		REQUIRE(m3.at(0, 0) == 2);
+		REQUIRE(m3.at(0, 1) == 1);
+		REQUIRE(m3.at(1, 0) == -3);
+		REQUIRE(m3.at(1, 1) == -33);
 	}
 }
 
@@ -188,18 +188,18 @@ TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
 		auto res2 = m2 + m1;
 
 		REQUIRE(res1 == res2);
-		REQUIRE(res1.get(0, 0) == 1);
-		REQUIRE(res1.get(0, 1) == 3);
-		REQUIRE(res1.get(1, 0) == 3);
-		REQUIRE(res1.get(1, 1) == 4);
+		REQUIRE(res1.at(0, 0) == 1);
+		REQUIRE(res1.at(0, 1) == 3);
+		REQUIRE(res1.at(1, 0) == 3);
+		REQUIRE(res1.at(1, 1) == 4);
 
 		auto res3 = m3 + m3;
-		REQUIRE(res3.get(0, 0) == 2);
-		REQUIRE(res3.get(0, 1) == 4);
-		REQUIRE(res3.get(0, 2) == 6);
-		REQUIRE(res3.get(1, 0) == 8);
-		REQUIRE(res3.get(1, 1) == 10);
-		REQUIRE(res3.get(1, 2) == 12);
+		REQUIRE(res3.at(0, 0) == 2);
+		REQUIRE(res3.at(0, 1) == 4);
+		REQUIRE(res3.at(0, 2) == 6);
+		REQUIRE(res3.at(1, 0) == 8);
+		REQUIRE(res3.at(1, 1) == 10);
+		REQUIRE(res3.at(1, 2) == 12);
 	}
 	SECTION("-") {
 		auto res1 = m1 - m2;
@@ -207,34 +207,34 @@ TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
 
 		REQUIRE(res1 != res2);
 		
-		REQUIRE(res1.get(0, 0) == 1);
-		REQUIRE(res1.get(0, 1) == 1);
-		REQUIRE(res1.get(1, 0) == 3);
-		REQUIRE(res1.get(1, 1) == 4);
+		REQUIRE(res1.at(0, 0) == 1);
+		REQUIRE(res1.at(0, 1) == 1);
+		REQUIRE(res1.at(1, 0) == 3);
+		REQUIRE(res1.at(1, 1) == 4);
 		
-		REQUIRE(res2.get(0, 0) == -1);
-		REQUIRE(res2.get(0, 1) == -1);
-		REQUIRE(res2.get(1, 0) == -3);
-		REQUIRE(res2.get(1, 1) == -4);
+		REQUIRE(res2.at(0, 0) == -1);
+		REQUIRE(res2.at(0, 1) == -1);
+		REQUIRE(res2.at(1, 0) == -3);
+		REQUIRE(res2.at(1, 1) == -4);
 	}
 	SECTION("* (matrix)") {
 		auto res1 = m1*m2;
-		REQUIRE(res1.get(0, 0) == 0);
-		REQUIRE(res1.get(0, 1) == 1);
-		REQUIRE(res1.get(1, 0) == 0);
-		REQUIRE(res1.get(1, 1) == 3);
+		REQUIRE(res1.at(0, 0) == 0);
+		REQUIRE(res1.at(0, 1) == 1);
+		REQUIRE(res1.at(1, 0) == 0);
+		REQUIRE(res1.at(1, 1) == 3);
 
 		auto res2 = m2*m1;
-		REQUIRE(res2.get(0, 0) == 3);
-		REQUIRE(res2.get(0, 1) == 4);
-		REQUIRE(res2.get(1, 0) == 0);
-		REQUIRE(res2.get(1, 1) == 0);
+		REQUIRE(res2.at(0, 0) == 3);
+		REQUIRE(res2.at(0, 1) == 4);
+		REQUIRE(res2.at(1, 0) == 0);
+		REQUIRE(res2.at(1, 1) == 0);
 
 		sfz::mat2i res3 = m3*m4;
-		REQUIRE(res3.get(0, 0) == 1);
-		REQUIRE(res3.get(0, 1) == 2);
-		REQUIRE(res3.get(1, 0) == 4);
-		REQUIRE(res3.get(1, 1) == 5);
+		REQUIRE(res3.at(0, 0) == 1);
+		REQUIRE(res3.at(0, 1) == 2);
+		REQUIRE(res3.at(1, 0) == 4);
+		REQUIRE(res3.at(1, 1) == 5);
 	}
 	SECTION("* (vector)") {
 		sfz::vec2i v1{1, -2};
@@ -250,16 +250,16 @@ TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
 	}
 	SECTION("* (scalar)") {
 		auto res1 = m1*2;
-		REQUIRE(res1.get(0, 0) == 2);
-		REQUIRE(res1.get(0, 1) == 4);
-		REQUIRE(res1.get(1, 0) == 6);
-		REQUIRE(res1.get(1, 1) == 8);
+		REQUIRE(res1.at(0, 0) == 2);
+		REQUIRE(res1.at(0, 1) == 4);
+		REQUIRE(res1.at(1, 0) == 6);
+		REQUIRE(res1.at(1, 1) == 8);
 
 		auto res2 = -1*m2;
-		REQUIRE(res2.get(0, 0) == 0);
-		REQUIRE(res2.get(0, 1) == -1);
-		REQUIRE(res2.get(1, 0) == 0);
-		REQUIRE(res2.get(1, 1) == 0);
+		REQUIRE(res2.at(0, 0) == 0);
+		REQUIRE(res2.at(0, 1) == -1);
+		REQUIRE(res2.at(1, 0) == 0);
+		REQUIRE(res2.at(1, 1) == 0);
 	}
 }
 
