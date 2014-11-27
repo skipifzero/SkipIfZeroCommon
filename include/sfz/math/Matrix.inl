@@ -180,7 +180,7 @@ Vector<T,M> Matrix<T,M,N>::operator* (const Vector<T,N>& vector) const noexcept
 {
 	const Matrix<T,N,1>* vecAsMatPtr = reinterpret_cast<const Matrix<T,N,1>*>(&vector);
 	Matrix<T,M,1> resMatrix = (*this) * (*vecAsMatPtr);
-	return *reinterpret_cast<Vector<T,M>*>(&resMatrix);
+	return resMatrix.mElements[0];
 }
 
 template<typename T, size_t M, size_t N>
