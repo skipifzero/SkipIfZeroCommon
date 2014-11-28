@@ -79,12 +79,20 @@ struct Vector final {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
 	/**
+	 * @brief General accessor returning the reference to element at the specified location.
+	 * @assert index must be in range
+	 * @param index the index of the element
+	 * @return reference to the element at the specified index
+	 */
+	T& at(const size_t index) noexcept;
+
+	/**
 	 * @brief Returns the element at the specified index.
 	 * @assert index must be in range
 	 * @param index the index of the element
 	 * @return the element at the specified index
 	 */
-	T get(const size_t index) const noexcept;
+	T at(const size_t index) const noexcept;
 
 	/**
 	 * @brief Assigns value to the specified index.

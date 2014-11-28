@@ -33,7 +33,14 @@ Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-T Vector<T,N>::get(const size_t index) const noexcept
+T& Vector<T,N>::at(const size_t index) noexcept
+{
+	assert(index < N);
+	return mElements[index];
+}
+
+template<typename T, size_t N>
+T Vector<T,N>::at(const size_t index) const noexcept
 {
 	assert(index < N);
 	return mElements[index];

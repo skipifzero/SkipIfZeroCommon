@@ -42,16 +42,16 @@ TEST_CASE("Assignment and accessing", "[sfz::Vector]")
 	sfz::Vector<int, 5> vector{-10, 10, 12, 13, -2};
 	SECTION("Correct start values") {
 		REQUIRE(vector[0] == -10);
-		REQUIRE(vector.get(1) == 10);
+		REQUIRE(vector.at(1) == 10);
 		REQUIRE(vector[2] == 12);
 		REQUIRE(vector[3] == 13);
 		REQUIRE(vector[4] == -2);
 	}
 	SECTION("Assignment with set() function") {
 		vector.set(0, 2);
-		REQUIRE(vector.get(0) == 2);
+		REQUIRE(vector.at(0) == 2);
 		vector.set(3, -100);
-		REQUIRE(vector.get(3) == -100);
+		REQUIRE(vector.at(3) == -100);
 	}
 	SECTION("Assignment with [] operator") {
 		vector[1] = 4242;
