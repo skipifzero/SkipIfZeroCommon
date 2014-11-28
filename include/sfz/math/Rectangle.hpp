@@ -71,14 +71,6 @@ public:
 	Rectangle(const Rectangle<T>& rect) = default;
 
 	/**
-	 * @brief Copy cast constructor.
-	 * Attempts to static_cast all types from specified rectangle to specified type.
-	 * @param rect the rectangle to copy
-	 */
-	template<typename T2>
-	explicit Rectangle(const Rectangle<T2>& rect) noexcept;
-
-	/**
 	 * @brief Copy constructor that changes alignment.
 	 * The alignment is changed as it would be if changeHorizontalAlign() or changeVerticalAlign()
 	 * were called.

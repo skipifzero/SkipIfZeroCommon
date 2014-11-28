@@ -28,13 +28,6 @@ TEST_CASE("Constructors", "[sfz::Vector]")
 		REQUIRE(vector[2] == 1);
 		REQUIRE(vector[3] == 42);
 	}
-	SECTION("Copy cast constructor correctly copies and casts") {
-		sfz::Vector<int, 4> vector{sfz::Vector<float, 4>{-2.1f, 2.1f, 1.1f, 42.1f}};
-		REQUIRE(vector[0] == -2);
-		REQUIRE(vector[1] == 2);
-		REQUIRE(vector[2] == 1);
-		REQUIRE(vector[3] == 42);
-	}
 }
 
 TEST_CASE("Assignment and accessing", "[sfz::Vector]")

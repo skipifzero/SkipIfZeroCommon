@@ -4,16 +4,6 @@ namespace sfz {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-template<typename T2>
-Vector<T,N>::Vector(const Vector<T2,N>& vector) noexcept
-{
-	auto itr = vector.begin();
-	for (auto& element : mElements) {
-		element = static_cast<T>(*itr++);
-	}
-}
-
-template<typename T, size_t N>
 Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
 {
 	size_t listSize = list.size();

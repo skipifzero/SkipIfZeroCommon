@@ -68,14 +68,6 @@ public:
 	Circle(const Circle<T>& circle) = default;
 	
 	/**
-	 * @brief Copy cast constructor.
-	 * Attempts to static_cast all types from specified circle to specified type.
-	 * @param circle the circle to copy
-	 */
-	template<typename T2>
-	explicit Circle(const Circle<T2>& circle) noexcept;
-
-	/**
 	 * @brief Copy constructor that changes alignment.
 	 * The alignment is changed as it would be if changeAlign() were called.
 	 * @see changeAlign()

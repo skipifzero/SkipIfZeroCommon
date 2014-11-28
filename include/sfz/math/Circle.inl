@@ -13,18 +13,6 @@ const VerticalAlign Circle<T>::s_DEFAULT_VERTICAL_ALIGN = VerticalAlign::MIDDLE;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-template<typename T2>
-Circle<T>::Circle(const Circle<T2>& circle) noexcept
-:
-	mPos{static_cast<vec2<T2>>(circle.mPos)},
-	mHAlign{circle.mHAlign},
-	mVAlign{circle.mVAlign}
-{
-	mRad = static_cast<T2>(circle.mRad);
-}
-
-
-template<typename T>
 Circle<T>::Circle(const Circle<T>& circle, HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
 	Circle<T>{circle}

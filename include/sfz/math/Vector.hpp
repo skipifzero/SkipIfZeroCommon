@@ -56,15 +56,6 @@ struct Vector final {
 	Vector(const Vector<T,N>& vector) = default;
 
 	/**
-	 * @brief Copy cast constructor.
-	 * Copies all elements from specified vector and attempts to static_cast them to this vectors
-	 * type.
-	 * @param vector the vector to copy
-	 */
-	template<typename T2>
-	explicit Vector(const Vector<T2,N>& vector) noexcept;
-
-	/**
 	 * @brief Initializer list constructor.
 	 * If the initializer list contains less element than the size of the vector the remaining
 	 * elements will be set to 0.

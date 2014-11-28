@@ -13,18 +13,6 @@ const VerticalAlign Rectangle<T>::s_DEFAULT_VERTICAL_ALIGN = VerticalAlign::MIDD
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-template<typename T2>
-Rectangle<T>::Rectangle(const Rectangle<T2>& rect) noexcept
-:
-	mPos{static_cast<vec2<T2>>(rect.mPos)},
-	mDim{static_cast<vec2<T2>>(rect.mDim)},
-	mHAlign{rect.mHAlign},
-	mVAlign{rect.mVAlign}
-{
-	// Initialization done.
-}
-
-template<typename T>
 Rectangle<T>::Rectangle(const Rectangle<T>& rect,
                         HorizontalAlign hAlign, VerticalAlign vAlign) noexcept
 :
