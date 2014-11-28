@@ -90,6 +90,15 @@ struct Matrix final {
 	 */
 	T at(size_t i, size_t j) const noexcept;
 
+	/**
+	 * @brief Assigns value to element at the specified location.
+	 * @assert location must be in range
+	 * @param i the i:th row
+	 * @param j the j:th column
+	 * @param value the value to assign
+	 */
+	void set(size_t i, size_t j, T value) const noexcept;
+
 	size_t rows() const noexcept { return M; }
 
 	size_t cols() const noexcept { return N; }
