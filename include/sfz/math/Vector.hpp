@@ -343,49 +343,19 @@ Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-using Vector2 = Vector<T,2>;
-using Vector2f = Vector2<float>;
-using Vector2d = Vector2<double>;
-using Vector2i = Vector2<int>;
-using Vector2l = Vector2<long>;
+using vec2 = Vector<T,2>;
+using vec2f = Vector<float,2>;
+using vec2i = Vector<int,2>;
 
 template<typename T>
-using Vector3 = Vector<T,3>;
-using Vector3f = Vector3<float>;
-using Vector3d = Vector3<double>;
-using Vector3i = Vector3<int>;
-using Vector3l = Vector3<long>;
+using vec3 = Vector<T,3>;
+using vec3f = Vector<float,3>;
+using vec3i = Vector<int,3>;
 
 template<typename T>
-using Vector4 = Vector<T,4>;
-using Vector4f = Vector4<float>;
-using Vector4d = Vector4<double>;
-using Vector4i = Vector4<int>;
-using Vector4l = Vector4<long>;
-
-template<typename T, size_t N>
-using vec = Vector<T,N>;
-
-template<typename T>
-using vec2 = vec<T,2>;
-using vec2f = vec2<float>;
-using vec2d = vec2<double>;
-using vec2i = vec2<int>;
-using vec2l = vec2<long>;
-
-template<typename T>
-using vec3 = vec<T,3>;
-using vec3f = vec3<float>;
-using vec3d = vec3<double>;
-using vec3i = vec3<int>;
-using vec3l = vec3<long>;
-
-template<typename T>
-using vec4 = vec<T,4>;
-using vec4f = vec4<float>;
-using vec4d = vec4<double>;
-using vec4i = vec4<int>;
-using vec4l = vec4<long>;
+using vec4 = Vector<T,4>;
+using vec4f = Vector<float,4>;
+using vec4i = Vector<int,4>;
 
 } // namespace sfz
 
