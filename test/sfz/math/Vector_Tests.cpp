@@ -435,29 +435,6 @@ TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]")
 	}
 }
 
-TEST_CASE("Calculating distance from on vector to another", "[sfz::Vector]")
-{
-	sfz::Vector<int, 2> v1{0, 0};
-	sfz::Vector<int, 2> v2{3, -1};
-
-	SECTION("With itself") {
-		auto res1 = v1.distance(v1);
-		auto res2 = v2.distance(v2);
-		REQUIRE(res1[0] == 0);
-		REQUIRE(res1[1] == 0);
-		REQUIRE(res2[0] == 0);
-		REQUIRE(res2[1] == 0);
-	}
-	SECTION("With other vector") {
-		auto res1 = v1.distance(v2);
-		auto res2 = v2.distance(v1);
-		REQUIRE(res1[0] == 3);
-		REQUIRE(res1[1] == -1);
-		REQUIRE(res2[0] == -3);
-		REQUIRE(res2[1] == 1);
-	}
-}
-
 TEST_CASE("Converting to string", "[sfz::Vector]")
 {
 	sfz::Vector<int, 3> v{-1, 2, 10};

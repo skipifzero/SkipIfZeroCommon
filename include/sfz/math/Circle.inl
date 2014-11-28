@@ -66,7 +66,7 @@ bool Circle<T>::overlap(const vec2<T>& point) const noexcept
 	// If the length from this circles center to the specified point is shorter than or equal to
 	// the radius then this Circle overlaps the point. Both sides of the equation is squared to
 	// avoid somewhat expensive sqrt() function.
-	return centerAlignCircle.mPos.distance(point).squaredNorm() <= mRad*mRad;
+	return (point - centerAlignCircle.mPos).squaredNorm() <= mRad*mRad;
 }
 
 template<typename T>
@@ -78,7 +78,7 @@ bool Circle<T>::overlap(const Circle<T>& circle) const noexcept
 	// If the length between the center of the two circles is less than or equal to the the sum of
 	// the circle's radiuses they overlap. Both sides of the equation is squared to avoid somewhat 
 	// expensive sqrt() function.
-	T distSquared = centerAlignCircleThis.mPos.distance(centerAlignCircleOther.mPos).squaredNorm();
+	T distSquared = (centerAlignCircleOther.mPos - centerAlignCircleThis.mPos).squaredNorm();
 	T radiusSum = std::abs(centerAlignCircleThis.mRad) + std::abs(centerAlignCircleOther.mRad);
 	return distSquared <= radiusSum * radiusSum;
 }

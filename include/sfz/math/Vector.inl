@@ -125,12 +125,6 @@ Vector<T,N> Vector<T,N>::projectOnto(const Vector<T,N>& target) const noexcept {
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::distance(const Vector<T,N>& other) const noexcept
-{
-	return other - *this;
-}
-
-template<typename T, size_t N>
 size_t Vector<T,N>::hash() const noexcept
 {
 	std::hash<T> hasher;

@@ -158,14 +158,6 @@ struct Vector final {
 	 */
 	Vector<T,N> projectOnto(const Vector<T,N>& target) const noexcept;
 
-	/**
-	 * @brief Calculates distance vector from this vector to another vector.
-	 * This is the same thing as doing 'other - this'.
-	 * @param other the other vector
-	 * @return the resulting vector
-	 */
-	Vector<T,N> distance(const Vector<T,N>& other) const noexcept;
-
 	size_t hash() const noexcept;
 
 	std::string to_string() const noexcept;

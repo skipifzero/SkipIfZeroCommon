@@ -145,7 +145,7 @@ bool Rectangle<T>::overlap(const Circle<T>& circle) const noexcept
 		closestY = rectYTop;
 	}
 	
-	return centerAlignCircle.mPos.distance(sfz::vec2<T>{closestX, closestY}).squaredNorm() 
+	return (sfz::vec2<T>{closestX, closestY} - centerAlignCircle.mPos).squaredNorm() 
 	       <= radius*radius;
 }
 
