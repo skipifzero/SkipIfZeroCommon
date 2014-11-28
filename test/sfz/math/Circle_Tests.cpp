@@ -16,15 +16,6 @@ TEST_CASE("Constructors", "[sfz::Circle]")
 		REQUIRE(circ1.mHAlign == circ2.mHAlign);
 		REQUIRE(circ1.mVAlign == circ2.mVAlign);
 	}
-	SECTION("Copy cast constructor") {
-		sfz::Circle<float> circlef{1.1f, 2.2f, 3.3f};
-		sfz::Circle<int> circlei{circlef};
-		REQUIRE(circlei.x() == 1);
-		REQUIRE(circlei.y() == 2);
-		REQUIRE(circlei.mRad == 3);
-		REQUIRE(circlei.mHAlign == circlef.mHAlign);
-		REQUIRE(circlei.mVAlign == circlef.mVAlign);
-	}
 	SECTION("Copy constructor with alignment change") {
 		sfz::Circle<int> circ1{0, 0, 1, sfz::HorizontalAlign::LEFT, sfz::VerticalAlign::BOTTOM};
 		sfz::Circle<int> circ2{circ1, sfz::HorizontalAlign::RIGHT, sfz::VerticalAlign::TOP};

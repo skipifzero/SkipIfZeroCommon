@@ -15,16 +15,6 @@ TEST_CASE("Constructors", "[sfz::Rectangle]")
 		REQUIRE(rect1.mHAlign == rect2.mHAlign);
 		REQUIRE(rect1.mVAlign == rect2.mVAlign);
 	}
-	SECTION("Copy cast constructor") {
-		sfz::Rectangle<float> rectf{1.1f, 2.2f, 3.3f, 4.4f};
-		sfz::Rectangle<int> recti{rectf};
-		REQUIRE(recti.x() == 1);
-		REQUIRE(recti.y() == 2);
-		REQUIRE(recti.width() == 3);
-		REQUIRE(recti.height() == 4);
-		REQUIRE(recti.mHAlign == rectf.mHAlign);
-		REQUIRE(recti.mVAlign == rectf.mVAlign);
-	}
 	SECTION("Copy constructor with alignment change") {
 		sfz::Rectangle<int> rect1{0, 0, 2, 2, sfz::HorizontalAlign::LEFT,
 		                                      sfz::VerticalAlign::BOTTOM};
