@@ -51,6 +51,8 @@ add_library(SkipIfZeroCommon
 	${INCLUDE_DIR}/sfz/math/Rectangle.inl
 	${INCLUDE_DIR}/sfz/math/Vector.hpp
 	${INCLUDE_DIR}/sfz/math/Vector.inl
+	${INCLUDE_DIR}/sfz/math/VectorSupport.hpp
+	${INCLUDE_DIR}/sfz/math/VectorSupport.inl
 
 	${INCLUDE_DIR}/sfz/Util.hpp
 	${INCLUDE_DIR}/sfz/util/BlockingQueue.hpp

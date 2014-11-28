@@ -8,5 +8,6 @@
 #include "sfz/math/MathConstants.hpp"
 #include "sfz/math/Rectangle.hpp"
 #include "sfz/math/Vector.hpp"
+#include "sfz/math/VectorSupport.hpp"
 
 #endif
