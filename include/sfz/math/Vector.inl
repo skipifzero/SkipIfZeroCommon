@@ -188,7 +188,7 @@ const T* Vector<T,N>::cend() const noexcept
 	return mElements + N;
 }
 
-// Member operators (access)
+// Operators (access)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
@@ -203,7 +203,7 @@ const T& Vector<T,N>::operator[] (const size_t index) const noexcept
 	return mElements[index];
 }
 
-// Member operators (Arithmetic & Assignment)
+// Operators (arithmetic & assignment)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
@@ -245,7 +245,103 @@ Vector<T,N>& Vector<T,N>::operator/= (const T& right) noexcept
 	return *this;
 }
 
-// Free (non-member) functions
+// Operators (arithmetic)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+Vector<T,N> Vector<T,N>::operator+ (const Vector<T,N>& other) const noexcept
+{
+	return (Vector<T,N>{*this} += other);
+}
+
+template<typename T, size_t N>
+Vector<T,N> Vector<T,N>::operator- (const Vector<T,N>& other) const noexcept
+{
+	return (Vector<T,N>{*this} -= other);
+}
+
+template<typename T, size_t N>
+Vector<T,N> Vector<T,N>::operator- () const noexcept
+{
+	return (Vector<T,N>{*this} *= -1);
+}
+
+template<typename T, size_t N>
+Vector<T,N> Vector<T,N>::operator* (const T& scalar) const noexcept
+{
+	return (Vector<T,N>{*this} *= scalar);
+}
+
+template<typename T, size_t N>
+Vector<T,N> Vector<T,N>::operator/ (const T& scalar) const noexcept
+{
+	return (Vector<T,N>{*this} /= scalar);
+}
+
+// Operators (comparison)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+bool Vector<T,N>::operator== (const Vector<T,N>& other) const noexcept
+{
+	auto itr = other.begin();
+	for (auto element : *this) {
+		if(element != *itr++) {
+			return false;
+		}
+	}
+	return true;
+}
+
+template<typename T, size_t N>
+bool Vector<T,N>::operator!= (const Vector<T,N>& other) const noexcept
+{
+	return !((*this) == other);
+}
+
+template<typename T, size_t N>
+bool Vector<T,N>::operator< (const Vector<T,N>& other) const noexcept
+{
+	return this->squaredNorm() < other.squaredNorm();
+}
+
+template<typename T, size_t N>
+bool Vector<T,N>::operator> (const Vector<T,N>& other) const noexcept
+{
+	return other < (*this);
+}
+
+template<typename T, size_t N>
+bool Vector<T,N>::operator<= (const Vector<T,N>& other) const noexcept
+{
+	return this->squaredNorm() <= other.squaredNorm();
+}
+
+template<typename T, size_t N>
+bool Vector<T,N>::operator>= (const Vector<T,N>& other) const noexcept
+{
+	return other <= (*this);
+}
+
+// Non-member operators (arithmetic)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept
+{
+	return (Vector<T,N>{right} *= left);
+}
+
+// Non-member operators (other)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept
+{
+	return ostream << vector.to_string();
+}
+
+// Non-member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
@@ -303,99 +399,6 @@ Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept
 	T cos = std::cos(angle);
 	T sin = std::sin(angle);	
 	return Vector<T,2>{vector[0]*cos - vector[1]*sin, vector[0]*sin + vector[1]*cos};
-}
-
-// Free (non-member) operators (Arithmetic)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t N>
-Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
-{
-	return (Vector<T,N>{left} += right);
-}
-
-template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
-{
-	return (Vector<T,N>{left} -= right);
-}
-
-template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T,N>& right) noexcept
-{
-	return (Vector<T,N>{right} *= -1);
-}
-
-template<typename T, size_t N>
-Vector<T,N> operator* (const Vector<T,N>& left, const T& right) noexcept
-{
-	return (Vector<T,N>{left} *= right);
-}
-
-template<typename T, size_t N>
-Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept
-{
-	return (Vector<T,N>{right} *= left);
-}
-
-template<typename T, size_t N>
-Vector<T,N> operator/ (const Vector<T,N>& left, const T& right) noexcept
-{
-	return (Vector<T,N>{left} /= right);
-}
-
-// Free (non-member) operators (Comparison)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t N>
-bool operator== (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
-{
-	auto itr = right.begin();
-	for (auto element : left) {
-		if(element != *itr++) {
-			return false;
-		}
-	}
-	return true;
-}
-
-template<typename T, size_t N>
-bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
-{
-	return !(left == right);
-}
-
-template<typename T, size_t N>
-bool operator< (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
-{
-	return left.squaredNorm() < right.squaredNorm();
-}
-
-template<typename T, size_t N>
-bool operator> (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
-{
-	return right < left;
-}
-
-template<typename T, size_t N>
-bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
-{
-	return left.squaredNorm() <= right.squaredNorm();
-}
-
-template<typename T, size_t N>
-bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
-{
-	return right <= left;
-}
-
-// Free (non-member) operators (Other)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t N>
-std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept
-{
-	return ostream << vector.to_string();
 }
 
 } // namespace sfz
