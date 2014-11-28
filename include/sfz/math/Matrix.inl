@@ -155,6 +155,12 @@ Matrix<T,M,N> Matrix<T,M,N>::operator- (const Matrix<T,M,N>& other) const noexce
 }
 
 template<typename T, size_t M, size_t N>
+Matrix<T,M,N> Matrix<T,M,N>::operator- () const noexcept
+{
+	return Matrix<T,M,N>{*this} *= -1;
+}
+
+template<typename T, size_t M, size_t N>
 template<size_t P>
 Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexcept
 {

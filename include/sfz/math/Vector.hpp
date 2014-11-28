@@ -28,6 +28,9 @@ using std::size_t;
  * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used
  * with standard primitives.
  *
+ * Comparison operators are also overloaded, in practice this means that the vectors norm is
+ * compared.
+ *
  * @param T the element type
  * @param N the amount of elements in the vector
  *
@@ -48,15 +51,8 @@ struct Vector final {
 	// Constructors and destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
-	/**
-	 * @brief Default constructor, value of elements is undefined.
-	 */
 	Vector() = default;
 
-	/**
-	 * @brief Copy constructor.
-	 * @param vector the vector to copy
-	 */
 	Vector(const Vector<T,N>& vector) = default;
 
 	/**
@@ -83,12 +79,20 @@ struct Vector final {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
 	/**
+	 * @brief General accessor returning the reference to element at the specified location.
+	 * @assert index must be in range
+	 * @param index the index of the element
+	 * @return reference to the element at the specified index
+	 */
+	T& at(const size_t index) noexcept;
+
+	/**
 	 * @brief Returns the element at the specified index.
 	 * @assert index must be in range
 	 * @param index the index of the element
 	 * @return the element at the specified index
 	 */
-	T get(const size_t index) const noexcept;
+	T at(const size_t index) const noexcept;
 
 	/**
 	 * @brief Assigns value to the specified index.
@@ -99,8 +103,7 @@ struct Vector final {
 	void set(const size_t index, const T value) noexcept;
 
 	/**
-	 * @brief Fills the vector with the specified value.
-	 * Assigns each elemnt in the vector the specified value
+	 * @brief Assigns each element in the vector with the specified value
 	 * @param value the value to fill vector with
 	 */
 	void fill(const T value) noexcept;
@@ -118,8 +121,7 @@ struct Vector final {
 	T norm() const noexcept;
 
 	/**
-	 * @brief Calculates the squared norm (length) of the vector.
-	 * Sums the squares of each element in the vector.
+	 * @brief Sums the squares of each element in the vector (squared norm, i.e. squared length).
 	 * @return squared norm of the vector
 	 */
 	T squaredNorm() const noexcept;
@@ -132,12 +134,6 @@ struct Vector final {
 	 */
 	Vector<T,N> normalize() const noexcept;
 
-	/**
-	 * @brief Calculates the dot (scalar) product between this vector and the other vector.
-	 * Might overflow and return weird stuff if vector contains many, very large elements.
-	 * @param other the other vector
-	 * @return the dot product
-	 */
 	T dot(const Vector<T,N>& other) const noexcept;
 
 	/**
@@ -148,7 +144,6 @@ struct Vector final {
 	Vector<T,N> elemMult(const Vector<T,N>& other) const noexcept;
 
 	/**
-	 * @brief Sums the elements in the vector.
 	 * @return the sum of all the elements in the vector
 	 */
 	T sum() const noexcept;
@@ -171,16 +166,8 @@ struct Vector final {
 	 */
 	Vector<T,N> distance(const Vector<T,N>& other) const noexcept;
 
-	/**
-	 * @brief Hashes the vector.
-	 * @return hash of the vector
-	 */
 	size_t hash() const noexcept;
 
-	/**
-	 * @brief Returns string representation of the vector.
-	 * @return string representation of the vector
-	 */
 	std::string to_string() const noexcept;
 
 	// Standard iterator functions
@@ -194,12 +181,12 @@ struct Vector final {
 	const T* end() const noexcept;
 	const T* cend() const noexcept;
 
-	// Member operators (access)
+	// Operators (access)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
 	 * @brief Returns a reference to element at the specified index.
-	 * Unlike get() if index is out of range undefined behavior occurs.
+	 * No range checking, index is out of range is undefined behavior.
 	 * @param index the index of the element
 	 * @return reference to element at the specified index
 	 */
@@ -207,50 +194,73 @@ struct Vector final {
 
 	/**
 	 * @brief Returns a const reference to element at the specified index.
-	 * Unlike get() if index is out of range undefined behavior occurs.
+	 * No range checking, index is out of range is undefined behavior.
 	 * @param index the index of the element
 	 * @return const reference to element at the specified index
 	 */
 	const T& operator[] (const size_t index) const noexcept;
 
-	// Member operators (Arithmetic & Assignment)
+	// Operators (arithmetic & assignment)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	/**
-	 * @brief Assignment addition operator.
-	 * Adds the lhs and rhs vectors and saves the result in the lhs operand.
-	 * @param right the rhs vector
-	 * @return reference to the modified vector
-	 */
+	Vector<T,N>& operator= (const Vector<T,N>&) = default;
+
 	Vector<T,N>& operator+= (const Vector<T,N>& right) noexcept;
 
-	/**
-	 * @brief Assignment subtraction operator.
-	 * Subtracts the rhs vector from the lhs vector and saves the result in the lhs operand.
-	 * @param right the rhs vector
-	 * @return reference to the modified vector
-	 */
 	Vector<T,N>& operator-= (const Vector<T,N>& right) noexcept;
 
-	/**
-	 * @brief Assignment multiplication operator.
-	 * Multiplies the lhs vector with the rhs element and saves the result in the lhs operand.
-	 * @param right the rhs element
-	 * @return reference to the modified vector
-	 */
 	Vector<T,N>& operator*= (const T& right) noexcept;
 
 	/**
-	 * @brief Assignment division operator.
-	 * Divides the lhs vector with the rhs element and saves the result in the lhs operand.
 	 * @assert rhs != 0
-	 * @param right the rhs element
-	 * @return reference to the modified vector
 	 */
 	Vector<T,N>& operator/= (const T& right) noexcept;
+
+	// Operators (arithmetic)
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	Vector<T,N> operator+ (const Vector<T,N>& other) const noexcept;
+
+	Vector<T,N> operator- (const Vector<T,N>& other) const noexcept;
+
+	Vector<T,N> operator- () const noexcept;
+
+	Vector<T,N> operator* (const T& scalar) const noexcept;
+
+	/**
+	 * @assert rhs element != 0
+	 */
+	Vector<T,N> operator/ (const T& scalar) const noexcept;
+
+	// Operators (comparison)
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	bool operator== (const Vector<T,N>& other) const noexcept;
+
+	bool operator!= (const Vector<T,N>& other) const noexcept;
+
+	bool operator< (const Vector<T,N>& other) const noexcept;
+
+	bool operator> (const Vector<T,N>& other) const noexcept;
+
+	bool operator<= (const Vector<T,N>& other) const noexcept;
+
+	bool operator>= (const Vector<T,N>& other) const noexcept;
 };
 
-// Free (non-member) functions
+// Non-member operators (arithmetic)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept;
+
+// Non-member operators (other)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept;
+
+// Non-member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
@@ -328,160 +338,6 @@ T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept;
  */
 template<typename T>
 Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept;
-
-// Free (non-member) operators (Arithmetic)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-/**
- * @relates sfz::Vector
- * @brief Addition operator.
- * Adds the lhs and rhs vectors and returns the result in a new vector.
- * @param left the lhs vector
- * @param right the rhs vector
- * @return the resulting vector
- */
-template<typename T, size_t N>
-Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Subtraction operator.
- * Subtracts the rhs vector from the lhs vector and returns the result in a new vector.
- * @param left the lhs vector
- * @param right the rhs vector
- * @return the resulting vector
- */
-template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Negation operator.
- * Negates every element in the rhs vector and returns the result in a new vector.
- * @param right the rhs vector
- * @return the resulting vector
- */
-template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Multiplication operator.
- * Multiplies the lhs vector with the rhs element and returns the result in a new vector.
- * @param left the lhs vector
- * @param right the rhs element
- * @return the resulting vector
- */
-template<typename T, size_t N>
-Vector<T,N> operator* (const Vector<T,N>& left, const T& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Multiplication operator.
- * Multiplies the rhs vector with the lhs element and returns the result in a new vector.
- * @param left the lhs element
- * @param right the rhs vector
- * @return the resulting vector
- */
-template<typename T, size_t N>
-Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Division operator.
- * Divides the lhs vector with the rhs element and returns the result in a new vector.
- * @assert rhs element != 0
- * @param left the lhs vector
- * @param right the rhs element
- * @return the resulting vector
- */
-template<typename T, size_t N>
-Vector<T,N> operator/ (const Vector<T,N>& left, const T& right) noexcept;
-
-// Free (non-member) operators (Comparison)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-/**
- * @relates sfz::Vector
- * @brief Equality operator.
- * @param left the lhs vector
- * @param right the rhs vector
- * @return whether the lhs and rhs vectors are equal
- */
-template<typename T, size_t N>
-bool operator== (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Inequality operator.
- * @param left the lhs vector
- * @param right the rhs vector
- * @return whether the lhs and rhs vectors aren't equal
- */
-template<typename T, size_t N>
-bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Smaller than operator.
- * The size of the vectors is defined by the length() function, which is also what is compared in
- * this function.
- * @param left the lhs vector
- * @param right the rhs vector
- * @return whether the lhs vector is smaller than the rhs vector
- */	
-template<typename T, size_t N>
-bool operator< (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Larger than operator.
- * The size of the vectors is defined by the length() function, which is also what is compared in
- * this function.
- * @param left the lhs vector
- * @param right the rhs vector
- * @return whether the lhs vector is larger than the rhs vector
- */	
-template<typename T, size_t N>
-bool operator> (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Smaller than or equal operator.
- * The size of the vectors is defined by the length() function, which is also what is compared in
- * this function.
- * @param left the lhs vector
- * @param right the rhs vector
- * @return whether the lhs vector is smaller than or equal to the rhs vector
- */	
-template<typename T, size_t N>
-bool operator<= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
-
-/**
- * @relates sfz::Vector
- * @brief Larger than or equal operator.
- * The size of the vectors is defined by the length() function, which is also what is compared in
- * this function.
- * @param left the lhs vector
- * @param right the rhs vector
- * @return whether the lhs vector is larger than or equal to the rhs vector
- */	
-template<typename T, size_t N>
-bool operator>= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
-
-// Free (non-member) operators (Other)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-/**
- * @relates sfz::Vector
- * @brief Ostream operator
- * The serialization of the vector is defined by its to_string() function.
- * @param ostream the output stream
- * @param vector the vector to serialize
- * @return ostream the output straem
- */	
-template<typename T, size_t N>
-std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept;
 
 // Standard typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
