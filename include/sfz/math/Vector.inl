@@ -205,7 +205,7 @@ T& Vector<T,N>::operator[] (const size_t index) noexcept
 }
 
 template<typename T, size_t N>
-const T& Vector<T,N>::operator[] (const size_t index) const noexcept
+T Vector<T,N>::operator[] (const size_t index) const noexcept
 {
 	return mElements[index];
 }

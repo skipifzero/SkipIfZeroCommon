@@ -185,20 +185,18 @@ struct Vector final {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
-	 * @brief Returns a reference to element at the specified index.
-	 * No range checking, index is out of range is undefined behavior.
+	 * @brief Returns a reference to element at the specified index, no range checking.
 	 * @param index the index of the element
 	 * @return reference to element at the specified index
 	 */
 	T& operator[] (const size_t index) noexcept;
 
 	/**
-	 * @brief Returns a const reference to element at the specified index.
-	 * No range checking, index is out of range is undefined behavior.
+	 * @brief Returns the element at the specified index, no range checking.
 	 * @param index the index of the element
-	 * @return const reference to element at the specified index
+	 * @return element at the specified index
 	 */
-	const T& operator[] (const size_t index) const noexcept;
+	T operator[] (const size_t index) const noexcept;
 
 	// Operators (arithmetic & assignment)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
