@@ -53,6 +53,14 @@ void Matrix<T,M,N>::set(size_t i, size_t j, T value) const noexcept
 }
 
 template<typename T, size_t M, size_t N>
+void Matrix<T,M,N>::fill(const T value) noexcept
+{
+	for (auto& column : mElements) {
+		column.fill(value);
+	}
+}
+
+template<typename T, size_t M, size_t N>
 Matrix<T,M,N> Matrix<T,M,N>::elemMult(const Matrix<T,M,N>& other) const noexcept
 {
 	Matrix<T,M,N> resMatrix;

@@ -99,6 +99,11 @@ struct Matrix final {
 	 */
 	void set(size_t i, size_t j, T value) const noexcept;
 
+	/**
+	 * @brief Assigns each element in the matrix with the specified value.
+	 */
+	void fill(const T value) noexcept;
+
 	size_t rows() const noexcept { return M; }
 
 	size_t cols() const noexcept { return N; }
