@@ -124,6 +124,8 @@ struct Matrix final {
 
 	Matrix<T,M,N> operator- (const Matrix<T,M,N>& other) const noexcept;
 
+	Matrix<T,M,N> operator- () const noexcept;
+
 	template<size_t P>
 	Matrix<T,M,P> operator* (const Matrix<T,N,P>& other) const noexcept;
 

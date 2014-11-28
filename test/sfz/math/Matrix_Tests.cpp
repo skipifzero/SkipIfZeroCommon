@@ -217,6 +217,14 @@ TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
 		REQUIRE(res2.at(1, 0) == -3);
 		REQUIRE(res2.at(1, 1) == -4);
 	}
+	SECTION("- (negation)") {
+		auto res1 = -m1;
+
+		REQUIRE(res1.at(0, 0) == -1);
+		REQUIRE(res1.at(0, 1) == -2);
+		REQUIRE(res1.at(1, 0) == -3);
+		REQUIRE(res1.at(1, 1) == -4);
+	}
 	SECTION("* (matrix)") {
 		auto res1 = m1*m2;
 		REQUIRE(res1.at(0, 0) == 0);
