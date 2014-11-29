@@ -104,10 +104,6 @@ struct Matrix final {
 	 */
 	void fill(const T value) noexcept;
 
-	size_t rows() const noexcept { return M; }
-
-	size_t cols() const noexcept { return N; }
-
 	/**
 	 * @brief Element-wise multiplication
 	 * @return the resulting matrix
