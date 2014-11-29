@@ -302,29 +302,6 @@ TEST_CASE("Sum of vector", "[sfz::Vector]")
 	REQUIRE(v1.sum() == 8);
 }
 
-TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]")
-{
-	sfz::Vector<int, 2> vUp{0, 2};
-	sfz::Vector<int, 2> vRight{3, 0};
-	sfz::Vector<int, 2> v{9, 12};
-
-	SECTION("Basic test") {
-		auto res = v.projectOnto(vUp);
-		REQUIRE(res[0] == 0);
-		REQUIRE(res[1] == 12);
-	}
-	SECTION("Basic test 2") {
-		auto res = v.projectOnto(vRight);
-		REQUIRE(res[0] == 9);
-		REQUIRE(res[1] == 0);
-	}
-	SECTION("Returns 0 vector if target is 0 vector.") {
-		auto zero = sfz::Vector<int,2>{0,0};
-		auto res = v.projectOnto(zero);
-		REQUIRE(res == zero);
-	}
-}
-
 TEST_CASE("Converting to string", "[sfz::Vector]")
 {
 	sfz::Vector<int, 3> v{-1, 2, 10};
@@ -384,7 +361,7 @@ TEST_CASE("Is proper POD", "[sfz::Vector]")
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-TEST_CASE("Cross product", "[sfz::Vector]")
+TEST_CASE("Cross product", "[sfz::VectorSupport]")
 {
 	sfz::Vector<int, 3> v1{-1, 4, 0};
 	sfz::Vector<int, 3> v2{1, -2, 3};
@@ -416,7 +393,7 @@ TEST_CASE("Cross product", "[sfz::Vector]")
 	}
 }
 
-TEST_CASE("Angle of vectors", "[sfz::Vector]")
+TEST_CASE("Angle of vectors", "[sfz::VectorSupport]")
 {
 	sfz::Vector<float, 2> vRight{1, 0};
 	sfz::Vector<float, 2> vUp{0, 1};
@@ -446,7 +423,7 @@ TEST_CASE("Angle of vectors", "[sfz::Vector]")
 	}
 }
 
-TEST_CASE("Rotating vectors", "[sfz::Vector]")
+TEST_CASE("Rotating vectors", "[sfz::VectorSupport]")
 {
 	sfz::Vector<float, 2> vRight{1, 0};
 	sfz::Vector<float, 2> vUp{0, 1};
@@ -481,5 +458,28 @@ TEST_CASE("Rotating vectors", "[sfz::Vector]")
 		REQUIRE(resRight == vRight);
 		auto resUp = sfz::rotate(vUp, 0.f);
 		REQUIRE(resUp == vUp);
+	}
+}
+
+TEST_CASE("Projecting a vector onto another vector", "[sfz::VectorSupport]")
+{
+	sfz::Vector<int, 2> vUp{0, 2};
+	sfz::Vector<int, 2> vRight{3, 0};
+	sfz::Vector<int, 2> v{9, 12};
+
+	SECTION("Basic test") {
+		auto res = projectOnto(v, vUp);
+		REQUIRE(res[0] == 0);
+		REQUIRE(res[1] == 12);
+	}
+	SECTION("Basic test 2") {
+		auto res = projectOnto(v, vRight);
+		REQUIRE(res[0] == 9);
+		REQUIRE(res[1] == 0);
+	}
+	SECTION("Returns 0 vector if target is 0 vector.") {
+		auto zero = sfz::Vector<int,2>{0,0};
+		auto res = projectOnto(v, zero);
+		REQUIRE(res == zero);
 	}
 }

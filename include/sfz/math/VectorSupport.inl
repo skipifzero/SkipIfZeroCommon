@@ -39,4 +39,11 @@ Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept
 	return Vector<T,2>{vector[0]*cos - vector[1]*sin, vector[0]*sin + vector[1]*cos};
 }
 
+template<typename T, size_t N>
+Vector<T,N> projectOnto(const Vector<T,N>& toProject, const Vector<T,N>& target) noexcept {
+	auto targetSquaredNorm = target.squaredNorm();
+	if (targetSquaredNorm == 0) return target; // Returns 0 vector, target == 0 vector.
+	return target * (toProject.dot(target)/targetSquaredNorm);
+}
+
 } // namespace sfz

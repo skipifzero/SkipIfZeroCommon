@@ -136,16 +136,6 @@ struct Vector final {
 	 */
 	T sum() const noexcept;
 
-	/**
-	 * @brief Projects the vector onto another vector.
-	 * Makes a scalar projection of the vector onto the specifed target vector. The resulting
-	 * vector will be equal to the target vector times a scalar constant. If the target vector is
-	 * 0 the 0 vector will be returned.
-	 * @param target the vector to project onto
-	 * @return the resulting projection in vector form
-	 */
-	Vector<T,N> projectOnto(const Vector<T,N>& target) const noexcept;
-
 	size_t hash() const noexcept;
 
 	std::string to_string() const noexcept;

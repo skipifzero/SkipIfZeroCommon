@@ -108,13 +108,6 @@ T Vector<T,N>::sum() const noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::projectOnto(const Vector<T,N>& target) const noexcept {
-	auto targetSquaredNorm = target.squaredNorm();
-	if (targetSquaredNorm == 0) return target; // Returns 0 vector, target == 0 vector.
-	return target * (this->dot(target)/targetSquaredNorm);
-}
-
-template<typename T, size_t N>
 size_t Vector<T,N>::hash() const noexcept
 {
 	std::hash<T> hasher;
