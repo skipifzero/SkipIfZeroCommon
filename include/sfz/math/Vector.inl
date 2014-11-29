@@ -4,16 +4,6 @@ namespace sfz {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-template<typename T2>
-Vector<T,N>::Vector(const Vector<T2,N>& vector) noexcept
-{
-	auto itr = vector.begin();
-	for (auto& element : mElements) {
-		element = static_cast<T>(*itr++);
-	}
-}
-
-template<typename T, size_t N>
 Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
 {
 	size_t listSize = list.size();
@@ -118,19 +108,6 @@ T Vector<T,N>::sum() const noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::projectOnto(const Vector<T,N>& target) const noexcept {
-	auto targetSquaredNorm = target.squaredNorm();
-	if (targetSquaredNorm == 0) return target; // Returns 0 vector, target == 0 vector.
-	return target * (this->dot(target)/targetSquaredNorm);
-}
-
-template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::distance(const Vector<T,N>& other) const noexcept
-{
-	return other - *this;
-}
-
-template<typename T, size_t N>
 size_t Vector<T,N>::hash() const noexcept
 {
 	std::hash<T> hasher;
@@ -205,7 +182,7 @@ T& Vector<T,N>::operator[] (const size_t index) noexcept
 }
 
 template<typename T, size_t N>
-const T& Vector<T,N>::operator[] (const size_t index) const noexcept
+T Vector<T,N>::operator[] (const size_t index) const noexcept
 {
 	return mElements[index];
 }
@@ -346,66 +323,6 @@ template<typename T, size_t N>
 std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept
 {
 	return ostream << vector.to_string();
-}
-
-// Non-member functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t N>
-T norm(const Vector<T,N>& vector) noexcept
-{
-	return vector.norm();
-}
-
-template<typename T, size_t N>
-Vector<T,N> normalize(const Vector<T,N>& vector) noexcept
-{
-	return vector.normalize();
-}
-
-template<typename T, size_t N>
-T dot(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept
-{
-	return vectorA.dot(vectorB);
-}
-
-template<typename T>
-Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) noexcept
-{
-	sfz::Vector<T,3> result;
-	result[0] = vectorA[1]*vectorB[2] - vectorA[2]*vectorB[1];
-	result[1] = vectorA[2]*vectorB[0] - vectorA[0]*vectorB[2];
-	result[2] = vectorA[0]*vectorB[1] - vectorA[1]*vectorB[0];
-	return result;
-}
-
-template<typename T>
-T angle(const Vector<T,2>& vector) noexcept
-{
-	assert(!(vector[0] == 0 && vector[1] == 0));
-	T angle = std::atan2(vector[1], vector[0]);
-	if (angle < 0) {
-		angle += static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE);
-	}
-	return angle;
-}
-
-template<typename T, size_t N>
-T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept
-{
-	auto squaredNormA = vectorA.squaredNorm();
-	assert(squaredNormA != 0);
-	auto squaredNormB = vectorB.squaredNorm();
-	assert(squaredNormB != 0);
-	return std::acos(vectorA.dot(vectorB)/(std::sqrt(squaredNormA*squaredNormB)));
-}
-
-template<typename T>
-Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept
-{
-	T cos = std::cos(angle);
-	T sin = std::sin(angle);	
-	return Vector<T,2>{vector[0]*cos - vector[1]*sin, vector[0]*sin + vector[1]*cos};
 }
 
 } // namespace sfz

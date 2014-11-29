@@ -2,6 +2,7 @@
 #include <catch.hpp>
 
 #include "sfz/math/Vector.hpp"
+#include "sfz/math/VectorSupport.hpp"
 
 #include <unordered_map>
 #include <type_traits>
@@ -23,13 +24,6 @@ TEST_CASE("Constructors", "[sfz::Vector]")
 	}
 	SECTION("Copy constructor correctly copies vector") {
 		sfz::Vector<int, 4> vector{sfz::Vector<int, 4>{-2, 2, 1, 42}};
-		REQUIRE(vector[0] == -2);
-		REQUIRE(vector[1] == 2);
-		REQUIRE(vector[2] == 1);
-		REQUIRE(vector[3] == 42);
-	}
-	SECTION("Copy cast constructor correctly copies and casts") {
-		sfz::Vector<int, 4> vector{sfz::Vector<float, 4>{-2.1f, 2.1f, 1.1f, 42.1f}};
 		REQUIRE(vector[0] == -2);
 		REQUIRE(vector[1] == 2);
 		REQUIRE(vector[2] == 1);
@@ -191,10 +185,6 @@ TEST_CASE("Norm (length) of vector", "[sfz::Vector]")
 		REQUIRE(v1.norm() == 2);
 		REQUIRE(v2.norm() == 5);
 	}
-	SECTION("norm(v)") {
-		REQUIRE(norm(v1) == 2);
-		REQUIRE(norm(v2) == 5);
-	}
 	SECTION("Rounding down") {
 		sfz::Vector<int, 2> v3{2,1};
 		REQUIRE(v3.squaredNorm() == 5);
@@ -204,7 +194,7 @@ TEST_CASE("Norm (length) of vector", "[sfz::Vector]")
 
 TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]")
 {
-	sfz::Vector<float, 4> v1 = normalize(sfz::Vector<float, 4>{-2.f, 2.f, -2.f, 2.f});
+	sfz::Vector<float, 4> v1 = sfz::Vector<float, 4>{-2.f, 2.f, -2.f, 2.f}.normalize();
 	const float delta = 1e-3f;
 
 	SECTION("Correct answer") {
@@ -224,106 +214,6 @@ TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]")
 
 		REQUIRE(posLower <= v1[3]);
 		REQUIRE(v1[3] <= posHigher);
-	}
-}
-
-TEST_CASE("Cross product", "[sfz::Vector]")
-{
-	sfz::Vector<int, 3> v1{-1, 4, 0};
-	sfz::Vector<int, 3> v2{1, -2, 3};
-
-	SECTION("Correctness test") {
-		auto res = sfz::cross(v1, v2);
-
-		REQUIRE(res[0] == 12);
-		REQUIRE(res[1] == 3);
-		REQUIRE(res[2] == -2);
-	}
-	SECTION("2nd correctness test") {
-		auto res = sfz::cross(v2, v1);
-
-		REQUIRE(res[0] == -12);
-		REQUIRE(res[1] == -3);
-		REQUIRE(res[2] == 2);
-	}
-	SECTION("A x A = 0") {
-		auto res1 = sfz::cross(v1, v1);
-		REQUIRE(res1[0] == 0);
-		REQUIRE(res1[1] == 0);
-		REQUIRE(res1[2] == 0);
-
-		auto res2 = sfz::cross(v2, v2);
-		REQUIRE(res2[0] == 0);
-		REQUIRE(res2[1] == 0);
-		REQUIRE(res2[2] == 0);
-	}
-}
-
-TEST_CASE("Angle of vectors", "[sfz::Vector]")
-{
-	sfz::Vector<float, 2> vRight{1, 0};
-	sfz::Vector<float, 2> vUp{0, 1};
-	sfz::Vector<float, 2> vDown{0, -1};
-
-	SECTION("(2D) Angle between y and (implicit) x-axis") {
-		auto angle = sfz::angle(vUp);
-		REQUIRE((3.1415f/2.f) <= angle);
-		REQUIRE(angle <= (3.1416f/2.f));
-	}
-	SECTION("Angle between y and (explicit) x-axis") {
-		auto angle = sfz::angle(vRight, vUp);
-		REQUIRE((3.1415f/2.f) <= angle);
-		REQUIRE(angle <= (3.1416f/2.f));
-	}
-	SECTION("Angle between same vectors") {
-		auto angle1 = angle(vRight);
-		REQUIRE(angle1 == 0);
-
-		auto angle2 = angle(vUp, vUp);
-		REQUIRE(angle2 == 0);
-	}
-	SECTION("(2D) Angle with implicit x-axis should never give negative angles") {
-		auto angle = sfz::angle(vDown);
-		REQUIRE((3.f*3.1415f/2.f) <= angle);
-		REQUIRE(angle <= (3.f*3.1416f/2.f));
-	}
-}
-
-TEST_CASE("Rotating vectors", "[sfz::Vector]")
-{
-	sfz::Vector<float, 2> vRight{1, 0};
-	sfz::Vector<float, 2> vUp{0, 1};
-	
-	SECTION("Rotates in positive direction") {
-		auto res = sfz::rotate(vRight, 3.1415926f);
-		REQUIRE(-1.01f <= res[0]);
-		REQUIRE(res[0] <= -0.99f);
-		REQUIRE(-0.01f <= res[1]);
-		REQUIRE(res[1] <= 0.01f);
-
-		auto angleOrg = angle(vRight);
-		auto angleRes = angle(res);
-		REQUIRE((angleOrg + 3.1415f) <= angleRes);
-		REQUIRE(angleRes <= (angleOrg + 3.1416f));
-	}
-	SECTION("Rotates in negative direction") {
-		auto res = sfz::rotate(vUp, -3.1415926f);
-		REQUIRE(-0.01f <= res[0]);
-		REQUIRE(res[0] <= 0.01f);
-		REQUIRE(-1.01f <= res[1]);
-		REQUIRE(res[1] <= -0.99f);
-
-		auto angleOrg = angle(vUp);
-		auto angleRes = angle(res);
-		// "+" in this case since angle() returns positive angle from x-axis.
-		REQUIRE((angleOrg + 3.1415f) <= angleRes);
-		REQUIRE(angleRes <= (angleOrg + 3.1416f));
-	}
-	SECTION("Nothing happens when rotating with 0") {
-		auto resRight = sfz::rotate(vRight, 0.f);
-		REQUIRE(resRight == vRight);
-		auto resUp = sfz::rotate(vUp, 0.f);
-		REQUIRE(resUp == vUp);
 	}
 }
 
@@ -412,52 +302,6 @@ TEST_CASE("Sum of vector", "[sfz::Vector]")
 	REQUIRE(v1.sum() == 8);
 }
 
-TEST_CASE("Projecting a vector onto another vector", "[sfz::Vector]")
-{
-	sfz::Vector<int, 2> vUp{0, 2};
-	sfz::Vector<int, 2> vRight{3, 0};
-	sfz::Vector<int, 2> v{9, 12};
-
-	SECTION("Basic test") {
-		auto res = v.projectOnto(vUp);
-		REQUIRE(res[0] == 0);
-		REQUIRE(res[1] == 12);
-	}
-	SECTION("Basic test 2") {
-		auto res = v.projectOnto(vRight);
-		REQUIRE(res[0] == 9);
-		REQUIRE(res[1] == 0);
-	}
-	SECTION("Returns 0 vector if target is 0 vector.") {
-		auto zero = sfz::Vector<int,2>{0,0};
-		auto res = v.projectOnto(zero);
-		REQUIRE(res == zero);
-	}
-}
-
-TEST_CASE("Calculating distance from on vector to another", "[sfz::Vector]")
-{
-	sfz::Vector<int, 2> v1{0, 0};
-	sfz::Vector<int, 2> v2{3, -1};
-
-	SECTION("With itself") {
-		auto res1 = v1.distance(v1);
-		auto res2 = v2.distance(v2);
-		REQUIRE(res1[0] == 0);
-		REQUIRE(res1[1] == 0);
-		REQUIRE(res2[0] == 0);
-		REQUIRE(res2[1] == 0);
-	}
-	SECTION("With other vector") {
-		auto res1 = v1.distance(v2);
-		auto res2 = v2.distance(v1);
-		REQUIRE(res1[0] == 3);
-		REQUIRE(res1[1] == -1);
-		REQUIRE(res2[0] == -3);
-		REQUIRE(res2[1] == 1);
-	}
-}
-
 TEST_CASE("Converting to string", "[sfz::Vector]")
 {
 	sfz::Vector<int, 3> v{-1, 2, 10};
@@ -487,47 +331,155 @@ TEST_CASE("Hashing", "[sfz::Vector]")
 TEST_CASE("Is proper POD", "[sfz::Vector]")
 {
 	REQUIRE(std::is_trivially_default_constructible<sfz::vec2f>::value);
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec2d>::value);
 	REQUIRE(std::is_trivially_default_constructible<sfz::vec2i>::value);
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec2l>::value);
 	REQUIRE(std::is_trivially_default_constructible<sfz::vec3f>::value);
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec3d>::value);
 	REQUIRE(std::is_trivially_default_constructible<sfz::vec3i>::value);
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec3l>::value);
 
 	REQUIRE(std::is_trivially_copyable<sfz::vec2f>::value);
-	REQUIRE(std::is_trivially_copyable<sfz::vec2d>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec2i>::value);
-	REQUIRE(std::is_trivially_copyable<sfz::vec2l>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec3f>::value);
-	REQUIRE(std::is_trivially_copyable<sfz::vec3d>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec3i>::value);
-	REQUIRE(std::is_trivially_copyable<sfz::vec3l>::value);
 
 	REQUIRE(std::is_trivial<sfz::vec2f>::value);
-	REQUIRE(std::is_trivial<sfz::vec2d>::value);
 	REQUIRE(std::is_trivial<sfz::vec2i>::value);
-	REQUIRE(std::is_trivial<sfz::vec2l>::value);
 	REQUIRE(std::is_trivial<sfz::vec3f>::value);
-	REQUIRE(std::is_trivial<sfz::vec3d>::value);
 	REQUIRE(std::is_trivial<sfz::vec3i>::value);
-	REQUIRE(std::is_trivial<sfz::vec3l>::value);
 
 	REQUIRE(std::is_standard_layout<sfz::vec2f>::value);
-	REQUIRE(std::is_standard_layout<sfz::vec2d>::value);
 	REQUIRE(std::is_standard_layout<sfz::vec2i>::value);
-	REQUIRE(std::is_standard_layout<sfz::vec2l>::value);
 	REQUIRE(std::is_standard_layout<sfz::vec3f>::value);
-	REQUIRE(std::is_standard_layout<sfz::vec3d>::value);
 	REQUIRE(std::is_standard_layout<sfz::vec3i>::value);
-	REQUIRE(std::is_standard_layout<sfz::vec3l>::value);
 
 	REQUIRE(std::is_pod<sfz::vec2f>::value);
-	REQUIRE(std::is_pod<sfz::vec2d>::value);
 	REQUIRE(std::is_pod<sfz::vec2i>::value);
-	REQUIRE(std::is_pod<sfz::vec2l>::value);
 	REQUIRE(std::is_pod<sfz::vec3f>::value);
-	REQUIRE(std::is_pod<sfz::vec3d>::value);
 	REQUIRE(std::is_pod<sfz::vec3i>::value);
-	REQUIRE(std::is_pod<sfz::vec3l>::value);
+}
+
+
+// VectorSupport.hpp
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+TEST_CASE("Cross product", "[sfz::VectorSupport]")
+{
+	sfz::Vector<int, 3> v1{-1, 4, 0};
+	sfz::Vector<int, 3> v2{1, -2, 3};
+
+	SECTION("Correctness test") {
+		auto res = sfz::cross(v1, v2);
+
+		REQUIRE(res[0] == 12);
+		REQUIRE(res[1] == 3);
+		REQUIRE(res[2] == -2);
+	}
+	SECTION("2nd correctness test") {
+		auto res = sfz::cross(v2, v1);
+
+		REQUIRE(res[0] == -12);
+		REQUIRE(res[1] == -3);
+		REQUIRE(res[2] == 2);
+	}
+	SECTION("A x A = 0") {
+		auto res1 = sfz::cross(v1, v1);
+		REQUIRE(res1[0] == 0);
+		REQUIRE(res1[1] == 0);
+		REQUIRE(res1[2] == 0);
+
+		auto res2 = sfz::cross(v2, v2);
+		REQUIRE(res2[0] == 0);
+		REQUIRE(res2[1] == 0);
+		REQUIRE(res2[2] == 0);
+	}
+}
+
+TEST_CASE("Angle of vectors", "[sfz::VectorSupport]")
+{
+	sfz::Vector<float, 2> vRight{1, 0};
+	sfz::Vector<float, 2> vUp{0, 1};
+	sfz::Vector<float, 2> vDown{0, -1};
+
+	SECTION("(2D) Angle between y and (implicit) x-axis") {
+		auto angle = sfz::angle(vUp);
+		REQUIRE((3.1415f/2.f) <= angle);
+		REQUIRE(angle <= (3.1416f/2.f));
+	}
+	SECTION("Angle between y and (explicit) x-axis") {
+		auto angle = sfz::angle(vRight, vUp);
+		REQUIRE((3.1415f/2.f) <= angle);
+		REQUIRE(angle <= (3.1416f/2.f));
+	}
+	SECTION("Angle between same vectors") {
+		auto angle1 = angle(vRight);
+		REQUIRE(angle1 == 0);
+
+		auto angle2 = angle(vUp, vUp);
+		REQUIRE(angle2 == 0);
+	}
+	SECTION("(2D) Angle with implicit x-axis should never give negative angles") {
+		auto angle = sfz::angle(vDown);
+		REQUIRE((3.f*3.1415f/2.f) <= angle);
+		REQUIRE(angle <= (3.f*3.1416f/2.f));
+	}
+}
+
+TEST_CASE("Rotating vectors", "[sfz::VectorSupport]")
+{
+	sfz::Vector<float, 2> vRight{1, 0};
+	sfz::Vector<float, 2> vUp{0, 1};
+	
+	SECTION("Rotates in positive direction") {
+		auto res = sfz::rotate(vRight, 3.1415926f);
+		REQUIRE(-1.01f <= res[0]);
+		REQUIRE(res[0] <= -0.99f);
+		REQUIRE(-0.01f <= res[1]);
+		REQUIRE(res[1] <= 0.01f);
+
+		auto angleOrg = angle(vRight);
+		auto angleRes = angle(res);
+		REQUIRE((angleOrg + 3.1415f) <= angleRes);
+		REQUIRE(angleRes <= (angleOrg + 3.1416f));
+	}
+	SECTION("Rotates in negative direction") {
+		auto res = sfz::rotate(vUp, -3.1415926f);
+		REQUIRE(-0.01f <= res[0]);
+		REQUIRE(res[0] <= 0.01f);
+		REQUIRE(-1.01f <= res[1]);
+		REQUIRE(res[1] <= -0.99f);
+
+		auto angleOrg = angle(vUp);
+		auto angleRes = angle(res);
+		// "+" in this case since angle() returns positive angle from x-axis.
+		REQUIRE((angleOrg + 3.1415f) <= angleRes);
+		REQUIRE(angleRes <= (angleOrg + 3.1416f));
+	}
+	SECTION("Nothing happens when rotating with 0") {
+		auto resRight = sfz::rotate(vRight, 0.f);
+		REQUIRE(resRight == vRight);
+		auto resUp = sfz::rotate(vUp, 0.f);
+		REQUIRE(resUp == vUp);
+	}
+}
+
+TEST_CASE("Projecting a vector onto another vector", "[sfz::VectorSupport]")
+{
+	sfz::Vector<int, 2> vUp{0, 2};
+	sfz::Vector<int, 2> vRight{3, 0};
+	sfz::Vector<int, 2> v{9, 12};
+
+	SECTION("Basic test") {
+		auto res = projectOnto(v, vUp);
+		REQUIRE(res[0] == 0);
+		REQUIRE(res[1] == 12);
+	}
+	SECTION("Basic test 2") {
+		auto res = projectOnto(v, vRight);
+		REQUIRE(res[0] == 9);
+		REQUIRE(res[1] == 0);
+	}
+	SECTION("Returns 0 vector if target is 0 vector.") {
+		auto zero = sfz::Vector<int,2>{0,0};
+		auto res = projectOnto(v, zero);
+		REQUIRE(res == zero);
+	}
 }
