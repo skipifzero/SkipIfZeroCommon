@@ -190,4 +190,5 @@ struct hash<sfz::Matrix<T,M,N>> {
 } // namespace std
 
 #include "sfz/math/Matrix.inl"
+#include "sfz/math/MatrixSupport.hpp"
 #endif

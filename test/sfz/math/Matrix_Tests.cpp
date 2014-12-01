@@ -3,6 +3,7 @@
 
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Matrix.hpp"
+#include "sfz/math/MatrixSupport.hpp"
 
 #include <unordered_map>
 #include <type_traits>
@@ -330,3 +331,9 @@ TEST_CASE("Is proper POD", "[sfz::Matrix]")
 	REQUIRE(std::is_pod<sfz::mat4f>::value);
 	REQUIRE(std::is_literal_type<sfz::mat4f>::value);
 }
+
+
+// MatrixSupport.hpp
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
