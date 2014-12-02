@@ -43,7 +43,7 @@ template<typename T>
 Matrix<T,4,4> scalingMatrix(T scaleX, T scaleY, T scaleZ) noexcept;
 
 template<typename T>
-Matrix<T,4,4> translationMatrix(T dx, T dy, T dz) noexcept;
+Matrix<T,4,4> translationMatrix(T deltaX, T deltaY, T deltaZ) noexcept;
 
 } // namespace sfz
 

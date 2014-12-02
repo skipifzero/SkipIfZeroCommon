@@ -74,11 +74,11 @@ Matrix<T,4,4> scalingMatrix(T scaleX, T scaleY, T scaleZ) noexcept
 }
 
 template<typename T>
-Matrix<T,4,4> translationMatrix(T dx, T dy, T dz) noexcept
+Matrix<T,4,4> translationMatrix(T deltaX, T deltaY, T deltaZ) noexcept
 {
-	return Matrix<T,4,4>{{static_cast<T>(1), 0, 0, static_cast<T>(dx)},
-	                     {0, static_cast<T>(1), 0, static_cast<T>(dy)},
-	                     {0, 0, static_cast<T>(1), static_cast<T>(dz)},
+	return Matrix<T,4,4>{{static_cast<T>(1), 0, 0, static_cast<T>(deltaX)},
+	                     {0, static_cast<T>(1), 0, static_cast<T>(deltaY)},
+	                     {0, 0, static_cast<T>(1), static_cast<T>(deltaZ)},
 	                     {0, 0, 0, static_cast<T>(1)}};
 }
 
