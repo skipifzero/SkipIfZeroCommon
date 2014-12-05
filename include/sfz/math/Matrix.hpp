@@ -47,6 +47,9 @@ struct Matrix final {
 	 */
 	T mElements[N][M];
 
+	T* glPtr() noexcept { return mElements; }
+	const T* glPtr() const noexcept { return mElements; }
+
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
