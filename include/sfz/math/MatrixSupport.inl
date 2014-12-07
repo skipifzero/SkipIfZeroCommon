@@ -36,13 +36,6 @@ Matrix<T,4,4> zRotationMatrix(T angleRads) noexcept
 	                     {0, 0, 0, 1}};
 }
 
-/*template<typename T>
-Matrix<T,4,4> generalRotationMatrix(const Vector<T,3>& point, const Vector<T,3>& axis,
-                                    T angleRads) noexcept
-{
-
-}*/
-
 // Transformation matrices
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
