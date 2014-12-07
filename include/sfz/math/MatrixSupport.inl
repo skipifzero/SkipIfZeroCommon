@@ -103,4 +103,28 @@ Matrix<T,4,4> glOrthogonalProjectionMatrix(const sfz::Vector<T,3>& leftBottomNea
 	                                    rightTopFar[0], rightTopFar[1], rightTopFar[2]);
 }
 
+template<typename T>
+Matrix<T,4,4> glPerspectiveProjectionMatrix(T left, T bottom, T zNear,
+                                            T right, T top, T zFar) noexcept
+{
+	T zNear2 = 2*zNear;
+	T rightMLeft = right-left;
+	T topMBottom = top-bottom;
+	T zFarMzNear = zFar-zNear;
+	return Matrix<T,4,4>{{zNear2/rightMLeft, 0, (right+left)/rightMLeft, 0},
+	                     {0, zNear2/topMBottom, (top+bottom)/topMBottom, 0},
+	                     {0, 0, -(zFar+zNear)/zFarMzNear, -(zNear2*zFar)/zFarMzNear},
+	                     {0, 0, -1, 0}};
+}
+
+Matrix<float,4,4> glPerspectiveProjectionMatrix(float yFovDeg, float aspectRatio,
+                                                float zNear, float zFar) noexcept
+{
+	assert(0 < zNear);
+	assert(zNear < zFar);
+	float yMax = zNear * tanf(yFovDeg * (g_PI_FLOAT/360.f));
+	float xMax = yMax * aspectRatio;
+	return glPerspectiveProjectionMatrix(-xMax, -yMax, zNear, xMax, yMax, zFar);
+}
+
 } // namespace sfz

@@ -679,4 +679,27 @@ TEST_CASE("Projection matrices", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(3, 2), 0));
 		REQUIRE(approxEqual(m.at(3, 3), 1));		
 	}
+	SECTION("glPerspectiveProjectionMatrix()") {
+		auto m = sfz::glPerspectiveProjectionMatrix(90.0f, 1.7778f, 0.01f, 500.0f);
+
+		REQUIRE(approxEqual(m.at(0, 0), 0.562493f));
+		REQUIRE(approxEqual(m.at(0, 1), 0));
+		REQUIRE(approxEqual(m.at(0, 2), 0));
+		REQUIRE(approxEqual(m.at(0, 3), 0));
+
+		REQUIRE(approxEqual(m.at(1, 0), 0));
+		REQUIRE(approxEqual(m.at(1, 1), 1));
+		REQUIRE(approxEqual(m.at(1, 2), 0));
+		REQUIRE(approxEqual(m.at(1, 3), 0));
+
+		REQUIRE(approxEqual(m.at(2, 0), 0));
+		REQUIRE(approxEqual(m.at(2, 1), 0));
+		REQUIRE(approxEqual(m.at(2, 2), -1.00004f));
+		REQUIRE(approxEqual(m.at(2, 3), -0.0200004f));
+
+		REQUIRE(approxEqual(m.at(3, 0), 0));
+		REQUIRE(approxEqual(m.at(3, 1), 0));
+		REQUIRE(approxEqual(m.at(3, 2), -1));
+		REQUIRE(approxEqual(m.at(3, 3), 0));	
+	}
 }

@@ -56,6 +56,21 @@ template<typename T>
 Matrix<T,4,4> glOrthogonalProjectionMatrix(const sfz::Vector<T,3>& leftBottomNear,
                                            const sfz::Vector<T,3>& rightTopFar) noexcept;
 
+template<typename T>
+Matrix<T,4,4> glPerspectiveProjectionMatrix(T left, T bottom, T zNear,
+                                            T right, T top, T zFar) noexcept;
+
+/**
+ * @brief Creates a perspective matrix for use with OpenGL.
+ * @assert 0 < zNear < zFar
+ * @param yFovDeg the vertical fov in degrees
+ * @param aspectRatio the width / height ratio of the frustrum
+ * @param zNear the near plane
+ * @param zFar the far plane
+ */
+Matrix<float,4,4> glPerspectiveProjectionMatrix(float yFovDeg, float aspectRatio,
+                                                float zNear, float zFar) noexcept;
+	
 } // namespace sfz
 
 #include "sfz/math/MatrixSupport.inl"
