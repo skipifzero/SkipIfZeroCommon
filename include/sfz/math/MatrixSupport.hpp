@@ -45,6 +45,9 @@ Matrix<T,4,4> scalingMatrix(T scaleX, T scaleY, T scaleZ) noexcept;
 template<typename T>
 Matrix<T,4,4> translationMatrix(T deltaX, T deltaY, T deltaZ) noexcept;
 
+template<typename T>
+Matrix<T,4,4> translationMatrix(const Vector<T,3>& delta) noexcept;
+
 // Projection matrices
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -70,7 +73,14 @@ Matrix<T,4,4> glPerspectiveProjectionMatrix(T left, T bottom, T zNear,
  */
 Matrix<float,4,4> glPerspectiveProjectionMatrix(float yFovDeg, float aspectRatio,
                                                 float zNear, float zFar) noexcept;
-	
+
+// View matrices
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+Matrix<T,4,4> lookAt(const Vector<T,3>& cameraPosition, const Vector<T,3> cameraTarget,
+                     const Vector<T,3> upVector) noexcept;
+
 } // namespace sfz
 
 #include "sfz/math/MatrixSupport.inl"

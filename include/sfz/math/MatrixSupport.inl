@@ -82,6 +82,12 @@ Matrix<T,4,4> translationMatrix(T deltaX, T deltaY, T deltaZ) noexcept
 	                     {0, 0, 0, static_cast<T>(1)}};
 }
 
+template<typename T>
+Matrix<T,4,4> translationMatrix(const Vector<T,3>& delta) noexcept
+{
+	return translationMatrix(delta[0], delta[1], delta[2]);
+}
+
 // Projection matrices
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -125,6 +131,26 @@ Matrix<float,4,4> glPerspectiveProjectionMatrix(float yFovDeg, float aspectRatio
 	float yMax = zNear * tanf(yFovDeg * (g_PI_FLOAT/360.f));
 	float xMax = yMax * aspectRatio;
 	return glPerspectiveProjectionMatrix(-xMax, -yMax, zNear, xMax, yMax, zFar);
+}
+
+// View matrices
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+Matrix<T,4,4> lookAt(const Vector<T,3>& cameraPosition, const Vector<T,3> cameraTarget,
+                     const Vector<T,3> upVector) noexcept
+{
+	// Inspired by gluLookAt().
+	Vector<T,3> normalizedDir = (cameraTarget - cameraPosition).normalize();
+	Vector<T,3> normalizedUpVec = upVector.normalize();
+	Vector<T,3> s = cross(normalizedDir, normalizedUpVec).normalize();
+	Vector<T,3> u = cross(s.normalize(), normalizedDir).normalize();
+	return Matrix<T,4,4>{{s[0], s[1], s[2], 0},
+	                     {u[0], u[1], u[2], 0},
+	                     {-normalizedDir[0], -normalizedDir[1], -normalizedDir[2], 0},
+	                     {0, 0, 0, 1}}
+
+	                     * translationMatrix(-cameraPosition);
 }
 
 } // namespace sfz
