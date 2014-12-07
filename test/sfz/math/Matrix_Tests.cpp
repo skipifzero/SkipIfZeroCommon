@@ -709,8 +709,6 @@ TEST_CASE("View matrices", "[sfz::Matrix]")
 	SECTION("lookAt()") {
 		auto m = sfz::lookAt(sfz::vec3f{1, 2, 3}, sfz::vec3f{25, 25, 25}, sfz::vec3f{0, 1, 0});
 
-		std::cout << m;
-
 		REQUIRE(approxEqual(m.at(0, 0), -0.675725f));
 		REQUIRE(approxEqual(m.at(0, 1), 0));
 		REQUIRE(approxEqual(m.at(0, 2), 0.737154f));
