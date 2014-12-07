@@ -357,7 +357,7 @@ TEST_CASE("Is proper POD", "[sfz::Matrix]")
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 bool approxEqual(float lhs, float rhs) {
-	float eps = 0.000001f;
+	float eps = 0.001f;
 	return lhs <= rhs + eps && lhs >= rhs - eps;
 }
 
@@ -651,5 +651,32 @@ TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 		REQUIRE(approxEqual(v2[1], 2));
 		REQUIRE(approxEqual(v2[2], 1));
 		REQUIRE(approxEqual(v2[3], 1));
+	}
+}
+
+TEST_CASE("Projection matrices", "[sfz::Matrix]")
+{
+	SECTION("glOrthogonalProjectionMatrix()") {
+		auto m = sfz::glOrthogonalProjectionMatrix(-4.f, -2.f, 10.f, 3.f, 2.f, -50.f);
+
+		REQUIRE(approxEqual(m.at(0, 0), 0.285714f));
+		REQUIRE(approxEqual(m.at(0, 1), 0));
+		REQUIRE(approxEqual(m.at(0, 2), 0));
+		REQUIRE(approxEqual(m.at(0, 3), 0.142857f));
+
+		REQUIRE(approxEqual(m.at(1, 0), 0));
+		REQUIRE(approxEqual(m.at(1, 1), 0.5f));
+		REQUIRE(approxEqual(m.at(1, 2), 0));
+		REQUIRE(approxEqual(m.at(1, 3), 0));
+
+		REQUIRE(approxEqual(m.at(2, 0), 0));
+		REQUIRE(approxEqual(m.at(2, 1), 0));
+		REQUIRE(approxEqual(m.at(2, 2), 0.0333333f));
+		REQUIRE(approxEqual(m.at(2, 3), -0.666667f));
+
+		REQUIRE(approxEqual(m.at(3, 0), 0));
+		REQUIRE(approxEqual(m.at(3, 1), 0));
+		REQUIRE(approxEqual(m.at(3, 2), 0));
+		REQUIRE(approxEqual(m.at(3, 3), 1));		
 	}
 }

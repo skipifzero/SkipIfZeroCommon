@@ -45,6 +45,17 @@ Matrix<T,4,4> scalingMatrix(T scaleX, T scaleY, T scaleZ) noexcept;
 template<typename T>
 Matrix<T,4,4> translationMatrix(T deltaX, T deltaY, T deltaZ) noexcept;
 
+// Projection matrices
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+Matrix<T,4,4> glOrthogonalProjectionMatrix(T left, T bottom, T near,
+                                           T right, T top, T far) noexcept;
+
+template<typename T>
+Matrix<T,4,4> glOrthogonalProjectionMatrix(const sfz::Vector<T,3>& leftBottomNear,
+                                           const sfz::Vector<T,3>& rightTopFar) noexcept;
+
 } // namespace sfz
 
 #include "sfz/math/MatrixSupport.inl"

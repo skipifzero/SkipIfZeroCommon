@@ -82,4 +82,25 @@ Matrix<T,4,4> translationMatrix(T deltaX, T deltaY, T deltaZ) noexcept
 	                     {0, 0, 0, static_cast<T>(1)}};
 }
 
+// Projection matrices
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+Matrix<T,4,4> glOrthogonalProjectionMatrix(T left, T bottom, T near,
+                                           T right, T top, T far) noexcept
+{
+	return Matrix<T,4,4>{{2/(right-left), 0, 0, -((right+left)/(right-left))},
+	                     {0, 2/(top-bottom), 0, -((top+bottom)/(top-bottom))},
+	                     {0, 0, -2/(far-near), -(far+near)/(far-near)},
+	                     {0, 0, 0, 1}};
+}
+
+template<typename T>
+Matrix<T,4,4> glOrthogonalProjectionMatrix(const sfz::Vector<T,3>& leftBottomNear,
+                                           const sfz::Vector<T,3>& rightTopFar) noexcept
+{
+	return glOrthogonalProjectionMatrix(leftBottomNear[0], leftBottomNear[1], leftBottomNear[2],
+	                                    rightTopFar[0], rightTopFar[1], rightTopFar[2]);
+}
+
 } // namespace sfz
