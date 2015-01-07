@@ -195,6 +195,22 @@ TEST_CASE("Arhitmetic & assignment operators", "[sfz::Matrix]")
 		REQUIRE(m3.at(1, 0) == -3);
 		REQUIRE(m3.at(1, 1) == -33);
 	}
+	SECTION("*= (matrix of same size)") {
+		sfz::mat2i m4{{1, 0}, {0, 1}};
+		auto m1cpy = m1;
+		m1cpy *= m4;
+
+		REQUIRE(m1cpy.at(0, 0) == 1);
+		REQUIRE(m1cpy.at(0, 1) == 2);
+		REQUIRE(m1cpy.at(1, 0) == 3);
+		REQUIRE(m1cpy.at(1, 1) == 4);
+
+		m4 *= m1;
+		REQUIRE(m4.at(0, 0) == 1);
+		REQUIRE(m4.at(0, 1) == 2);
+		REQUIRE(m4.at(1, 0) == 3);
+		REQUIRE(m4.at(1, 1) == 4);
+	}
 }
 
 TEST_CASE("Arhitmetic operators", "[sfz::Matrix]")
