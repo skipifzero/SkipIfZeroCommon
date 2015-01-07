@@ -25,6 +25,9 @@ Matrix<T,4,4> yRotationMatrix(T angleRads) noexcept;
 template<typename T>
 Matrix<T,4,4> zRotationMatrix(T angleRads) noexcept;
 
+template<typename T>
+Matrix<T,4,4> rotationMatrix(const sfz::Vector<T,3>& axis, T angleRads) noexcept;
+
 // Transformation matrices
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
