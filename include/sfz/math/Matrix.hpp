@@ -2,8 +2,6 @@
 #ifndef SFZ_MATH_MATRIX_HPP
 #define SFZ_MATH_MATRIX_HPP
 
-#include "sfz/SFZCommonGlobal.hpp"
-
 #include <initializer_list>
 #include <string>
 #include <iostream> // std::ostream
