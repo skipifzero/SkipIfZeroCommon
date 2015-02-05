@@ -380,6 +380,14 @@ bool approxEqual(float lhs, float rhs)
 	return lhs <= rhs + eps && lhs >= rhs - eps;
 }
 
+bool approxEqual(const sfz::vec3f& lhs, const sfz::vec3f& rhs)
+{
+	if(!approxEqual(lhs[0], rhs[0])) return false;
+	if(!approxEqual(lhs[1], rhs[1])) return false;
+	if(!approxEqual(lhs[2], rhs[2])) return false;
+	return true;
+}
+
 bool approxEqual(const sfz::mat4f& lhs, const sfz::mat4f& rhs)
 {
 	if (!approxEqual(lhs.at(0, 0), rhs.at(0, 0))) return false;
@@ -796,10 +804,17 @@ TEST_CASE("View matrices", "[sfz::Matrix]")
 
 TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 {
+	using sfz::g_PI_FLOAT;
+
 	sfz::mat4f m{{1, 2, 3, 4},
 	             {5, 6, 7, 8},
 	             {9, 10, 11, 12},
 	             {13, 14, 15, 16}};
+
+	sfz::mat4f rotated = sfz::zRotationMatrix(-g_PI_FLOAT/2) * sfz::xRotationMatrix(g_PI_FLOAT/2);
+	const sfz::vec3f rotatedForward{-1, 0, 0};
+	const sfz::vec3f rotatedUp{0, 0, -1};
+	const sfz::vec3f rotatedRight{0, 1, 0};
 
 	SECTION("translation()") {
 		auto v1 = translation(m);
@@ -814,10 +829,34 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(2, 3), v2[2]));
 	}
 	SECTION("forward()") {
-		
+		auto v1 = forward(m);
+		REQUIRE(approxEqual(m.at(0, 2), v1[0]));
+		REQUIRE(approxEqual(m.at(1, 2), v1[1]));
+		REQUIRE(approxEqual(m.at(2, 2), v1[2]));
+
+		sfz::vec3f v2{-1, -2, -3};
+		forward(m, v2);
+		REQUIRE(approxEqual(m.at(0, 2), v2[0]));
+		REQUIRE(approxEqual(m.at(1, 2), v2[1]));
+		REQUIRE(approxEqual(m.at(2, 2), v2[2]));
+
+		auto v3 = forward(rotated);
+		REQUIRE(approxEqual(v3, rotatedForward));
 	}
 	SECTION("backward()") {
+		auto v1 = backward(m);
+		REQUIRE(approxEqual(m.at(0, 2), -v1[0]));
+		REQUIRE(approxEqual(m.at(1, 2), -v1[1]));
+		REQUIRE(approxEqual(m.at(2, 2), -v1[2]));
 
+		sfz::vec3f v2{-1, -2, -3};
+		backward(m, v2);
+		REQUIRE(approxEqual(m.at(0, 2), -v2[0]));
+		REQUIRE(approxEqual(m.at(1, 2), -v2[1]));
+		REQUIRE(approxEqual(m.at(2, 2), -v2[2]));
+
+		auto v3 = backward(rotated);
+		REQUIRE(approxEqual(v3, -rotatedForward));
 	}
 	SECTION("up()") {
 
