@@ -793,3 +793,42 @@ TEST_CASE("View matrices", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(3, 3), 1));		
 	}
 }
+
+TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
+{
+	sfz::mat4f m{{1, 2, 3, 4},
+	             {5, 6, 7, 8},
+	             {9, 10, 11, 12},
+	             {13, 14, 15, 16}};
+
+	SECTION("translation()") {
+		auto v1 = translation(m);
+		REQUIRE(approxEqual(m.at(0, 3), v1[0]));
+		REQUIRE(approxEqual(m.at(1, 3), v1[1]));
+		REQUIRE(approxEqual(m.at(2, 3), v1[2]));
+
+		sfz::vec3f v2{-1, -2, -3};
+		translation(m, v2);
+		REQUIRE(approxEqual(m.at(0, 3), v2[0]));
+		REQUIRE(approxEqual(m.at(1, 3), v2[1]));
+		REQUIRE(approxEqual(m.at(2, 3), v2[2]));
+	}
+	SECTION("forward()") {
+		
+	}
+	SECTION("backward()") {
+
+	}
+	SECTION("up()") {
+
+	}
+	SECTION("down()") {
+
+	}
+	SECTION("left()") {
+
+	}
+	SECTION("right()") {
+
+	}
+}

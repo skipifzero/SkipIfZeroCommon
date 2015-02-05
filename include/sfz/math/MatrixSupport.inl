@@ -168,6 +168,27 @@ Matrix<T,4,4> lookAt(const Vector<T,3>& cameraPosition, const Vector<T,3> camera
 	                     * translationMatrix(-cameraPosition);
 }
 
+// Transform helper functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+Vector<T,3> translation(const Matrix<T,4,4>& transform) noexcept
+{
+	Vector<T,3> temp;
+	temp[0] = transform.at(0, 3);
+	temp[1] = transform.at(1, 3);
+	temp[2] = transform.at(2, 3);
+	return temp;
+}
+
+template<typename T>
+void translation(Matrix<T,4,4>& transform, const Vector<T,3>& translation) noexcept
+{
+	transform.set(0, 3, translation[0]);
+	transform.set(1, 3, translation[1]);
+	transform.set(2, 3, translation[2]);
+}
+
 } // namespace sfz
 
 #include "sfz/MSVC12HackOFF.hpp"
