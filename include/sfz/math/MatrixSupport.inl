@@ -219,6 +219,36 @@ void backward(Matrix<T,4,4>& transform, const Vector<T,3>& backward) noexcept
 	forward(transform, -backward);
 }
 
+template<typename T>
+Vector<T,3> up(const Matrix<T,4,4>& transform) noexcept
+{
+	Vector<T,3> temp;
+	temp[0] = transform.at(0, 1);
+	temp[1] = transform.at(1, 1);
+	temp[2] = transform.at(2, 1);
+	return temp;
+}
+
+template<typename T>
+void up(Matrix<T,4,4>& transform, const Vector<T,3>& up) noexcept
+{
+	transform.set(0, 1, up[0]);
+	transform.set(1, 1, up[1]);
+	transform.set(2, 1, up[2]);
+}
+
+template<typename T>
+Vector<T,3> down(const Matrix<T,4,4>& transform) noexcept
+{
+	return -up(transform);
+}
+
+template<typename T>
+void down(Matrix<T,4,4>& transform, const Vector<T,3>& down) noexcept
+{
+	up(transform, -down);
+}
+
 } // namespace sfz
 
 #include "sfz/MSVC12HackOFF.hpp"
