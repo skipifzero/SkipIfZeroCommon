@@ -887,10 +887,34 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		auto v3 = down(rotated);
 		REQUIRE(approxEqual(v3, -rotatedUp));
 	}
-	SECTION("left()") {
-
-	}
 	SECTION("right()") {
+		auto v1 = right(m);
+		REQUIRE(approxEqual(m.at(0, 0), v1[0]));
+		REQUIRE(approxEqual(m.at(1, 0), v1[1]));
+		REQUIRE(approxEqual(m.at(2, 0), v1[2]));
 
+		sfz::vec3f v2{-1, -2, -3};
+		right(m, v2);
+		REQUIRE(approxEqual(m.at(0, 0), v2[0]));
+		REQUIRE(approxEqual(m.at(1, 0), v2[1]));
+		REQUIRE(approxEqual(m.at(2, 0), v2[2]));
+
+		auto v3 = right(rotated);
+		REQUIRE(approxEqual(v3, rotatedRight));
+	}
+	SECTION("left()") {
+		auto v1 = left(m);
+		REQUIRE(approxEqual(m.at(0, 0), -v1[0]));
+		REQUIRE(approxEqual(m.at(1, 0), -v1[1]));
+		REQUIRE(approxEqual(m.at(2, 0), -v1[2]));
+
+		sfz::vec3f v2{-1, -2, -3};
+		left(m, v2);
+		REQUIRE(approxEqual(m.at(0, 0), -v2[0]));
+		REQUIRE(approxEqual(m.at(1, 0), -v2[1]));
+		REQUIRE(approxEqual(m.at(2, 0), -v2[2]));
+
+		auto v3 = left(rotated);
+		REQUIRE(approxEqual(v3, -rotatedRight));
 	}
 }

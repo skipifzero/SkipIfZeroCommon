@@ -114,16 +114,16 @@ template<typename T>
 void down(Matrix<T,4,4>& transform, const Vector<T,3>& down) noexcept;
 
 template<typename T>
-Vector<T,3> left(const Matrix<T,4,4>& transform) noexcept;
-
-template<typename T>
-void left(Matrix<T,4,4>& transform, const Vector<T,3>& left) noexcept;
-
-template<typename T>
 Vector<T,3> right(const Matrix<T,4,4>& transform) noexcept;
 
 template<typename T>
 void right(Matrix<T,4,4>& transform, const Vector<T,3>& right) noexcept;
+
+template<typename T>
+Vector<T,3> left(const Matrix<T,4,4>& transform) noexcept;
+
+template<typename T>
+void left(Matrix<T,4,4>& transform, const Vector<T,3>& left) noexcept;
 
 } // namespace sfz
 
