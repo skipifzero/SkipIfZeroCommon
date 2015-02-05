@@ -190,6 +190,24 @@ void translation(Matrix<T,4,4>& transform, const Vector<T,3>& translation) noexc
 }
 
 template<typename T>
+Vector<T,3> scaling(const Matrix<T,4,4>& transform) noexcept
+{
+	Vector<T,3> temp;
+	temp[0] = transform.at(0, 0);
+	temp[1] = transform.at(1, 1);
+	temp[2] = transform.at(2, 2);
+	return temp;
+}
+
+template<typename T>
+void scaling(Matrix<T,4,4>& transform, const Vector<T,3>& scaling) noexcept
+{
+	transform.set(0, 0, scaling[0]);
+	transform.set(1, 1, scaling[1]);
+	transform.set(2, 2, scaling[2]);
+}
+
+template<typename T>
 Vector<T,3> forward(const Matrix<T,4,4>& transform) noexcept
 {
 	Vector<T,3> temp;

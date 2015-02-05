@@ -827,6 +827,18 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 3), v2[1]));
 		REQUIRE(approxEqual(m.at(2, 3), v2[2]));
 	}
+	SECTION("scaling()") {
+		auto v1 = scaling(m);
+		REQUIRE(approxEqual(m.at(0, 0), v1[0]));
+		REQUIRE(approxEqual(m.at(1, 1), v1[1]));
+		REQUIRE(approxEqual(m.at(2, 2), v1[2]));
+
+		sfz::vec3f v2{-1, -2, -3};
+		scaling(m, v2);
+		REQUIRE(approxEqual(m.at(0, 0), v2[0]));
+		REQUIRE(approxEqual(m.at(1, 1), v2[1]));
+		REQUIRE(approxEqual(m.at(2, 2), v2[2]));
+	}
 	SECTION("forward()") {
 		auto v1 = forward(m);
 		REQUIRE(approxEqual(m.at(0, 2), v1[0]));

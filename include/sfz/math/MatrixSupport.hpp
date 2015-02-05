@@ -90,6 +90,12 @@ template<typename T>
 void translation(Matrix<T,4,4>& transform, const Vector<T,3>& translation) noexcept;
 
 template<typename T>
+Vector<T,3> scaling(const Matrix<T,4,4>& transform) noexcept;
+
+template<typename T>
+void scaling(Matrix<T,4,4>& transform, const Vector<T,3>& scaling) noexcept;
+
+template<typename T>
 Vector<T,3> forward(const Matrix<T,4,4>& transform) noexcept;
 
 template<typename T>
