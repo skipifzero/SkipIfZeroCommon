@@ -276,7 +276,7 @@ std::ostream& operator<< (std::ostream& ostream, const Matrix<T,M,N>& matrix) no
 
 } // namespace sfz
 
-// Specializations of standard library for sfz::Vector
+// Specializations of standard library for sfz::Matrix
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 namespace std {
