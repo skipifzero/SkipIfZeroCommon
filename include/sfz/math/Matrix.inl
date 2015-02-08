@@ -96,7 +96,7 @@ size_t Matrix<T,M,N>::hash() const noexcept
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
 			// hash_combine algorithm from boost
-		hash ^= hasher(mElements[j][i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+			hash ^= hasher(mElements[j][i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		}
 	}
 	return hash;
