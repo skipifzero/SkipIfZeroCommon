@@ -46,6 +46,14 @@ add_library(
 	${INCLUDE_DIR}/sfz/MSVC12HackON.hpp
 	${INCLUDE_DIR}/sfz/MSVC12HackOFF.hpp
 
+	${INCLUDE_DIR}/sfz/Geometry.hpp
+	${INCLUDE_DIR}/sfz/geometry/AABB.hpp
+	 ${SOURCE_DIR}/sfz/geometry/AABB.cpp
+	${INCLUDE_DIR}/sfz/geometry/CollisionDetection.hpp
+	 ${SOURCE_DIR}/sfz/geometry/CollisionDetection.cpp
+	${INCLUDE_DIR}/sfz/geometry/OBB.hpp
+	 ${SOURCE_DIR}/sfz/geometry/OBB.cpp
+
 	${INCLUDE_DIR}/sfz/Math.hpp
 	${INCLUDE_DIR}/sfz/math/MathConstants.hpp
 	${INCLUDE_DIR}/sfz/math/Matrix.hpp
@@ -84,6 +92,10 @@ add_test(Matrix_Tests_Name Matrix_Tests)
 add_executable(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
 set_property(TARGET MathConstants_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(MathConstants_Tests_Name MathConstants_Tests)
+
+add_executable(CollisionDetection_Tests ${TEST_DIR}/sfz/geometry/CollisionDetection_Tests.cpp)
+set_property(TARGET CollisionDetection_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+add_test(CollisionDetection_Tests_Name CollisionDetection_Tests)
 
 add_executable(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
 set_property(TARGET BlockingQueue_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
