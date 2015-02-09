@@ -57,6 +57,83 @@ std::string AABB::to_string() const noexcept
 	return std::move(str);
 }
 
+// Public getters/setters
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+vec3f centerPos() const noexcept
+{
+	return mMin + (extents()/2.0f);
+}
+
+vec3f extents() const noexcept
+{
+	return vec3f{xExtent(), yExtent(), zExtent()};
+}
+
+float xExtent() const noexcept
+{
+	return mMax[0] - mMin[0];
+}
+
+float yExtent() const noexcept
+{
+	return mMax[1] - mMin[1];
+}
+
+float zExtent() const noexcept
+{
+	return mMax[2] - mMin[2];
+}
+
+void min(const vec3f& newMin) noexcept
+{
+	mMin = newMin;
+	assert(mMin[0] < mMax[0]);
+	assert(mMin[1] < mMax[1]);
+	assert(mMin[2] < mMax[2]);
+}
+
+void max(const vec3f& newMax) noexcept
+{
+	mMax = newMax;
+	assert(mMin[0] < mMax[0]);
+	assert(mMin[1] < mMax[1]);
+	assert(mMin[2] < mMax[2]);
+}
+
+void centerPos(const vec3f& newCenterPos) noexcept
+{
+	const vec3f halfExtents{xExtent()/2.0f, yExtent()/2.0f, zExtent()/2.0f};
+	mMin = newCenterPos - halfExtents;
+	mMax = newCenterPos + halfExtents;
+}
+
+void extents(const vec3f& newExtents) noexcept
+{
+	assert(newExtents[0] > 0);
+	assert(newExtents[1] > 0);
+	assert(newExtents[2] > 0);
+	const vec3f pos = centerPos();
+	const vec3f halfExtents = newExtents/2.0f;
+	mMin = pos - halfExtents;
+	mMin = pos + halfExtents;
+}
+
+void xExtent(float newXExtent) noexcept
+{
+	extents(vec3f{newXExtent, yExtent(), zExtent()});
+}
+
+void yExtent(float newYExtent) noexcept
+{
+	extents(vec3f{xExtent(), newYExtent, zExtent()});
+}
+
+void zExtent(float newZExtent) noexcept
+{
+	extents(vec3f{xExtent(), yExtent(), newZExtent});
+}
+
 // Non-member operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
