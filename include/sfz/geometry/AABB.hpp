@@ -14,25 +14,16 @@
 namespace sfz {
 
 /**
- * @brief Axis-Aligned Bounding Box POD struct.
+ * @brief Class representing Axis-Aligned Bounding Box.
  * @author Peter Hillerström
  */
-struct AABB final {
-
-	// Public members
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	/** The front bottom left corner of this AABB. */
-	vec3f mMin;
-
-	/** The back top right corner of this AABB. */
-	vec3f mMax;
-
+class AABB final {
+public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	constexpr AABB() noexcept = default;
-	constexpr AABB(const AABB&) noexcept = default;
+	AABB() noexcept = delete;
+	AABB(const AABB&) noexcept = default;
 	AABB& operator= (const AABB&) noexcept = default;
 	~AABB() noexcept = default;
 
@@ -51,6 +42,31 @@ struct AABB final {
 
 	size_t hash() const noexcept;
 	std::string to_string() const noexcept;
+
+	// Public getters/setters
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	inline vec3f min() const noexcept { return mMin; }
+	inline vec3f max() const noexcept { return mMax; }
+	vec3f centerPos() const noexcept;
+	vec3f extents() const noexcept;
+	float xExtent() const noexcept;
+	float yExtent() const noexcept;
+	float zExtent() const noexcept;
+
+	void min(const vec3f& newMin) noexcept;
+	void max(const vec3f& newMax) noexcept;
+	void centerPos(const vec3f& newCenterPos) noexcept;
+	void extents(const vec3f& newExtents) noexcept;
+	void xExtent(float newXExtent) noexcept;
+	void yExtent(float newYExtent) noexcept;
+	void zExtent(float newZExtent) noexcept;
+
+private:
+	// Private members
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	vec3f mMin, mMax;
 };
 
 // Non-member operators
