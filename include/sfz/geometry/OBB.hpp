@@ -47,10 +47,14 @@ public:
 	inline vec3f xAxis() const noexcept { return mAxes[0]; }
 	inline vec3f yAxis() const noexcept { return mAxes[1]; }
 	inline vec3f zAxis() const noexcept { return mAxes[2]; }
-	inline vec3f extents() const noexcept { return mExtents; }
-	inline float xExtent() const noexcept { return mExtents[0]; }
-	inline float yExtent() const noexcept { return mExtents[1]; }
-	inline float zExtent() const noexcept { return mExtents[2]; }
+	inline vec3f extents() const noexcept { return mHalfExtents * 2.0f; }
+	inline float xExtent() const noexcept { return mHalfExtents[0] * 2.0f; }
+	inline float yExtent() const noexcept { return mHalfExtents[1] * 2.0f; }
+	inline float zExtent() const noexcept { return mHalfExtents[2] * 2.0f; }
+	inline vec3f halfExtents() const noexcept { return mHalfExtents; }
+	inline float halfXExtent() const noexcept { return mHalfExtents[0]; }
+	inline float halfYExtent() const noexcept { return mHalfExtents[1]; }
+	inline float halfZExtent() const noexcept { return mHalfExtents[2]; }
 
 	inline void position(const vec3f& newCenterPos) noexcept { mCenter = newCenterPos; }
 	void axes(const std::array<vec3f,3>& newAxes) noexcept;
@@ -61,6 +65,10 @@ public:
 	void xExtent(float newXExtent) noexcept;
 	void yExtent(float newYExtent) noexcept;
 	void zExtent(float newZExtent) noexcept;
+	void halfExtents(const vec3f& newHalfExtents) noexcept;
+	void halfXExtent(float newHalfXExtent) noexcept;
+	void halfYExtent(float newHalfYExtent) noexcept;
+	void halfZExtent(float newHalfZExtent) noexcept;
 
 private:
 	// Private functions
@@ -74,7 +82,7 @@ private:
 
 	vec3f mCenter;
 	std::array<vec3f,3> mAxes;
-	vec3f mExtents;
+	vec3f mHalfExtents;
 };
 
 // Non-member operators

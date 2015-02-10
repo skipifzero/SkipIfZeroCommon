@@ -24,7 +24,7 @@ OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3
          float xExtent, float yExtent, float zExtent) noexcept
 :
 	mCenter{center},
-	mExtents{xExtent, yExtent, zExtent}
+	mHalfExtents{xExtent/2.0f, yExtent/2.0f, zExtent/2.0f}
 {
 	mAxes[0] = xAxis;
 	mAxes[1] = yAxis;
@@ -45,7 +45,7 @@ size_t OBB::hash() const noexcept
 	hash ^= hasher(mAxes[0]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 	hash ^= hasher(mAxes[1]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 	hash ^= hasher(mAxes[2]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-	hash ^= hasher(mExtents) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+	hash ^= hasher(mHalfExtents) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 	return hash;
 }
 
@@ -60,7 +60,7 @@ std::string OBB::to_string() const noexcept
 	str += "\nZ-axis: ";
 	str += mAxes[2].to_string();
 	str += "\nExtents: ";
-	str += mExtents.to_string();
+	str += (mHalfExtents*2.0f).to_string();
 	return std::move(str);
 }
 
@@ -89,25 +89,49 @@ void OBB::zAxis(const vec3f& newZAxis) noexcept
 
 void OBB::extents(const vec3f& newExtents) noexcept
 {
-	mExtents = newExtents;
+	mHalfExtents = newExtents / 2.0f;
 	ensureCorrectExtents();
 }
 
 void OBB::xExtent(float newXExtent) noexcept
 {
-	mExtents[0] = newXExtent;
+	mHalfExtents[0] = newXExtent / 2.0f;
 	ensureCorrectExtents();
 }
 
 void OBB::yExtent(float newYExtent) noexcept
 {
-	mExtents[1] = newYExtent;
+	mHalfExtents[1] = newYExtent / 2.0f;
 	ensureCorrectExtents();
 }
 
 void OBB::zExtent(float newZExtent) noexcept
 {
-	mExtents[2] = newZExtent;
+	mHalfExtents[2] = newZExtent / 2.0f;
+	ensureCorrectExtents();
+}
+
+void OBB::halfExtents(const vec3f& newHalfExtents) noexcept
+{
+	mHalfExtents = newHalfExtents;
+	ensureCorrectExtents();
+}
+
+void OBB::halfXExtent(float newHalfXExtent) noexcept
+{
+	mHalfExtents[0] = newHalfXExtent;
+	ensureCorrectExtents();
+}
+
+void OBB::halfYExtent(float newHalfYExtent) noexcept
+{
+	mHalfExtents[1] = newHalfYExtent;
+	ensureCorrectExtents();
+}
+
+void OBB::halfZExtent(float newHalfZExtent) noexcept
+{
+	mHalfExtents[2] = newHalfZExtent;
 	ensureCorrectExtents();
 }
 
@@ -120,14 +144,19 @@ void OBB::ensureCorrectAxes() const noexcept
 	assert(approxEqual(mAxes[0].dot(mAxes[1]), 0.0f));
 	assert(approxEqual(mAxes[0].dot(mAxes[2]), 0.0f));
 	assert(approxEqual(mAxes[1].dot(mAxes[2]), 0.0f));
+
+	// Check if axes are normalized
+	assert(approxEqual(mAxes[0].norm(), 1.0f));
+	assert(approxEqual(mAxes[1].norm(), 1.0f));
+	assert(approxEqual(mAxes[2].norm(), 1.0f));
 }
 
 void OBB::ensureCorrectExtents() const noexcept
 {
 	// Extents are non-negative
-	assert(0.0f < mExtents[0]);
-	assert(0.0f < mExtents[1]);
-	assert(0.0f < mExtents[2]);
+	assert(0.0f < mHalfExtents[0]);
+	assert(0.0f < mHalfExtents[1]);
+	assert(0.0f < mHalfExtents[2]);
 }
 
 // Non-member operators
