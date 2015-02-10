@@ -31,6 +31,9 @@ public:
 	OBB(const vec3f& center, const std::array<vec3f,3>& axes, const vec3f& extents) noexcept;
 
 	OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
+	    const vec3f& extents) noexcept;
+
+	OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
 	    float xExtent, float yExtent, float zExtent) noexcept;
 
 	// Public member functions

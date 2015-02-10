@@ -20,17 +20,35 @@ bool approxEqual(float lhs, float rhs) noexcept
 // Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
-         float xExtent, float yExtent, float zExtent) noexcept
+OBB::OBB(const vec3f& center, const std::array<vec3f,3>& axes, const vec3f& extents) noexcept
 :
 	mCenter{center},
-	mHalfExtents{xExtent/2.0f, yExtent/2.0f, zExtent/2.0f}
+	mHalfExtents{extents/2.0f}
+{
+	mAxes = axes;
+	ensureCorrectAxes();
+	ensureCorrectExtents();
+}
+
+OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
+         const vec3f& extents) noexcept
+:
+	mCenter{center},
+	mHalfExtents{extents/2.0f}
 {
 	mAxes[0] = xAxis;
 	mAxes[1] = yAxis;
 	mAxes[2] = zAxis;
-	ensureCorrectExtents();
 	ensureCorrectAxes();
+	ensureCorrectExtents();
+}
+
+OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
+         float xExtent, float yExtent, float zExtent) noexcept
+:
+	OBB(center, xAxis, yAxis, zAxis, vec3f{xExtent, yExtent, zExtent})
+{
+	// Initialization done.
 }
 
 // Public member functions
