@@ -29,7 +29,8 @@ OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3
 	mAxes[0] = xAxis;
 	mAxes[1] = yAxis;
 	mAxes[2] = zAxis;
-	ensureCorrectState();
+	ensureCorrectExtents();
+	ensureCorrectAxes();
 }
 
 // Public member functions
@@ -66,16 +67,63 @@ std::string OBB::to_string() const noexcept
 // Public getters/setters
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+void OBB::axes(const std::array<vec3f,3>& newAxes) noexcept
+{
+	mAxes = newAxes;
+}
+
+void OBB::xAxis(const vec3f& newXAxis) noexcept
+{
+	mAxes[0] = newXAxis;
+}
+
+void OBB::yAxis(const vec3f& newYAxis) noexcept
+{
+	mAxes[1] = newYAxis;
+}
+
+void OBB::zAxis(const vec3f& newZAxis) noexcept
+{
+	mAxes[2] = newZAxis;
+}
+
+void OBB::extents(const vec3f& newExtents) noexcept
+{
+	mExtents = newExtents;
+	ensureCorrectExtents();
+}
+
+void OBB::xExtent(float newXExtent) noexcept
+{
+	mExtents[0] = newXExtent;
+	ensureCorrectExtents();
+}
+
+void OBB::yExtent(float newYExtent) noexcept
+{
+	mExtents[1] = newYExtent;
+	ensureCorrectExtents();
+}
+
+void OBB::zExtent(float newZExtent) noexcept
+{
+	mExtents[2] = newZExtent;
+	ensureCorrectExtents();
+}
+
 // Private functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-void OBB::ensureCorrectState() noexcept
+void OBB::ensureCorrectAxes() const noexcept
 {
 	// Check if axes are orthogonal
 	assert(approxEqual(mAxes[0].dot(mAxes[1]), 0.0f));
 	assert(approxEqual(mAxes[0].dot(mAxes[2]), 0.0f));
 	assert(approxEqual(mAxes[1].dot(mAxes[2]), 0.0f));
+}
 
+void OBB::ensureCorrectExtents() const noexcept
+{
 	// Extents are non-negative
 	assert(0.0f < mExtents[0]);
 	assert(0.0f < mExtents[1]);

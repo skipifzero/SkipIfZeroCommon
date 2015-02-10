@@ -3,6 +3,7 @@
 #define SFZ_GEOMETRY_OBB_HPP
 
 #include <string>
+#include <array>
 #include <iostream> // std::ostream
 #include <functional> // std::hash
 #include <cassert>
@@ -27,6 +28,8 @@ public:
 	OBB& operator= (const OBB&) noexcept = default;
 	~OBB() noexcept = default;
 
+	OBB(const vec3f& center, const std::array<vec3f,3>& axes, const vec3f& extents) noexcept;
+
 	OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
 	    float xExtent, float yExtent, float zExtent) noexcept;
 
@@ -39,17 +42,38 @@ public:
 	// Public getters/setters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	inline vec3f position() const noexcept { return mCenter; }
+	inline std::array<vec3f,3> axes() const noexcept { return mAxes; }
+	inline vec3f xAxis() const noexcept { return mAxes[0]; }
+	inline vec3f yAxis() const noexcept { return mAxes[1]; }
+	inline vec3f zAxis() const noexcept { return mAxes[2]; }
+	inline vec3f extents() const noexcept { return mExtents; }
+	inline float xExtent() const noexcept { return mExtents[0]; }
+	inline float yExtent() const noexcept { return mExtents[1]; }
+	inline float zExtent() const noexcept { return mExtents[2]; }
+
+	inline void position(const vec3f& newCenterPos) noexcept { mCenter = newCenterPos; }
+	void axes(const std::array<vec3f,3>& newAxes) noexcept;
+	void xAxis(const vec3f& newXAxis) noexcept;
+	void yAxis(const vec3f& newYAxis) noexcept;
+	void zAxis(const vec3f& newZAxis) noexcept;
+	void extents(const vec3f& newExtents) noexcept;
+	void xExtent(float newXExtent) noexcept;
+	void yExtent(float newYExtent) noexcept;
+	void zExtent(float newZExtent) noexcept;
+
 private:
 	// Private functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	void ensureCorrectState() noexcept;
+	void ensureCorrectAxes() const noexcept;
+	void ensureCorrectExtents() const noexcept;
 
 	// Private members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	vec3f mCenter;
-	vec3f mAxes[3];
+	std::array<vec3f,3> mAxes;
 	vec3f mExtents;
 };
 
