@@ -49,8 +49,8 @@ add_library(
 	${INCLUDE_DIR}/sfz/Geometry.hpp
 	${INCLUDE_DIR}/sfz/geometry/AABB.hpp
 	 ${SOURCE_DIR}/sfz/geometry/AABB.cpp
-	${INCLUDE_DIR}/sfz/geometry/CollisionDetection.hpp
-	 ${SOURCE_DIR}/sfz/geometry/CollisionDetection.cpp
+	${INCLUDE_DIR}/sfz/geometry/Intersection.hpp
+	 ${SOURCE_DIR}/sfz/geometry/Intersection.cpp
 	${INCLUDE_DIR}/sfz/geometry/OBB.hpp
 	 ${SOURCE_DIR}/sfz/geometry/OBB.cpp
 
@@ -93,9 +93,9 @@ add_executable(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
 set_property(TARGET MathConstants_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(MathConstants_Tests_Name MathConstants_Tests)
 
-add_executable(CollisionDetection_Tests ${TEST_DIR}/sfz/geometry/CollisionDetection_Tests.cpp)
-set_property(TARGET CollisionDetection_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
-add_test(CollisionDetection_Tests_Name CollisionDetection_Tests)
+add_executable(Intersection_Tests ${TEST_DIR}/sfz/geometry/Intersection_Tests.cpp ${SOURCE_DIR}/sfz/geometry/AABB.cpp)
+set_property(TARGET Intersection_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
+add_test(Intersection_Tests_Name Intersection_Tests)
 
 add_executable(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
 set_property(TARGET BlockingQueue_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")

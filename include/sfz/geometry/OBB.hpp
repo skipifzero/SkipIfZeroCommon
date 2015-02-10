@@ -2,6 +2,8 @@
 #ifndef SFZ_GEOMETRY_OBB_HPP
 #define SFZ_GEOMETRY_OBB_HPP
 
+#include "sfz/math/Vector.hpp"
+
 #include "sfz/MSVC12HackON.hpp"
 
 namespace sfz {

@@ -1,4 +1,4 @@
-#include "sfz/geometry/CollisionDetection.hpp"
+#include "sfz/geometry/Intersection.hpp"
 
 #include "sfz/MSVC12HackON.hpp"
 

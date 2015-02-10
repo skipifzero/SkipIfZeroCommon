@@ -23,7 +23,7 @@ struct AABB final {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/** The front bottom left corner of this AABB. */
-	vec3f mMin
+	vec3f mMin;
 
 	/** The back top right corner of this AABB. */
 	vec3f mMax;
@@ -65,6 +65,7 @@ std::ostream& operator<< (std::ostream& ostream, const AABB& aabb) noexcept;
 
 namespace std {
 
+template<>
 struct hash<sfz::AABB> {
 	size_t operator() (const sfz::AABB& aabb) const noexcept;
 };
