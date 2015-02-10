@@ -3,6 +3,7 @@
 #define SFZ_GEOMETRY_COLLISION_DETECTION_HPP
 
 #include "sfz/geometry/AABB.hpp"
+#include "sfz/geometry/OBB.hpp"
 
 #include "sfz/MSVC12HackON.hpp"
 

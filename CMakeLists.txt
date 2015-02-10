@@ -40,9 +40,7 @@ include_directories(${INCLUDE_DIR})
 include_directories(${CATCH_INCLUDE_DIRS})
 
 # Sources and headers needed to compile library
-add_library(
-	SkipIfZeroCommon
-	
+set(SOURCE_INCLUDE_FILES
 	${INCLUDE_DIR}/sfz/MSVC12HackON.hpp
 	${INCLUDE_DIR}/sfz/MSVC12HackOFF.hpp
 
@@ -73,6 +71,9 @@ add_library(
 	${INCLUDE_DIR}/sfz/util/StopWatch.hpp
 	 ${SOURCE_DIR}/sfz/util/StopWatch.cpp)
 
+# Library compile target
+add_library(SkipIfZeroCommon ${SOURCE_INCLUDE_FILES})
+
 # Variables for linking library
 set(SFZ_COMMON_INCLUDE_DIRS ${INCLUDE_DIR} PARENT_SCOPE)
 set(SFZ_COMMON_LIBRARIES SkipIfZeroCommon PARENT_SCOPE)
@@ -93,7 +94,7 @@ add_executable(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
 set_property(TARGET MathConstants_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(MathConstants_Tests_Name MathConstants_Tests)
 
-add_executable(Intersection_Tests ${TEST_DIR}/sfz/geometry/Intersection_Tests.cpp ${SOURCE_DIR}/sfz/geometry/AABB.cpp)
+add_executable(Intersection_Tests ${TEST_DIR}/sfz/geometry/Intersection_Tests.cpp ${SOURCE_INCLUDE_FILES})
 set_property(TARGET Intersection_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(Intersection_Tests_Name Intersection_Tests)
 

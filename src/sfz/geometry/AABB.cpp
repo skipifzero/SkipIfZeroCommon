@@ -58,7 +58,7 @@ std::string AABB::to_string() const noexcept
 }
 
 // Public getters/setters
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 vec3f AABB::position() const noexcept
 {

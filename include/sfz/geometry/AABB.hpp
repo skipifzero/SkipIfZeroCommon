@@ -14,7 +14,7 @@
 namespace sfz {
 
 /**
- * @brief Class representing Axis-Aligned Bounding Box.
+ * @brief Class representing an Axis-Aligned Bounding Box.
  * @author Peter Hillerström
  */
 class AABB final {

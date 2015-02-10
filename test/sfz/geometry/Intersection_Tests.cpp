@@ -1,8 +1,8 @@
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 
-#include "sfz/geometry/AABB.hpp"
 #include "sfz/geometry/Intersection.hpp"
+#include "sfz/geometry/AABB.hpp"
 #include "sfz/geometry/OBB.hpp"
 
 TEST_CASE("AABB & AABB test", "[sfz::Intersection]")
