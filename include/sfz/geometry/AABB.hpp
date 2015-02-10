@@ -48,7 +48,7 @@ public:
 
 	inline vec3f min() const noexcept { return mMin; }
 	inline vec3f max() const noexcept { return mMax; }
-	vec3f centerPos() const noexcept;
+	vec3f position() const noexcept;
 	vec3f extents() const noexcept;
 	float xExtent() const noexcept;
 	float yExtent() const noexcept;
@@ -56,7 +56,7 @@ public:
 
 	void min(const vec3f& newMin) noexcept;
 	void max(const vec3f& newMax) noexcept;
-	void centerPos(const vec3f& newCenterPos) noexcept;
+	void position(const vec3f& newCenterPos) noexcept;
 	void extents(const vec3f& newExtents) noexcept;
 	void xExtent(float newXExtent) noexcept;
 	void yExtent(float newYExtent) noexcept;
