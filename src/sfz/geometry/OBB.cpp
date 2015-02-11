@@ -51,6 +51,14 @@ OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3
 	// Initialization done.
 }
 
+OBB::OBB(const AABB& aabb) noexcept
+:
+	OBB(aabb.position(), vec3f{1, 0, 0}, vec3f{0, 1, 0}, vec3f{0, 0, 1},
+        aabb.xExtent(), aabb.yExtent(), aabb.zExtent())
+{
+	// Initialization done.
+}
+
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

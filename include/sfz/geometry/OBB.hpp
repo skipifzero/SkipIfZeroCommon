@@ -9,6 +9,7 @@
 #include <cassert>
 
 #include "sfz/math/Vector.hpp"
+#include "sfz/geometry/AABB.hpp"
 
 #include "sfz/MSVC12HackON.hpp"
 
@@ -35,6 +36,8 @@ public:
 
 	OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
 	    float xExtent, float yExtent, float zExtent) noexcept;
+
+	explicit OBB(const AABB& aabb) noexcept;
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
