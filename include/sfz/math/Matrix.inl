@@ -47,11 +47,53 @@ T Matrix<T,M,N>::at(size_t i, size_t j) const noexcept
 }
 
 template<typename T, size_t M, size_t N>
+Vector<T,N> Matrix<T,M,N>::rowAt(size_t i) const noexcept
+{
+	Vector<T,N> row;
+	for (size_t j = 0; j < N; j++) {
+		row[j] = mElements[j][i];
+	}
+	return row;
+}
+
+template<typename T, size_t M, size_t N>
+Vector<T,M> Matrix<T,M,N>::columnAt(size_t j) const noexcept
+{
+	Vector<T,M> column;
+	for (size_t i = 0; i < N; i++) {
+		column[i] = mElements[j][i];
+	}
+	return column;
+}
+
+template<typename T, size_t M, size_t N>
 void Matrix<T,M,N>::set(size_t i, size_t j, T value) noexcept
 {
 	assert(i < M);
 	assert(j < N);
 	mElements[j][i] = value;
+}
+
+template<typename T, size_t M, size_t N>
+void Matrix<T,M,N>::setRow(size_t i, const Vector<T,N>& row) noexcept
+{
+	assert(i < M);
+	size_t j = 0;
+	for (auto element : row) {
+		mElements[j][i] = element;
+		j++;
+	}
+}
+
+template<typename T, size_t M, size_t N>
+void Matrix<T,M,N>::setColumn(size_t j, const Vector<T,M>& column) noexcept
+{
+	assert(j < N);
+	size_t i = 0;
+	for (auto element : column) {
+		mElements[j][i] = element;
+		i++;
+	}
 }
 
 template<typename T, size_t M, size_t N>

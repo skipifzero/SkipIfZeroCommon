@@ -101,6 +101,56 @@ TEST_CASE("glPtr()", "[sfz::Matrix]") {
 	REQUIRE(ptr2[3] == -4);
 }
 
+TEST_CASE("Row and column getters/setters", "[sfz::Matrix]")
+{
+	sfz::Matrix<int, 2, 3> m{{1, 2, 3},
+                             {4, 5, 6}};
+
+	SECTION("rowAt()") {
+		sfz::Vector<int, 3> row1 = m.rowAt(0);
+		sfz::Vector<int, 3> row2 = m.rowAt(1);
+
+		REQUIRE(m.at(0, 0) == row1[0]);
+		REQUIRE(m.at(0, 1) == row1[1]);
+		REQUIRE(m.at(0, 2) == row1[2]);
+		REQUIRE(m.at(1, 0) == row2[0]);
+		REQUIRE(m.at(1, 1) == row2[1]);
+		REQUIRE(m.at(1, 2) == row2[2]);
+	}
+	SECTION("columnAt()") {
+		sfz::Vector<int, 2> col1 = m.columnAt(0);
+		sfz::Vector<int, 2> col2 = m.columnAt(1);
+		sfz::Vector<int, 2> col3 = m.columnAt(2);
+
+		REQUIRE(m.at(0, 0) == col1[0]);
+		REQUIRE(m.at(1, 0) == col1[1]);
+		REQUIRE(m.at(0, 1) == col2[0]);
+		REQUIRE(m.at(1, 1) == col2[1]);
+		REQUIRE(m.at(0, 2) == col3[0]);
+		REQUIRE(m.at(1, 2) == col3[1]);
+	}
+	SECTION("setRow()") {
+		m.setRow(1, sfz::Vector<int,3>{-1, -2, -3});
+
+		REQUIRE(m.at(0, 0) == 1);
+		REQUIRE(m.at(0, 1) == 2);
+		REQUIRE(m.at(0, 2) == 3);
+		REQUIRE(m.at(1, 0) == -1);
+		REQUIRE(m.at(1, 1) == -2);
+		REQUIRE(m.at(1, 2) == -3);
+	}
+	SECTION("seColumn()") {
+		m.setColumn(1, sfz::Vector<int,2>{-1, -2});
+
+		REQUIRE(m.at(0, 0) == 1);
+		REQUIRE(m.at(0, 1) == -1);
+		REQUIRE(m.at(0, 2) == 3);
+		REQUIRE(m.at(1, 0) == 4);
+		REQUIRE(m.at(1, 1) == -2);
+		REQUIRE(m.at(1, 2) == 6);
+	}
+}
+
 TEST_CASE("Element-wise multiplication", "[sfz::Matrix]")
 {
 	sfz::mat2i m1{{1, 2},

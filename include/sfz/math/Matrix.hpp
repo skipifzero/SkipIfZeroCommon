@@ -95,6 +95,22 @@ struct Matrix final {
 	T at(size_t i, size_t j) const noexcept;
 
 	/**
+	 * @brief Returns row at the specified location.
+	 * No range checking is done, zero-indexing is used.
+	 * @param i the i:th row
+	 * @return the row at the specified location
+	 */
+	Vector<T,N> rowAt(size_t i) const noexcept;
+
+	/**
+	 * @brief Returns column at the specified location.
+	 * No range checking is done, zero-indexing is used.
+	 * @param j the j:th row
+	 * @return the column at the specified location
+	 */
+	Vector<T,M> columnAt(size_t j) const noexcept;
+
+	/**
 	 * @brief Assigns value to element at the specified location.
 	 * @assert location must be in range
 	 * @param i the i:th row
@@ -102,6 +118,22 @@ struct Matrix final {
 	 * @param value the value to assign
 	 */
 	void set(size_t i, size_t j, T value) noexcept;
+
+	/**
+	 * @brief Assigns vector the specified row.
+	 * @assert location must be in range
+	 * @param i the i:th row
+	 * @param row the row vector to set
+	 */
+	void setRow(size_t i, const Vector<T,N>& row) noexcept;
+
+	/**
+	 * @brief Assigns vector the specified column.
+	 * @assert location must be in range
+	 * @param j the j:th column
+	 * @param column the column vector to set
+	 */
+	void setColumn(size_t j, const Vector<T,M>& column) noexcept;
 
 	/**
 	 * @brief Assigns each element in the matrix with the specified value.
