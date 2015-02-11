@@ -2,6 +2,26 @@
 
 namespace sfz {
 
+// Common specialized operations
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+T determinant(const Matrix<T,2,2>& m) noexcept
+{
+	return m.at(0,0)*m.at(1,1) - m.at(0,1)*m.at(1,0);
+}
+
+template<typename T>
+T determinant(const Matrix<T,3,3>& m) noexcept
+{
+	return m.at(0, 0) * m.at(1, 1) * m.at(2, 2)
+	     + m.at(0, 1) * m.at(1, 2) * m.at(2, 0)
+	     + m.at(0, 2) * m.at(1, 0) * m.at(2, 1)
+	     - m.at(0, 2) * m.at(1, 1) * m.at(2, 0)
+	     - m.at(0, 1) * m.at(1, 0) * m.at(2, 2)
+	     - m.at(0, 0) * m.at(1, 2) * m.at(2, 1);
+}
+
 // Rotation matrices
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

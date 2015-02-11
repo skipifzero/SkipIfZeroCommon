@@ -463,6 +463,18 @@ bool approxEqual(const sfz::mat4f& lhs, const sfz::mat4f& rhs)
 	return true;
 }
 
+TEST_CASE("Determinants", "[sfz::MatrixSupport]")
+{
+	sfz::Matrix<int, 2, 2> m1{{1,2},{3,4}};
+	REQUIRE(sfz::determinant(m1) == -2);
+
+	sfz::Matrix<int, 3, 3> m2{{-1,1,0},{3,5,1},{7,8,9}};
+	REQUIRE(sfz::determinant(m2) == -57);
+
+	sfz::Matrix<int, 3, 3> m3{{99,-2,5},{8,-4,-1},{6,1,-88}};
+	REQUIRE(sfz::determinant(m3) == 33711);
+}
+
 TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 {
 	sfz::vec4f v1{1, 1, 1, 1};
