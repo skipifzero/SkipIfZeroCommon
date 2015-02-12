@@ -465,14 +465,32 @@ bool approxEqual(const sfz::mat4f& lhs, const sfz::mat4f& rhs)
 
 TEST_CASE("Determinants", "[sfz::MatrixSupport]")
 {
-	sfz::Matrix<int, 2, 2> m1{{1,2},{3,4}};
+	sfz::Matrix<int, 2, 2> m1{{1,2}, {3,4}};
 	REQUIRE(sfz::determinant(m1) == -2);
 
-	sfz::Matrix<int, 3, 3> m2{{-1,1,0},{3,5,1},{7,8,9}};
+	sfz::Matrix<int, 3, 3> m2{{-1,1,0}, {3,5,1}, {7,8,9}};
 	REQUIRE(sfz::determinant(m2) == -57);
 
-	sfz::Matrix<int, 3, 3> m3{{99,-2,5},{8,-4,-1},{6,1,-88}};
+	sfz::Matrix<int, 3, 3> m3{{99,-2,5}, {8,-4,-1}, {6,1,-88}};
 	REQUIRE(sfz::determinant(m3) == 33711);
+}
+
+TEST_CASE("Inverse", "[sfz::MatrixSupport]")
+{
+	sfz::Matrix<int, 2, 2> m1{{1, 1}, {1, 2}};
+	sfz::Matrix<int, 2, 2> m1Inv{{2, -1}, {-1, 1}};
+
+	REQUIRE(inverse(m1) == m1Inv);
+
+	sfz::Matrix<int, 2, 2> m2{{1, 0}, {0, 1}};
+	REQUIRE(inverse(m2) == m2);
+
+	sfz::Matrix<int, 3, 3> m3{{1,1,1}, {1,1,2}, {1,2,3}};
+	sfz::Matrix<int, 3, 3> m3Inv{{1,1,-1}, {1, -2, 1}, {-1, 1, 0}};
+	REQUIRE(inverse(m3) == m3Inv);
+
+	sfz::Matrix<int, 3, 3> m4{{1,0,0}, {0,1,0}, {0,0,1}};
+	REQUIRE(inverse(m4) == m4);
 }
 
 TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
