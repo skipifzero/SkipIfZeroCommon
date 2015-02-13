@@ -13,6 +13,26 @@ bool intersects(const AABB& boxA, const AABB& boxB) noexcept
 	return true;
 }
 
+bool intersects(const OBB& boxA, const OBB& boxB) noexcept
+{
+	float radiusA, radiusB;
+	mat3f rotation, rotationAbsVals;
+
+	mat3f aToWorldSpace;
+	aToWorldSpace.setColumn(0, boxA.xAxis());
+	aToWorldSpace.setColumn(1, boxA.yAxis());
+	aToWorldSpace.setColumn(2, boxA.zAxis());
+
+	mat3f bToWorldSpace;
+	bToWorldSpace.setColumn(0, boxB.xAxis());
+	bToWorldSpace.setColumn(1, boxB.yAxis());
+	bToWorldSpace.setColumn(2, boxB.zAxis());
+
+	mat3f worldToASpace = inverse(aToWorldSpace);
+	mat3f bToASpace = worldToASpace * bToWorldSpace;
+	
+}
+
 } // namespace sfz
 
 #include "sfz/MSVC12HackOFF.hpp"
