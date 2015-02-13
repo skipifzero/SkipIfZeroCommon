@@ -9,7 +9,7 @@
 
 namespace sfz {
 
-bool intersects(const AABB& a, const AABB& b) noexcept;
+bool intersects(const AABB& boxA, const AABB& boxB) noexcept;
 
 } // namespace sfz
 
