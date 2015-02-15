@@ -4,12 +4,15 @@
 
 #include "sfz/geometry/AABB.hpp"
 #include "sfz/geometry/OBB.hpp"
+#include "sfz/geometry/Sphere.hpp"
 
 #include "sfz/MSVC12HackON.hpp"
 
 namespace sfz {
 
 bool intersects(const AABB& boxA, const AABB& boxB) noexcept;
+
+bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept;
 
 } // namespace sfz
 

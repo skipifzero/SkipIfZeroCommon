@@ -2,9 +2,7 @@
 #include <catch.hpp>
 #include <vector>
 
-#include "sfz/geometry/Intersection.hpp"
-#include "sfz/geometry/AABB.hpp"
-#include "sfz/geometry/OBB.hpp"
+#include "sfz/Geometry.hpp"
 
 TEST_CASE("AABB & AABB test", "[sfz::Intersection]")
 {
@@ -30,20 +28,33 @@ TEST_CASE("AABB & AABB test", "[sfz::Intersection]")
 	smallSurroundingBoxes.push_back(&boxLeftSmall);
 	smallSurroundingBoxes.push_back(&boxRightSMall);
 
-	REQUIRE(sfz::intersects(boxMidSmall, boxMid));
+	REQUIRE(intersects(boxMidSmall, boxMid));
 
 	for (AABB* boxPtr : smallSurroundingBoxes) {
-		REQUIRE(sfz::intersects(boxMid, *boxPtr));
+		REQUIRE(intersects(boxMid, *boxPtr));
 	}
 
 	for (AABB* boxPtr : smallSurroundingBoxes) {
-		REQUIRE(!sfz::intersects(boxMidSmall, *boxPtr));
+		REQUIRE(!intersects(boxMidSmall, *boxPtr));
 	}
 
 	for (AABB* boxPtr1 : smallSurroundingBoxes) {
 		for (AABB* boxPtr2 : smallSurroundingBoxes) {
-			if (boxPtr1 == boxPtr2) REQUIRE(sfz::intersects(*boxPtr1, *boxPtr2));
-			else REQUIRE(!sfz::intersects(*boxPtr1, *boxPtr2));
+			if (boxPtr1 == boxPtr2) REQUIRE(intersects(*boxPtr1, *boxPtr2));
+			else REQUIRE(!intersects(*boxPtr1, *boxPtr2));
 		}
 	}
+}
+
+TEST_CASE("Sphere & Sphere test", "[sfz::Intersection]")
+{
+	using namespace sfz;
+
+	Sphere mid{vec3f{0.0f, 0.0f, 0.0f}, 0.5f};
+	Sphere midBig{vec3f{0.0f, 0.0f, 0.0f}, 1.0f};
+	Sphere aBitOff{vec3f{-1.1f, 0.0f, 0.0f}, 0.5f};
+
+	REQUIRE(intersects(mid, midBig));
+	REQUIRE(intersects(midBig, aBitOff));
+	REQUIRE(!intersects(mid, aBitOff));
 }

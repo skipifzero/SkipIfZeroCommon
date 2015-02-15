@@ -13,6 +13,15 @@ bool intersects(const AABB& boxA, const AABB& boxB) noexcept
 	return true;
 }
 
+bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept
+{
+	const vec3f distVec = sphereA.position() - sphereB.position();
+	const float squaredDist = distVec.dot(distVec);
+	const float radiusSum = sphereA.radius() + sphereB.radius();
+	const float squaredRadiusSum = radiusSum * radiusSum;
+	return squaredDist <= squaredRadiusSum;
+}
+
 } // namespace sfz
 
 #include "sfz/MSVC12HackOFF.hpp"
