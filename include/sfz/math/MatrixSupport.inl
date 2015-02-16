@@ -8,33 +8,18 @@ namespace sfz {
 template<typename T>
 Matrix<T,3,3> mat3(const Matrix<T,4,4>& m)
 {
-	Matrix<T,3,3> result;
-	result.set(0, 0, m.at(0, 0));
-	result.set(0, 1, m.at(0, 1));
-	result.set(0, 2, m.at(0, 2));
-	result.set(1, 0, m.at(1, 0));
-	result.set(1, 1, m.at(1, 1));
-	result.set(1, 2, m.at(1, 2));
-	result.set(2, 0, m.at(2, 0));
-	result.set(2, 1, m.at(2, 1));
-	result.set(2, 2, m.at(2, 2));
-	return result;
+	return Matrix<T,3,3>{{m.at(0,0), m.at(0,1), m.at(0,2)},
+	                     {m.at(1,0), m.at(1,1), m.at(1,2)},
+	                     {m.at(2,0), m.at(2,1), m.at(2,2)}};
 }
 
 template<typename T>
 Matrix<T,4,4> mat4(const Matrix<T,3,3>& m)
 {
-	Matrix<T,4,4> result = identityMatrix<T>();
-	result.set(0, 0, m.at(0, 0));
-	result.set(0, 1, m.at(0, 1));
-	result.set(0, 2, m.at(0, 2));
-	result.set(1, 0, m.at(1, 0));
-	result.set(1, 1, m.at(1, 1));
-	result.set(1, 2, m.at(1, 2));
-	result.set(2, 0, m.at(2, 0));
-	result.set(2, 1, m.at(2, 1));
-	result.set(2, 2, m.at(2, 2));
-	return result;
+	return Matrix<T,4,4>{{m.at(0,0), m.at(0,1), m.at(0,2), 0},
+	                     {m.at(1,0), m.at(1,1), m.at(1,2), 0},
+	                     {m.at(2,0), m.at(2,1), m.at(2,2), 0},
+	                     {0, 0, 0, 1}};
 }
 
 // Common specialized operations
@@ -104,7 +89,7 @@ Matrix<T,3,3> inverse(const Matrix<T,3,3>& m) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-Matrix<T,4,4> xRotationMatrix(T angleRads) noexcept
+Matrix<T,4,4> xRotationMatrix4(T angleRads) noexcept
 {
 	using std::cos;
 	using std::sin;
@@ -115,7 +100,7 @@ Matrix<T,4,4> xRotationMatrix(T angleRads) noexcept
 }
 
 template<typename T>
-Matrix<T,4,4> yRotationMatrix(T angleRads) noexcept
+Matrix<T,4,4> yRotationMatrix4(T angleRads) noexcept
 {
 	using std::cos;
 	using std::sin;
@@ -126,7 +111,7 @@ Matrix<T,4,4> yRotationMatrix(T angleRads) noexcept
 }
 
 template<typename T>
-Matrix<T,4,4> zRotationMatrix(T angleRads) noexcept
+Matrix<T,4,4> zRotationMatrix4(T angleRads) noexcept
 {
 	using std::cos;
 	using std::sin;
@@ -137,7 +122,7 @@ Matrix<T,4,4> zRotationMatrix(T angleRads) noexcept
 }
 
 template<typename T>
-Matrix<T,4,4> rotationMatrix(const sfz::Vector<T,3>& axis, T angleRads) noexcept
+Matrix<T,4,4> rotationMatrix4(const sfz::Vector<T,3>& axis, T angleRads) noexcept
 {
 	using std::cos;
 	using std::sin;
@@ -159,7 +144,7 @@ Matrix<T,4,4> rotationMatrix(const sfz::Vector<T,3>& axis, T angleRads) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-Matrix<T,4,4> identityMatrix() noexcept
+Matrix<T,4,4> identityMatrix4() noexcept
 {
 	return Matrix<T,4,4>{{1, 0, 0, 0},
 	                     {0, 1, 0, 0},
@@ -168,7 +153,7 @@ Matrix<T,4,4> identityMatrix() noexcept
 }
 
 template<typename T>
-Matrix<T,4,4> scalingMatrix(T scaleFactor) noexcept
+Matrix<T,4,4> scalingMatrix4(T scaleFactor) noexcept
 {
 	return Matrix<T,4,4>{{scaleFactor, 0, 0, 0},
 	                     {0, scaleFactor, 0, 0},
@@ -177,7 +162,7 @@ Matrix<T,4,4> scalingMatrix(T scaleFactor) noexcept
 }
 
 template<typename T>
-Matrix<T,4,4> scalingMatrix(T scaleX, T scaleY, T scaleZ) noexcept
+Matrix<T,4,4> scalingMatrix4(T scaleX, T scaleY, T scaleZ) noexcept
 {
 	return Matrix<T,4,4>{{scaleX, 0, 0, 0},
 	                     {0, scaleY, 0, 0},

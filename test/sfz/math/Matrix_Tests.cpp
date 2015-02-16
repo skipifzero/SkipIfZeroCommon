@@ -515,9 +515,9 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 {
 	sfz::vec4f v1{1, 1, 1, 1};
 
-	SECTION("xRotationMatrix()") {
-		sfz::mat4f xRot90 = sfz::xRotationMatrix(sfz::g_PI_FLOAT/2);
-		REQUIRE(approxEqual(xRot90, sfz::rotationMatrix(sfz::vec3f{1,0,0}, sfz::g_PI_FLOAT/2)));
+	SECTION("xRotationMatrix4()") {
+		sfz::mat4f xRot90 = sfz::xRotationMatrix4(sfz::g_PI_FLOAT/2);
+		REQUIRE(approxEqual(xRot90, sfz::rotationMatrix4(sfz::vec3f{1,0,0}, sfz::g_PI_FLOAT/2)));
 
 		REQUIRE(approxEqual(xRot90.at(0, 0), 1));
 		REQUIRE(approxEqual(xRot90.at(0, 1), 0));
@@ -539,8 +539,8 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(xRot90.at(3, 2), 0));
 		REQUIRE(approxEqual(xRot90.at(3, 3), 1));
 
-		sfz::mat4f xRot180 = sfz::xRotationMatrix(sfz::g_PI_FLOAT);
-		REQUIRE(approxEqual(xRot180, sfz::rotationMatrix(sfz::vec3f{1,0,0}, sfz::g_PI_FLOAT)));
+		sfz::mat4f xRot180 = sfz::xRotationMatrix4(sfz::g_PI_FLOAT);
+		REQUIRE(approxEqual(xRot180, sfz::rotationMatrix4(sfz::vec3f{1,0,0}, sfz::g_PI_FLOAT)));
 
 		REQUIRE(approxEqual(xRot180.at(0, 0), 1));
 		REQUIRE(approxEqual(xRot180.at(0, 1), 0));
@@ -574,9 +574,9 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(v3[2], -1));
 		REQUIRE(approxEqual(v3[3], 1));
 	}
-	SECTION("yRotationMatrix()") {
-		sfz::mat4f yRot90 = sfz::yRotationMatrix(sfz::g_PI_FLOAT/2);
-		REQUIRE(approxEqual(yRot90, sfz::rotationMatrix(sfz::vec3f{0,1,0}, sfz::g_PI_FLOAT/2)));
+	SECTION("yRotationMatrix4()") {
+		sfz::mat4f yRot90 = sfz::yRotationMatrix4(sfz::g_PI_FLOAT/2);
+		REQUIRE(approxEqual(yRot90, sfz::rotationMatrix4(sfz::vec3f{0,1,0}, sfz::g_PI_FLOAT/2)));
 
 		REQUIRE(approxEqual(yRot90.at(0, 0), 0));
 		REQUIRE(approxEqual(yRot90.at(0, 1), 0));
@@ -598,8 +598,8 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(yRot90.at(3, 2), 0));
 		REQUIRE(approxEqual(yRot90.at(3, 3), 1));
 
-		sfz::mat4f yRot180 = sfz::yRotationMatrix(sfz::g_PI_FLOAT);
-		REQUIRE(approxEqual(yRot180, sfz::rotationMatrix(sfz::vec3f{0,1,0}, sfz::g_PI_FLOAT)));
+		sfz::mat4f yRot180 = sfz::yRotationMatrix4(sfz::g_PI_FLOAT);
+		REQUIRE(approxEqual(yRot180, sfz::rotationMatrix4(sfz::vec3f{0,1,0}, sfz::g_PI_FLOAT)));
 
 		REQUIRE(approxEqual(yRot180.at(0, 0), -1));
 		REQUIRE(approxEqual(yRot180.at(0, 1), 0));
@@ -633,9 +633,9 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(v3[2], -1));
 		REQUIRE(approxEqual(v3[3], 1));
 	}
-	SECTION("zRotationMatrix()") {
-		sfz::mat4f zRot90 = sfz::zRotationMatrix(sfz::g_PI_FLOAT/2);
-		REQUIRE(approxEqual(zRot90, sfz::rotationMatrix(sfz::vec3f{0,0,1}, sfz::g_PI_FLOAT/2)));
+	SECTION("zRotationMatrix4()") {
+		sfz::mat4f zRot90 = sfz::zRotationMatrix4(sfz::g_PI_FLOAT/2);
+		REQUIRE(approxEqual(zRot90, sfz::rotationMatrix4(sfz::vec3f{0,0,1}, sfz::g_PI_FLOAT/2)));
 
 		REQUIRE(approxEqual(zRot90.at(0, 0), 0));
 		REQUIRE(approxEqual(zRot90.at(0, 1), -1));
@@ -657,8 +657,8 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(zRot90.at(3, 2), 0));
 		REQUIRE(approxEqual(zRot90.at(3, 3), 1));
 
-		sfz::mat4f zRot180 = sfz::zRotationMatrix(sfz::g_PI_FLOAT);
-		REQUIRE(approxEqual(zRot180, sfz::rotationMatrix(sfz::vec3f{0,0,1}, sfz::g_PI_FLOAT)));
+		sfz::mat4f zRot180 = sfz::zRotationMatrix4(sfz::g_PI_FLOAT);
+		REQUIRE(approxEqual(zRot180, sfz::rotationMatrix4(sfz::vec3f{0,0,1}, sfz::g_PI_FLOAT)));
 
 		REQUIRE(approxEqual(zRot180.at(0, 0), -1));
 		REQUIRE(approxEqual(zRot180.at(0, 1), 0));
@@ -692,11 +692,11 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(v3[2], 1));
 		REQUIRE(approxEqual(v3[3], 1));
 	}
-	SECTION("rotationMatrix()") {
+	SECTION("rotationMatrix4()") {
 		sfz::vec4f startPoint{1, 0, 0, 1};
 		const sfz::vec4f expectedEndPoint{0, 1, 0, 1};
 		sfz::vec3f axis = sfz::vec3f{1, 1, 0} - sfz::vec3f{0, 0, 0};
-		sfz::mat4f rot = sfz::rotationMatrix(axis, sfz::g_PI_FLOAT);
+		sfz::mat4f rot = sfz::rotationMatrix4(axis, sfz::g_PI_FLOAT);
 
 		auto res = rot * startPoint;
 		
@@ -711,8 +711,8 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 {
 	sfz::vec4f v1{1, 1, 1, 1};
-	SECTION("identityMatrix()") {
-		auto m = sfz::identityMatrix<int>();
+	SECTION("identityMatrix4()") {
+		auto m = sfz::identityMatrix4<int>();
 		
 		REQUIRE(m.at(0, 0) == 1);
 		REQUIRE(m.at(0, 1) == 0);
@@ -734,8 +734,8 @@ TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 		REQUIRE(m.at(3, 2) == 0);
 		REQUIRE(m.at(3, 3) == 1);
 	}
-	SECTION("scalingMatrix(scaleFactor)") {
-		auto m = sfz::scalingMatrix(2.0f);
+	SECTION("scalingMatrix4(scaleFactor)") {
+		auto m = sfz::scalingMatrix4(2.0f);
 
 		REQUIRE(approxEqual(m.at(0, 0), 2));
 		REQUIRE(approxEqual(m.at(0, 1), 0));
@@ -763,8 +763,8 @@ TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 		REQUIRE(approxEqual(v2[2], 2));
 		REQUIRE(approxEqual(v2[3], 1));
 	}
-	SECTION("scalingMatrix(scaleX, scaleY, scaleZ)") {
-		auto m = sfz::scalingMatrix(2.0f, 3.0f, 4.0f);
+	SECTION("scalingMatrix4(scaleX, scaleY, scaleZ)") {
+		auto m = sfz::scalingMatrix4(2.0f, 3.0f, 4.0f);
 
 		REQUIRE(approxEqual(m.at(0, 0), 2));
 		REQUIRE(approxEqual(m.at(0, 1), 0));
@@ -907,8 +907,8 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 	             {9, 10, 11, 12},
 	             {13, 14, 15, 16}};
 
-	const sfz::mat4f rotated = sfz::zRotationMatrix(sfz::g_PI_FLOAT/2)
-	                           * sfz::xRotationMatrix(-sfz::g_PI_FLOAT/2);
+	const sfz::mat4f rotated = sfz::zRotationMatrix4(sfz::g_PI_FLOAT/2)
+	                           * sfz::xRotationMatrix4(-sfz::g_PI_FLOAT/2);
 	const sfz::vec3f rotatedForward{-1, 0, 0};
 	const sfz::vec3f rotatedUp{0, 0, -1};
 	const sfz::vec3f rotatedRight{0, 1, 0};
