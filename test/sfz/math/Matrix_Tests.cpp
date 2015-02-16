@@ -463,6 +463,24 @@ bool approxEqual(const sfz::mat4f& lhs, const sfz::mat4f& rhs)
 	return true;
 }
 
+TEST_CASE("Resizing Matrices", "[sfz::MatrixSupport]")
+{
+	sfz::Matrix<int, 4, 4> m1{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+	sfz::Matrix<int, 3, 3> m2{{1, 2, 3}, {5, 6, 7}, {9, 10, 11}};
+
+	REQUIRE(sfz::mat3(m1) == m2);
+	REQUIRE(sfz::mat3(sfz::mat4(m2)) == m2);
+
+	auto m3 = sfz::mat4(m2);
+	REQUIRE(m3.at(3, 0) == 0);
+	REQUIRE(m3.at(3, 1) == 0);
+	REQUIRE(m3.at(3, 2) == 0);
+	REQUIRE(m3.at(3, 3) == 1);
+	REQUIRE(m3.at(2, 3) == 0);
+	REQUIRE(m3.at(1, 3) == 0);
+	REQUIRE(m3.at(0, 3) == 0);
+}
+
 TEST_CASE("Determinants", "[sfz::MatrixSupport]")
 {
 	sfz::Matrix<int, 2, 2> m1{{1,2}, {3,4}};

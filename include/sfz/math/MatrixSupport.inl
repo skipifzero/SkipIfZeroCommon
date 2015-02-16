@@ -2,6 +2,41 @@
 
 namespace sfz {
 
+// Resizing helpers
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+Matrix<T,3,3> mat3(const Matrix<T,4,4>& m)
+{
+	Matrix<T,3,3> result;
+	result.set(0, 0, m.at(0, 0));
+	result.set(0, 1, m.at(0, 1));
+	result.set(0, 2, m.at(0, 2));
+	result.set(1, 0, m.at(1, 0));
+	result.set(1, 1, m.at(1, 1));
+	result.set(1, 2, m.at(1, 2));
+	result.set(2, 0, m.at(2, 0));
+	result.set(2, 1, m.at(2, 1));
+	result.set(2, 2, m.at(2, 2));
+	return result;
+}
+
+template<typename T>
+Matrix<T,4,4> mat4(const Matrix<T,3,3>& m)
+{
+	Matrix<T,4,4> result = identityMatrix<T>();
+	result.set(0, 0, m.at(0, 0));
+	result.set(0, 1, m.at(0, 1));
+	result.set(0, 2, m.at(0, 2));
+	result.set(1, 0, m.at(1, 0));
+	result.set(1, 1, m.at(1, 1));
+	result.set(1, 2, m.at(1, 2));
+	result.set(2, 0, m.at(2, 0));
+	result.set(2, 1, m.at(2, 1));
+	result.set(2, 2, m.at(2, 2));
+	return result;
+}
+
 // Common specialized operations
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -50,6 +85,7 @@ Matrix<T,3,3> inverse(const Matrix<T,3,3>& m) noexcept
 	const T h = m.at(2,1); 
 	const T i = m.at(2,2);
 
+	
 	const T A = (e*i - f*h);
 	const T B = -(d*i - f*g);
 	const T C = (d*h - e*g);

@@ -14,6 +14,15 @@ namespace sfz {
  * @author Peter Hillerström
  */
 
+// Resizing helpers
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+Matrix<T,3,3> mat3(const Matrix<T,4,4>& m);
+
+template<typename T>
+Matrix<T,4,4> mat4(const Matrix<T,3,3>& m);
+
 // Common specialized operations
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
