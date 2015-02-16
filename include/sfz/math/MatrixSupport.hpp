@@ -42,13 +42,25 @@ Matrix<T,3,3> inverse(const Matrix<T,3,3>& m) noexcept;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
+Matrix<T,3,3> xRotationMatrix3(T angleRads) noexcept;
+
+template<typename T>
 Matrix<T,4,4> xRotationMatrix4(T angleRads) noexcept;
+
+template<typename T>
+Matrix<T,3,3> yRotationMatrix3(T angleRads) noexcept;
 
 template<typename T>
 Matrix<T,4,4> yRotationMatrix4(T angleRads) noexcept;
 
 template<typename T>
+Matrix<T,3,3> zRotationMatrix3(T angleRads) noexcept;
+
+template<typename T>
 Matrix<T,4,4> zRotationMatrix4(T angleRads) noexcept;
+
+template<typename T>
+Matrix<T,3,3> rotationMatrix3(const sfz::Vector<T,3>& axis, T angleRads) noexcept;
 
 template<typename T>
 Matrix<T,4,4> rotationMatrix4(const sfz::Vector<T,3>& axis, T angleRads) noexcept;
@@ -57,10 +69,19 @@ Matrix<T,4,4> rotationMatrix4(const sfz::Vector<T,3>& axis, T angleRads) noexcep
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
+Matrix<T,3,3> identityMatrix3() noexcept;
+
+template<typename T>
 Matrix<T,4,4> identityMatrix4() noexcept;
 
 template<typename T>
+Matrix<T,3,3> scalingMatrix3(T scaleFactor) noexcept;
+
+template<typename T>
 Matrix<T,4,4> scalingMatrix4(T scaleFactor) noexcept;
+
+template<typename T>
+Matrix<T,3,3> scalingMatrix3(T scaleX, T scaleY, T scaleZ) noexcept;
 
 template<typename T>
 Matrix<T,4,4> scalingMatrix4(T scaleX, T scaleY, T scaleZ) noexcept;

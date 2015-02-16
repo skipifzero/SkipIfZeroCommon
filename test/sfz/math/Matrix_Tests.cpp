@@ -430,7 +430,8 @@ bool approxEqual(float lhs, float rhs)
 	return lhs <= rhs + eps && lhs >= rhs - eps;
 }
 
-bool approxEqual(const sfz::vec3f& lhs, const sfz::vec3f& rhs)
+template<typename T>
+bool approxEqual(const sfz::Vector<T,3>& lhs, const sfz::Vector<T,3>& rhs)
 {
 	if(!approxEqual(lhs[0], rhs[0])) return false;
 	if(!approxEqual(lhs[1], rhs[1])) return false;
@@ -438,7 +439,8 @@ bool approxEqual(const sfz::vec3f& lhs, const sfz::vec3f& rhs)
 	return true;
 }
 
-bool approxEqual(const sfz::mat4f& lhs, const sfz::mat4f& rhs)
+template<typename T>
+bool approxEqual(const sfz::Matrix<T,4,4>& lhs, const sfz::Matrix<T,4,4>& rhs)
 {
 	if (!approxEqual(lhs.at(0, 0), rhs.at(0, 0))) return false;
 	if (!approxEqual(lhs.at(0, 1), rhs.at(0, 1))) return false;
@@ -705,6 +707,20 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(res[2], expectedEndPoint[2]));
 		REQUIRE(approxEqual(res[3], expectedEndPoint[3]));
 	}
+	SECTION("3 and 4 variants are identical") {
+		REQUIRE(approxEqual(sfz::xRotationMatrix4(2.5f), sfz::mat4(sfz::xRotationMatrix3(2.5f))));
+		REQUIRE(approxEqual(sfz::xRotationMatrix4(1.2f), sfz::mat4(sfz::xRotationMatrix3(1.2f))));
+
+		REQUIRE(approxEqual(sfz::yRotationMatrix4(2.5f), sfz::mat4(sfz::yRotationMatrix3(2.5f))));
+		REQUIRE(approxEqual(sfz::yRotationMatrix4(1.2f), sfz::mat4(sfz::yRotationMatrix3(1.2f))));
+
+		REQUIRE(approxEqual(sfz::zRotationMatrix4(2.5f), sfz::mat4(sfz::zRotationMatrix3(2.5f))));
+		REQUIRE(approxEqual(sfz::zRotationMatrix4(1.2f), sfz::mat4(sfz::zRotationMatrix3(1.2f))));
+
+		sfz::vec3f a{1, -1, 2};
+		REQUIRE(approxEqual(sfz::rotationMatrix4(a, 2.5f), sfz::mat4(sfz::rotationMatrix3(a, 2.5f))));
+		REQUIRE(approxEqual(sfz::rotationMatrix4(a, 1.2f), sfz::mat4(sfz::rotationMatrix3(a, 1.2f))));
+	}
 }
 
 
@@ -713,6 +729,7 @@ TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 	sfz::vec4f v1{1, 1, 1, 1};
 	SECTION("identityMatrix4()") {
 		auto m = sfz::identityMatrix4<int>();
+		REQUIRE(approxEqual(m, sfz::mat4(sfz::identityMatrix3<int>())));
 		
 		REQUIRE(m.at(0, 0) == 1);
 		REQUIRE(m.at(0, 1) == 0);
@@ -736,6 +753,7 @@ TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 	}
 	SECTION("scalingMatrix4(scaleFactor)") {
 		auto m = sfz::scalingMatrix4(2.0f);
+		REQUIRE(approxEqual(m, sfz::mat4(sfz::scalingMatrix3(2.0f))));
 
 		REQUIRE(approxEqual(m.at(0, 0), 2));
 		REQUIRE(approxEqual(m.at(0, 1), 0));
@@ -765,6 +783,7 @@ TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 	}
 	SECTION("scalingMatrix4(scaleX, scaleY, scaleZ)") {
 		auto m = sfz::scalingMatrix4(2.0f, 3.0f, 4.0f);
+		REQUIRE(approxEqual(m, sfz::mat4(sfz::scalingMatrix3(2.0f, 3.0f, 4.0f))));
 
 		REQUIRE(approxEqual(m.at(0, 0), 2));
 		REQUIRE(approxEqual(m.at(0, 1), 0));
