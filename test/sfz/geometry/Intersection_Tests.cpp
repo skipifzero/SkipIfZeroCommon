@@ -4,6 +4,16 @@
 
 #include "sfz/Geometry.hpp"
 
+TEST_CASE("Point inside AABB test", "[sfz::Intersection]")
+{
+	using namespace sfz;
+
+	AABB box{vec3f{-1,-1,-1}, vec3f{1,1,1}};
+
+	REQUIRE(inside(box, vec3f{0,0,0}));
+	REQUIRE(!inside(box, vec3f{-2,0,0}));
+}
+
 TEST_CASE("AABB & AABB test", "[sfz::Intersection]")
 {
 	using namespace sfz;
