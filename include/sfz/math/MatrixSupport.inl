@@ -296,8 +296,8 @@ Matrix<T,4,4> glPerspectiveProjectionMatrix(T left, T bottom, T zNear,
 inline Matrix<float,4,4> glPerspectiveProjectionMatrix(float yFovDeg, float aspectRatio,
                                                        float zNear, float zFar) noexcept
 {
-	assert(0 < zNear);
-	assert(zNear < zFar);
+	sfz_assert_debug(0 < zNear);
+	sfz_assert_debug(zNear < zFar);
 	float yMax = zNear * tanf(yFovDeg * (g_PI_FLOAT/360.f));
 	float xMax = yMax * aspectRatio;
 	return glPerspectiveProjectionMatrix(-xMax, -yMax, zNear, xMax, yMax, zFar);

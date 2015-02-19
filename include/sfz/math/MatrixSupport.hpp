@@ -3,6 +3,8 @@
 #define SFZ_MATH_MATRIX_SUPPORT_HPP
 
 #include <cmath>
+
+#include "sfz/Assert.hpp"
 #include "sfz/math/Matrix.hpp"
 #include "sfz/MSVC12HackON.hpp"
 

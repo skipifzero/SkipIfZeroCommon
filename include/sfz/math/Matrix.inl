@@ -8,10 +8,10 @@ namespace sfz {
 template<typename T, size_t M, size_t N>
 Matrix<T,M,N>::Matrix(std::initializer_list<std::initializer_list<T>> list) noexcept
 {
-	assert(list.size() <= M);
+	sfz_assert_debug(list.size() <= M);
 	size_t i = 0;
 	for (auto& rowList : list) {
-		assert(rowList.size() <= N);
+		sfz_assert_debug(rowList.size() <= N);
 		size_t j = 0;
 		for (T element : rowList) {
 			mElements[j][i] = element;
@@ -37,18 +37,23 @@ Matrix<T,M,N>::Matrix(std::initializer_list<std::initializer_list<T>> list) noex
 template<typename T, size_t M, size_t N>
 T& Matrix<T,M,N>::at(size_t i, size_t j) noexcept
 {
+	sfz_assert_debug(i < M);
+	sfz_assert_debug(j < N);
 	return mElements[j][i];
 }
 
 template<typename T, size_t M, size_t N>
 T Matrix<T,M,N>::at(size_t i, size_t j) const noexcept
 {
+	sfz_assert_debug(i < M);
+	sfz_assert_debug(j < N);
 	return mElements[j][i];
 }
 
 template<typename T, size_t M, size_t N>
 Vector<T,N> Matrix<T,M,N>::rowAt(size_t i) const noexcept
 {
+	sfz_assert_debug(i < M);
 	Vector<T,N> row;
 	for (size_t j = 0; j < N; j++) {
 		row[j] = mElements[j][i];
@@ -59,6 +64,7 @@ Vector<T,N> Matrix<T,M,N>::rowAt(size_t i) const noexcept
 template<typename T, size_t M, size_t N>
 Vector<T,M> Matrix<T,M,N>::columnAt(size_t j) const noexcept
 {
+	sfz_assert_debug(j < N);
 	Vector<T,M> column;
 	for (size_t i = 0; i < N; i++) {
 		column[i] = mElements[j][i];
@@ -69,15 +75,15 @@ Vector<T,M> Matrix<T,M,N>::columnAt(size_t j) const noexcept
 template<typename T, size_t M, size_t N>
 void Matrix<T,M,N>::set(size_t i, size_t j, T value) noexcept
 {
-	assert(i < M);
-	assert(j < N);
+	sfz_assert_debug(i < M);
+	sfz_assert_debug(j < N);
 	mElements[j][i] = value;
 }
 
 template<typename T, size_t M, size_t N>
 void Matrix<T,M,N>::setRow(size_t i, const Vector<T,N>& row) noexcept
 {
-	assert(i < M);
+	sfz_assert_debug(i < M);
 	size_t j = 0;
 	for (auto element : row) {
 		mElements[j][i] = element;
@@ -88,7 +94,7 @@ void Matrix<T,M,N>::setRow(size_t i, const Vector<T,N>& row) noexcept
 template<typename T, size_t M, size_t N>
 void Matrix<T,M,N>::setColumn(size_t j, const Vector<T,M>& column) noexcept
 {
-	assert(j < N);
+	sfz_assert_debug(j < N);
 	size_t i = 0;
 	for (auto element : column) {
 		mElements[j][i] = element;

@@ -167,22 +167,22 @@ void OBB::halfZExtent(float newHalfZExtent) noexcept
 void OBB::ensureCorrectAxes() const noexcept
 {
 	// Check if axes are orthogonal
-	assert(approxEqual(mAxes[0].dot(mAxes[1]), 0.0f));
-	assert(approxEqual(mAxes[0].dot(mAxes[2]), 0.0f));
-	assert(approxEqual(mAxes[1].dot(mAxes[2]), 0.0f));
+	sfz_assert_debug(approxEqual(mAxes[0].dot(mAxes[1]), 0.0f));
+	sfz_assert_debug(approxEqual(mAxes[0].dot(mAxes[2]), 0.0f));
+	sfz_assert_debug(approxEqual(mAxes[1].dot(mAxes[2]), 0.0f));
 
 	// Check if axes are normalized
-	assert(approxEqual(mAxes[0].norm(), 1.0f));
-	assert(approxEqual(mAxes[1].norm(), 1.0f));
-	assert(approxEqual(mAxes[2].norm(), 1.0f));
+	sfz_assert_debug(approxEqual(mAxes[0].norm(), 1.0f));
+	sfz_assert_debug(approxEqual(mAxes[1].norm(), 1.0f));
+	sfz_assert_debug(approxEqual(mAxes[2].norm(), 1.0f));
 }
 
 void OBB::ensureCorrectExtents() const noexcept
 {
 	// Extents are non-negative
-	assert(0.0f < mHalfExtents[0]);
-	assert(0.0f < mHalfExtents[1]);
-	assert(0.0f < mHalfExtents[2]);
+	sfz_assert_debug(0.0f < mHalfExtents[0]);
+	sfz_assert_debug(0.0f < mHalfExtents[1]);
+	sfz_assert_debug(0.0f < mHalfExtents[2]);
 }
 
 // Non-member operators

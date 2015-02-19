@@ -5,8 +5,8 @@
 #include <initializer_list>
 #include <string>
 #include <iostream> // std::ostream
-#include <cassert>
 
+#include "sfz/Assert.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/MSVC12HackON.hpp"
 
@@ -66,7 +66,7 @@ struct Matrix final {
 	 * The elements are given in row-major order because it's more natural to write and read a
 	 * matrix that way in source. This is however not how the elements will be saved as the
 	 * internal representation uses column-major order. Any unspecified elements will be set to 0.
-	 * @assert if any of the lists are larger than the row or column it's trying to fill
+	 * @sfz_assert_debug if any of the lists are larger than the row or column it's trying to fill
 	 * @param list the (column) initializer list of (row) initializer lists
 	 */
 	Matrix(std::initializer_list<std::initializer_list<T>> list) noexcept;
@@ -78,7 +78,7 @@ struct Matrix final {
 
 	/**
 	 * @brief General accessor returning the reference to element at the specified location.
-	 * No range checking is done, zero-indexing is used. Can be used for both reading and writing.
+	 * @sfz_assert_debug location must be in range
 	 * @param i the i:th row
 	 * @param j the j:th column
 	 * @return reference to element at the specified location
@@ -87,7 +87,7 @@ struct Matrix final {
 
 	/**
 	 * @brief Returns the element at the specified location.
-	 * No range checking is done, zero-indexing is used.
+	 * @sfz_assert_debug location must be in range
 	 * @param i the i:th row
 	 * @param j the j:th column
 	 * @return the element at the specified location
@@ -96,7 +96,7 @@ struct Matrix final {
 
 	/**
 	 * @brief Returns row at the specified location.
-	 * No range checking is done, zero-indexing is used.
+	 * @sfz_assert_debug location must be in range
 	 * @param i the i:th row
 	 * @return the row at the specified location
 	 */
@@ -104,7 +104,7 @@ struct Matrix final {
 
 	/**
 	 * @brief Returns column at the specified location.
-	 * No range checking is done, zero-indexing is used.
+	 * @sfz_assert_debug location must be in range
 	 * @param j the j:th row
 	 * @return the column at the specified location
 	 */
@@ -112,7 +112,7 @@ struct Matrix final {
 
 	/**
 	 * @brief Assigns value to element at the specified location.
-	 * @assert location must be in range
+	 * @sfz_assert_debug location must be in range
 	 * @param i the i:th row
 	 * @param j the j:th column
 	 * @param value the value to assign
@@ -121,7 +121,7 @@ struct Matrix final {
 
 	/**
 	 * @brief Assigns vector the specified row.
-	 * @assert location must be in range
+	 * @sfz_assert_debug location must be in range
 	 * @param i the i:th row
 	 * @param row the row vector to set
 	 */
@@ -129,7 +129,7 @@ struct Matrix final {
 
 	/**
 	 * @brief Assigns vector the specified column.
-	 * @assert location must be in range
+	 * @sfz_assert_debug location must be in range
 	 * @param j the j:th column
 	 * @param column the column vector to set
 	 */

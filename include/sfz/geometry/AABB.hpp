@@ -5,8 +5,8 @@
 #include <string>
 #include <iostream> // std::ostream
 #include <functional> // std::hash
-#include <cassert>
 
+#include "sfz/Assert.hpp"
 #include "sfz/math/Vector.hpp"
 
 #include "sfz/MSVC12HackON.hpp"
@@ -28,12 +28,12 @@ public:
 	~AABB() noexcept = default;
 
 	/**
-	 * @assert min is smaller than max in all axes
+	 * @sfz_debug_assert min is smaller than max in all axes
 	 */
 	AABB(const vec3f& min, const vec3f& max) noexcept;
 
 	/**
-	 * @assert all extents are larger than 0
+	 * @sfz_debug_assert all extents are larger than 0
 	 */
 	AABB(const vec3f& centerPos, float xExtent, float yExtent, float zExtent) noexcept;
 

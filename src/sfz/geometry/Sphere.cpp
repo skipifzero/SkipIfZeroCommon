@@ -12,7 +12,7 @@ Sphere::Sphere(const vec3f& center, float radius) noexcept
 	mCenter{center},
 	mRadius{radius}
 {
-	assert(radius > 0.0f);
+	sfz_assert_debug(radius > 0.0f);
 }
 
 // Public member functions
@@ -48,7 +48,7 @@ void Sphere::position(const vec3f& newPosition) noexcept
 
 void Sphere::radius(float newRadius) noexcept
 {
-	assert(newRadius > 0.0f);
+	sfz_assert_debug(newRadius > 0.0f);
 	mRadius = newRadius;
 }
 

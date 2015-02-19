@@ -6,8 +6,8 @@
 #include <array>
 #include <iostream> // std::ostream
 #include <functional> // std::hash
-#include <cassert>
 
+#include "sfz/Assert.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/geometry/AABB.hpp"
 

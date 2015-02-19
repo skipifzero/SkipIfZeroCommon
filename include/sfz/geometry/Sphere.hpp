@@ -5,8 +5,8 @@
 #include <string>
 #include <iostream> // std::ostream
 #include <functional> // std::hash
-#include <cassert>
 
+#include "sfz/Assert.hpp"
 #include "sfz/math/Vector.hpp"
 
 #include "sfz/MSVC12HackON.hpp"
@@ -28,7 +28,7 @@ public:
 	~Sphere() noexcept = default;
 
 	/**
-	 * @assert radius > 0
+	 * @sfz_assert_debug radius > 0
 	 */
 	Sphere(const vec3f& center, float radius) noexcept;
 
