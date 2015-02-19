@@ -3,28 +3,25 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 # Project name
 project("SkipIfZero Common")
 
-# Compiler flags
-if ( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
-  OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
-  OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-	# GCC and Clang flags
-	set(compiler_flags "-Wall -Wextra -Wno-c++11-extensions -std=c++11 -pthread -O3")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	# MSVC flags
-	# set(compiler_flags "/Wall /EHsc /O2")
-	set(compiler_flags "/O2")
-else ()
-	# Unknown compiler, sets no flags and prints warning.
-	message("WARNING: Unknown compiler \"${CMAKE_CXX_COMPILER_ID}\", no specific flags set.")
-endif ()
+# Sets build type to release if no build type is specified in a single-configuration generator.
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release)
+endif(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-# Sets the specified compiler flags, will only set the first time cmake configures project.
-if (NOT SFZC_CONFIGURED_ONCE)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${compiler_flags}" 
-	    CACHE STRING "Flags used by the compiler during all build types." FORCE)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${compiler_flags}"
-	    CACHE STRING "Flags used by the compiler during all build types." FORCE)
-endif ()
+# Compiler flags
+if(MSVC)
+	# MSVC flags
+	set(CMAKE_CXX_FLAGS "/Wall")
+	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /DSFZ_NO_DEBUG")
+	set(CMAKE_CXX_FLAGS_RELEASE "/O2 /DSFZ_NO_DEBUG")
+	set(CMAKE_CXX_FLAGS_DEBUG  "/Od")
+else()
+	# GCC / Clang flags
+	set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-c++11-extensions -std=c++11 -pthread")
+	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g -DSFZ_NO_DEBUG")
+	set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DSFZ_NO_DEBUG")
+	set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -g")
+endif()
 
 # Directories
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -43,6 +40,8 @@ include_directories(${CATCH_INCLUDE_DIRS})
 set(SOURCE_INCLUDE_FILES
 	${INCLUDE_DIR}/sfz/MSVC12HackON.hpp
 	${INCLUDE_DIR}/sfz/MSVC12HackOFF.hpp
+	${INCLUDE_DIR}/sfz/Assert.hpp
+	${INCLUDE_DIR}/sfz/Assert.inl
 
 	${INCLUDE_DIR}/sfz/Geometry.hpp
 	${INCLUDE_DIR}/sfz/geometry/AABB.hpp
@@ -103,6 +102,3 @@ add_test(Intersection_Tests_Name Intersection_Tests)
 add_executable(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
 set_property(TARGET BlockingQueue_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(BlockingQueue_Tests_Name BlockingQueue_Tests)
-
-# Sets flag that ensures some variables are only set once.
-set(SFZC_CONFIGURED_ONCE TRUE CACHE INTERNAL "A flag showing that CMake has configured at least once.")
