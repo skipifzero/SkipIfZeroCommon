@@ -5,6 +5,7 @@
 #include "sfz/geometry/AABB.hpp"
 #include "sfz/geometry/Intersection.hpp"
 #include "sfz/geometry/OBB.hpp"
+#include "sfz/geometry/Plane.hpp"
 #include "sfz/geometry/Sphere.hpp"
 
 #endif

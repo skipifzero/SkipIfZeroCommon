@@ -50,6 +50,8 @@ set(SOURCE_INCLUDE_FILES
 	 ${SOURCE_DIR}/sfz/geometry/Intersection.cpp
 	${INCLUDE_DIR}/sfz/geometry/OBB.hpp
 	 ${SOURCE_DIR}/sfz/geometry/OBB.cpp
+	${INCLUDE_DIR}/sfz/geometry/Plane.hpp
+	 ${SOURCE_DIR}/sfz/geometry/Plane.cpp
 	${INCLUDE_DIR}/sfz/geometry/Sphere.hpp
 	 ${SOURCE_DIR}/sfz/geometry/Sphere.cpp
 
