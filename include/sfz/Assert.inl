@@ -3,58 +3,46 @@
 
 #if !defined(SFZ_NO_DEBUG) && !defined(SFZ_NO_ASSERTIONS)
 
-	inline void sfz_assert_debug(bool condition) noexcept
-	{
-		assert(condition);
-	}
+	#define sfz_assert_debug_impl(condition) assert(condition)
 
-	inline void sfz_assert_debug(bool condition, const std::string& message) noexcept
-	{
-		if (!condition) {
-			std::cerr << message << std::endl;
-			assert(condition);
+	#define sfz_assert_debug_m_impl(condition, message) \
+		if (!condition) { \
+			std::cerr << message << std::endl; \
+			assert(condition); \
 		}
-	}
 
 #else
-	inline void sfz_assert_debug(bool) noexcept { }
-	inline void sfz_assert_debug(bool, const std::string&) noexcept { }
+	#define sfz_assert_debug_impl(condition) ((void)0)
+	#define sfz_assert_debug_m_impl(condition, message) ((void)0)
 #endif
 
 
 
 #if !defined(SFZ_NO_ASSERTIONS)
 
-	inline void sfz_assert_release(bool condition) noexcept
-	{
-		assert(condition);	
-	}
+	#define sfz_assert_release_impl(condition) assert(condition)
 
-	inline void sfz_assert_release(bool condition, const std::string& message) noexcept
-	{
-		if (!condition) {
-			std::cerr << message << std::endl;
-			assert(condition);
+	#define sfz_assert_release_m_impl(condition, message) \
+		if (!condition) { \
+			std::cerr << message << std::endl; \
+			assert(condition); \
 		}
-	}
 
 #else
-	inline void sfz_assert_release(bool) noexcept {}
-	inline void sfz_assert_release(bool, const std::string&) noexcept {}
+	#define sfz_assert_release_impl(condition) ((void)0)
+	#define sfz_assert_release_m_impl(condition, message) ((void)0)
 #endif
 
 
 
 #if !defined(SFZ_DISABLE_ERRORS)
 
-	inline void sfz_error(const std::string& message) noexcept
-	{
-		std::cerr << message << std::endl;
+	#define sfz_error_impl(message) \
+		std::cerr << message << std::endl; \
 		std::terminate();
-	}
 
 #else
-	inline void sfz_error(const std::string&) noexcept {}
+	#define sfz_error_impl(message) ((void)0)
 #endif
 
 
