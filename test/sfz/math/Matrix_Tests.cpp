@@ -1016,7 +1016,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		auto v3 = down(rotated);
 		REQUIRE(approxEqual(v3, -rotatedUp));
 	}
-	SECTION("right()") {
+	SECTION("right()") {
 		auto v1 = right(m);
 		REQUIRE(approxEqual(m.at(0, 0), v1[0]));
 		REQUIRE(approxEqual(m.at(1, 0), v1[1]));

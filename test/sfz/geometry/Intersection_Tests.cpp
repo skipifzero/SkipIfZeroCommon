@@ -49,7 +49,7 @@ TEST_CASE("AABB & AABB test", "[sfz::Intersection]")
 	}
 
 	for (AABB* boxPtr1 : smallSurroundingBoxes) {
-		for (AABB* boxPtr2 : smallSurroundingBoxes) {
+		for (AABB* boxPtr2 : smallSurroundingBoxes) {
 			if (boxPtr1 == boxPtr2) REQUIRE(intersects(*boxPtr1, *boxPtr2));
 			else REQUIRE(!intersects(*boxPtr1, *boxPtr2));
 		}
