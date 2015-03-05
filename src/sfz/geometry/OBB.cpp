@@ -62,6 +62,28 @@ OBB::OBB(const AABB& aabb) noexcept
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+std::array<vec3f,8> OBB::corners() const noexcept
+{
+	std::array<vec3f,8> result;
+	this->corners(&result[0]);
+	return result;
+}
+
+void OBB::corners(vec3f* arrayOut) const noexcept
+{
+	vec3f halfXExtVec = mAxes[0]*mHalfExtents[0];
+	vec3f halfYExtVec = mAxes[1]*mHalfExtents[1];
+	vec3f halfZExtVec = mAxes[2]*mHalfExtents[2];
+	arrayOut[0] = mCenter - halfXExtVec - halfYExtVec - halfZExtVec; // Back-bottom-left
+	arrayOut[1] = mCenter - halfXExtVec - halfYExtVec + halfZExtVec; // Front-bottom-left
+	arrayOut[2] = mCenter - halfXExtVec + halfYExtVec - halfZExtVec; // Back-top-left
+	arrayOut[3] = mCenter - halfXExtVec + halfYExtVec + halfZExtVec; // Front-top-left
+	arrayOut[4] = mCenter + halfXExtVec - halfYExtVec - halfZExtVec; // Back-bottom-right
+	arrayOut[5] = mCenter + halfXExtVec - halfYExtVec + halfZExtVec; // Front-bottom-right
+	arrayOut[6] = mCenter + halfXExtVec + halfYExtVec - halfZExtVec; // Back-top-right
+	arrayOut[7] = mCenter + halfXExtVec + halfYExtVec + halfZExtVec; // Front-top-right
+}
+
 size_t OBB::hash() const noexcept
 {
 	std::hash<vec3f> hasher;
