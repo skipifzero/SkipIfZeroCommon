@@ -3,6 +3,7 @@
 #define SFZ_GEOMETRY_AABB_HPP
 
 #include <string>
+#include <array>
 #include <iostream> // std::ostream
 #include <functional> // std::hash
 
@@ -39,6 +40,9 @@ public:
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	std::array<vec3f,8> corners() const noexcept;
+	void corners(vec3f* arrayOut) const noexcept;
 
 	size_t hash() const noexcept;
 	std::string to_string() const noexcept;
