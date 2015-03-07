@@ -483,6 +483,25 @@ TEST_CASE("Resizing Matrices", "[sfz::MatrixSupport]")
 	REQUIRE(m3.at(0, 3) == 0);
 }
 
+TEST_CASE("Transforming 3d vector with 4x4 matrix", "[sfz::MatrixSupport]")
+{
+	sfz::Matrix<int, 4, 4> m{{2, 0, 0, 1}, {0, 2, 0, 0}, {0, 0, 2, 0}, {0, 0, 0, 1}};
+	sfz::Vector<int, 3> v{1, 1, 1};
+
+	SECTION("transformPoint()") {
+		sfz::Vector<int, 3> v2 = sfz::transformPoint(m, v);
+		REQUIRE(v2[0] == 3);
+		REQUIRE(v2[1] == 2);
+		REQUIRE(v2[2] == 2);
+	}
+	SECTION("transformDir()") {
+		sfz::Vector<int, 3> v2 = sfz::transformDir(m, v);
+		REQUIRE(v2[0] == 2);
+		REQUIRE(v2[1] == 2);
+		REQUIRE(v2[2] == 2);
+	}
+}
+
 TEST_CASE("Determinants", "[sfz::MatrixSupport]")
 {
 	sfz::Matrix<int, 2, 2> m1{{1,2}, {3,4}};

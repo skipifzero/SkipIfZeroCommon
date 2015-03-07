@@ -6,7 +6,7 @@ namespace sfz {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-Matrix<T,3,3> mat3(const Matrix<T,4,4>& m)
+Matrix<T,3,3> mat3(const Matrix<T,4,4>& m) noexcept
 {
 	return Matrix<T,3,3>{{m.at(0,0), m.at(0,1), m.at(0,2)},
 	                     {m.at(1,0), m.at(1,1), m.at(1,2)},
@@ -14,12 +14,32 @@ Matrix<T,3,3> mat3(const Matrix<T,4,4>& m)
 }
 
 template<typename T>
-Matrix<T,4,4> mat4(const Matrix<T,3,3>& m)
+Matrix<T,4,4> mat4(const Matrix<T,3,3>& m) noexcept
 {
 	return Matrix<T,4,4>{{m.at(0,0), m.at(0,1), m.at(0,2), 0},
 	                     {m.at(1,0), m.at(1,1), m.at(1,2), 0},
 	                     {m.at(2,0), m.at(2,1), m.at(2,2), 0},
 	                     {0, 0, 0, 1}};
+}
+
+// Transforming 3D vector helpers
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T>
+Vector<T,3> transformPoint(const Matrix<T,4,4>& m, const Vector<T,3>& p) noexcept
+{
+	Vector<T,4> v4{p[0], p[1], p[2], 1};
+	v4 = m * v4;
+	v4 = v4 / v4[3];
+	return Vector<T,3>{v4[0], v4[1], v4[2]};
+}
+
+template<typename T>
+Vector<T,3> transformDir(const Matrix<T,4,4>& m, const Vector<T,3>& d) noexcept
+{
+	Vector<T,4> v4{d[0], d[1], d[2], 0};
+	v4 = m * v4;
+	return Vector<T,3>{v4[0], v4[1], v4[2]};
 }
 
 // Common specialized operations
