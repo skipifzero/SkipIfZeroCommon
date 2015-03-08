@@ -84,6 +84,16 @@ void OBB::corners(vec3f* arrayOut) const noexcept
 	arrayOut[7] = mCenter + halfXExtVec + halfYExtVec + halfZExtVec; // Front-top-right
 }
 
+OBB OBB::transformOBB(const mat4f& transform) const noexcept
+{
+	const vec3f newPos = transformPoint(transform, mCenter);
+	const vec3f newXHExt = transformDir(transform, mAxes[0] * mHalfExtents[0]);
+	const vec3f newYHExt = transformDir(transform, mAxes[1] * mHalfExtents[1]);
+	const vec3f newZHExt = transformDir(transform, mAxes[2] * mHalfExtents[2]);
+	return OBB{newPos, newXHExt.normalize(), newYHExt.normalize(), newZHExt.normalize(),
+	           newXHExt.norm(), newYHExt.norm(), newZHExt.norm()};
+}
+
 size_t OBB::hash() const noexcept
 {
 	std::hash<vec3f> hasher;
