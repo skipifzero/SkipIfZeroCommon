@@ -84,6 +84,23 @@ void OBB::corners(vec3f* arrayOut) const noexcept
 	arrayOut[7] = mCenter + halfXExtVec + halfYExtVec + halfZExtVec; // Front-top-right
 }
 
+vec3f OBB::closestPoint(const vec3f& point) const noexcept
+{
+	// Algorithm from Real-Time Collision Detection (Section 5.1.4)
+	const vec3f distToPoint = point - mCenter;
+	vec3f res = mCenter;
+
+	float dist;
+	for (size_t i = 0; i < 3; i++) {
+		dist = distToPoint.dot(mAxes[i]);
+		if (dist > mHalfExtents[i]) dist = mHalfExtents[i];
+		if (dist < -mHalfExtents[i]) dist = -mHalfExtents[i];
+		res += (dist * mAxes[i]);
+	}
+
+	return res;
+}
+
 OBB OBB::transformOBB(const mat4f& transform) const noexcept
 {
 	const vec3f newPos = transformPoint(transform, mCenter);

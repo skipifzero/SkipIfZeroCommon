@@ -45,6 +45,7 @@ public:
 
 	std::array<vec3f,8> corners() const noexcept;
 	void corners(vec3f* arrayOut) const noexcept;
+	vec3f closestPoint(const vec3f& point) const noexcept;
 	OBB transformOBB(const mat4f& transform) const noexcept;
 
 	size_t hash() const noexcept;
