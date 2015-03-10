@@ -43,6 +43,7 @@ public:
 
 	std::array<vec3f,8> corners() const noexcept;
 	void corners(vec3f* arrayOut) const noexcept;
+	vec3f closestPoint(const vec3f& point) const noexcept;
 
 	size_t hash() const noexcept;
 	std::string to_string() const noexcept;

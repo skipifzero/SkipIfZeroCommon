@@ -61,6 +61,19 @@ void AABB::corners(vec3f* arrayOut) const noexcept
 	arrayOut[7] = mMax; // Front-top-right
 }
 
+vec3f AABB::closestPoint(const vec3f& point) const noexcept
+{
+	vec3f res = point;
+	float val;
+	for (size_t i = 0; i < 3; i++) {
+		val = point[i];
+		if (val < mMin[i]) val = mMin[i];
+		if (val > mMax[i]) val = mMax[i];
+		res[i] = val;
+	}
+	return res;
+}
+
 size_t AABB::hash() const noexcept
 {
 	std::hash<vec3f> hasher;
