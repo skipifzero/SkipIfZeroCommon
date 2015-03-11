@@ -37,6 +37,7 @@ public:
 
 	size_t hash() const noexcept;
 	std::string to_string() const noexcept;
+	vec3f closestPoint(const vec3f& point) const noexcept;
 
 	// Public getters/setters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

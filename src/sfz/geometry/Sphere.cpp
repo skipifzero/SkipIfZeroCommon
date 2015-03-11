@@ -18,6 +18,17 @@ Sphere::Sphere(const vec3f& center, float radius) noexcept
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+vec3f Sphere::closestPoint(const vec3f& point) const noexcept
+{
+	const vec3f distToPoint = point - mCenter;
+	vec3f res = point;
+	if (distToPoint.squaredNorm() > mRadius*mRadius)
+	{
+		res = mCenter + distToPoint.normalize()*mRadius;
+	}
+	return res;
+}
+
 size_t Sphere::hash() const noexcept
 {
 	std::hash<vec3f> vecHasher;
