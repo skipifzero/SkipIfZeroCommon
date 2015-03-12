@@ -4,6 +4,7 @@
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Matrix.hpp"
 #include "sfz/math/MatrixSupport.hpp"
+#include "sfz/math/MathHelpers.hpp"
 
 #include <unordered_map>
 #include <type_traits>
@@ -426,43 +427,17 @@ TEST_CASE("Is proper POD", "[sfz::Matrix]")
 
 bool approxEqual(float lhs, float rhs)
 {
-	float eps = 0.001f;
-	return lhs <= rhs + eps && lhs >= rhs - eps;
+	return sfz::approxEqual(lhs, rhs);
 }
 
-template<typename T>
-bool approxEqual(const sfz::Vector<T,3>& lhs, const sfz::Vector<T,3>& rhs)
+bool approxEqual(const sfz::Vector<float,3>& lhs, const sfz::Vector<float,3>& rhs)
 {
-	if(!approxEqual(lhs[0], rhs[0])) return false;
-	if(!approxEqual(lhs[1], rhs[1])) return false;
-	if(!approxEqual(lhs[2], rhs[2])) return false;
-	return true;
+	return sfz::approxEqual(lhs, rhs);
 }
 
-template<typename T>
-bool approxEqual(const sfz::Matrix<T,4,4>& lhs, const sfz::Matrix<T,4,4>& rhs)
+bool approxEqual(const sfz::Matrix<float,4,4>& lhs, const sfz::Matrix<float,4,4>& rhs)
 {
-	if (!approxEqual(lhs.at(0, 0), rhs.at(0, 0))) return false;
-	if (!approxEqual(lhs.at(0, 1), rhs.at(0, 1))) return false;
-	if (!approxEqual(lhs.at(0, 2), rhs.at(0, 2))) return false;
-	if (!approxEqual(lhs.at(0, 3), rhs.at(0, 3))) return false;
-
-	if (!approxEqual(lhs.at(1, 0), rhs.at(1, 0))) return false;
-	if (!approxEqual(lhs.at(1, 1), rhs.at(1, 1))) return false;
-	if (!approxEqual(lhs.at(1, 2), rhs.at(1, 2))) return false;
-	if (!approxEqual(lhs.at(1, 3), rhs.at(1, 3))) return false;
-
-	if (!approxEqual(lhs.at(2, 0), rhs.at(2, 0))) return false;
-	if (!approxEqual(lhs.at(2, 1), rhs.at(2, 1))) return false;
-	if (!approxEqual(lhs.at(2, 2), rhs.at(2, 2))) return false;
-	if (!approxEqual(lhs.at(2, 3), rhs.at(2, 3))) return false;
-
-	if (!approxEqual(lhs.at(3, 0), rhs.at(3, 0))) return false;
-	if (!approxEqual(lhs.at(3, 1), rhs.at(3, 1))) return false;
-	if (!approxEqual(lhs.at(3, 2), rhs.at(3, 2))) return false;
-	if (!approxEqual(lhs.at(3, 3), rhs.at(3, 3))) return false;
-	
-	return true;
+	return sfz::approxEqual<float,4,4>(lhs, rhs);
 }
 
 TEST_CASE("Resizing Matrices", "[sfz::MatrixSupport]")
@@ -748,7 +723,7 @@ TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 	sfz::vec4f v1{1, 1, 1, 1};
 	SECTION("identityMatrix4()") {
 		auto m = sfz::identityMatrix4<int>();
-		REQUIRE(approxEqual(m, sfz::mat4(sfz::identityMatrix3<int>())));
+		REQUIRE(m == sfz::mat4(sfz::identityMatrix3<int>()));
 		
 		REQUIRE(m.at(0, 0) == 1);
 		REQUIRE(m.at(0, 1) == 0);

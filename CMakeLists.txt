@@ -57,6 +57,8 @@ set(SOURCE_INCLUDE_FILES
 
 	${INCLUDE_DIR}/sfz/Math.hpp
 	${INCLUDE_DIR}/sfz/math/MathConstants.hpp
+	${INCLUDE_DIR}/sfz/math/MathHelpers.hpp
+	${INCLUDE_DIR}/sfz/math/MathHelpers.inl
 	${INCLUDE_DIR}/sfz/math/Matrix.hpp
 	${INCLUDE_DIR}/sfz/math/Matrix.inl
 	${INCLUDE_DIR}/sfz/math/MatrixSupport.hpp
