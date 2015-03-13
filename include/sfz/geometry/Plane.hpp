@@ -6,7 +6,9 @@
 #include <iostream> // std::ostream
 #include <functional> // std::hash
 
+#include "sfz/Assert.hpp"
 #include "sfz/math/Vector.hpp"
+#include "sfz/math/MathHelpers.hpp"
 
 #include "sfz/MSVC12HackON.hpp"
 

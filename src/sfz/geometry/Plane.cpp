@@ -12,7 +12,7 @@ Plane::Plane(const vec3f& normal, float d) noexcept
 	mNormal{normal},
 	mD{d}
 {
-	// Initialization done.
+	sfz_assert_debug(approxEqual<float>(normal.norm(), 1.0f, 0.025f));
 }
 
 Plane::Plane(const vec3f& position, const vec3f& normal) noexcept
@@ -20,7 +20,7 @@ Plane::Plane(const vec3f& position, const vec3f& normal) noexcept
 	mNormal{normal},
 	mD{normal.dot(position)}
 {
-	// Initialization done.
+	sfz_assert_debug(approxEqual<float>(normal.norm(), 1.0f, 0.025f));
 }
 
 // Public member functions
