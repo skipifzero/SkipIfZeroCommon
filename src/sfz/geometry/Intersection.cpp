@@ -4,16 +4,11 @@
 
 namespace sfz {
 
-bool inside(const AABB& box, const vec3f& point) noexcept
+bool pointInside(const AABB& box, const vec3f& point) noexcept
 {
 	return box.min()[0] < point[0] && point[0] < box.max()[0] &&
 	       box.min()[1] < point[1] && point[1] < box.max()[1] &&
 	       box.min()[2] < point[2] && point[2] < box.max()[2];
-}
-
-bool inside(const vec3f& point, const AABB& box) noexcept
-{
-	return inside(box, point);
 }
 
 bool intersects(const AABB& boxA, const AABB& boxB) noexcept
