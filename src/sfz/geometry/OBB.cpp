@@ -4,19 +4,6 @@
 
 namespace sfz {
 
-// Anonymous functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-namespace {
-
-bool approxEqual(float lhs, float rhs) noexcept
-{
-	static const float EPSILON = 0.001f;
-	return lhs <= rhs + EPSILON && lhs >= rhs - EPSILON;
-}
-
-} // anonymous namespace
-
 // Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -61,6 +48,56 @@ OBB::OBB(const AABB& aabb) noexcept
 
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+bool OBB::intersects(const OBB& other) const noexcept
+{
+	const OBB& a = *this;
+	const std::array<vec3f,3>& aU = a.mAxes;
+	const vec3f& aE = a.mHalfExtents;
+	const OBB& b = other;
+	const std::array<vec3f,3>& bU = b.mAxes;
+	const vec3f& bE = b.mHalfExtents;
+
+	// Compute the rotation matrix from b to a
+	mat3f R;
+	for (size_t i = 0; i < 3; i++) {
+		for (size_t j = 0; j < 3; j++) {
+			R.set(i, j, aU[i].dot(bU[j]));
+		}
+	}
+
+	// Compute common subexpressions, epsilon term to counteract arithmetic errors
+	static const float EPSILON = 0.000001f;
+	mat3f AbsR;
+	for (size_t i = 0; i < 3; i++) {
+		for (size_t j = 0; j < 3; j++) {
+			AbsR.set(i, j, std::abs(R.at(i, j)) + EPSILON);
+		}
+	}
+
+	// Calculate translation vector from a to b and bring it into a's frame of reference
+	vec3f t = b.mCenter - a.mCenter;
+	t = vec3f{t.dot(aU[0]), t.dot(aU[1]), t.dot(aU[2])};
+
+	float ra, rb;
+
+	// Test axes L = aU[0], aU[1], aU[2]
+	for (size_t i = 0; i < 3; i++) {
+		ra = aE[i];
+		rb = bE[0]*AbsR.at(i,0) + bE[1]*AbsR.at(i,1) + bE[2]*AbsR.at(i,2);
+		if (std::abs(t[i]) > ra + rb) return false;
+	}
+
+	// Test axes L = bU[0], bU[1], bU[2]
+	for (size_t i = 0; i < 3; i++) {
+		ra = aE[0]*AbsR.at(0,i) + aE[1]*AbsR.at(1,i) + aE[2]*AbsR.at(2,i);
+		rb = bE[i];
+		if (std::abs(t[0]*R.at(0,i) + t[1]*R.at(1,i) + t[2]*R.at(2,i)) > ra + rb) return false;
+	}
+
+	// If no separating axis can be found then the OBBs must be intersecting.
+	return true;
+}
 
 std::array<vec3f,8> OBB::corners() const noexcept
 {

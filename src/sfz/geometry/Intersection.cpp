@@ -25,6 +25,11 @@ bool intersects(const AABB& boxA, const AABB& boxB) noexcept
 	return true;
 }
 
+bool intersects(const OBB& boxA, const OBB& boxB) noexcept
+{
+	return boxA.intersects(boxB);
+}
+
 bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept
 {
 	const vec3f distVec = sphereA.position() - sphereB.position();

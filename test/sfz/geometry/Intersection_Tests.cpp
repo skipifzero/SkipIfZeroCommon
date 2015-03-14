@@ -14,7 +14,7 @@ TEST_CASE("Point inside AABB test", "[sfz::Intersection]")
 	REQUIRE(!inside(box, vec3f{-2,0,0}));
 }
 
-TEST_CASE("AABB & AABB test", "[sfz::Intersection]")
+TEST_CASE("AABB vs AABB test", "[sfz::Intersection]")
 {
 	using namespace sfz;
 
@@ -56,7 +56,65 @@ TEST_CASE("AABB & AABB test", "[sfz::Intersection]")
 	}
 }
 
-TEST_CASE("Sphere & Sphere test", "[sfz::Intersection]")
+TEST_CASE("OBB vs OBB test", "[sfz::Intersection]")
+{
+	using namespace sfz;
+
+	std::array<vec3f,3> axisAlignedAxes{vec3f{1.0f, 0.0f, 0.0f},
+	                                    vec3f{0.0f, 1.0f, 0.0f},
+	                                    vec3f{0.0f, 0.0f, 1.0f}};
+	vec3f smallExts{1.0f, 1.0f, 1.0f};
+	vec3f bigExts{2.0f, 2.0f, 2.0f};
+
+	OBB midSmallAA{vec3f{0.0f, 0.0f, 0.0f}, axisAlignedAxes, smallExts};
+	OBB midSmallLeftAA{vec3f{-1.0f, 0.0f, 0.0f}, axisAlignedAxes, smallExts};
+	OBB midSmallRightAA{vec3f{1.0f, 0.0f, 0.0f}, axisAlignedAxes, smallExts};
+	OBB midSmallDownAA{vec3f{0.0f, -1.0f, 0.0f}, axisAlignedAxes, smallExts};
+	OBB midSmallUpAA{vec3f{0.0f, 1.0f, 0.0f}, axisAlignedAxes, smallExts};
+	OBB midSmallBackAA{vec3f{0.0f, 0.0f, -1.0f}, axisAlignedAxes, smallExts};
+	OBB midSmallFrontAA{vec3f{0.0f, 0.0f, 1.0f}, axisAlignedAxes, smallExts};
+	std::vector<OBB*> smallSurroundingAABoxes;
+	smallSurroundingAABoxes.push_back(&midSmallLeftAA);
+	smallSurroundingAABoxes.push_back(&midSmallRightAA);
+	smallSurroundingAABoxes.push_back(&midSmallDownAA);
+	smallSurroundingAABoxes.push_back(&midSmallUpAA);
+	smallSurroundingAABoxes.push_back(&midSmallBackAA);
+	smallSurroundingAABoxes.push_back(&midSmallFrontAA);
+
+	OBB midAA{vec3f{0.0f, 0.0f, 0.0f}, axisAlignedAxes, bigExts};
+	OBB midLeftAA{vec3f{-1.0f, 0.0f, 0.0f}, axisAlignedAxes, bigExts};
+	OBB midRightAA{vec3f{1.0f, 0.0f, 0.0f}, axisAlignedAxes, bigExts};
+	OBB midDownAA{vec3f{0.0f, -1.0f, 0.0f}, axisAlignedAxes, bigExts};
+	OBB midUpAA{vec3f{0.0f, 1.0f, 0.0f}, axisAlignedAxes, bigExts};
+	OBB midBackAA{vec3f{0.0f, 0.0f, -1.0f}, axisAlignedAxes, bigExts};
+	OBB midFrontAA{vec3f{0.0f, 0.0f, 1.0f}, axisAlignedAxes, bigExts};
+	std::vector<OBB*> surroundingAABoxes;
+	surroundingAABoxes.push_back(&midLeftAA);
+	surroundingAABoxes.push_back(&midRightAA);
+	surroundingAABoxes.push_back(&midDownAA);
+	surroundingAABoxes.push_back(&midUpAA);
+	surroundingAABoxes.push_back(&midBackAA);
+	surroundingAABoxes.push_back(&midFrontAA);
+
+	for (OBB* smallPtr : smallSurroundingAABoxes) {
+		REQUIRE(intersects(*smallPtr, midAA));
+		REQUIRE(intersects(midAA, *smallPtr));
+	}
+
+	REQUIRE(!intersects(midSmallLeftAA, midSmallRightAA));
+	REQUIRE(!intersects(midSmallDownAA, midSmallUpAA));
+	REQUIRE(!intersects(midSmallBackAA, midSmallFrontAA));
+
+	REQUIRE(!intersects(midSmallLeftAA, midRightAA));
+	REQUIRE(!intersects(midSmallDownAA, midUpAA));
+	REQUIRE(!intersects(midSmallBackAA, midFrontAA));
+
+	REQUIRE(!intersects(midLeftAA, midSmallRightAA));
+	REQUIRE(!intersects(midDownAA, midSmallUpAA));
+	REQUIRE(!intersects(midBackAA, midSmallFrontAA));
+}
+
+TEST_CASE("Sphere vs Sphere test", "[sfz::Intersection]")
 {
 	using namespace sfz;
 

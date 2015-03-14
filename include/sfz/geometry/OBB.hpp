@@ -43,6 +43,7 @@ public:
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	bool intersects(const OBB& other) const noexcept;
 	std::array<vec3f,8> corners() const noexcept;
 	void corners(vec3f* arrayOut) const noexcept;
 	vec3f closestPoint(const vec3f& point) const noexcept;
@@ -55,7 +56,7 @@ public:
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	inline vec3f position() const noexcept { return mCenter; }
-	inline std::array<vec3f,3> axes() const noexcept { return mAxes; }
+	inline const std::array<vec3f,3>& axes() const noexcept { return mAxes; }
 	inline vec3f xAxis() const noexcept { return mAxes[0]; }
 	inline vec3f yAxis() const noexcept { return mAxes[1]; }
 	inline vec3f zAxis() const noexcept { return mAxes[2]; }
