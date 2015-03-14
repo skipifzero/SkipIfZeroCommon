@@ -25,9 +25,100 @@ bool intersects(const AABB& boxA, const AABB& boxB) noexcept
 	return true;
 }
 
-bool intersects(const OBB& boxA, const OBB& boxB) noexcept
+bool intersects(const OBB& a, const OBB& b) noexcept
 {
-	return boxA.intersects(boxB);
+	// OBB vs OBB SAT (Separating Axis Theorem) test from Real-Time Collision Detection
+	// (chapter 4.4.1 OBB-OBB Intersection)
+
+	const std::array<vec3f,3>& aU = a.axes();
+	const vec3f& aE = a.halfExtents();
+	const std::array<vec3f,3>& bU = b.axes();
+	const vec3f& bE = b.halfExtents();
+
+	// Compute the rotation matrix from b to a
+	mat3f R;
+	for (size_t i = 0; i < 3; i++) {
+		for (size_t j = 0; j < 3; j++) {
+			R.set(i, j, aU[i].dot(bU[j]));
+		}
+	}
+
+	// Compute common subexpressions, epsilon term to counteract arithmetic errors
+	static const float EPSILON = 0.00001f;
+	mat3f AbsR;
+	for (size_t i = 0; i < 3; i++) {
+		for (size_t j = 0; j < 3; j++) {
+			AbsR.set(i, j, std::abs(R.at(i, j)) + EPSILON);
+		}
+	}
+
+	// Calculate translation vector from a to b and bring it into a's frame of reference
+	vec3f t = b.position() - a.position();
+	t = vec3f{t.dot(aU[0]), t.dot(aU[1]), t.dot(aU[2])};
+
+	float ra, rb;
+
+	// Test axes L = aU[0], aU[1], aU[2]
+	for (size_t i = 0; i < 3; i++) {
+		ra = aE[i];
+		rb = bE[0]*AbsR.at(i,0) + bE[1]*AbsR.at(i,1) + bE[2]*AbsR.at(i,2);
+		if (std::abs(t[i]) > ra + rb) return false;
+	}
+
+	// Test axes L = bU[0], bU[1], bU[2]
+	for (size_t i = 0; i < 3; i++) {
+		ra = aE[0]*AbsR.at(0,i) + aE[1]*AbsR.at(1,i) + aE[2]*AbsR.at(2,i);
+		rb = bE[i];
+		if (std::abs(t[0]*R.at(0,i) + t[1]*R.at(1,i) + t[2]*R.at(2,i)) > ra + rb) return false;
+	}
+
+	// Test axis L = aU[0] x bU[0]
+	ra = aE[1]*AbsR.at(2,0) + aE[2]*AbsR.at(1,0);
+	rb = bE[1]*AbsR.at(0,2) + bE[2]*AbsR.at(0,1);
+	if (std::abs(t[2]*R.at(1,0) - t[1]*R.at(2,0)) > ra + rb) return false;
+
+	// Test axis L = aU[0] x bU[1]
+	ra = aE[1]*AbsR.at(2,1) + aE[2]*AbsR.at(1,1);
+	rb = bE[0]*AbsR.at(0,2) + bE[2]*AbsR.at(0,0);
+	if (std::abs(t[2]*R.at(1,1) - t[1]*R.at(2,1)) > ra + rb) return false;
+
+	// Test axis L = aU[0] x bU[2]
+	ra = aE[1]*AbsR.at(2,2) + aE[2]*AbsR.at(1,2);
+	rb = bE[0]*AbsR.at(0,1) + bE[1]*AbsR.at(0,0);
+	if (std::abs(t[2]*R.at(1,2) - t[1]*R.at(2,2)) > ra + rb) return false;
+
+	// Test axis L = aU[1] x bU[0]
+	ra = aE[0]*AbsR.at(2,0) + aE[2]*AbsR.at(0,0);
+	rb = bE[1]*AbsR.at(1,2) + bE[2]*AbsR.at(1,1);
+	if (std::abs(t[0]*R.at(2,0) - t[2]*R.at(0,0)) > ra + rb) return false;
+
+	// Test axis L = aU[1] x bU[1]
+    ra = aE[0]*AbsR.at(2,1) + aE[2]*AbsR.at(0,1);
+    rb = bE[0]*AbsR.at(1,2) + bE[2]*AbsR.at(1,0);
+    if (std::abs(t[0]*R.at(2,1) - t[2]*R.at(0,1)) > ra + rb) return false;
+
+    // Test axis L = aU[1] x bU[2]
+    ra = aE[0]*AbsR.at(2,2) + aE[2]*AbsR.at(0,2);
+    rb = bE[0]*AbsR.at(1,1) + bE[1]*AbsR.at(1,0);
+    if (std::abs(t[0]*R.at(2,2) - t[2]*R.at(0,2)) > ra + rb) return false;
+
+    // Test axis L = aU[2] x bU[0]
+    ra = aE[0]*AbsR.at(1,0) + aE[1]*AbsR.at(0,0);
+    rb = bE[1]*AbsR.at(2,2) + bE[2]*AbsR.at(2,1);
+    if (std::abs(t[1]*R.at(0,0) - t[0]*R.at(1,0)) > ra + rb) return false;
+
+    // Test axis L = aU[2] x bU[1]
+    ra = aE[0]*AbsR.at(1,1) + aE[1]*AbsR.at(0,1);
+    rb = bE[0]*AbsR.at(2,2) + bE[2]*AbsR.at(2,0);
+    if (std::abs(t[1]*R.at(0,1) - t[0]*R.at(1,1)) > ra + rb) return false;
+
+    // Test axis L = aU[2] x bU[2]
+    ra = aE[0]*AbsR.at(1,2) + aE[1]*AbsR.at(0,2);
+    rb = bE[0]*AbsR.at(2,1) + bE[1]*AbsR.at(2,0);
+    if (std::abs(t[1]*R.at(0,2) - t[0]*R.at(1,2)) > ra + rb) return false;
+
+	// If no separating axis can be found then the OBBs must be intersecting.
+	return true;
 }
 
 bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept

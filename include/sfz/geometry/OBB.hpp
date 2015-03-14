@@ -43,7 +43,6 @@ public:
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	bool intersects(const OBB& other) const noexcept;
 	std::array<vec3f,8> corners() const noexcept;
 	void corners(vec3f* arrayOut) const noexcept;
 	vec3f closestPoint(const vec3f& point) const noexcept;
