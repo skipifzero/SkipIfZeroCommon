@@ -26,6 +26,15 @@ Plane::Plane(const vec3f& position, const vec3f& normal) noexcept
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+float Plane::signedDistance(const vec3f& point) const noexcept
+{
+	return mNormal.dot(point) - mD; // mNormal MUST be normalized.
+}
+
+vec3f Plane::closestPoint(const vec3f& point) const noexcept
+{
+	return point - signedDistance(point)*mNormal;
+}
 
 size_t Plane::hash() const noexcept
 {

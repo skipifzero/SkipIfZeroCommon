@@ -35,6 +35,9 @@ public:
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	/** @brief Returns the signed distance to the plane. Positive if above, negative if below. */
+	float signedDistance(const vec3f& point) const noexcept;
+	vec3f closestPoint(const vec3f& point) const noexcept;
 	size_t hash() const noexcept;
 	std::string to_string() const noexcept;
 
