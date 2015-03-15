@@ -30,7 +30,7 @@ public:
 	~Plane() noexcept = default;
 
 	Plane(const vec3f& normal, float d) noexcept;
-	Plane(const vec3f& position, const vec3f& normal) noexcept;
+	Plane(const vec3f& normal, const vec3f& position) noexcept;
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
