@@ -11,6 +11,12 @@ bool pointInside(const AABB& box, const vec3f& point) noexcept
 	       box.min()[2] < point[2] && point[2] < box.max()[2];
 }
 
+bool pointInside(const Sphere& sphere, const vec3f& point) noexcept
+{
+	const vec3f distToPoint = point - sphere.position();
+	return distToPoint.squaredNorm() < sphere.radius() * sphere.radius();
+}
+
 bool intersects(const AABB& boxA, const AABB& boxB) noexcept
 {
 	// Boxes intersect if they overlap on all axes.

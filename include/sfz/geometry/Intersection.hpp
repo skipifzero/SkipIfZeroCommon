@@ -11,6 +11,7 @@
 namespace sfz {
 
 bool pointInside(const AABB& box, const vec3f& point) noexcept;
+bool pointInside(const Sphere& sphere, const vec3f& point) noexcept;
 
 bool intersects(const AABB& boxA, const AABB& boxB) noexcept;
 bool intersects(const OBB& boxA, const OBB& boxB) noexcept;
