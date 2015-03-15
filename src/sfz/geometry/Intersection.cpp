@@ -4,6 +4,9 @@
 
 namespace sfz {
 
+// Point inside primitive tests
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 bool pointInside(const AABB& box, const vec3f& point) noexcept
 {
 	return box.min()[0] < point[0] && point[0] < box.max()[0] &&
@@ -30,6 +33,9 @@ bool pointInside(const Sphere& sphere, const vec3f& point) noexcept
 	const vec3f distToPoint = point - sphere.position();
 	return distToPoint.squaredNorm() < sphere.radius() * sphere.radius();
 }
+
+// Primitive vs primitive tests (same type)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 bool intersects(const AABB& boxA, const AABB& boxB) noexcept
 {
@@ -143,6 +149,32 @@ bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept
 	const float radiusSum = sphereA.radius() + sphereB.radius();
 	const float squaredRadiusSum = radiusSum * radiusSum;
 	return squaredDist <= squaredRadiusSum;
+}
+
+// Plane & Sphere tests
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+bool intersects(const Plane& plane, const Sphere& sphere) noexcept
+{
+	float dist = plane.signedDistance(sphere.position());
+	return std::abs(dist) <= sphere.radius();
+}
+
+bool intersects(const Sphere& sphere, const Plane& plane) noexcept
+{
+	return intersects(plane, sphere);
+}
+
+bool abovePlane(const Plane& plane, const Sphere& sphere) noexcept
+{
+	float dist = plane.signedDistance(sphere.position());
+	return dist > sphere.radius();
+}
+
+bool belowPlane(const Plane& plane, const Sphere& sphere) noexcept
+{
+	float dist = plane.signedDistance(sphere.position());
+	return dist < (-sphere.radius());
 }
 
 } // namespace sfz
