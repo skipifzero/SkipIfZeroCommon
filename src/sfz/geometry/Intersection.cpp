@@ -11,6 +11,20 @@ bool pointInside(const AABB& box, const vec3f& point) noexcept
 	       box.min()[2] < point[2] && point[2] < box.max()[2];
 }
 
+bool pointInside(const OBB& box, const vec3f& point) noexcept
+{
+	// Modified closest point algorithm from Real-Time Collision Detection (Section 5.1.4)
+	const vec3f distToPoint = point - box.position();
+	const std::array<vec3f,3>& axes = box.axes();
+	float dist;
+	for (size_t i = 0; i < 3; i++) {
+		dist = distToPoint.dot(axes[i]);
+		if (dist > box.halfExtents()[i]) return false;
+		if (dist < -box.halfExtents()[i]) return false;
+	}
+	return true;
+}
+
 bool pointInside(const Sphere& sphere, const vec3f& point) noexcept
 {
 	const vec3f distToPoint = point - sphere.position();
