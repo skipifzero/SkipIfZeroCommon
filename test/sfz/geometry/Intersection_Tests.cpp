@@ -3,6 +3,18 @@
 #include <vector>
 
 #include "sfz/Geometry.hpp"
+#include "sfz/Math.hpp"
+
+TEST_CASE("Signed distance to plane", "[sfz::Plane]")
+{
+	using namespace sfz;
+
+	Plane p{vec3f{0.0f, 1.0f, 0.0f}, vec3f{2.0f, 1.0f, 0.0f}};
+
+	REQUIRE(approxEqual<float>(p.signedDistance(vec3f{2.0f, 3.0f, 0.0f}), 2.0f));
+	REQUIRE(approxEqual<float>(p.signedDistance(vec3f{0.0f, 3.0f, 0.0f}), 2.0f));
+	REQUIRE(approxEqual<float>(p.signedDistance(vec3f{2.0f, 0.0f, 0.0f}), -1.0f));
+}
 
 TEST_CASE("Point inside AABB test", "[sfz::Intersection]")
 {
