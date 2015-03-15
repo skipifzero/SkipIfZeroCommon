@@ -20,12 +20,17 @@
 
 #if !defined(SFZ_NO_ASSERTIONS)
 
-	#define sfz_assert_release_impl(condition) assert(condition)
+	#define sfz_assert_release_impl(condition) \
+		if (!condition) { \
+			assert(condition); \
+			std::terminate(); \
+		}
 
 	#define sfz_assert_release_m_impl(condition, message) \
 		if (!condition) { \
 			std::cerr << message << std::endl; \
 			assert(condition); \
+			std::terminate(); \
 		}
 
 #else
