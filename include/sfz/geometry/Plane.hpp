@@ -16,7 +16,11 @@ namespace sfz {
 
 /**
  * @brief Class representing a Plane.
- * Mathematical definition: dot(normal, pointOnPlane) + d = 0
+ *
+ * Mathematical definition (plane normal = n, position on plane = p, position to test = x):
+ * f(x) = dot(n, x - p) = dot(n, q) - d
+ * d = dot(n, p)
+ * 
  * @author Peter Hillerström
  */
 class Plane final {
@@ -29,7 +33,9 @@ public:
 	Plane& operator= (const Plane&) noexcept = default;
 	~Plane() noexcept = default;
 
+	/** @brief dot(normal, x) - d = 0 */
 	Plane(const vec3f& normal, float d) noexcept;
+	/** @brief dot(normal, x - position) = 0 */
 	Plane(const vec3f& normal, const vec3f& position) noexcept;
 
 	// Public member functions
