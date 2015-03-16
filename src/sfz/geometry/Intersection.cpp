@@ -151,6 +151,22 @@ bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept
 	return squaredDist <= squaredRadiusSum;
 }
 
+// Plane & OBB tests
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+bool intersects(const Plane& plane, const OBB& obb) noexcept
+{
+	// SAT algorithm from Real-Time Collision Detection (chapter 5.2.3)
+
+	// Projected radius on line towards closest point on plane
+	float projectedRadius = obb.halfXExtent() * std::abs(plane.normal().dot(obb.xAxis()))
+	                      + obb.halfYExtent() * std::abs(plane.normal().dot(obb.yAxis()))
+	                      + obb.halfZExtent() * std::abs(plane.normal().dot(obb.zAxis()));
+
+	float dist = plane.signedDistance(obb.position());
+	return std::abs(dist) <= projectedRadius;
+}
+
 // Plane & Sphere tests
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

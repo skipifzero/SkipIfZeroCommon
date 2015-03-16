@@ -25,6 +25,11 @@ bool intersects(const AABB& boxA, const AABB& boxB) noexcept;
 bool intersects(const OBB& boxA, const OBB& boxB) noexcept;
 bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept;
 
+// Plane & OBB tests
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+bool intersects(const Plane& plane, const OBB& obb) noexcept;
+
 // Plane & Sphere tests
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
