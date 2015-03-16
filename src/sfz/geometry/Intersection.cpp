@@ -168,13 +168,13 @@ bool intersects(const Sphere& sphere, const Plane& plane) noexcept
 bool abovePlane(const Plane& plane, const Sphere& sphere) noexcept
 {
 	float dist = plane.signedDistance(sphere.position());
-	return dist > sphere.radius();
+	return dist > (-sphere.radius());
 }
 
 bool belowPlane(const Plane& plane, const Sphere& sphere) noexcept
 {
 	float dist = plane.signedDistance(sphere.position());
-	return dist < (-sphere.radius());
+	return dist < sphere.radius();
 }
 
 } // namespace sfz

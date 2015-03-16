@@ -30,10 +30,11 @@ bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept;
 
 bool intersects(const Plane& plane, const Sphere& sphere) noexcept;
 bool intersects(const Sphere& sphere, const Plane& plane) noexcept;
-/** @brief Checks whether Sphere is completely above plane (no intersection). */
+/** @brief Checks whether Sphere intersects with or is in positive half-space of plane. */
 bool abovePlane(const Plane& plane, const Sphere& sphere) noexcept;
-/** @brief Checks whether Sphere is completely below plane (no intersection). */
+/** @brief Checks whether Sphere intersects with or is in negative half-space of plane. */
 bool belowPlane(const Plane& plane, const Sphere& sphere) noexcept;
+
 
 } // namespace sfz
 
