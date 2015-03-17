@@ -8,6 +8,7 @@
 #include <functional> // std::hash
 
 #include "sfz/Assert.hpp"
+#include "sfz/math/MathHelpers.hpp"
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Matrix.hpp"
 #include "sfz/geometry/AABB.hpp"
