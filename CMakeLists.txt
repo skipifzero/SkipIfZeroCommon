@@ -11,7 +11,7 @@ endif(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 # Compiler flags
 if(MSVC)
 	# MSVC flags
-	set(CMAKE_CXX_FLAGS "/Wall /wd4514 /wd4711")
+	set(CMAKE_CXX_FLAGS "/Wall /EHsc /wd4350 /wd4514 /wd4668 /wd4710 /wd4711 /wd4820")
 	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /DSFZ_NO_DEBUG")
 	set(CMAKE_CXX_FLAGS_RELEASE "/O2 /DSFZ_NO_DEBUG")
 	set(CMAKE_CXX_FLAGS_DEBUG  "/Od")
@@ -37,13 +37,17 @@ include_directories(${INCLUDE_DIR})
 include_directories(${CATCH_INCLUDE_DIRS})
 
 # Sources and headers needed to compile library
-set(SOURCE_INCLUDE_FILES
-	${INCLUDE_DIR}/sfz/MSVC12HackON.hpp
-	${INCLUDE_DIR}/sfz/MSVC12HackOFF.hpp
+set(SOURCE_GENERAL_FILES
 	${INCLUDE_DIR}/sfz/Assert.hpp
 	${INCLUDE_DIR}/sfz/Assert.inl
-
+	${INCLUDE_DIR}/sfz/MSVC12HackON.hpp
+	${INCLUDE_DIR}/sfz/MSVC12HackOFF.hpp
 	${INCLUDE_DIR}/sfz/Geometry.hpp
+	${INCLUDE_DIR}/sfz/Math.hpp
+	${INCLUDE_DIR}/sfz/Util.hpp)
+source_group(sfz FILES ${SOURCE_GENERAL_FILES})
+
+set(SOURCE_GEOMETRY_FILES
 	${INCLUDE_DIR}/sfz/geometry/AABB.hpp
 	 ${SOURCE_DIR}/sfz/geometry/AABB.cpp
 	${INCLUDE_DIR}/sfz/geometry/Intersection.hpp
@@ -53,9 +57,10 @@ set(SOURCE_INCLUDE_FILES
 	${INCLUDE_DIR}/sfz/geometry/Plane.hpp
 	 ${SOURCE_DIR}/sfz/geometry/Plane.cpp
 	${INCLUDE_DIR}/sfz/geometry/Sphere.hpp
-	 ${SOURCE_DIR}/sfz/geometry/Sphere.cpp
+	 ${SOURCE_DIR}/sfz/geometry/Sphere.cpp)
+source_group(sfz_geometry FILES ${SOURCE_GEOMETRY_FILES})
 
-	${INCLUDE_DIR}/sfz/Math.hpp
+set(SOURCE_MATH_FILES
 	${INCLUDE_DIR}/sfz/math/MathConstants.hpp
 	${INCLUDE_DIR}/sfz/math/MathHelpers.hpp
 	${INCLUDE_DIR}/sfz/math/MathHelpers.inl
@@ -66,18 +71,26 @@ set(SOURCE_INCLUDE_FILES
 	${INCLUDE_DIR}/sfz/math/Vector.hpp
 	${INCLUDE_DIR}/sfz/math/Vector.inl
 	${INCLUDE_DIR}/sfz/math/VectorSupport.hpp
-	${INCLUDE_DIR}/sfz/math/VectorSupport.inl
+	${INCLUDE_DIR}/sfz/math/VectorSupport.inl)
+source_group(sfz_math FILES ${SOURCE_MATH_FILES})
 
-	${INCLUDE_DIR}/sfz/Util.hpp
+set(SOURCE_UTIL_FILES
 	${INCLUDE_DIR}/sfz/util/BlockingQueue.hpp
 	${INCLUDE_DIR}/sfz/util/BlockingQueue.inl
 	${INCLUDE_DIR}/sfz/util/ScopedThread.hpp
 	 ${SOURCE_DIR}/sfz/util/ScopedThread.cpp
 	${INCLUDE_DIR}/sfz/util/StopWatch.hpp
 	 ${SOURCE_DIR}/sfz/util/StopWatch.cpp)
+source_group(sfz_util FILES ${SOURCE_UTIL_FILES})
+
+set(SOURCE_ALL_FILES
+	${SOURCE_GENERAL_FILES}
+	${SOURCE_GEOMETRY_FILES}
+	${SOURCE_MATH_FILES}
+	${SOURCE_UTIL_FILES})
 
 # Library compile target
-add_library(SkipIfZeroCommon ${SOURCE_INCLUDE_FILES})
+add_library(SkipIfZeroCommon ${SOURCE_ALL_FILES})
 
 # Variables for linking library
 set(SFZ_COMMON_INCLUDE_DIRS ${INCLUDE_DIR} PARENT_SCOPE)
@@ -99,7 +112,7 @@ add_executable(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
 set_property(TARGET MathConstants_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(MathConstants_Tests_Name MathConstants_Tests)
 
-add_executable(Intersection_Tests ${TEST_DIR}/sfz/geometry/Intersection_Tests.cpp ${SOURCE_INCLUDE_FILES})
+add_executable(Intersection_Tests ${TEST_DIR}/sfz/geometry/Intersection_Tests.cpp ${SOURCE_ALL_FILES})
 set_property(TARGET Intersection_Tests APPEND_STRING PROPERTY COMPILE_FLAGS " -w")
 add_test(Intersection_Tests_Name Intersection_Tests)
 
