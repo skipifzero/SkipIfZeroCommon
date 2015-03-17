@@ -29,11 +29,21 @@ bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 bool intersects(const Plane& plane, const AABB& aabb) noexcept;
+bool intersects(const AABB& aabb, const Plane& plane) noexcept;
+/** @brief Checks whether AABB intersects with or is in positive half-space of plane. */
+bool abovePlane(const Plane& plane, const AABB& aabb) noexcept;
+/** @brief Checks whether AABB intersects with or is in negative half-space of plane. */
+bool belowPlane(const Plane& plane, const AABB& aabb) noexcept;
 
 // Plane & OBB tests
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 bool intersects(const Plane& plane, const OBB& obb) noexcept;
+bool intersects(const OBB& obb, const Plane& plane) noexcept;
+/** @brief Checks whether OBB intersects with or is in positive half-space of plane. */
+bool abovePlane(const Plane& plane, const OBB& obb) noexcept;
+/** @brief Checks whether OBB intersects with or is in negative half-space of plane. */
+bool belowPlane(const Plane& plane, const OBB& obb) noexcept;
 
 // Plane & Sphere tests
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
