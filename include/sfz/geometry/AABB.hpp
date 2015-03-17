@@ -58,6 +58,10 @@ public:
 	float xExtent() const noexcept;
 	float yExtent() const noexcept;
 	float zExtent() const noexcept;
+	vec3f halfExtents() const noexcept;
+	float halfXExtent() const noexcept;
+	float halfYExtent() const noexcept;
+	float halfZExtent() const noexcept;
 
 	void min(const vec3f& newMin) noexcept;
 	void max(const vec3f& newMax) noexcept;

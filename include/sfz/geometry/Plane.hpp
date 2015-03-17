@@ -50,7 +50,7 @@ public:
 	// Public getters/setters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	inline vec3f normal() const noexcept { return mNormal; }
+	inline const vec3f& normal() const noexcept { return mNormal; }
 	inline float d() const noexcept { return mD; }
 
 private:

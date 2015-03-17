@@ -139,6 +139,18 @@ TEST_CASE("Sphere vs Sphere test", "[sfz::Intersection]")
 	REQUIRE(!intersects(mid, aBitOff));
 }
 
+TEST_CASE("Plane vs AABB test", "[sfz::Intersection]")
+{
+	using namespace sfz;
+
+	Plane p1{vec3f{0.0f, 1.0f, 0.0f}, vec3f{0.0f, 0.5f, 0.0f}};
+	Plane p2{vec3f{0.0f, 1.0f, 0.0f}, vec3f{0.0f, 1.5f, 0.0f}};
+	AABB aabb{vec3f{1.0f, 1.0f, 1.0f}, vec3f{3.0f, 3.0f, 3.0f}};
+
+	REQUIRE(!intersects(p1, aabb));
+	REQUIRE(intersects(p2, aabb));
+}
+
 TEST_CASE("Plane vs OBB test", "[sfz::Intersection]")
 {
 	using namespace sfz;

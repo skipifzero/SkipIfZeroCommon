@@ -103,7 +103,7 @@ vec3f AABB::position() const noexcept
 
 vec3f AABB::extents() const noexcept
 {
-	return vec3f{xExtent(), yExtent(), zExtent()};
+	return mMax - mMin;
 }
 
 float AABB::xExtent() const noexcept
@@ -119,6 +119,26 @@ float AABB::yExtent() const noexcept
 float AABB::zExtent() const noexcept
 {
 	return mMax[2] - mMin[2];
+}
+
+vec3f AABB::halfExtents() const noexcept
+{
+	return extents() / 2.0f;
+}
+
+float AABB::halfXExtent() const noexcept
+{
+	return xExtent() / 2.0f;
+}
+
+float AABB::halfYExtent() const noexcept
+{
+	return yExtent() / 2.0f;
+}
+
+float AABB::halfZExtent() const noexcept
+{
+	return zExtent() / 2.0f;
 }
 
 void AABB::min(const vec3f& newMin) noexcept
