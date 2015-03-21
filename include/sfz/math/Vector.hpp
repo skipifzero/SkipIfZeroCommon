@@ -61,9 +61,6 @@ struct Vector final {
 
 	constexpr Vector(const Vector<T,N>&) noexcept = default;
 
-	template<typename T2>
-	explicit Vector(const Vector<T2,N>& other) noexcept;
-
 	/**
 	 * @brief Initializer list constructor.
 	 * If the initializer list contains less element than the size of the vector the remaining
