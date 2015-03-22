@@ -28,6 +28,8 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	inline OBB() noexcept = default;
+
 	inline OBB(const vec3f& center, const array<vec3f,3>& axes, const vec3f& extents) noexcept;
 
 	inline OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,

@@ -23,6 +23,7 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	inline AABB() noexcept = default;
 	inline AABB(const vec3f& min, const vec3f& max) noexcept;
 	inline AABB(const vec3f& centerPos, float xExtent, float yExtent, float zExtent) noexcept;
 

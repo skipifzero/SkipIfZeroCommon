@@ -28,6 +28,8 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	inline Plane() noexcept = default;
+
 	/** @brief dot(normal, x) - d = 0 */
 	inline Plane(const vec3f& normal, float d) noexcept;
 	/** @brief dot(normal, x - position) = 0 */

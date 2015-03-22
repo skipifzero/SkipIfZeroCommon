@@ -22,6 +22,8 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	inline Sphere() noexcept = default;
+
 	/**
 	 * @sfz_assert_debug radius > 0
 	 */
