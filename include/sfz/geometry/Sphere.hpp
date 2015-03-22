@@ -22,22 +22,17 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	Sphere() noexcept = delete;
-	Sphere(const Sphere&) noexcept = default;
-	Sphere& operator= (const Sphere&) noexcept = default;
-	~Sphere() noexcept = default;
-
 	/**
 	 * @sfz_assert_debug radius > 0
 	 */
-	Sphere(const vec3f& center, float radius) noexcept;
+	inline Sphere(const vec3f& center, float radius) noexcept;
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	size_t hash() const noexcept;
-	std::string to_string() const noexcept;
-	vec3f closestPoint(const vec3f& point) const noexcept;
+	inline size_t hash() const noexcept;
+	inline std::string to_string() const noexcept;
+	inline vec3f closestPoint(const vec3f& point) const noexcept;
 
 	// Public getters/setters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -45,8 +40,8 @@ public:
 	inline vec3f position() const noexcept { return mCenter; }
 	inline float radius() const noexcept { return mRadius; }
 
-	void position(const vec3f& newPosition) noexcept;
-	void radius(float newRadius) noexcept;
+	inline void position(const vec3f& newPosition) noexcept { mCenter = newPosition; }
+	inline void radius(float newRadius) noexcept;
 
 private:
 	// Private members
@@ -59,7 +54,7 @@ private:
 // Non-member operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-std::ostream& operator<< (std::ostream& ostream, const Sphere& sphere) noexcept;
+inline std::ostream& operator<< (std::ostream& ostream, const Sphere& sphere) noexcept;
 
 } // namespace sfz
 
@@ -70,10 +65,11 @@ namespace std {
 
 template<>
 struct hash<sfz::Sphere> {
-	size_t operator() (const sfz::Sphere& sphere) const noexcept;
+	inline size_t operator() (const sfz::Sphere& sphere) const noexcept;
 };
 
 } // namespace std
 
 #include "sfz/MSVC12HackOFF.hpp"
+#include "sfz/geometry/Sphere.inl"
 #endif

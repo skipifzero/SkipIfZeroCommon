@@ -17,6 +17,8 @@
 
 namespace sfz {
 
+using std::array;
+
 /**
  * @brief Class representing an Oriented Bounding Box.
  * @author Peter Hillerström
@@ -26,37 +28,32 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	OBB() noexcept = delete;
-	OBB(const OBB&) noexcept = default;
-	OBB& operator= (const OBB&) noexcept = default;
-	~OBB() noexcept = default;
+	inline OBB(const vec3f& center, const array<vec3f,3>& axes, const vec3f& extents) noexcept;
 
-	OBB(const vec3f& center, const std::array<vec3f,3>& axes, const vec3f& extents) noexcept;
+	inline OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
+	           const vec3f& extents) noexcept;
 
-	OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
-	    const vec3f& extents) noexcept;
+	inline OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
+	           float xExtent, float yExtent, float zExtent) noexcept;
 
-	OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
-	    float xExtent, float yExtent, float zExtent) noexcept;
-
-	explicit OBB(const AABB& aabb) noexcept;
+	explicit inline OBB(const AABB& aabb) noexcept;
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	std::array<vec3f,8> corners() const noexcept;
-	void corners(vec3f* arrayOut) const noexcept;
-	vec3f closestPoint(const vec3f& point) const noexcept;
-	OBB transformOBB(const mat4f& transform) const noexcept;
+	inline std::array<vec3f,8> corners() const noexcept;
+	inline void corners(vec3f* arrayOut) const noexcept;
+	inline vec3f closestPoint(const vec3f& point) const noexcept;
+	inline OBB transformOBB(const mat4f& transform) const noexcept;
 
-	size_t hash() const noexcept;
-	std::string to_string() const noexcept;
+	inline size_t hash() const noexcept;
+	inline std::string to_string() const noexcept;
 
 	// Public getters/setters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	inline vec3f position() const noexcept { return mCenter; }
-	inline const std::array<vec3f,3>& axes() const noexcept { return mAxes; }
+	inline const array<vec3f,3>& axes() const noexcept { return mAxes; }
 	inline vec3f xAxis() const noexcept { return mAxes[0]; }
 	inline vec3f yAxis() const noexcept { return mAxes[1]; }
 	inline vec3f zAxis() const noexcept { return mAxes[2]; }
@@ -70,38 +67,38 @@ public:
 	inline float halfZExtent() const noexcept { return mHalfExtents[2]; }
 
 	inline void position(const vec3f& newCenterPos) noexcept { mCenter = newCenterPos; }
-	void axes(const std::array<vec3f,3>& newAxes) noexcept;
-	void xAxis(const vec3f& newXAxis) noexcept;
-	void yAxis(const vec3f& newYAxis) noexcept;
-	void zAxis(const vec3f& newZAxis) noexcept;
-	void extents(const vec3f& newExtents) noexcept;
-	void xExtent(float newXExtent) noexcept;
-	void yExtent(float newYExtent) noexcept;
-	void zExtent(float newZExtent) noexcept;
-	void halfExtents(const vec3f& newHalfExtents) noexcept;
-	void halfXExtent(float newHalfXExtent) noexcept;
-	void halfYExtent(float newHalfYExtent) noexcept;
-	void halfZExtent(float newHalfZExtent) noexcept;
+	inline void axes(const array<vec3f,3>& newAxes) noexcept { mAxes = newAxes; }
+	inline void xAxis(const vec3f& newXAxis) noexcept { mAxes[0] = newXAxis; }
+	inline void yAxis(const vec3f& newYAxis) noexcept { mAxes[1] = newYAxis; }
+	inline void zAxis(const vec3f& newZAxis) noexcept { mAxes[2] = newZAxis; }
+	inline void extents(const vec3f& newExtents) noexcept;
+	inline void xExtent(float newXExtent) noexcept;
+	inline void yExtent(float newYExtent) noexcept;
+	inline void zExtent(float newZExtent) noexcept;
+	inline void halfExtents(const vec3f& newHalfExtents) noexcept;
+	inline void halfXExtent(float newHalfXExtent) noexcept;
+	inline void halfYExtent(float newHalfYExtent) noexcept;
+	inline void halfZExtent(float newHalfZExtent) noexcept;
 
 private:
 	// Private functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	void ensureCorrectAxes() const noexcept;
-	void ensureCorrectExtents() const noexcept;
+	inline void ensureCorrectAxes() const noexcept;
+	inline void ensureCorrectExtents() const noexcept;
 
 	// Private members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	vec3f mCenter;
-	std::array<vec3f,3> mAxes;
+	array<vec3f,3> mAxes;
 	vec3f mHalfExtents;
 };
 
 // Non-member operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-std::ostream& operator<< (std::ostream& ostream, const OBB& obb) noexcept;
+inline std::ostream& operator<< (std::ostream& ostream, const OBB& obb) noexcept;
 
 } // namespace sfz
 
@@ -112,10 +109,11 @@ namespace std {
 
 template<>
 struct hash<sfz::OBB> {
-	size_t operator() (const sfz::OBB& obb) const noexcept;
+	inline size_t operator() (const sfz::OBB& obb) const noexcept;
 };
 
 } // namespace std
 
 #include "sfz/MSVC12HackOFF.hpp"
+#include "sfz/geometry/OBB.inl"
 #endif

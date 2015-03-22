@@ -1,5 +1,3 @@
-#include "sfz/geometry/OBB.hpp"
-
 #include "sfz/MSVC12HackON.hpp"
 
 namespace sfz {
@@ -7,7 +5,7 @@ namespace sfz {
 // Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-OBB::OBB(const vec3f& center, const std::array<vec3f,3>& axes, const vec3f& extents) noexcept
+inline OBB::OBB(const vec3f& center, const array<vec3f,3>& axes, const vec3f& extents) noexcept
 :
 	mCenter{center},
 	mHalfExtents{extents/2.0f}
@@ -17,8 +15,8 @@ OBB::OBB(const vec3f& center, const std::array<vec3f,3>& axes, const vec3f& exte
 	ensureCorrectExtents();
 }
 
-OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
-         const vec3f& extents) noexcept
+inline OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
+                const vec3f& extents) noexcept
 :
 	mCenter{center},
 	mHalfExtents{extents/2.0f}
@@ -30,15 +28,16 @@ OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3
 	ensureCorrectExtents();
 }
 
-OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
-         float xExtent, float yExtent, float zExtent) noexcept
+inline OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
+               float xExtent, float yExtent, float zExtent) noexcept
 :
 	OBB(center, xAxis, yAxis, zAxis, vec3f{xExtent, yExtent, zExtent})
 {
-	// Initialization done.
+	ensureCorrectAxes();
+	ensureCorrectExtents();
 }
 
-OBB::OBB(const AABB& aabb) noexcept
+inline OBB::OBB(const AABB& aabb) noexcept
 :
 	OBB(aabb.position(), vec3f{1, 0, 0}, vec3f{0, 1, 0}, vec3f{0, 0, 1},
         aabb.xExtent(), aabb.yExtent(), aabb.zExtent())
@@ -49,14 +48,14 @@ OBB::OBB(const AABB& aabb) noexcept
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-std::array<vec3f,8> OBB::corners() const noexcept
+inline array<vec3f,8> OBB::corners() const noexcept
 {
 	std::array<vec3f,8> result;
 	this->corners(&result[0]);
 	return result;
 }
 
-void OBB::corners(vec3f* arrayOut) const noexcept
+inline void OBB::corners(vec3f* arrayOut) const noexcept
 {
 	vec3f halfXExtVec = mAxes[0]*mHalfExtents[0];
 	vec3f halfYExtVec = mAxes[1]*mHalfExtents[1];
@@ -71,7 +70,7 @@ void OBB::corners(vec3f* arrayOut) const noexcept
 	arrayOut[7] = mCenter + halfXExtVec + halfYExtVec + halfZExtVec; // Front-top-right
 }
 
-vec3f OBB::closestPoint(const vec3f& point) const noexcept
+inline vec3f OBB::closestPoint(const vec3f& point) const noexcept
 {
 	// Algorithm from Real-Time Collision Detection (Section 5.1.4)
 	const vec3f distToPoint = point - mCenter;
@@ -88,7 +87,7 @@ vec3f OBB::closestPoint(const vec3f& point) const noexcept
 	return res;
 }
 
-OBB OBB::transformOBB(const mat4f& transform) const noexcept
+inline OBB OBB::transformOBB(const mat4f& transform) const noexcept
 {
 	const vec3f newPos = transformPoint(transform, mCenter);
 	const vec3f newXHExt = transformDir(transform, mAxes[0] * mHalfExtents[0]);
@@ -98,7 +97,7 @@ OBB OBB::transformOBB(const mat4f& transform) const noexcept
 	           newXHExt.norm(), newYHExt.norm(), newZHExt.norm()};
 }
 
-size_t OBB::hash() const noexcept
+inline size_t OBB::hash() const noexcept
 {
 	std::hash<vec3f> hasher;
 	size_t hash = 0;
@@ -111,7 +110,7 @@ size_t OBB::hash() const noexcept
 	return hash;
 }
 
-std::string OBB::to_string() const noexcept
+inline std::string OBB::to_string() const noexcept
 {
 	std::string str{"Center: "};
 	str += mCenter.to_string();
@@ -129,69 +128,49 @@ std::string OBB::to_string() const noexcept
 // Public getters/setters
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-void OBB::axes(const std::array<vec3f,3>& newAxes) noexcept
-{
-	mAxes = newAxes;
-}
-
-void OBB::xAxis(const vec3f& newXAxis) noexcept
-{
-	mAxes[0] = newXAxis;
-}
-
-void OBB::yAxis(const vec3f& newYAxis) noexcept
-{
-	mAxes[1] = newYAxis;
-}
-
-void OBB::zAxis(const vec3f& newZAxis) noexcept
-{
-	mAxes[2] = newZAxis;
-}
-
-void OBB::extents(const vec3f& newExtents) noexcept
+inline void OBB::extents(const vec3f& newExtents) noexcept
 {
 	mHalfExtents = newExtents / 2.0f;
 	ensureCorrectExtents();
 }
 
-void OBB::xExtent(float newXExtent) noexcept
+inline void OBB::xExtent(float newXExtent) noexcept
 {
 	mHalfExtents[0] = newXExtent / 2.0f;
 	ensureCorrectExtents();
 }
 
-void OBB::yExtent(float newYExtent) noexcept
+inline void OBB::yExtent(float newYExtent) noexcept
 {
 	mHalfExtents[1] = newYExtent / 2.0f;
 	ensureCorrectExtents();
 }
 
-void OBB::zExtent(float newZExtent) noexcept
+inline void OBB::zExtent(float newZExtent) noexcept
 {
 	mHalfExtents[2] = newZExtent / 2.0f;
 	ensureCorrectExtents();
 }
 
-void OBB::halfExtents(const vec3f& newHalfExtents) noexcept
+inline void OBB::halfExtents(const vec3f& newHalfExtents) noexcept
 {
 	mHalfExtents = newHalfExtents;
 	ensureCorrectExtents();
 }
 
-void OBB::halfXExtent(float newHalfXExtent) noexcept
+inline void OBB::halfXExtent(float newHalfXExtent) noexcept
 {
 	mHalfExtents[0] = newHalfXExtent;
 	ensureCorrectExtents();
 }
 
-void OBB::halfYExtent(float newHalfYExtent) noexcept
+inline void OBB::halfYExtent(float newHalfYExtent) noexcept
 {
 	mHalfExtents[1] = newHalfYExtent;
 	ensureCorrectExtents();
 }
 
-void OBB::halfZExtent(float newHalfZExtent) noexcept
+inline void OBB::halfZExtent(float newHalfZExtent) noexcept
 {
 	mHalfExtents[2] = newHalfZExtent;
 	ensureCorrectExtents();
@@ -200,7 +179,7 @@ void OBB::halfZExtent(float newHalfZExtent) noexcept
 // Private functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-void OBB::ensureCorrectAxes() const noexcept
+inline void OBB::ensureCorrectAxes() const noexcept
 {
 	// Check if axes are orthogonal
 	sfz_assert_debug(approxEqual(mAxes[0].dot(mAxes[1]), 0.0f));
@@ -213,7 +192,7 @@ void OBB::ensureCorrectAxes() const noexcept
 	sfz_assert_debug(approxEqual(mAxes[2].norm(), 1.0f));
 }
 
-void OBB::ensureCorrectExtents() const noexcept
+inline void OBB::ensureCorrectExtents() const noexcept
 {
 	// Extents are non-negative
 	sfz_assert_debug(0.0f < mHalfExtents[0]);
@@ -224,7 +203,7 @@ void OBB::ensureCorrectExtents() const noexcept
 // Non-member operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-std::ostream& operator<< (std::ostream& ostream, const OBB& obb) noexcept
+inline std::ostream& operator<< (std::ostream& ostream, const OBB& obb) noexcept
 {
 	return ostream << obb.to_string();
 }
@@ -236,7 +215,7 @@ std::ostream& operator<< (std::ostream& ostream, const OBB& obb) noexcept
 
 namespace std {
 
-size_t hash<sfz::OBB>::operator() (const sfz::OBB& obb) const noexcept
+inline size_t hash<sfz::OBB>::operator() (const sfz::OBB& obb) const noexcept
 {
 	return obb.hash();
 }

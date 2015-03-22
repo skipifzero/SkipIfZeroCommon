@@ -49,15 +49,15 @@ source_group(sfz FILES ${SOURCE_GENERAL_FILES})
 
 set(SOURCE_GEOMETRY_FILES
 	${INCLUDE_DIR}/sfz/geometry/AABB.hpp
-	 ${SOURCE_DIR}/sfz/geometry/AABB.cpp
+	${INCLUDE_DIR}/sfz/geometry/AABB.inl
 	${INCLUDE_DIR}/sfz/geometry/Intersection.hpp
 	 ${SOURCE_DIR}/sfz/geometry/Intersection.cpp
 	${INCLUDE_DIR}/sfz/geometry/OBB.hpp
-	 ${SOURCE_DIR}/sfz/geometry/OBB.cpp
+	${INCLUDE_DIR}/sfz/geometry/OBB.inl
 	${INCLUDE_DIR}/sfz/geometry/Plane.hpp
-	 ${SOURCE_DIR}/sfz/geometry/Plane.cpp
+	${INCLUDE_DIR}/sfz/geometry/Plane.inl
 	${INCLUDE_DIR}/sfz/geometry/Sphere.hpp
-	 ${SOURCE_DIR}/sfz/geometry/Sphere.cpp)
+	${INCLUDE_DIR}/sfz/geometry/Sphere.inl)
 source_group(sfz_geometry FILES ${SOURCE_GEOMETRY_FILES})
 
 set(SOURCE_MATH_FILES

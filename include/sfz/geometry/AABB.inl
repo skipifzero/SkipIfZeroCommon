@@ -1,5 +1,3 @@
-#include "sfz/geometry/AABB.hpp"
-
 #include "sfz/MSVC12HackON.hpp"
 
 namespace sfz {
@@ -7,7 +5,7 @@ namespace sfz {
 // Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-AABB::AABB(const vec3f& min, const vec3f& max) noexcept
+inline AABB::AABB(const vec3f& min, const vec3f& max) noexcept
 :
 	mMin{min},
 	mMax{max}
@@ -17,7 +15,7 @@ AABB::AABB(const vec3f& min, const vec3f& max) noexcept
 	sfz_assert_debug(min[2] < max[2]);
 }
 
-AABB::AABB(const vec3f& centerPos, float xExtent, float yExtent, float zExtent) noexcept
+inline AABB::AABB(const vec3f& centerPos, float xExtent, float yExtent, float zExtent) noexcept
 {
 	sfz_assert_debug(xExtent > 0);
 	sfz_assert_debug(yExtent > 0);
@@ -38,14 +36,14 @@ AABB::AABB(const vec3f& centerPos, float xExtent, float yExtent, float zExtent) 
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-std::array<vec3f,8> AABB::corners() const noexcept
+inline std::array<vec3f,8> AABB::corners() const noexcept
 {
 	std::array<vec3f,8> result;
 	this->corners(&result[0]);
 	return result;
 }
 
-void AABB::corners(vec3f* arrayOut) const noexcept
+inline void AABB::corners(vec3f* arrayOut) const noexcept
 {
 	const vec3f xExtent = vec3f{mMax[0] - mMin[0], 0.0f, 0.0f};
 	const vec3f yExtent = vec3f{0.0f, mMax[1] - mMin[1], 0.0f};
@@ -61,7 +59,7 @@ void AABB::corners(vec3f* arrayOut) const noexcept
 	arrayOut[7] = mMax; // Front-top-right
 }
 
-vec3f AABB::closestPoint(const vec3f& point) const noexcept
+inline vec3f AABB::closestPoint(const vec3f& point) const noexcept
 {
 	vec3f res = point;
 	float val;
@@ -74,7 +72,7 @@ vec3f AABB::closestPoint(const vec3f& point) const noexcept
 	return res;
 }
 
-size_t AABB::hash() const noexcept
+inline size_t AABB::hash() const noexcept
 {
 	std::hash<vec3f> hasher;
 	size_t hash = 0;
@@ -84,7 +82,7 @@ size_t AABB::hash() const noexcept
 	return hash;
 }
 
-std::string AABB::to_string() const noexcept
+inline std::string AABB::to_string() const noexcept
 {
 	std::string str{"Min: "};
 	str += mMin.to_string();
@@ -96,75 +94,14 @@ std::string AABB::to_string() const noexcept
 // Public getters/setters
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-vec3f AABB::position() const noexcept
-{
-	return mMin + (extents()/2.0f);
-}
-
-vec3f AABB::extents() const noexcept
-{
-	return mMax - mMin;
-}
-
-float AABB::xExtent() const noexcept
-{
-	return mMax[0] - mMin[0];
-}
-
-float AABB::yExtent() const noexcept
-{
-	return mMax[1] - mMin[1];
-}
-
-float AABB::zExtent() const noexcept
-{
-	return mMax[2] - mMin[2];
-}
-
-vec3f AABB::halfExtents() const noexcept
-{
-	return extents() / 2.0f;
-}
-
-float AABB::halfXExtent() const noexcept
-{
-	return xExtent() / 2.0f;
-}
-
-float AABB::halfYExtent() const noexcept
-{
-	return yExtent() / 2.0f;
-}
-
-float AABB::halfZExtent() const noexcept
-{
-	return zExtent() / 2.0f;
-}
-
-void AABB::min(const vec3f& newMin) noexcept
-{
-	mMin = newMin;
-	sfz_assert_debug(mMin[0] < mMax[0]);
-	sfz_assert_debug(mMin[1] < mMax[1]);
-	sfz_assert_debug(mMin[2] < mMax[2]);
-}
-
-void AABB::max(const vec3f& newMax) noexcept
-{
-	mMax = newMax;
-	sfz_assert_debug(mMin[0] < mMax[0]);
-	sfz_assert_debug(mMin[1] < mMax[1]);
-	sfz_assert_debug(mMin[2] < mMax[2]);
-}
-
-void AABB::position(const vec3f& newCenterPos) noexcept
+inline void AABB::position(const vec3f& newCenterPos) noexcept
 {
 	const vec3f halfExtents{xExtent()/2.0f, yExtent()/2.0f, zExtent()/2.0f};
 	mMin = newCenterPos - halfExtents;
 	mMax = newCenterPos + halfExtents;
 }
 
-void AABB::extents(const vec3f& newExtents) noexcept
+inline void AABB::extents(const vec3f& newExtents) noexcept
 {
 	sfz_assert_debug(newExtents[0] > 0);
 	sfz_assert_debug(newExtents[1] > 0);
@@ -175,17 +112,17 @@ void AABB::extents(const vec3f& newExtents) noexcept
 	mMin = pos + halfExtents;
 }
 
-void AABB::xExtent(float newXExtent) noexcept
+inline void AABB::xExtent(float newXExtent) noexcept
 {
 	extents(vec3f{newXExtent, yExtent(), zExtent()});
 }
 
-void AABB::yExtent(float newYExtent) noexcept
+inline void AABB::yExtent(float newYExtent) noexcept
 {
 	extents(vec3f{xExtent(), newYExtent, zExtent()});
 }
 
-void AABB::zExtent(float newZExtent) noexcept
+inline void AABB::zExtent(float newZExtent) noexcept
 {
 	extents(vec3f{xExtent(), yExtent(), newZExtent});
 }
@@ -193,7 +130,7 @@ void AABB::zExtent(float newZExtent) noexcept
 // Non-member operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-std::ostream& operator<< (std::ostream& ostream, const AABB& aabb) noexcept
+inline std::ostream& operator<< (std::ostream& ostream, const AABB& aabb) noexcept
 {
 	return ostream << aabb.to_string();
 }
@@ -205,7 +142,7 @@ std::ostream& operator<< (std::ostream& ostream, const AABB& aabb) noexcept
 
 namespace std {
 
-size_t hash<sfz::AABB>::operator() (const sfz::AABB& aabb) const noexcept
+inline size_t hash<sfz::AABB>::operator() (const sfz::AABB& aabb) const noexcept
 {
 	return aabb.hash();
 }

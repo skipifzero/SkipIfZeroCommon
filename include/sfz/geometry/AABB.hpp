@@ -23,53 +23,41 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	AABB() noexcept = delete;
-	AABB(const AABB&) noexcept = default;
-	AABB& operator= (const AABB&) noexcept = default;
-	~AABB() noexcept = default;
-
-	/**
-	 * @sfz_debug_assert min is smaller than max in all axes
-	 */
-	AABB(const vec3f& min, const vec3f& max) noexcept;
-
-	/**
-	 * @sfz_debug_assert all extents are larger than 0
-	 */
-	AABB(const vec3f& centerPos, float xExtent, float yExtent, float zExtent) noexcept;
+	inline AABB(const vec3f& min, const vec3f& max) noexcept;
+	inline AABB(const vec3f& centerPos, float xExtent, float yExtent, float zExtent) noexcept;
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	std::array<vec3f,8> corners() const noexcept;
-	void corners(vec3f* arrayOut) const noexcept;
-	vec3f closestPoint(const vec3f& point) const noexcept;
+	inline std::array<vec3f,8> corners() const noexcept;
+	inline void corners(vec3f* arrayOut) const noexcept;
+	inline vec3f closestPoint(const vec3f& point) const noexcept;
 
-	size_t hash() const noexcept;
-	std::string to_string() const noexcept;
+	inline size_t hash() const noexcept;
+	inline std::string to_string() const noexcept;
 
 	// Public getters/setters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	inline vec3f min() const noexcept { return mMin; }
 	inline vec3f max() const noexcept { return mMax; }
-	vec3f position() const noexcept;
-	vec3f extents() const noexcept;
-	float xExtent() const noexcept;
-	float yExtent() const noexcept;
-	float zExtent() const noexcept;
-	vec3f halfExtents() const noexcept;
-	float halfXExtent() const noexcept;
-	float halfYExtent() const noexcept;
-	float halfZExtent() const noexcept;
+	inline vec3f position() const noexcept { return mMin + (extents()/2.0f); }
+	inline vec3f extents() const noexcept { return mMax - mMin; }
+	inline float xExtent() const noexcept { return mMax[0] - mMin[0]; }
+	inline float yExtent() const noexcept { return mMax[1] - mMin[1]; }
+	inline float zExtent() const noexcept { return mMax[2] - mMin[2]; }
+	inline vec3f halfExtents() const noexcept { return extents() / 2.0f; }
+	inline float halfXExtent() const noexcept { return xExtent() / 2.0f; }
+	inline float halfYExtent() const noexcept { return yExtent() / 2.0f; }
+	inline float halfZExtent() const noexcept { return zExtent() / 2.0f; }
 
-	void min(const vec3f& newMin) noexcept;
-	void max(const vec3f& newMax) noexcept;
-	void position(const vec3f& newCenterPos) noexcept;
-	void extents(const vec3f& newExtents) noexcept;
-	void xExtent(float newXExtent) noexcept;
-	void yExtent(float newYExtent) noexcept;
-	void zExtent(float newZExtent) noexcept;
+	inline void min(const vec3f& newMin) noexcept { mMin = newMin; }
+	inline void max(const vec3f& newMax) noexcept { mMax = newMax; }
+	inline void position(const vec3f& newCenterPos) noexcept;
+	inline void extents(const vec3f& newExtents) noexcept;
+	inline void xExtent(float newXExtent) noexcept;
+	inline void yExtent(float newYExtent) noexcept;
+	inline void zExtent(float newZExtent) noexcept;
 
 private:
 	// Private members
@@ -81,7 +69,7 @@ private:
 // Non-member operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-std::ostream& operator<< (std::ostream& ostream, const AABB& aabb) noexcept;
+inline std::ostream& operator<< (std::ostream& ostream, const AABB& aabb) noexcept;
 
 } // namespace sfz
 
@@ -92,10 +80,11 @@ namespace std {
 
 template<>
 struct hash<sfz::AABB> {
-	size_t operator() (const sfz::AABB& aabb) const noexcept;
+	inline size_t operator() (const sfz::AABB& aabb) const noexcept;
 };
 
 } // namespace std
 
 #include "sfz/MSVC12HackOFF.hpp"
+#include "sfz/geometry/AABB.inl"
 #endif

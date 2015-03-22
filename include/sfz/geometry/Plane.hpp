@@ -28,24 +28,19 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	Plane() noexcept = delete;
-	Plane(const Plane&) noexcept = default;
-	Plane& operator= (const Plane&) noexcept = default;
-	~Plane() noexcept = default;
-
 	/** @brief dot(normal, x) - d = 0 */
-	Plane(const vec3f& normal, float d) noexcept;
+	inline Plane(const vec3f& normal, float d) noexcept;
 	/** @brief dot(normal, x - position) = 0 */
-	Plane(const vec3f& normal, const vec3f& position) noexcept;
+	inline Plane(const vec3f& normal, const vec3f& position) noexcept;
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/** @brief Returns the signed distance to the plane. Positive if above, negative if below. */
-	float signedDistance(const vec3f& point) const noexcept;
-	vec3f closestPoint(const vec3f& point) const noexcept;
-	size_t hash() const noexcept;
-	std::string to_string() const noexcept;
+	inline float signedDistance(const vec3f& point) const noexcept;
+	inline vec3f closestPoint(const vec3f& point) const noexcept;
+	inline size_t hash() const noexcept;
+	inline std::string to_string() const noexcept;
 
 	// Public getters/setters
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -64,7 +59,7 @@ private:
 // Non-member operators
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-std::ostream& operator<< (std::ostream& ostream, const Plane& plane) noexcept;
+inline std::ostream& operator<< (std::ostream& ostream, const Plane& plane) noexcept;
 
 } // namespace sfz
 
@@ -75,10 +70,11 @@ namespace std {
 
 template<>
 struct hash<sfz::Plane> {
-	size_t operator() (const sfz::Plane& plane) const noexcept;
+	inline size_t operator() (const sfz::Plane& plane) const noexcept;
 };
 
 } // namespace std
 
 #include "sfz/MSVC12HackOFF.hpp"
+#include "sfz/geometry/Plane.inl"
 #endif
