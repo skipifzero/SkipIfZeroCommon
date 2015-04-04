@@ -42,6 +42,11 @@ using std::size_t;
 template<typename T, size_t N>
 struct Vector final {
 	
+	// Public constants
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	static const Vector<T,N>& ZERO() noexcept;
+
 	// Public members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

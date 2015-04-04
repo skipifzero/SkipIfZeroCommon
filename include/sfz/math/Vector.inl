@@ -1,7 +1,21 @@
 #include "sfz/MSVC12HackON.hpp"
 
 namespace sfz {
-	
+
+// Public constants
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+const Vector<T,N>& Vector<T,N>::ZERO() noexcept
+{
+	static const Vector<T,N> zero = []() -> Vector<T,N> {
+		Vector<T,N> tmp;
+		tmp.fill(T(0));
+		return tmp;
+	}();
+	return zero; 
+}
+
 // Constructors and destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
