@@ -38,6 +38,11 @@ using std::size_t;
 template<typename T, size_t M, size_t N>
 struct Matrix final {
 
+	// Public constants
+	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	static const Matrix<T,M,N>& ZERO() noexcept;
+
 	// Public members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

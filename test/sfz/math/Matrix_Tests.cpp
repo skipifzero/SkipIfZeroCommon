@@ -9,6 +9,13 @@
 #include <unordered_map>
 #include <type_traits>
 
+TEST_CASE("Constants", "[sfz::Matrix]")
+{
+	SECTION("ZERO()") {
+		REQUIRE((sfz::Matrix<int,2,2>::ZERO()) == (sfz::Matrix<int,2,2>{{0,0},{0,0}}));
+	}
+}
+
 TEST_CASE("Constructors", "[sfz::Matrix]")
 {
 	SECTION("Initializer list constructor") {

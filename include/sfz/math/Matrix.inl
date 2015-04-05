@@ -2,6 +2,20 @@
 
 namespace sfz {
 
+// Public constants
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+const Matrix<T,M,N>& Matrix<T,M,N>::ZERO() noexcept
+{
+	static const Matrix<T,M,N> zero = []() -> Matrix<T,M,N> {
+		Matrix<T,M,N> tmp;
+		tmp.fill(T(0));
+		return tmp;
+	}();
+	return zero; 
+}
+
 // Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
