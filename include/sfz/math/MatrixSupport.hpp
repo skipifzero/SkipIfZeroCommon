@@ -52,6 +52,9 @@ Matrix<T,2,2> inverse(const Matrix<T,2,2>& m) noexcept;
 template<typename T>
 Matrix<T,3,3> inverse(const Matrix<T,3,3>& m) noexcept;
 
+template<typename T>
+Matrix<T,4,4> inverse(const Matrix<T,4,4>& m) noexcept;
+
 // Rotation matrices
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

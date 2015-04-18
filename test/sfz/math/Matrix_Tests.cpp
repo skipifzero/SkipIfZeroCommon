@@ -509,12 +509,19 @@ TEST_CASE("Inverse", "[sfz::MatrixSupport]")
 	sfz::Matrix<int, 2, 2> m2{{1, 0}, {0, 1}};
 	REQUIRE(inverse(m2) == m2);
 
-	sfz::Matrix<int, 3, 3> m3{{1,1,1}, {1,1,2}, {1,2,3}};
-	sfz::Matrix<int, 3, 3> m3Inv{{1,1,-1}, {1, -2, 1}, {-1, 1, 0}};
+	sfz::Matrix<int, 3, 3> m3{{1, 1, 1}, {1, 1, 2}, {1, 2, 3}};
+	sfz::Matrix<int, 3, 3> m3Inv{{1, 1, -1}, {1, -2, 1}, {-1, 1, 0}};
 	REQUIRE(inverse(m3) == m3Inv);
 
-	sfz::Matrix<int, 3, 3> m4{{1,0,0}, {0,1,0}, {0,0,1}};
+	sfz::Matrix<int, 3, 3> m4{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
 	REQUIRE(inverse(m4) == m4);
+
+	sfz::Matrix<int, 4, 4> m5{{1, 1, 1, 1}, {1, 1, 2, 3}, {1, 2, 3, 4}, {1, 2, 2, 1}};
+	sfz::Matrix<int, 4, 4> m5Inv{{1, 1, -1, 0}, {2, -3, 2, -1}, {-3, 3, -2, 2}, {1, -1, 1, -1}};
+	REQUIRE(inverse(m5) == m5Inv);
+
+	sfz::Matrix<int, 4, 4> m6{{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+	REQUIRE(inverse(m6) == m6);
 }
 
 TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
