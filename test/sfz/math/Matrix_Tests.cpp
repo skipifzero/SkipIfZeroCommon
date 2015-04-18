@@ -494,6 +494,9 @@ TEST_CASE("Determinants", "[sfz::MatrixSupport]")
 
 	sfz::Matrix<int, 3, 3> m3{{99,-2,5}, {8,-4,-1}, {6,1,-88}};
 	REQUIRE(sfz::determinant(m3) == 33711);
+
+	sfz::Matrix<int, 4, 4> m4{{1, -2, 1, 3}, {1, 4, -5, 0}, {-10, 0, 4, 2}, {-1, 0, 2, 0}};
+	REQUIRE(sfz::determinant(m4) == -204);
 }
 
 TEST_CASE("Inverse", "[sfz::MatrixSupport]")
