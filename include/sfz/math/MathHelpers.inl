@@ -47,6 +47,12 @@ bool approxEqual(const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 	return approxEqual<T,M,N>(lhs, rhs, defaultEpsilon<T>());
 }
 
+template<typename ArgT, typename FloatT>
+ArgT lerp(const ArgT& v0, const ArgT& v1, FloatT t) noexcept
+{
+	return (FloatT(1)-t)*v0 + t*v1;
+}
+
 } // namespace sfz
 
 #include "sfz/MSVC12HackOFF.hpp"

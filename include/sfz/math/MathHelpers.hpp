@@ -35,6 +35,13 @@ bool approxEqual(const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs, T epsilon) 
 template<typename T, size_t M, size_t N>
 bool approxEqual(const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
 
+/**
+ * @brief Lerp function, v0 when t == 0 and v1 when t == 1.
+ * @see http://en.wikipedia.org/wiki/Lerp_%28computing%29
+ */
+template<typename ArgT, typename FloatT>
+ArgT lerp(const ArgT& v0, const ArgT& v1, FloatT t) noexcept;
+
 } // namespace sfz
 
 #include "sfz/MSVC12HackOFF.hpp"
