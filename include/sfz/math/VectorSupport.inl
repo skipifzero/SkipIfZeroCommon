@@ -28,7 +28,7 @@ T angle(const Vector<T,2>& vector) noexcept
 	sfz_assert_debug(!(vector[0] == 0 && vector[1] == 0));
 	T angle = std::atan2(vector[1], vector[0]);
 	if (angle < 0) {
-		angle += static_cast<T>(2)*static_cast<T>(g_PI_DOUBLE);
+		angle += T(2)*PI<T>();
 	}
 	return angle;
 }
