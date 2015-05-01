@@ -878,6 +878,23 @@ TEST_CASE("Projection matrices", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(3, 2), 0));
 		REQUIRE(approxEqual(m.at(3, 3), 1));		
 	}
+	SECTION("glOrthogonalProjectionMatrix2D()") {
+		sfz::vec2f pos{-3.0f, 3.0f};
+		sfz::vec2f dim{4.0f, 2.0f};
+		auto m = sfz::glOrthogonalProjectionMatrix2D(pos, dim);
+
+		sfz::vec3f center3{pos[0], pos[1], 1.0f};
+		sfz::vec3f left3{pos[0]-(dim[0]/2), pos[1], 1.0f};
+		sfz::vec3f right3{pos[0]+(dim[0]/2), pos[1], 1.0f};
+		sfz::vec3f bottom3{pos[0], pos[1]-(dim[1]/2), 1.0f};
+		sfz::vec3f top3{pos[0], pos[1]+(dim[1]/2), 1.0f};
+
+		REQUIRE(approxEqual(m*center3, sfz::vec3f{0.0f, 0.0f, 1.0f}));
+		REQUIRE(approxEqual(m*left3, sfz::vec3f{-1.0f, 0.0f, 1.0f}));
+		REQUIRE(approxEqual(m*right3, sfz::vec3f{1.0f, 0.0f, 1.0f}));
+		REQUIRE(approxEqual(m*bottom3, sfz::vec3f{0.0f, -1.0f, 1.0f}));
+		REQUIRE(approxEqual(m*top3, sfz::vec3f{0.0f, 1.0f, 1.0f}));
+	}
 	SECTION("glPerspectiveProjectionMatrix()") {
 		auto m = sfz::glPerspectiveProjectionMatrix(90.0f, 1.7778f, 0.01f, 500.0f);
 

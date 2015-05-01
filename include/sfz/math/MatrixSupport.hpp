@@ -117,8 +117,11 @@ Matrix<T,4,4> glOrthogonalProjectionMatrix(T left, T bottom, T near,
                                            T right, T top, T far) noexcept;
 
 template<typename T>
-Matrix<T,4,4> glOrthogonalProjectionMatrix(const sfz::Vector<T,3>& leftBottomNear,
-                                           const sfz::Vector<T,3>& rightTopFar) noexcept;
+Matrix<T,4,4> glOrthogonalProjectionMatrix(const Vector<T,3>& leftBottomNear,
+                                           const Vector<T,3>& rightTopFar) noexcept;
+
+template<typename T>
+Matrix<T,3,3> glOrthogonalProjectionMatrix2D(Vector<T,2> center, Vector<T,2> dimensions) noexcept;
 
 template<typename T>
 Matrix<T,4,4> glPerspectiveProjectionMatrix(T left, T bottom, T zNear,

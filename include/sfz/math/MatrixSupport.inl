@@ -345,11 +345,21 @@ Matrix<T,4,4> glOrthogonalProjectionMatrix(T left, T bottom, T zNear,
 }
 
 template<typename T>
-Matrix<T,4,4> glOrthogonalProjectionMatrix(const sfz::Vector<T,3>& leftBottomNear,
-                                           const sfz::Vector<T,3>& rightTopFar) noexcept
+Matrix<T,4,4> glOrthogonalProjectionMatrix(const Vector<T,3>& leftBottomNear,
+                                           const Vector<T,3>& rightTopFar) noexcept
 {
 	return glOrthogonalProjectionMatrix(leftBottomNear[0], leftBottomNear[1], leftBottomNear[2],
 	                                    rightTopFar[0], rightTopFar[1], rightTopFar[2]);
+}
+
+template<typename T>
+Matrix<T,3,3> glOrthogonalProjectionMatrix2D(Vector<T,2> center, Vector<T,2> dimensions) noexcept
+{
+	T a = T(2)/dimensions[0];
+	T b = T(2)/dimensions[1];
+	return Matrix<T,3,3>{{a, 0, -(center[0]*a)},
+	                     {0, b, -(center[1]*b)},
+	                     {0, 0, 1}};
 }
 
 template<typename T>
