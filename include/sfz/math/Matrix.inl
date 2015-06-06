@@ -80,7 +80,7 @@ Vector<T,M> Matrix<T,M,N>::columnAt(size_t j) const noexcept
 {
 	sfz_assert_debug(j < N);
 	Vector<T,M> column;
-	for (size_t i = 0; i < N; i++) {
+	for (size_t i = 0; i < M; i++) {
 		column[i] = mElements[j][i];
 	}
 	return column;

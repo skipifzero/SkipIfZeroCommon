@@ -112,7 +112,7 @@ TEST_CASE("glPtr()", "[sfz::Matrix]") {
 TEST_CASE("Row and column getters/setters", "[sfz::Matrix]")
 {
 	sfz::Matrix<int, 2, 3> m{{1, 2, 3},
-                             {4, 5, 6}};
+	                         {4, 5, 6}};
 
 	SECTION("rowAt()") {
 		sfz::Vector<int, 3> row1 = m.rowAt(0);
