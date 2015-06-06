@@ -7,7 +7,7 @@ namespace sfz {
 
 inline Sphere::Sphere(const vec3f& center, float radius) noexcept
 :
-	mCenter{center},
+	mCenter(center),
 	mRadius{radius}
 {
 	sfz_assert_debug(radius > 0.0f);

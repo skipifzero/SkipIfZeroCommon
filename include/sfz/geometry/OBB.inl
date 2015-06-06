@@ -7,8 +7,8 @@ namespace sfz {
 
 inline OBB::OBB(const vec3f& center, const array<vec3f,3>& axes, const vec3f& extents) noexcept
 :
-	mCenter{center},
-	mHalfExtents{extents/2.0f}
+	mCenter(center),
+	mHalfExtents(extents/2.0f)
 {
 	mAxes = axes;
 	ensureCorrectAxes();
@@ -18,8 +18,8 @@ inline OBB::OBB(const vec3f& center, const array<vec3f,3>& axes, const vec3f& ex
 inline OBB::OBB(const vec3f& center, const vec3f& xAxis, const vec3f& yAxis, const vec3f& zAxis,
                 const vec3f& extents) noexcept
 :
-	mCenter{center},
-	mHalfExtents{extents/2.0f}
+	mCenter(center),
+	mHalfExtents(extents/2.0f)
 {
 	mAxes[0] = xAxis;
 	mAxes[1] = yAxis;

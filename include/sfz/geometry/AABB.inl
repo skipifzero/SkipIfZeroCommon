@@ -7,8 +7,8 @@ namespace sfz {
 
 inline AABB::AABB(const vec3f& min, const vec3f& max) noexcept
 :
-	mMin{min},
-	mMax{max}
+	mMin(min),
+	mMax(max)
 {
 	sfz_assert_debug(min[0] < max[0]);
 	sfz_assert_debug(min[1] < max[1]);
