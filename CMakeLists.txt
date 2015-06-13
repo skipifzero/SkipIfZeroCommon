@@ -11,7 +11,7 @@ endif(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 # Compiler flags
 if(MSVC)
 	# MSVC flags
-	set(CMAKE_CXX_FLAGS "/Wall /Zi /EHsc /wd4350 /wd4514 /wd4668 /wd4710 /wd4711 /wd4820")
+	set(CMAKE_CXX_FLAGS "/Wall /Zi /EHsc /wd4350 /wd4514 /wd4571 /wd4668 /wd4710 /wd4711 /wd4820")
 	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /DEBUG /DSFZ_NO_DEBUG")
 	set(CMAKE_CXX_FLAGS_RELEASE "/O2 /DSFZ_NO_DEBUG")
 	set(CMAKE_CXX_FLAGS_DEBUG  "/Od /DEBUG")
@@ -75,10 +75,6 @@ set(SOURCE_MATH_FILES
 source_group(sfz_math FILES ${SOURCE_MATH_FILES})
 
 set(SOURCE_UTIL_FILES
-	${INCLUDE_DIR}/sfz/util/BlockingQueue.hpp
-	${INCLUDE_DIR}/sfz/util/BlockingQueue.inl
-	${INCLUDE_DIR}/sfz/util/ScopedThread.hpp
-	 ${SOURCE_DIR}/sfz/util/ScopedThread.cpp
 	${INCLUDE_DIR}/sfz/util/StopWatch.hpp
 	 ${SOURCE_DIR}/sfz/util/StopWatch.cpp)
 source_group(sfz_util FILES ${SOURCE_UTIL_FILES})
@@ -110,5 +106,4 @@ if(SFZ_COMMON_BUILD_TESTS)
 	add_test_file(Matrix_Tests ${TEST_DIR}/sfz/math/Matrix_Tests.cpp)
 	add_test_file(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
 	add_test_file(Intersection_Tests ${TEST_DIR}/sfz/geometry/Intersection_Tests.cpp)
-	add_test_file(BlockingQueue_Tests ${TEST_DIR}/sfz/util/BlockingQueue_Tests.cpp)
 endif()
