@@ -10,7 +10,6 @@
 
 #include "sfz/Assert.hpp"
 #include "sfz/math/MathConstants.hpp"
-#include "sfz/MSVC12HackON.hpp"
 
 namespace sfz {
 
@@ -270,8 +269,6 @@ struct hash<sfz::Vector<T,N>> {
 };
 
 } // namespace std
-
-#include "sfz/MSVC12HackOFF.hpp"
 #include "Vector.inl"
 #include "VectorSupport.hpp"
 #endif

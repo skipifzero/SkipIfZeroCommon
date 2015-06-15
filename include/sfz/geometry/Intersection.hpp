@@ -7,8 +7,6 @@
 #include "sfz/geometry/Plane.hpp"
 #include "sfz/geometry/Sphere.hpp"
 
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 // Point inside primitive tests
@@ -55,9 +53,5 @@ bool abovePlane(const Plane& plane, const Sphere& sphere) noexcept;
 /** @brief Checks whether Sphere intersects with or is in negative half-space of plane. */
 bool belowPlane(const Plane& plane, const Sphere& sphere) noexcept;
 
-
 } // namespace sfz
-
-#include "sfz/MSVC12HackOFF.hpp"
-
 #endif

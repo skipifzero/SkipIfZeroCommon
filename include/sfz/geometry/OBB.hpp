@@ -13,8 +13,6 @@
 #include "sfz/math/Matrix.hpp"
 #include "sfz/geometry/AABB.hpp"
 
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 using std::array;
@@ -115,7 +113,5 @@ struct hash<sfz::OBB> {
 };
 
 } // namespace std
-
-#include "sfz/MSVC12HackOFF.hpp"
 #include "sfz/geometry/OBB.inl"
 #endif

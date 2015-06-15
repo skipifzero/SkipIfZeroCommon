@@ -8,8 +8,6 @@
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/Matrix.hpp"
 
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 using std::size_t;
@@ -43,7 +41,5 @@ template<typename ArgT, typename FloatT>
 ArgT lerp(const ArgT& v0, const ArgT& v1, FloatT t) noexcept;
 
 } // namespace sfz
-
-#include "sfz/MSVC12HackOFF.hpp"
 #include "sfz/math/MathHelpers.inl"
 #endif

@@ -1,5 +1,3 @@
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 template<typename T>
@@ -54,5 +52,3 @@ ArgT lerp(const ArgT& v0, const ArgT& v1, FloatT t) noexcept
 }
 
 } // namespace sfz
-
-#include "sfz/MSVC12HackOFF.hpp"

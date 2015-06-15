@@ -1,7 +1,5 @@
 #include "sfz/geometry/Intersection.hpp"
 
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 // Anonymous functions
@@ -287,5 +285,3 @@ bool belowPlane(const Plane& plane, const Sphere& sphere) noexcept
 }
 
 } // namespace sfz
-
-#include "sfz/MSVC12HackOFF.hpp"

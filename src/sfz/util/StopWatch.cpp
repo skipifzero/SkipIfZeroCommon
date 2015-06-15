@@ -2,8 +2,6 @@
 
 #include <ratio> // std::milli, std::nano
 
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 StopWatch::StopWatch() noexcept
@@ -51,5 +49,3 @@ float StopWatch::getTimeNanoSeconds() noexcept
 }
 
 } // namespace sfz
-
-#include "sfz/MSVC12HackOFF.hpp"

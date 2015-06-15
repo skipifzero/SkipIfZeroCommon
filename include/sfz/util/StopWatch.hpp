@@ -3,7 +3,6 @@
 #define SFZ_UTIL_STOP_WATCH_HPP
 
 #include <chrono>
-#include "sfz/MSVC12HackON.hpp"
 
 namespace sfz {
 
@@ -75,6 +74,4 @@ private:
 };
 
 } // namespace sfz
-
-#include "sfz/MSVC12HackOFF.hpp"
 #endif

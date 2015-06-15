@@ -1,5 +1,3 @@
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 // Constructors & destructors
@@ -77,5 +75,3 @@ inline size_t hash<sfz::Sphere>::operator() (const sfz::Sphere& sphere) const no
 }
 
 } // namespace std
-
-#include "sfz/MSVC12HackOFF.hpp"

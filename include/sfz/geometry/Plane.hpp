@@ -10,8 +10,6 @@
 #include "sfz/math/Vector.hpp"
 #include "sfz/math/MathHelpers.hpp"
 
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 /**
@@ -77,6 +75,5 @@ struct hash<sfz::Plane> {
 
 } // namespace std
 
-#include "sfz/MSVC12HackOFF.hpp"
 #include "sfz/geometry/Plane.inl"
 #endif

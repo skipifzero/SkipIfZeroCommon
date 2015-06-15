@@ -6,7 +6,6 @@
 
 #include "sfz/Assert.hpp"
 #include "sfz/math/Matrix.hpp"
-#include "sfz/MSVC12HackON.hpp"
 
 namespace sfz {
 
@@ -197,7 +196,5 @@ template<typename T>
 void left(Matrix<T,4,4>& transform, const Vector<T,3>& left) noexcept;
 
 } // namespace sfz
-
-#include "sfz/MSVC12HackOFF.hpp"
 #include "sfz/math/MatrixSupport.inl"
 #endif

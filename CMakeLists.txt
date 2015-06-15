@@ -40,8 +40,6 @@ include_directories(${CATCH_INCLUDE_DIRS})
 set(SOURCE_GENERAL_FILES
 	${INCLUDE_DIR}/sfz/Assert.hpp
 	${INCLUDE_DIR}/sfz/Assert.inl
-	${INCLUDE_DIR}/sfz/MSVC12HackON.hpp
-	${INCLUDE_DIR}/sfz/MSVC12HackOFF.hpp
 	${INCLUDE_DIR}/sfz/Geometry.hpp
 	${INCLUDE_DIR}/sfz/Math.hpp
 	${INCLUDE_DIR}/sfz/Util.hpp)

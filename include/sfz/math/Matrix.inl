@@ -1,5 +1,3 @@
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 // Public constants
@@ -350,5 +348,3 @@ size_t hash<sfz::Matrix<T,M,N>>::operator() (const sfz::Matrix<T,M,N>& matrix) c
 }
 
 } // namespace std
-
-#include "sfz/MSVC12HackOFF.hpp"

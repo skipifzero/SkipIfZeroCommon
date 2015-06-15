@@ -4,8 +4,6 @@
 
 #include <cmath>
 
-#include <sfz/MSVC12HackON.hpp>
-
 namespace sfz {
 
 template<typename T = float>
@@ -18,6 +16,4 @@ template<typename T = float>
 constexpr T RAD_TO_DEG() noexcept { return T(180) / PI<T>(); }
 
 } // namespace sfz
-
-#include <sfz/MSVC12HackOFF.hpp>
 #endif

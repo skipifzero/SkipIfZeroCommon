@@ -1,5 +1,3 @@
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 // Constructors & destructors
@@ -76,5 +74,3 @@ inline size_t hash<sfz::Plane>::operator() (const sfz::Plane& plane) const noexc
 }
 
 } // namespace std
-
-#include "sfz/MSVC12HackOFF.hpp"

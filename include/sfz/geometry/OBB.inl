@@ -1,5 +1,3 @@
-#include "sfz/MSVC12HackON.hpp"
-
 namespace sfz {
 
 // Constructors & destructors
@@ -221,5 +219,3 @@ inline size_t hash<sfz::OBB>::operator() (const sfz::OBB& obb) const noexcept
 }
 
 } // namespace std
-
-#include "sfz/MSVC12HackOFF.hpp"
