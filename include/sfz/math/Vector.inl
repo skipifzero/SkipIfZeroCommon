@@ -299,30 +299,6 @@ bool Vector<T,N>::operator!= (const Vector<T,N>& other) const noexcept
 	return !((*this) == other);
 }
 
-template<typename T, size_t N>
-bool Vector<T,N>::operator< (const Vector<T,N>& other) const noexcept
-{
-	return this->squaredNorm() < other.squaredNorm();
-}
-
-template<typename T, size_t N>
-bool Vector<T,N>::operator> (const Vector<T,N>& other) const noexcept
-{
-	return other < (*this);
-}
-
-template<typename T, size_t N>
-bool Vector<T,N>::operator<= (const Vector<T,N>& other) const noexcept
-{
-	return this->squaredNorm() <= other.squaredNorm();
-}
-
-template<typename T, size_t N>
-bool Vector<T,N>::operator>= (const Vector<T,N>& other) const noexcept
-{
-	return other <= (*this);
-}
-
 // Non-member operators (arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

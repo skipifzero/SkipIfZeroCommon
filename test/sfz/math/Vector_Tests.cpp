@@ -255,22 +255,6 @@ TEST_CASE("Comparison operators", "[sfz::Vector]")
 		REQUIRE(v1 != v2);
 		REQUIRE(v2 != v1);
 	}
-	SECTION("< and >") {
-		REQUIRE(v2 < v1);
-		REQUIRE(!(v2 > v1));
-		REQUIRE(v1 > v2);
-		REQUIRE(!(v1 < v2));
-	}
-	SECTION("<= and >=") {
-		REQUIRE(v2 <= v1);
-		REQUIRE(!(v2 >= v1));
-		REQUIRE(v1 >= v2);
-		REQUIRE(!(v1 <= v2));
-		REQUIRE(v2 <= v3);
-		REQUIRE(v2 >= v3);
-		REQUIRE(v3 <= v2);
-		REQUIRE(v3 >= v2);
-	}
 }
 
 TEST_CASE("Dot (scalar) product", "[sfz::Vector]")

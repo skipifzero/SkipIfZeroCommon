@@ -216,14 +216,6 @@ struct Vector final {
 	bool operator== (const Vector<T,N>& other) const noexcept;
 
 	bool operator!= (const Vector<T,N>& other) const noexcept;
-
-	bool operator< (const Vector<T,N>& other) const noexcept;
-
-	bool operator> (const Vector<T,N>& other) const noexcept;
-
-	bool operator<= (const Vector<T,N>& other) const noexcept;
-
-	bool operator>= (const Vector<T,N>& other) const noexcept;
 };
 
 // Non-member operators (arithmetic)
