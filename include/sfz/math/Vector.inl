@@ -207,108 +207,100 @@ T Vector<T,N>::operator[] (const size_t index) const noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T,N>& Vector<T,N>::operator+= (const Vector<T,N>& right) noexcept
+Vector<T,N>& operator+= (Vector<T, N>& left, const Vector<T,N>& right) noexcept
 {
-	auto itr = right.begin();
-	for (auto& element : mElements) {
-		element += *itr++;
+	for (int i = 0; i < N; ++i) {
+		left.mElements[i] += right.mElements[i];
 	}
-	return *this;
+	return left;
 }
 
 template<typename T, size_t N>
-Vector<T,N>& Vector<T,N>::operator-= (const Vector<T,N>& right) noexcept
+Vector<T,N>& operator-= (Vector<T, N>& left, const Vector<T,N>& right) noexcept
 {
-	auto itr = right.begin();
-	for (auto& element : mElements) {
-		element -= *itr++;
+	for (int i = 0; i < N; ++i) {
+		left.mElements[i] -= right.mElements[i];
 	}
-	return *this;
+	return left;
 }
 
 template<typename T, size_t N>
-Vector<T,N>& Vector<T,N>::operator*= (const T& right) noexcept
+Vector<T,N>& operator*= (Vector<T, N>& left, const T& right) noexcept
 {
-	for (auto& element : mElements) {
-		element *= right;
+	for (int i = 0; i < N; ++i) {
+		left.mElements[i] *= right;
 	}
-	return *this;
+	return left;
 }
 
 template<typename T, size_t N>
-Vector<T,N>& Vector<T,N>::operator/= (const T& right) noexcept
+Vector<T,N>& operator/= (Vector<T, N>& left, const T& right) noexcept
 {
-	sfz_assert_debug(right != 0);
-	for (auto& element : mElements) {
-		element /= right;
+	sfz_assert_debug(right != T(0));
+	for (int i = 0; i < N; ++i) {
+		left.mElements[i] /= right;
 	}
-	return *this;
+	return left;
 }
 
 // Operators (arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::operator+ (const Vector<T,N>& other) const noexcept
+Vector<T,N> operator+ (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
 {
-	return (Vector<T,N>{*this} += other);
+	return (Vector<T,N>{left} += right);
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::operator- (const Vector<T,N>& other) const noexcept
+Vector<T,N> operator- (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
 {
-	return (Vector<T,N>{*this} -= other);
+	return (Vector<T,N>{left} -= right);
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::operator- () const noexcept
+Vector<T,N> operator- (const Vector<T, N>& vector) noexcept
 {
-	return (Vector<T,N>{*this} *= -1);
+	return (Vector<T,N>{vector} *= T(-1));
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::operator* (const T& scalar) const noexcept
+Vector<T,N> operator* (const Vector<T, N>& left, const T& right) noexcept
 {
-	return (Vector<T,N>{*this} *= scalar);
+	return (Vector<T,N>{left} *= right);
 }
 
 template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::operator/ (const T& scalar) const noexcept
+Vector<T, N> operator* (const T& left, const Vector<T, N>& right) noexcept
 {
-	return (Vector<T,N>{*this} /= scalar);
+	return right * left;
+}
+
+template<typename T, size_t N>
+Vector<T,N> operator/ (const Vector<T, N>& left, const T& right) noexcept
+{
+	return (Vector<T,N>{left} /= right);
 }
 
 // Operators (comparison)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-bool Vector<T,N>::operator== (const Vector<T,N>& other) const noexcept
+bool operator== (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
 {
-	auto itr = other.begin();
-	for (auto element : *this) {
-		if(element != *itr++) {
-			return false;
-		}
+	for (int i = 0; i < N; ++i) {
+		if (left.mElements[i] != right.mElements[i]) return false;
 	}
 	return true;
 }
 
 template<typename T, size_t N>
-bool Vector<T,N>::operator!= (const Vector<T,N>& other) const noexcept
+bool operator!= (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
 {
-	return !((*this) == other);
+	return !(left == right);
 }
 
-// Non-member operators (arithmetic)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t N>
-Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept
-{
-	return (Vector<T,N>{right} *= left);
-}
-
-// Non-member operators (other)
+// Operators (other)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>

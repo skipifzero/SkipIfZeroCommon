@@ -62,8 +62,9 @@ struct Vector final {
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	
 	constexpr Vector() noexcept = default;
-
 	constexpr Vector(const Vector<T,N>&) noexcept = default;
+	Vector<T, N>& operator= (const Vector<T, N>&) noexcept = default;
+	~Vector() noexcept = default;
 
 	/**
 	 * @brief Initializer list constructor.
@@ -73,8 +74,6 @@ struct Vector final {
 	 * @param list the initializer_list with values to fill the vector with
 	 */
 	Vector(std::initializer_list<T> list) noexcept;
-
-	~Vector() noexcept = default;
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -177,54 +176,56 @@ struct Vector final {
 	 * @return element at the specified index
 	 */
 	T operator[] (const size_t index) const noexcept;
-
-	// Operators (arithmetic & assignment)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	Vector<T,N>& operator= (const Vector<T,N>&) noexcept = default;
-
-	Vector<T,N>& operator+= (const Vector<T,N>& right) noexcept;
-
-	Vector<T,N>& operator-= (const Vector<T,N>& right) noexcept;
-
-	Vector<T,N>& operator*= (const T& right) noexcept;
-
-	/**
-	 * @assert rhs != 0
-	 */
-	Vector<T,N>& operator/= (const T& right) noexcept;
-
-	// Operators (arithmetic)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	Vector<T,N> operator+ (const Vector<T,N>& other) const noexcept;
-
-	Vector<T,N> operator- (const Vector<T,N>& other) const noexcept;
-
-	Vector<T,N> operator- () const noexcept;
-
-	Vector<T,N> operator* (const T& scalar) const noexcept;
-
-	/**
-	 * @assert rhs element != 0
-	 */
-	Vector<T,N> operator/ (const T& scalar) const noexcept;
-
-	// Operators (comparison)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	bool operator== (const Vector<T,N>& other) const noexcept;
-
-	bool operator!= (const Vector<T,N>& other) const noexcept;
 };
 
-// Non-member operators (arithmetic)
+// Operators (arithmetic & assignment)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T,N> operator* (const T& left, const Vector<T,N>& right) noexcept;
+Vector<T, N>& operator+= (Vector<T, N>& left, const Vector<T, N>& right) noexcept;
 
-// Non-member operators (other)
+template<typename T, size_t N>
+Vector<T, N>& operator-= (Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+
+template<typename T, size_t N>
+Vector<T, N>& operator*= (Vector<T, N>& left, const T& right) noexcept;
+
+/** @sfz_assert_debug rhs element != 0 */
+template<typename T, size_t N>
+Vector<T, N>& operator/= (Vector<T, N>& left, const T& right) noexcept;
+
+// Operators (arithmetic)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+Vector<T, N> operator+ (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+
+template<typename T, size_t N>
+Vector<T, N> operator- (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+
+template<typename T, size_t N>
+Vector<T, N> operator- (const Vector<T, N>& vector) noexcept;
+
+template<typename T, size_t N>
+Vector<T, N> operator* (const Vector<T, N>& left, const T& right) noexcept;
+
+template<typename T, size_t N>
+Vector<T, N> operator* (const T& left, const Vector<T, N>& right) noexcept;
+
+/** @sfz_assert_debug rhs element != 0 */
+template<typename T, size_t N>
+Vector<T, N> operator/ (const Vector<T, N>& left, const T& right) noexcept;
+
+// Operators (comparison)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+bool operator== (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+
+template<typename T, size_t N>
+bool operator!= (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+
+// Operators (other)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
