@@ -3,7 +3,7 @@ namespace sfz {
 // Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-inline Sphere::Sphere(const vec3f& center, float radius) noexcept
+inline Sphere::Sphere(const vec3& center, float radius) noexcept
 :
 	mCenter(center),
 	mRadius{radius}
@@ -14,10 +14,10 @@ inline Sphere::Sphere(const vec3f& center, float radius) noexcept
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-inline vec3f Sphere::closestPoint(const vec3f& point) const noexcept
+inline vec3 Sphere::closestPoint(const vec3& point) const noexcept
 {
-	const vec3f distToPoint = point - mCenter;
-	vec3f res = point;
+	const vec3 distToPoint = point - mCenter;
+	vec3 res = point;
 	if (distToPoint.squaredNorm() > mRadius*mRadius)
 	{
 		res = mCenter + distToPoint.normalize()*mRadius;
@@ -27,7 +27,7 @@ inline vec3f Sphere::closestPoint(const vec3f& point) const noexcept
 
 inline size_t Sphere::hash() const noexcept
 {
-	std::hash<vec3f> vecHasher;
+	std::hash<vec3> vecHasher;
 	std::hash<float> floatHasher;
 	size_t hash = 0;
 	// hash_combine algorithm from boost

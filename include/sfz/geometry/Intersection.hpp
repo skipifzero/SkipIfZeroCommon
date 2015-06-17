@@ -12,9 +12,9 @@ namespace sfz {
 // Point inside primitive tests
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-bool pointInside(const AABB& box, const vec3f& point) noexcept;
-bool pointInside(const OBB& box, const vec3f& point) noexcept;
-bool pointInside(const Sphere& sphere, const vec3f& point) noexcept;
+bool pointInside(const AABB& box, const vec3& point) noexcept;
+bool pointInside(const OBB& box, const vec3& point) noexcept;
+bool pointInside(const Sphere& sphere, const vec3& point) noexcept;
 
 // Primitive vs primitive tests (same type)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

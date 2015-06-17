@@ -330,36 +330,36 @@ TEST_CASE("Hashing", "[sfz::Vector]")
 
 TEST_CASE("Is proper POD", "[sfz::Vector]")
 {
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec2f>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec2>::value);
 	REQUIRE(std::is_trivially_default_constructible<sfz::vec2i>::value);
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec3f>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec3>::value);
 	REQUIRE(std::is_trivially_default_constructible<sfz::vec3i>::value);
 
-	REQUIRE(std::is_trivially_copyable<sfz::vec2f>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec2>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec2i>::value);
-	REQUIRE(std::is_trivially_copyable<sfz::vec3f>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec3>::value);
 	REQUIRE(std::is_trivially_copyable<sfz::vec3i>::value);
 
-	REQUIRE(std::is_trivial<sfz::vec2f>::value);
+	REQUIRE(std::is_trivial<sfz::vec2>::value);
 	REQUIRE(std::is_trivial<sfz::vec2i>::value);
-	REQUIRE(std::is_trivial<sfz::vec3f>::value);
+	REQUIRE(std::is_trivial<sfz::vec3>::value);
 	REQUIRE(std::is_trivial<sfz::vec3i>::value);
 
-	REQUIRE(std::is_standard_layout<sfz::vec2f>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec2>::value);
 	REQUIRE(std::is_standard_layout<sfz::vec2i>::value);
-	REQUIRE(std::is_standard_layout<sfz::vec3f>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec3>::value);
 	REQUIRE(std::is_standard_layout<sfz::vec3i>::value);
 
 #ifndef _MSC_VER
-	REQUIRE(std::is_pod<sfz::vec2f>::value);
+	REQUIRE(std::is_pod<sfz::vec2>::value);
 	REQUIRE(std::is_pod<sfz::vec2i>::value);
-	REQUIRE(std::is_pod<sfz::vec3f>::value);
+	REQUIRE(std::is_pod<sfz::vec3>::value);
 	REQUIRE(std::is_pod<sfz::vec3i>::value);
 #endif
 
-	REQUIRE(std::is_literal_type<sfz::vec2f>::value);
+	REQUIRE(std::is_literal_type<sfz::vec2>::value);
 	REQUIRE(std::is_literal_type<sfz::vec2i>::value);
-	REQUIRE(std::is_literal_type<sfz::vec3f>::value);
+	REQUIRE(std::is_literal_type<sfz::vec3>::value);
 	REQUIRE(std::is_literal_type<sfz::vec3i>::value);
 }
 

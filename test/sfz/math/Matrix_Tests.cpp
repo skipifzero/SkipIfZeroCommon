@@ -526,11 +526,11 @@ TEST_CASE("Inverse", "[sfz::MatrixSupport]")
 
 TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 {
-	sfz::vec4f v1{1, 1, 1, 1};
+	sfz::vec4 v1{1, 1, 1, 1};
 
 	SECTION("xRotationMatrix4()") {
 		sfz::mat4f xRot90 = sfz::xRotationMatrix4(sfz::PI()/2);
-		REQUIRE(approxEqual(xRot90, sfz::rotationMatrix4(sfz::vec3f{1,0,0}, sfz::PI()/2)));
+		REQUIRE(approxEqual(xRot90, sfz::rotationMatrix4(sfz::vec3{1,0,0}, sfz::PI()/2)));
 
 		REQUIRE(approxEqual(xRot90.at(0, 0), 1));
 		REQUIRE(approxEqual(xRot90.at(0, 1), 0));
@@ -553,7 +553,7 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(xRot90.at(3, 3), 1));
 
 		sfz::mat4f xRot180 = sfz::xRotationMatrix4(sfz::PI());
-		REQUIRE(approxEqual(xRot180, sfz::rotationMatrix4(sfz::vec3f{1,0,0}, sfz::PI())));
+		REQUIRE(approxEqual(xRot180, sfz::rotationMatrix4(sfz::vec3{1,0,0}, sfz::PI())));
 
 		REQUIRE(approxEqual(xRot180.at(0, 0), 1));
 		REQUIRE(approxEqual(xRot180.at(0, 1), 0));
@@ -589,7 +589,7 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 	}
 	SECTION("yRotationMatrix4()") {
 		sfz::mat4f yRot90 = sfz::yRotationMatrix4(sfz::PI()/2);
-		REQUIRE(approxEqual(yRot90, sfz::rotationMatrix4(sfz::vec3f{0,1,0}, sfz::PI()/2)));
+		REQUIRE(approxEqual(yRot90, sfz::rotationMatrix4(sfz::vec3{0,1,0}, sfz::PI()/2)));
 
 		REQUIRE(approxEqual(yRot90.at(0, 0), 0));
 		REQUIRE(approxEqual(yRot90.at(0, 1), 0));
@@ -612,7 +612,7 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(yRot90.at(3, 3), 1));
 
 		sfz::mat4f yRot180 = sfz::yRotationMatrix4(sfz::PI());
-		REQUIRE(approxEqual(yRot180, sfz::rotationMatrix4(sfz::vec3f{0,1,0}, sfz::PI())));
+		REQUIRE(approxEqual(yRot180, sfz::rotationMatrix4(sfz::vec3{0,1,0}, sfz::PI())));
 
 		REQUIRE(approxEqual(yRot180.at(0, 0), -1));
 		REQUIRE(approxEqual(yRot180.at(0, 1), 0));
@@ -648,7 +648,7 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 	}
 	SECTION("zRotationMatrix4()") {
 		sfz::mat4f zRot90 = sfz::zRotationMatrix4(sfz::PI()/2);
-		REQUIRE(approxEqual(zRot90, sfz::rotationMatrix4(sfz::vec3f{0,0,1}, sfz::PI()/2)));
+		REQUIRE(approxEqual(zRot90, sfz::rotationMatrix4(sfz::vec3{0,0,1}, sfz::PI()/2)));
 
 		REQUIRE(approxEqual(zRot90.at(0, 0), 0));
 		REQUIRE(approxEqual(zRot90.at(0, 1), -1));
@@ -671,7 +671,7 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(zRot90.at(3, 3), 1));
 
 		sfz::mat4f zRot180 = sfz::zRotationMatrix4(sfz::PI());
-		REQUIRE(approxEqual(zRot180, sfz::rotationMatrix4(sfz::vec3f{0,0,1}, sfz::PI())));
+		REQUIRE(approxEqual(zRot180, sfz::rotationMatrix4(sfz::vec3{0,0,1}, sfz::PI())));
 
 		REQUIRE(approxEqual(zRot180.at(0, 0), -1));
 		REQUIRE(approxEqual(zRot180.at(0, 1), 0));
@@ -706,9 +706,9 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(v3[3], 1));
 	}
 	SECTION("rotationMatrix4()") {
-		sfz::vec4f startPoint{1, 0, 0, 1};
-		const sfz::vec4f expectedEndPoint{0, 1, 0, 1};
-		sfz::vec3f axis = sfz::vec3f{1, 1, 0} - sfz::vec3f{0, 0, 0};
+		sfz::vec4 startPoint{1, 0, 0, 1};
+		const sfz::vec4 expectedEndPoint{0, 1, 0, 1};
+		sfz::vec3 axis = sfz::vec3{1, 1, 0} - sfz::vec3{0, 0, 0};
 		sfz::mat4f rot = sfz::rotationMatrix4(axis, sfz::PI());
 
 		auto res = rot * startPoint;
@@ -728,7 +728,7 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 		REQUIRE(approxEqual(sfz::zRotationMatrix4(2.5f), sfz::mat4(sfz::zRotationMatrix3(2.5f))));
 		REQUIRE(approxEqual(sfz::zRotationMatrix4(1.2f), sfz::mat4(sfz::zRotationMatrix3(1.2f))));
 
-		sfz::vec3f a{1, -1, 2};
+		sfz::vec3 a{1, -1, 2};
 		REQUIRE(approxEqual(sfz::rotationMatrix4(a, 2.5f), sfz::mat4(sfz::rotationMatrix3(a, 2.5f))));
 		REQUIRE(approxEqual(sfz::rotationMatrix4(a, 1.2f), sfz::mat4(sfz::rotationMatrix3(a, 1.2f))));
 	}
@@ -737,7 +737,7 @@ TEST_CASE("Rotation matrices", "[sfz::MatrixSupport")
 
 TEST_CASE("Transformation matrices", "[sfz::MatrixSupport]")
 {
-	sfz::vec4f v1{1, 1, 1, 1};
+	sfz::vec4 v1{1, 1, 1, 1};
 	SECTION("identityMatrix4()") {
 		auto m = sfz::identityMatrix4<int>();
 		REQUIRE(m == sfz::mat4(sfz::identityMatrix3<int>()));
@@ -879,21 +879,21 @@ TEST_CASE("Projection matrices", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(3, 3), 1));		
 	}
 	SECTION("glOrthogonalProjectionMatrix2D()") {
-		sfz::vec2f pos{-3.0f, 3.0f};
-		sfz::vec2f dim{4.0f, 2.0f};
+		sfz::vec2 pos{-3.0f, 3.0f};
+		sfz::vec2 dim{4.0f, 2.0f};
 		auto m = sfz::glOrthogonalProjectionMatrix2D(pos, dim);
 
-		sfz::vec3f center3{pos[0], pos[1], 1.0f};
-		sfz::vec3f left3{pos[0]-(dim[0]/2), pos[1], 1.0f};
-		sfz::vec3f right3{pos[0]+(dim[0]/2), pos[1], 1.0f};
-		sfz::vec3f bottom3{pos[0], pos[1]-(dim[1]/2), 1.0f};
-		sfz::vec3f top3{pos[0], pos[1]+(dim[1]/2), 1.0f};
+		sfz::vec3 center3{pos[0], pos[1], 1.0f};
+		sfz::vec3 left3{pos[0]-(dim[0]/2), pos[1], 1.0f};
+		sfz::vec3 right3{pos[0]+(dim[0]/2), pos[1], 1.0f};
+		sfz::vec3 bottom3{pos[0], pos[1]-(dim[1]/2), 1.0f};
+		sfz::vec3 top3{pos[0], pos[1]+(dim[1]/2), 1.0f};
 
-		REQUIRE(approxEqual(m*center3, sfz::vec3f{0.0f, 0.0f, 1.0f}));
-		REQUIRE(approxEqual(m*left3, sfz::vec3f{-1.0f, 0.0f, 1.0f}));
-		REQUIRE(approxEqual(m*right3, sfz::vec3f{1.0f, 0.0f, 1.0f}));
-		REQUIRE(approxEqual(m*bottom3, sfz::vec3f{0.0f, -1.0f, 1.0f}));
-		REQUIRE(approxEqual(m*top3, sfz::vec3f{0.0f, 1.0f, 1.0f}));
+		REQUIRE(approxEqual(m*center3, sfz::vec3{0.0f, 0.0f, 1.0f}));
+		REQUIRE(approxEqual(m*left3, sfz::vec3{-1.0f, 0.0f, 1.0f}));
+		REQUIRE(approxEqual(m*right3, sfz::vec3{1.0f, 0.0f, 1.0f}));
+		REQUIRE(approxEqual(m*bottom3, sfz::vec3{0.0f, -1.0f, 1.0f}));
+		REQUIRE(approxEqual(m*top3, sfz::vec3{0.0f, 1.0f, 1.0f}));
 	}
 	SECTION("glPerspectiveProjectionMatrix()") {
 		auto m = sfz::glPerspectiveProjectionMatrix(90.0f, 1.7778f, 0.01f, 500.0f);
@@ -923,7 +923,7 @@ TEST_CASE("Projection matrices", "[sfz::Matrix]")
 TEST_CASE("View matrices", "[sfz::Matrix]")
 {
 	SECTION("lookAt()") {
-		auto m = sfz::lookAt(sfz::vec3f{1, 2, 3}, sfz::vec3f{25, 25, 25}, sfz::vec3f{0, 1, 0});
+		auto m = sfz::lookAt(sfz::vec3{1, 2, 3}, sfz::vec3{25, 25, 25}, sfz::vec3{0, 1, 0});
 
 		REQUIRE(approxEqual(m.at(0, 0), -0.675725f));
 		REQUIRE(approxEqual(m.at(0, 1), 0));
@@ -956,9 +956,9 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 
 	const sfz::mat4f rotated = sfz::zRotationMatrix4(sfz::PI()/2)
 	                           * sfz::xRotationMatrix4(-sfz::PI()/2);
-	const sfz::vec3f rotatedForward{-1, 0, 0};
-	const sfz::vec3f rotatedUp{0, 0, -1};
-	const sfz::vec3f rotatedRight{0, 1, 0};
+	const sfz::vec3 rotatedForward{-1, 0, 0};
+	const sfz::vec3 rotatedUp{0, 0, -1};
+	const sfz::vec3 rotatedRight{0, 1, 0};
 
 	SECTION("translation()") {
 		auto v1 = translation(m);
@@ -966,7 +966,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 3), v1[1]));
 		REQUIRE(approxEqual(m.at(2, 3), v1[2]));
 
-		sfz::vec3f v2{-1, -2, -3};
+		sfz::vec3 v2{-1, -2, -3};
 		translation(m, v2);
 		REQUIRE(approxEqual(m.at(0, 3), v2[0]));
 		REQUIRE(approxEqual(m.at(1, 3), v2[1]));
@@ -978,7 +978,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 1), v1[1]));
 		REQUIRE(approxEqual(m.at(2, 2), v1[2]));
 
-		sfz::vec3f v2{-1, -2, -3};
+		sfz::vec3 v2{-1, -2, -3};
 		scaling(m, v2);
 		REQUIRE(approxEqual(m.at(0, 0), v2[0]));
 		REQUIRE(approxEqual(m.at(1, 1), v2[1]));
@@ -990,7 +990,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 2), v1[1]));
 		REQUIRE(approxEqual(m.at(2, 2), v1[2]));
 
-		sfz::vec3f v2{-1, -2, -3};
+		sfz::vec3 v2{-1, -2, -3};
 		forward(m, v2);
 		REQUIRE(approxEqual(m.at(0, 2), v2[0]));
 		REQUIRE(approxEqual(m.at(1, 2), v2[1]));
@@ -1005,7 +1005,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 2), -v1[1]));
 		REQUIRE(approxEqual(m.at(2, 2), -v1[2]));
 
-		sfz::vec3f v2{-1, -2, -3};
+		sfz::vec3 v2{-1, -2, -3};
 		backward(m, v2);
 		REQUIRE(approxEqual(m.at(0, 2), -v2[0]));
 		REQUIRE(approxEqual(m.at(1, 2), -v2[1]));
@@ -1020,7 +1020,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 1), v1[1]));
 		REQUIRE(approxEqual(m.at(2, 1), v1[2]));
 
-		sfz::vec3f v2{-1, -2, -3};
+		sfz::vec3 v2{-1, -2, -3};
 		up(m, v2);
 		REQUIRE(approxEqual(m.at(0, 1), v2[0]));
 		REQUIRE(approxEqual(m.at(1, 1), v2[1]));
@@ -1035,7 +1035,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 1), -v1[1]));
 		REQUIRE(approxEqual(m.at(2, 1), -v1[2]));
 
-		sfz::vec3f v2{-1, -2, -3};
+		sfz::vec3 v2{-1, -2, -3};
 		down(m, v2);
 		REQUIRE(approxEqual(m.at(0, 1), -v2[0]));
 		REQUIRE(approxEqual(m.at(1, 1), -v2[1]));
@@ -1050,7 +1050,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 0), v1[1]));
 		REQUIRE(approxEqual(m.at(2, 0), v1[2]));
 
-		sfz::vec3f v2{-1, -2, -3};
+		sfz::vec3 v2{-1, -2, -3};
 		right(m, v2);
 		REQUIRE(approxEqual(m.at(0, 0), v2[0]));
 		REQUIRE(approxEqual(m.at(1, 0), v2[1]));
@@ -1065,7 +1065,7 @@ TEST_CASE("Tranform helper functions", "[sfz::Matrix]")
 		REQUIRE(approxEqual(m.at(1, 0), -v1[1]));
 		REQUIRE(approxEqual(m.at(2, 0), -v1[2]));
 
-		sfz::vec3f v2{-1, -2, -3};
+		sfz::vec3 v2{-1, -2, -3};
 		left(m, v2);
 		REQUIRE(approxEqual(m.at(0, 0), -v2[0]));
 		REQUIRE(approxEqual(m.at(1, 0), -v2[1]));

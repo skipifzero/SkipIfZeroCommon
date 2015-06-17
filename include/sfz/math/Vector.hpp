@@ -2,6 +2,8 @@
 #ifndef SFZ_MATH_VECTOR_HPP
 #define SFZ_MATH_VECTOR_HPP
 
+#include <cstddef> // std::size_t
+#include <cstdint> // std::int32_t
 #include <initializer_list>
 #include <functional> // std::hash
 #include <cmath> // std::sqrt
@@ -14,6 +16,7 @@
 namespace sfz {
 
 using std::size_t;
+using std::int32_t;
 
 /**
  * @brief A mathematical vector POD class that imitates a built-in primitive.
@@ -212,20 +215,13 @@ const T* cend(const Vector<T, N>& vector) noexcept;
 // Standard typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-template<typename T>
-using vec2 = Vector<T,2>;
-using vec2f = Vector<float,2>;
-using vec2i = Vector<int,2>;
+using vec2 = Vector<float, 2>;
+using vec3 = Vector<float, 3>;
+using vec4 = Vector<float, 4>;
 
-template<typename T>
-using vec3 = Vector<T,3>;
-using vec3f = Vector<float,3>;
-using vec3i = Vector<int,3>;
-
-template<typename T>
-using vec4 = Vector<T,4>;
-using vec4f = Vector<float,4>;
-using vec4i = Vector<int,4>;
+using vec2i = Vector<int32_t, 2>;
+using vec3i = Vector<int32_t, 3>;
+using vec4i = Vector<int32_t, 4>;
 
 } // namespace sfz
 

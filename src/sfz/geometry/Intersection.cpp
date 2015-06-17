@@ -7,21 +7,21 @@ namespace sfz {
 
 namespace {
 
-bool intersectsPlane(const Plane& plane, const vec3f& position, float projectedRadius) noexcept
+bool intersectsPlane(const Plane& plane, const vec3& position, float projectedRadius) noexcept
 {
 	// Part of plane SAT algorithm from Real-Time Collision Detection
 	float dist = plane.signedDistance(position);
 	return std::abs(dist) <= projectedRadius;
 }
 
-bool abovePlane(const Plane& plane, const vec3f& position, float projectedRadius) noexcept
+bool abovePlane(const Plane& plane, const vec3& position, float projectedRadius) noexcept
 {
 	// Part of plane SAT algorithm from Real-Time Collision Detection
 	float dist = plane.signedDistance(position);
 	return dist >= (-projectedRadius);
 }
 
-bool belowPlane(const Plane& plane, const vec3f& position, float projectedRadius) noexcept
+bool belowPlane(const Plane& plane, const vec3& position, float projectedRadius) noexcept
 {
 	// Part of plane SAT algorithm from Real-Time Collision Detection
 	float dist = plane.signedDistance(position);
@@ -33,18 +33,18 @@ bool belowPlane(const Plane& plane, const vec3f& position, float projectedRadius
 // Point inside primitive tests
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-bool pointInside(const AABB& box, const vec3f& point) noexcept
+bool pointInside(const AABB& box, const vec3& point) noexcept
 {
 	return box.min()[0] < point[0] && point[0] < box.max()[0] &&
 	       box.min()[1] < point[1] && point[1] < box.max()[1] &&
 	       box.min()[2] < point[2] && point[2] < box.max()[2];
 }
 
-bool pointInside(const OBB& box, const vec3f& point) noexcept
+bool pointInside(const OBB& box, const vec3& point) noexcept
 {
 	// Modified closest point algorithm from Real-Time Collision Detection (Section 5.1.4)
-	const vec3f distToPoint = point - box.position();
-	const std::array<vec3f,3>& axes = box.axes();
+	const vec3 distToPoint = point - box.position();
+	const std::array<vec3,3>& axes = box.axes();
 	float dist;
 	for (size_t i = 0; i < 3; i++) {
 		dist = distToPoint.dot(axes[i]);
@@ -54,9 +54,9 @@ bool pointInside(const OBB& box, const vec3f& point) noexcept
 	return true;
 }
 
-bool pointInside(const Sphere& sphere, const vec3f& point) noexcept
+bool pointInside(const Sphere& sphere, const vec3& point) noexcept
 {
-	const vec3f distToPoint = point - sphere.position();
+	const vec3 distToPoint = point - sphere.position();
 	return distToPoint.squaredNorm() < sphere.radius() * sphere.radius();
 }
 
@@ -77,10 +77,10 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 	// OBB vs OBB SAT (Separating Axis Theorem) test from Real-Time Collision Detection
 	// (chapter 4.4.1 OBB-OBB Intersection)
 
-	const std::array<vec3f,3>& aU = a.axes();
-	const vec3f& aE = a.halfExtents();
-	const std::array<vec3f,3>& bU = b.axes();
-	const vec3f& bE = b.halfExtents();
+	const std::array<vec3,3>& aU = a.axes();
+	const vec3& aE = a.halfExtents();
+	const std::array<vec3,3>& bU = b.axes();
+	const vec3& bE = b.halfExtents();
 
 	// Compute the rotation matrix from b to a
 	mat3f R;
@@ -100,8 +100,8 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 	}
 
 	// Calculate translation vector from a to b and bring it into a's frame of reference
-	vec3f t = b.position() - a.position();
-	t = vec3f{t.dot(aU[0]), t.dot(aU[1]), t.dot(aU[2])};
+	vec3 t = b.position() - a.position();
+	t = vec3{t.dot(aU[0]), t.dot(aU[1]), t.dot(aU[2])};
 
 	float ra, rb;
 
@@ -170,7 +170,7 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 
 bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept
 {
-	const vec3f distVec = sphereA.position() - sphereB.position();
+	const vec3 distVec = sphereA.position() - sphereB.position();
 	const float squaredDist = distVec.dot(distVec);
 	const float radiusSum = sphereA.radius() + sphereB.radius();
 	const float squaredRadiusSum = radiusSum * radiusSum;
