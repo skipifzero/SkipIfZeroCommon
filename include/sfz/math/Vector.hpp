@@ -147,17 +147,6 @@ struct Vector final {
 
 	std::string to_string() const noexcept;
 
-	// Standard iterator functions
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	T* begin() noexcept;
-	const T* begin() const noexcept;
-	const T* cbegin() const noexcept;
-
-	T* end() noexcept;
-	const T* end() const noexcept;
-	const T* cend() const noexcept;
-
 	// Operators (access)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -230,6 +219,27 @@ bool operator!= (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
 
 template<typename T, size_t N>
 std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept;
+
+// Standard iterator functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+T* begin(Vector<T,N>& vector) noexcept;
+
+template<typename T, size_t N>
+const T* begin(const Vector<T, N>& vector) noexcept;
+
+template<typename T, size_t N>
+const T* cbegin(const Vector<T, N>& vector) noexcept;
+
+template<typename T, size_t N>
+T* end(Vector<T, N>& vector) noexcept;
+
+template<typename T, size_t N>
+const T* end(const Vector<T, N>& vector) noexcept;
+
+template<typename T, size_t N>
+const T* cend(const Vector<T, N>& vector) noexcept;
 
 // Standard typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

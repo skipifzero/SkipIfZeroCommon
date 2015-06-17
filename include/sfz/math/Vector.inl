@@ -93,7 +93,7 @@ template<typename T, size_t N>
 T Vector<T,N>::dot(const Vector<T,N>& other) const noexcept
 {
 	T product = 0;
-	auto itr = other.begin();
+	auto itr = begin(other);
 	for (auto element : mElements) {
 		product += (element*(*itr++));
 	}
@@ -104,7 +104,7 @@ template<typename T, size_t N>
 Vector<T,N> Vector<T,N>::elemMult(const Vector<T,N>& other) const noexcept
 {
 	Vector<T,N> result = *this;
-	auto itr = other.begin();
+	auto itr = begin(other);
 	for (auto& element : result) {
 		element *= *itr++;
 	}
@@ -145,45 +145,6 @@ std::string Vector<T,N>::to_string() const noexcept
 	str.erase(str.length()-2);
 	str += "]";
 	return std::move(str);
-}
-
-// Standard iterator functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t N>
-T* Vector<T,N>::begin() noexcept
-{
-	return mElements;
-}
-
-template<typename T, size_t N>
-const T* Vector<T,N>::begin() const noexcept
-{
-	return mElements;
-}
-
-template<typename T, size_t N>
-const T* Vector<T,N>::cbegin() const noexcept
-{
-	return mElements;
-}
-
-template<typename T, size_t N>
-T* Vector<T,N>::end() noexcept
-{
-	return mElements + N;
-}
-
-template<typename T, size_t N>
-const T* Vector<T,N>::end() const noexcept
-{
-	return mElements + N;
-}
-
-template<typename T, size_t N>
-const T* Vector<T,N>::cend() const noexcept
-{
-	return mElements + N;
 }
 
 // Operators (access)
@@ -307,6 +268,45 @@ template<typename T, size_t N>
 std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept
 {
 	return ostream << vector.to_string();
+}
+
+// Standard iterator functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+T* begin(Vector<T, N>& vector) noexcept
+{
+	return vector.mElements;
+}
+
+template<typename T, size_t N>
+const T* begin(const Vector<T, N>& vector) noexcept
+{
+	return vector.mElements;
+}
+
+template<typename T, size_t N>
+const T* cbegin(const Vector<T, N>& vector) noexcept
+{
+	return vector.mElements;
+}
+
+template<typename T, size_t N>
+T* end(Vector<T, N>& vector) noexcept
+{
+	return vector.mElements + N;
+}
+
+template<typename T, size_t N>
+const T* end(const Vector<T, N>& vector) noexcept
+{
+	return vector.mElements + N;
+}
+
+template<typename T, size_t N>
+const T* cend(const Vector<T, N>& vector) noexcept
+{
+	return vector.mElements + N;
 }
 
 } // namespace sfz
