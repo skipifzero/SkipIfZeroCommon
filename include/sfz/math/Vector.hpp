@@ -44,7 +44,7 @@ struct Vector final {
 	// Public constants
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	static const Vector<T,N>& ZERO() noexcept;
+	static Vector<T,N> ZERO() noexcept;
 
 	// Public members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -66,6 +66,9 @@ struct Vector final {
 	Vector<T, N>& operator= (const Vector<T, N>&) noexcept = default;
 	~Vector() noexcept = default;
 
+	/** @brief Fills vector with value */
+	Vector(T value) noexcept;
+
 	/**
 	 * @brief Initializer list constructor.
 	 * If the initializer list contains less element than the size of the vector the remaining
@@ -77,31 +80,6 @@ struct Vector final {
 
 	// Public member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	
-	/**
-	 * @brief General accessor returning the reference to element at the specified location.
-	 * @sfz_assert_debug index must be in range
-	 * @return reference to the element at the specified index
-	 */
-	T& at(const size_t index) noexcept;
-
-	/**
-	 * @brief Returns the element at the specified index.
-	 * @sfz_assert_debug index must be in range
-	 * @return the element at the specified index
-	 */
-	T at(const size_t index) const noexcept;
-
-	/**
-	 * @brief Assigns value to the specified index.
-	 * @sfz_assert_debug index must be in range
-	 */
-	void set(const size_t index, const T value) noexcept;
-
-	/**
-	 * @brief Assigns each element in the vector with the specified value.
-	 */
-	void fill(const T value) noexcept;
 
 	/**
 	 * @brief Calculates the norm (length) of the vector.
@@ -150,20 +128,10 @@ struct Vector final {
 	// Operators (access)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	/**
-	 * @brief Returns a reference to element at the specified index, no range checking.
-	 * @sfz_assert_debug index must be in range
-	 * @param index the index of the element
-	 * @return reference to element at the specified index
-	 */
+	/** @sfz_assert_debug index must be in range */
 	T& operator[] (const size_t index) noexcept;
 
-	/**
-	 * @brief Returns the element at the specified index, no range checking.
-	 * @sfz_assert_debug index must be in range
-	 * @param index the index of the element
-	 * @return element at the specified index
-	 */
+	/** @sfz_assert_debug index must be in range */
 	T operator[] (const size_t index) const noexcept;
 };
 

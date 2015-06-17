@@ -18,6 +18,17 @@ TEST_CASE("Constants", "[sfz::Vector]")
 
 TEST_CASE("Constructors", "[sfz::Vector]")
 {
+
+	SECTION("Vector(T), fill constructor") {
+		sfz::Vector<int, 4> v1(4);
+		for (auto e : v1) {
+			REQUIRE(e == 4);
+		}
+		sfz::Vector<int, 5> v2(2);
+		for (auto e : v2) {
+			REQUIRE(e == 2);
+		}
+	}
 	SECTION("Initalizer list constructor assigns correct value to elements") {
 		sfz::Vector<int, 4> vector = {-2, 2, 1, 42};
 		REQUIRE(vector[0] == -2);
@@ -45,16 +56,10 @@ TEST_CASE("Assignment and accessing", "[sfz::Vector]")
 	sfz::Vector<int, 5> vector{-10, 10, 12, 13, -2};
 	SECTION("Correct start values") {
 		REQUIRE(vector[0] == -10);
-		REQUIRE(vector.at(1) == 10);
+		REQUIRE(vector[1] == 10);
 		REQUIRE(vector[2] == 12);
 		REQUIRE(vector[3] == 13);
 		REQUIRE(vector[4] == -2);
-	}
-	SECTION("Assignment with set() function") {
-		vector.set(0, 2);
-		REQUIRE(vector.at(0) == 2);
-		vector.set(3, -100);
-		REQUIRE(vector.at(3) == -100);
 	}
 	SECTION("Assignment with [] operator") {
 		vector[1] = 4242;
@@ -78,18 +83,6 @@ TEST_CASE("glPtr()", "[sfz::Vector]") {
 	REQUIRE(ptr2[1] == -2);
 }
 
-TEST_CASE("fill", "[sfz::Vector]")
-{
-	sfz::Vector<int,4> v;
-	v.fill(4);
-	for (auto e : v) {
-		REQUIRE(e == 4);
-	}
-	v.fill(2);
-	for (auto e : v) {
-		REQUIRE(e == 2);
-	}
-}
 
 TEST_CASE("Arithmetic operators", "[sfz::Vector]")
 {

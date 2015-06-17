@@ -4,18 +4,21 @@ namespace sfz {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-const Vector<T,N>& Vector<T,N>::ZERO() noexcept
+Vector<T,N> Vector<T,N>::ZERO() noexcept
 {
-	static const Vector<T,N> zero = []() -> Vector<T,N> {
-		Vector<T,N> tmp;
-		tmp.fill(T(0));
-		return tmp;
-	}();
-	return zero; 
+	return Vector<T,N>{T(0)};
 }
 
 // Constructors and destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+Vector<T, N>::Vector(T value) noexcept
+{
+	for (int i = 0; i < N; ++i) {
+		mElements[i] = value;
+	}
+}
 
 template<typename T, size_t N>
 Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
@@ -35,35 +38,6 @@ Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
 
 // Public member functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t N>
-T& Vector<T,N>::at(const size_t index) noexcept
-{
-	sfz_assert_debug(index < N);
-	return mElements[index];
-}
-
-template<typename T, size_t N>
-T Vector<T,N>::at(const size_t index) const noexcept
-{
-	sfz_assert_debug(index < N);
-	return mElements[index];
-}
-
-template<typename T, size_t N>
-void Vector<T,N>::set(const size_t index, T value) noexcept
-{
-	sfz_assert_debug(index < N);
-	mElements[index] = value;
-}
-
-template<typename T, size_t N>
-void Vector<T,N>::fill(const T value) noexcept
-{
-	for (auto& element : mElements) {
-		element = value;
-	}
-}
 
 template<typename T, size_t N>
 T Vector<T,N>::norm() const noexcept
