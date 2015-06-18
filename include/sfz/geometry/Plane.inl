@@ -8,15 +8,15 @@ inline Plane::Plane(const vec3& normal, float d) noexcept
 	mNormal(normal),
 	mD{d}
 {
-	sfz_assert_debug(approxEqual<float>(normal.norm(), 1.0f, 0.025f));
+	sfz_assert_debug(approxEqual<float>(length(normal), 1.0f, 0.025f));
 }
 
 inline Plane::Plane(const vec3& normal, const vec3& position) noexcept
 :
 	mNormal(normal),
-	mD{normal.dot(position)}
+	mD{dot(normal, position)}
 {
-	sfz_assert_debug(approxEqual<float>(normal.norm(), 1.0f, 0.025f));
+	sfz_assert_debug(approxEqual<float>(length(normal), 1.0f, 0.025f));
 }
 
 // Public member functions
@@ -24,7 +24,7 @@ inline Plane::Plane(const vec3& normal, const vec3& position) noexcept
 
 inline float Plane::signedDistance(const vec3& point) const noexcept
 {
-	return mNormal.dot(point) - mD; // mNormal MUST be normalized.
+	return dot(mNormal, point) - mD; // mNormal MUST be normalized.
 }
 
 inline vec3 Plane::closestPoint(const vec3& point) const noexcept
@@ -47,7 +47,7 @@ inline std::string Plane::to_string() const noexcept
 {
 	std::string str;
 	str += "Normal = ";
-	str += mNormal.to_string();
+	str += sfz::to_string(mNormal);
 	str += ", d = ";
 	str += std::to_string(mD);
 	return std::move(str);

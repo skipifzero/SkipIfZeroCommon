@@ -18,9 +18,9 @@ inline vec3 Sphere::closestPoint(const vec3& point) const noexcept
 {
 	const vec3 distToPoint = point - mCenter;
 	vec3 res = point;
-	if (distToPoint.squaredNorm() > mRadius*mRadius)
+	if (squaredLength(distToPoint) > mRadius*mRadius)
 	{
-		res = mCenter + distToPoint.normalize()*mRadius;
+		res = mCenter + normalize(distToPoint)*mRadius;
 	}
 	return res;
 }
@@ -39,7 +39,7 @@ inline size_t Sphere::hash() const noexcept
 inline std::string Sphere::to_string() const noexcept
 {
 	std::string str{"Center: "};
-	str += mCenter.to_string();
+	str += sfz::to_string(mCenter);
 	str += "\nRadius: ";
 	str += std::to_string(mRadius);
 	return std::move(str);

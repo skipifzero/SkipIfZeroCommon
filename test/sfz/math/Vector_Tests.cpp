@@ -188,29 +188,31 @@ TEST_CASE("Arithmetic operators", "[sfz::Vector]")
 	}
 }
 
-TEST_CASE("Norm (length) of vector", "[sfz::Vector]")
+TEST_CASE("Length of vector", "[sfz::Vector]")
 {
+	using sfz::squaredLength;
+	using sfz::length;
 	sfz::Vector<int, 2> v1{2, 0};
 	sfz::Vector<int, 5> v2{-2, 2, 2, -2, 3};
 
-	SECTION("squaredNorm()") {
-		REQUIRE(v1.squaredNorm() == 4);
-		REQUIRE(v2.squaredNorm() == 25);
+	SECTION("squaredLength()") {
+		REQUIRE(squaredLength(v1) == 4);
+		REQUIRE(squaredLength(v2) == 25);
 	}
-	SECTION("v.norm()") {
-		REQUIRE(v1.norm() == 2);
-		REQUIRE(v2.norm() == 5);
+	SECTION("length()") {
+		REQUIRE(length(v1) == 2);
+		REQUIRE(length(v2) == 5);
 	}
 	SECTION("Rounding down") {
 		sfz::Vector<int, 2> v3{2,1};
-		REQUIRE(v3.squaredNorm() == 5);
-		REQUIRE(v3.norm() == 2);
+		REQUIRE(squaredLength(v3) == 5);
+		REQUIRE(length(v3) == 2);
 	}
 }
 
 TEST_CASE("Normalizing (making unit vector) vector", "[sfz::Vector]")
 {
-	sfz::Vector<float, 4> v1 = sfz::Vector<float, 4>{-2.f, 2.f, -2.f, 2.f}.normalize();
+	sfz::Vector<float, 4> v1 = normalize(sfz::Vector<float, 4>{-2.f, 2.f, -2.f, 2.f});
 	const float delta = 1e-3f;
 
 	SECTION("Correct answer") {
@@ -252,10 +254,11 @@ TEST_CASE("Comparison operators", "[sfz::Vector]")
 
 TEST_CASE("Dot (scalar) product", "[sfz::Vector]")
 {
+	using sfz::dot;
 	SECTION("Correctness test") {
 		sfz::Vector<int, 3> v1{1, 0, -2};
 		sfz::Vector<int, 3> v2{6, 2, 2};
-		int scalarProduct = v1.dot(v2);
+		int scalarProduct = dot(v1, v2);
 		
 		REQUIRE(scalarProduct == 2);
 		
@@ -268,7 +271,7 @@ TEST_CASE("Dot (scalar) product", "[sfz::Vector]")
 	}
 	SECTION("Using same vector twice") {	
 		sfz::Vector<int, 2> v1{-3, 2};
-		int scalarProduct = v1.dot(v1);
+		int scalarProduct = dot(v1, v1);
 		
 		REQUIRE(scalarProduct == 13);
 		
@@ -279,17 +282,18 @@ TEST_CASE("Dot (scalar) product", "[sfz::Vector]")
 
 TEST_CASE("Element-wise multiplication", "[sfz::Vector]")
 {
+	using sfz::elemMult;
 	sfz::Vector<int, 3> v1{1, 0, -3};
 	sfz::Vector<int, 3> v2{2, 0, 2};
 
 	SECTION("Correctness test") {
-		auto v3 = v1.elemMult(v2);
+		auto v3 = elemMult(v1, v2);
 		REQUIRE(v3[0] == 2);
 		REQUIRE(v3[1] == 0);
 		REQUIRE(v3[2] == -6);
 	}
 	SECTION("Same vector") {
-		auto v3 = v1.elemMult(v1);
+		auto v3 = elemMult(v1, v1);
 		REQUIRE(v3[0] == 1);
 		REQUIRE(v3[1] == 0);
 		REQUIRE(v3[2] == 9);
@@ -298,14 +302,16 @@ TEST_CASE("Element-wise multiplication", "[sfz::Vector]")
 
 TEST_CASE("Sum of vector", "[sfz::Vector]")
 {
+	using sfz::sum;
 	sfz::Vector<int, 4> v1{1, 2, -4, 9};
-	REQUIRE(v1.sum() == 8);
+	REQUIRE(sum(v1) == 8);
 }
 
 TEST_CASE("Converting to string", "[sfz::Vector]")
 {
+	using sfz::to_string;
 	sfz::Vector<int, 3> v{-1, 2, 10};
-	REQUIRE(v.to_string() == "[-1, 2, 10]");
+	REQUIRE(to_string(v) == "[-1, 2, 10]");
 }
 
 TEST_CASE("Hashing", "[sfz::Vector]")
@@ -324,8 +330,8 @@ TEST_CASE("Hashing", "[sfz::Vector]")
 	REQUIRE(hashMap[v2] == 2);
 	REQUIRE(hashMap[v3] == 3);
 
-	REQUIRE(v1.hash() != v2.hash());
-	REQUIRE(v2.hash() != v3.hash());
+	REQUIRE(sfz::hash(v1) != sfz::hash(v2));
+	REQUIRE(sfz::hash(v2) != sfz::hash(v3));
 }
 
 TEST_CASE("Is proper POD", "[sfz::Vector]")

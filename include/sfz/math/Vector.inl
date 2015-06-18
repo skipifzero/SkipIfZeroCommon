@@ -36,91 +36,6 @@ Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
 	}
 }
 
-// Public member functions
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t N>
-T Vector<T,N>::norm() const noexcept
-{
-	return std::sqrt(squaredNorm());
-}
-
-template<typename T, size_t N>
-T Vector<T,N>::squaredNorm() const noexcept
-{
-	T squaredSum = 0;
-	for (auto element : mElements) {
-		squaredSum += element*element;
-	}
-	return squaredSum;
-}
-
-template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::normalize() const noexcept
-{
-	T normTmp = norm();
-	if (normTmp == 0) return *this;
-	return (*this)/normTmp;
-}
-
-template<typename T, size_t N>
-T Vector<T,N>::dot(const Vector<T,N>& other) const noexcept
-{
-	T product = 0;
-	auto itr = begin(other);
-	for (auto element : mElements) {
-		product += (element*(*itr++));
-	}
-	return product;
-}
-
-template<typename T, size_t N>
-Vector<T,N> Vector<T,N>::elemMult(const Vector<T,N>& other) const noexcept
-{
-	Vector<T,N> result = *this;
-	auto itr = begin(other);
-	for (auto& element : result) {
-		element *= *itr++;
-	}
-	return result;
-}
-
-template<typename T, size_t N>
-T Vector<T,N>::sum() const noexcept
-{
-	T result = 0;
-	for (auto element : mElements) {
-		result += element;
-	}
-	return result;
-}
-
-template<typename T, size_t N>
-size_t Vector<T,N>::hash() const noexcept
-{
-	std::hash<T> hasher;
-	size_t hash = 0;
-	for (auto element : mElements) {
-		// hash_combine algorithm from boost
-		hash ^= hasher(element) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
-	}
-	return hash;
-}
-
-template<typename T, size_t N>
-std::string Vector<T,N>::to_string() const noexcept
-{
-	std::string str;
-	str += "[";
-	for (auto element : mElements) {
-		str += std::to_string(element);
-		str += ", ";
-	}
-	str.erase(str.length()-2);
-	str += "]";
-	return std::move(str);
-}
-
 // Operators (access)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -136,6 +51,89 @@ T Vector<T,N>::operator[] (const size_t index) const noexcept
 {
 	sfz_assert_debug(index < N);
 	return mElements[index];
+}
+
+// Vector functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t N>
+T length(const Vector<T,N>& vector) noexcept
+{
+	return std::sqrt(squaredLength(vector));
+}
+
+template<typename T, size_t N>
+T squaredLength(const Vector<T,N>& vector) noexcept
+{
+	T squaredSum = 0;
+	for (size_t i = 0; i < N; ++i) {
+		squaredSum += vector.mElements[i]*vector.mElements[i];
+	}
+	return squaredSum;
+}
+
+template<typename T, size_t N>
+Vector<T,N> normalize(const Vector<T,N>& vector) noexcept
+{
+	T lengthTmp = length(vector);
+	if (lengthTmp == 0) return vector;
+	return vector/lengthTmp;
+}
+
+template<typename T, size_t N>
+T dot(const Vector<T,N>& left, const Vector<T,N>& right) noexcept
+{
+	T product = T(0);
+	for (size_t i = 0; i < N; ++i) {
+		product += (left.mElements[i]*right.mElements[i]);
+	}
+	return product;
+}
+
+template<typename T, size_t N>
+Vector<T,N> elemMult(const Vector<T,N>& left, const Vector<T,N>& right) noexcept
+{
+	Vector<T,N> result = left;
+	for (size_t i = 0; i < N; ++i) {
+		result.mElements[i] *= right.mElements[i];
+	}
+	return result;
+}
+
+template<typename T, size_t N>
+T sum(const Vector<T,N>& vector) noexcept
+{
+	T result = T(0);
+	for (size_t i = 0; i < N; ++i) {
+		result += vector.mElements[i];
+	}
+	return result;
+}
+
+template<typename T, size_t N>
+size_t hash(const Vector<T,N>& vector) noexcept
+{
+	std::hash<T> hasher;
+	size_t hash = 0;
+	for (size_t i = 0; i < N; ++i) {
+		// hash_combine algorithm from boost
+		hash ^= hasher(vector.mElements[i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+	}
+	return hash;
+}
+
+template<typename T, size_t N>
+std::string to_string(const Vector<T,N>& vector) noexcept
+{
+	std::string str;
+	str += "[";
+	for (size_t i = 0; i < N; ++i) {
+		str += std::to_string(vector.mElements[i]);
+		str += ", ";
+	}
+	str.erase(str.length()-2);
+	str += "]";
+	return std::move(str);
 }
 
 // Operators (arithmetic & assignment)
@@ -246,7 +244,7 @@ bool operator!= (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
 template<typename T, size_t N>
 std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noexcept
 {
-	return ostream << vector.to_string();
+	return ostream << sfz::to_string(vector);
 }
 
 // Standard iterator functions
@@ -298,7 +296,7 @@ namespace std {
 template<typename T, size_t N>
 size_t hash<sfz::Vector<T,N>>::operator() (const sfz::Vector<T,N>& vector) const noexcept
 {
-	return vector.hash();
+	return sfz::hash(vector);
 }
 
 } // namespace std

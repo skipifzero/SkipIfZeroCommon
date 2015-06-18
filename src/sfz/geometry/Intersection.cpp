@@ -47,7 +47,7 @@ bool pointInside(const OBB& box, const vec3& point) noexcept
 	const std::array<vec3,3>& axes = box.axes();
 	float dist;
 	for (size_t i = 0; i < 3; i++) {
-		dist = distToPoint.dot(axes[i]);
+		dist = dot(distToPoint, axes[i]);
 		if (dist > box.halfExtents()[i]) return false;
 		if (dist < -box.halfExtents()[i]) return false;
 	}
@@ -57,7 +57,7 @@ bool pointInside(const OBB& box, const vec3& point) noexcept
 bool pointInside(const Sphere& sphere, const vec3& point) noexcept
 {
 	const vec3 distToPoint = point - sphere.position();
-	return distToPoint.squaredNorm() < sphere.radius() * sphere.radius();
+	return squaredLength(distToPoint) < sphere.radius() * sphere.radius();
 }
 
 // Primitive vs primitive tests (same type)
@@ -86,7 +86,7 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 	mat3f R;
 	for (size_t i = 0; i < 3; i++) {
 		for (size_t j = 0; j < 3; j++) {
-			R.set(i, j, aU[i].dot(bU[j]));
+			R.set(i, j, dot(aU[i], bU[j]));
 		}
 	}
 
@@ -101,7 +101,7 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 
 	// Calculate translation vector from a to b and bring it into a's frame of reference
 	vec3 t = b.position() - a.position();
-	t = vec3{t.dot(aU[0]), t.dot(aU[1]), t.dot(aU[2])};
+	t = vec3{dot(t, aU[0]), dot(t, aU[1]), dot(t, aU[2])};
 
 	float ra, rb;
 
@@ -171,7 +171,7 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 bool intersects(const Sphere& sphereA, const Sphere& sphereB) noexcept
 {
 	const vec3 distVec = sphereA.position() - sphereB.position();
-	const float squaredDist = distVec.dot(distVec);
+	const float squaredDist = dot(distVec, distVec);
 	const float radiusSum = sphereA.radius() + sphereB.radius();
 	const float squaredRadiusSum = radiusSum * radiusSum;
 	return squaredDist <= squaredRadiusSum;
@@ -227,9 +227,9 @@ bool intersects(const Plane& plane, const OBB& obb) noexcept
 {
 	// SAT algorithm from Real-Time Collision Detection (chapter 5.2.3)
 	// Projected radius on line towards closest point on plane
-	float projectedRadius = obb.halfXExtent() * std::abs(plane.normal().dot(obb.xAxis()))
-	                      + obb.halfYExtent() * std::abs(plane.normal().dot(obb.yAxis()))
-	                      + obb.halfZExtent() * std::abs(plane.normal().dot(obb.zAxis()));
+	float projectedRadius = obb.halfXExtent() * std::abs(dot(plane.normal(), obb.xAxis()))
+	                      + obb.halfYExtent() * std::abs(dot(plane.normal(), obb.yAxis()))
+	                      + obb.halfZExtent() * std::abs(dot(plane.normal(), obb.zAxis()));
 
 	return intersectsPlane(plane, obb.position(), projectedRadius);
 }
@@ -243,9 +243,9 @@ bool abovePlane(const Plane& plane, const OBB& obb) noexcept
 {
 	// Modified SAT algorithm from Real-Time Collision Detection (chapter 5.2.3)
 	// Projected radius on line towards closest point on plane
-	float projectedRadius = obb.halfXExtent() * std::abs(plane.normal().dot(obb.xAxis()))
-	                      + obb.halfYExtent() * std::abs(plane.normal().dot(obb.yAxis()))
-	                      + obb.halfZExtent() * std::abs(plane.normal().dot(obb.zAxis()));
+	float projectedRadius = obb.halfXExtent() * std::abs(dot(plane.normal(), obb.xAxis()))
+	                      + obb.halfYExtent() * std::abs(dot(plane.normal(), obb.yAxis()))
+	                      + obb.halfZExtent() * std::abs(dot(plane.normal(), obb.zAxis()));
 
 	return abovePlane(plane, obb.position(), projectedRadius);
 }
@@ -254,9 +254,9 @@ bool belowPlane(const Plane& plane, const OBB& obb) noexcept
 {
 	// Modified SAT algorithm from Real-Time Collision Detection (chapter 5.2.3)
 	// Projected radius on line towards closest point on plane
-	float projectedRadius = obb.halfXExtent() * std::abs(plane.normal().dot(obb.xAxis()))
-	                      + obb.halfYExtent() * std::abs(plane.normal().dot(obb.yAxis()))
-	                      + obb.halfZExtent() * std::abs(plane.normal().dot(obb.zAxis()));
+	float projectedRadius = obb.halfXExtent() * std::abs(dot(plane.normal(), obb.xAxis()))
+	                      + obb.halfYExtent() * std::abs(dot(plane.normal(), obb.yAxis()))
+	                      + obb.halfZExtent() * std::abs(dot(plane.normal(), obb.zAxis()));
 
 	return belowPlane(plane, obb.position(), projectedRadius);
 }

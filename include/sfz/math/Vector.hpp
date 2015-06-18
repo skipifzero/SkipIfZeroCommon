@@ -81,53 +81,6 @@ struct Vector final {
 	 */
 	Vector(std::initializer_list<T> list) noexcept;
 
-	// Public member functions
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	/**
-	 * @brief Calculates the norm (length) of the vector.
-	 * Note when using discrete types (int, long, etc): This method will square each element of the
-	 * vector and add them together before taking the square root. This might result in an overflow
-	 * if the elements are too large. In that case the result of this function will be undefined.
-	 * Also, the return type will still be a discrete type, meaning that the result will be
-	 * truncated. If this is a problem you should use the squaredNorm() function and do the square
-	 * root operation yourself.
-	 * @return norm of the vector
-	 */
-	T norm() const noexcept;
-
-	/**
-	 * @brief Sums the squares of each element in the vector (squared norm, i.e. squared length).
-	 * @return squared norm of the vector
-	 */
-	T squaredNorm() const noexcept;
-
-	/**
-	 * @brief Normalizes the vector and produces a unit vector.
-	 * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing
-	 * in the same direction with the norm 1. Returns 0-vector if the norm is 0.
-	 * @return the unit vector
-	 */
-	Vector<T,N> normalize() const noexcept;
-
-	T dot(const Vector<T,N>& other) const noexcept;
-
-	/**
-	 * @brief Does an element-wise multiplication of two vectors.
-	 * @param the other vector
-	 * @return the resulting vector
-	 */
-	Vector<T,N> elemMult(const Vector<T,N>& other) const noexcept;
-
-	/**
-	 * @return the sum of all the elements in the vector
-	 */
-	T sum() const noexcept;
-
-	size_t hash() const noexcept;
-
-	std::string to_string() const noexcept;
-
 	// Operators (access)
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -137,6 +90,61 @@ struct Vector final {
 	/** @sfz_assert_debug index must be in range */
 	T operator[] (const size_t index) const noexcept;
 };
+
+// Vector functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * @brief Calculates the norm (length) of the vector.
+ * Note when using discrete types (int, long, etc): This method will square each element of the
+ * vector and add them together before taking the square root. This might result in an overflow
+ * if the elements are too large. In that case the result of this function will be undefined.
+ * Also, the return type will still be a discrete type, meaning that the result will be
+ * truncated. If this is a problem you should use the squaredNorm() function and do the square
+ * root operation yourself.
+ * @return norm of the vector
+ */
+template<typename T, size_t N>
+T length(const Vector<T,N>& vector) noexcept;
+
+/**
+ * @brief Sums the squares of each element in the vector (squared norm, i.e. squared length).
+ * @return squared norm of the vector
+ */
+template<typename T, size_t N>
+T squaredLength(const Vector<T,N>& vector) noexcept;
+
+/**
+ * @brief Normalizes the vector and produces a unit vector.
+ * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing
+ * in the same direction with the norm 1. Returns 0-vector if the norm is 0.
+ * @return the unit vector
+ */
+template<typename T, size_t N>
+Vector<T,N> normalize(const Vector<T,N>& vector) noexcept;
+
+template<typename T, size_t N>
+T dot(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
+
+/**
+ * @brief Does an element-wise multiplication of two vectors.
+ * @param the other vector
+ * @return the resulting vector
+ */
+template<typename T, size_t N>
+Vector<T,N> elemMult(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
+
+/**
+ * @return the sum of all the elements in the vector
+ */
+template<typename T, size_t N>
+T sum(const Vector<T,N>& vector) noexcept;
+
+template<typename T, size_t N>
+size_t hash(const Vector<T,N>& vector) noexcept;
+
+template<typename T, size_t N>
+std::string to_string(const Vector<T,N>& vector) noexcept;
 
 // Operators (arithmetic & assignment)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

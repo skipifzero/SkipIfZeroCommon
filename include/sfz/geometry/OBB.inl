@@ -76,7 +76,7 @@ inline vec3 OBB::closestPoint(const vec3& point) const noexcept
 
 	float dist;
 	for (size_t i = 0; i < 3; i++) {
-		dist = distToPoint.dot(mAxes[i]);
+		dist = dot(distToPoint, mAxes[i]);
 		if (dist > mHalfExtents[i]) dist = mHalfExtents[i];
 		if (dist < -mHalfExtents[i]) dist = -mHalfExtents[i];
 		res += (dist * mAxes[i]);
@@ -91,8 +91,8 @@ inline OBB OBB::transformOBB(const mat4f& transform) const noexcept
 	const vec3 newXHExt = transformDir(transform, mAxes[0] * mHalfExtents[0]);
 	const vec3 newYHExt = transformDir(transform, mAxes[1] * mHalfExtents[1]);
 	const vec3 newZHExt = transformDir(transform, mAxes[2] * mHalfExtents[2]);
-	return OBB{newPos, newXHExt.normalize(), newYHExt.normalize(), newZHExt.normalize(),
-	           newXHExt.norm(), newYHExt.norm(), newZHExt.norm()};
+	return OBB{newPos, normalize(newXHExt), normalize(newYHExt), normalize(newZHExt),
+	           length(newXHExt), length(newYHExt), length(newZHExt)};
 }
 
 inline size_t OBB::hash() const noexcept
@@ -111,15 +111,15 @@ inline size_t OBB::hash() const noexcept
 inline std::string OBB::to_string() const noexcept
 {
 	std::string str{"Center: "};
-	str += mCenter.to_string();
+	str += sfz::to_string(mCenter);
 	str += "\nX-axis: ";
-	str += mAxes[0].to_string();
+	str += sfz::to_string(mAxes[0]);
 	str += "\nY-axis: ";
-	str += mAxes[1].to_string();
+	str += sfz::to_string(mAxes[1]);
 	str += "\nZ-axis: ";
-	str += mAxes[2].to_string();
+	str += sfz::to_string(mAxes[2]);
 	str += "\nExtents: ";
-	str += (mHalfExtents*2.0f).to_string();
+	str += sfz::to_string(mHalfExtents*2.0f);
 	return std::move(str);
 }
 
@@ -180,14 +180,14 @@ inline void OBB::halfZExtent(float newHalfZExtent) noexcept
 inline void OBB::ensureCorrectAxes() const noexcept
 {
 	// Check if axes are orthogonal
-	sfz_assert_debug(approxEqual(mAxes[0].dot(mAxes[1]), 0.0f));
-	sfz_assert_debug(approxEqual(mAxes[0].dot(mAxes[2]), 0.0f));
-	sfz_assert_debug(approxEqual(mAxes[1].dot(mAxes[2]), 0.0f));
+	sfz_assert_debug(approxEqual(dot(mAxes[0], mAxes[1]), 0.0f));
+	sfz_assert_debug(approxEqual(dot(mAxes[0], mAxes[2]), 0.0f));
+	sfz_assert_debug(approxEqual(dot(mAxes[1], mAxes[2]), 0.0f));
 
 	// Check if axes are normalized
-	sfz_assert_debug(approxEqual(mAxes[0].norm(), 1.0f));
-	sfz_assert_debug(approxEqual(mAxes[1].norm(), 1.0f));
-	sfz_assert_debug(approxEqual(mAxes[2].norm(), 1.0f));
+	sfz_assert_debug(approxEqual(length(mAxes[0]), 1.0f));
+	sfz_assert_debug(approxEqual(length(mAxes[1]), 1.0f));
+	sfz_assert_debug(approxEqual(length(mAxes[2]), 1.0f));
 }
 
 inline void OBB::ensureCorrectExtents() const noexcept

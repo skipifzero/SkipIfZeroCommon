@@ -13,11 +13,11 @@ Vector<T,3> cross(const Vector<T,3>& vectorA, const Vector<T,3>& vectorB) noexce
 template<typename T, size_t N>
 T angle(const Vector<T,N>& vectorA, const Vector<T,N>& vectorB) noexcept
 {
-	auto squaredNormA = vectorA.squaredNorm();
-	sfz_assert_debug(squaredNormA != 0);
-	auto squaredNormB = vectorB.squaredNorm();
-	sfz_assert_debug(squaredNormB != 0);
-	return std::acos(vectorA.dot(vectorB)/(std::sqrt(squaredNormA*squaredNormB)));
+	auto squaredLengthA = squaredLength(vectorA);
+	sfz_assert_debug(squaredLengthA != 0);
+	auto squaredLengthB = squaredLength(vectorB);
+	sfz_assert_debug(squaredLengthB != 0);
+	return std::acos(dot(vectorA, vectorB)/(std::sqrt(squaredLengthA*squaredLengthB)));
 }
 
 template<typename T>
@@ -41,9 +41,9 @@ Vector<T,2> rotate(const Vector<T,2>& vector, const T angle) noexcept
 
 template<typename T, size_t N>
 Vector<T,N> projectOnto(const Vector<T,N>& toProject, const Vector<T,N>& target) noexcept {
-	auto targetSquaredNorm = target.squaredNorm();
-	if (targetSquaredNorm == 0) return target; // Returns 0 vector, target == 0 vector.
-	return target * (toProject.dot(target)/targetSquaredNorm);
+	T targetSquaredLength = squaredLength(target);
+	if (targetSquaredLength == 0) return target; // Returns 0 vector, target == 0 vector.
+	return target * (dot(toProject, target)/targetSquaredLength);
 }
 
 } // namespace sfz

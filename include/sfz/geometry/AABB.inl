@@ -83,9 +83,9 @@ inline size_t AABB::hash() const noexcept
 inline std::string AABB::to_string() const noexcept
 {
 	std::string str{"Min: "};
-	str += mMin.to_string();
+	str += sfz::to_string(mMin);
 	str += "\nMax: ";
-	str += mMax.to_string();
+	str += sfz::to_string(mMax);
 	return std::move(str);
 }
 
