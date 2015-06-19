@@ -18,6 +18,9 @@ namespace sfz {
 using std::size_t;
 using std::int32_t;
 
+// Vector struct declaration
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 /**
  * @brief A mathematical vector POD class that imitates a built-in primitive.
  *
@@ -43,51 +46,69 @@ using std::int32_t;
  */
 template<typename T, size_t N>
 struct Vector final {
-	
-	// Public constants
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	static Vector<T,N> ZERO() noexcept;
+	T elements[N];
 
-	// Public members
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	/** 
-	 * @brief The internal array holding the elements of this Vector.
-	 * Provided for compatibility with c-style API's like OpenGL.
-	 */
-	T mElements[N];
-
-	T* glPtr() noexcept { return mElements; }
-	const T* glPtr() const noexcept { return mElements; }
-
-	// Constructors and destructors
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	
 	constexpr Vector() noexcept = default;
-	constexpr Vector(const Vector<T,N>&) noexcept = default;
+	constexpr Vector(const Vector<T, N>&) noexcept = default;
 	Vector<T, N>& operator= (const Vector<T, N>&) noexcept = default;
 	~Vector() noexcept = default;
 
-	/** @brief Fills vector with value */
-	Vector(T value) noexcept;
-
-	/**
-	 * @brief Initializer list constructor.
-	 * If the initializer list contains less element than the size of the vector the remaining
-	 * elements will be set to 0.
-	 * @sfz_assert_debug vector and initializer list must fit in the vector
-	 * @param list the initializer_list with values to fill the vector with
-	 */
+	explicit Vector(T value) noexcept;
 	Vector(std::initializer_list<T> list) noexcept;
 
-	// Operators (access)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	/** @sfz_assert_debug index must be in range */
 	T& operator[] (const size_t index) noexcept;
+	T operator[] (const size_t index) const noexcept;
+};
 
-	/** @sfz_assert_debug index must be in range */
+template<typename T>
+struct Vector<T, 2> final {
+
+	T elements[2];
+
+	constexpr Vector() noexcept = default;
+	constexpr Vector(const Vector<T, 2>&) noexcept = default;
+	Vector<T, 2>& operator= (const Vector<T, 2>&) noexcept = default;
+	~Vector() noexcept = default;
+
+	explicit Vector(T value) noexcept;
+	Vector(std::initializer_list<T> list) noexcept;
+
+	T& operator[] (const size_t index) noexcept;
+	T operator[] (const size_t index) const noexcept;
+};
+
+template<typename T>
+struct Vector<T, 3> final {
+
+	T elements[3];
+
+	constexpr Vector() noexcept = default;
+	constexpr Vector(const Vector<T, 3>&) noexcept = default;
+	Vector<T, 3>& operator= (const Vector<T, 3>&) noexcept = default;
+	~Vector() noexcept = default;
+
+	explicit Vector(T value) noexcept;
+	Vector(std::initializer_list<T> list) noexcept;
+
+	T& operator[] (const size_t index) noexcept;
+	T operator[] (const size_t index) const noexcept;
+};
+
+template<typename T>
+struct Vector<T, 4> final {
+
+	T elements[4];
+
+	constexpr Vector() noexcept = default;
+	constexpr Vector(const Vector<T, 4>&) noexcept = default;
+	Vector<T, 4>& operator= (const Vector<T, 4>&) noexcept = default;
+	~Vector() noexcept = default;
+
+	explicit Vector(T value) noexcept;
+	Vector(std::initializer_list<T> list) noexcept;
+
+	T& operator[] (const size_t index) noexcept;
 	T operator[] (const size_t index) const noexcept;
 };
 

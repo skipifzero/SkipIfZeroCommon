@@ -7,18 +7,8 @@
 #include <unordered_map>
 #include <type_traits>
 
-TEST_CASE("Constants", "[sfz::Vector]")
-{
-	SECTION("ZERO()") {
-		REQUIRE((sfz::Vector<int,2>::ZERO()) == (sfz::Vector<int,2>{0,0}));
-		REQUIRE((sfz::Vector<int,3>::ZERO()) == (sfz::Vector<int,3>{0,0,0}));
-		REQUIRE((sfz::Vector<int,4>::ZERO()) == (sfz::Vector<int,4>{0,0,0,0}));
-	}
-}
-
 TEST_CASE("Constructors", "[sfz::Vector]")
 {
-
 	SECTION("Vector(T), fill constructor") {
 		sfz::Vector<int, 4> v1(4);
 		for (auto e : v1) {
@@ -68,21 +58,6 @@ TEST_CASE("Assignment and accessing", "[sfz::Vector]")
 		REQUIRE(vector[4] == 54);
 	}
 }
-
-TEST_CASE("glPtr()", "[sfz::Vector]") {
-	sfz::Vector<int, 2> v1{1, 2};
-	const sfz::Vector<int, 2> v2{-1, -2};
-	
-	int* ptr1 = v1.glPtr();
-	const int* ptr2 = v2.glPtr();
-
-	REQUIRE(ptr1[0] == 1);
-	REQUIRE(ptr1[1] == 2);
-
-	REQUIRE(ptr2[0] == -1);
-	REQUIRE(ptr2[1] == -2);
-}
-
 
 TEST_CASE("Arithmetic operators", "[sfz::Vector]")
 {
