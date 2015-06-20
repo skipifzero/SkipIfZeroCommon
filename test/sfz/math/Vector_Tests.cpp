@@ -7,55 +7,238 @@
 #include <unordered_map>
 #include <type_traits>
 
-TEST_CASE("Constructors", "[sfz::Vector]")
+TEST_CASE("Vector<T,2> specialization", "[sfz::Vector]")
 {
-	SECTION("Vector(T), fill constructor") {
-		sfz::Vector<int, 4> v1(4);
-		for (auto e : v1) {
-			REQUIRE(e == 4);
-		}
-		sfz::Vector<int, 5> v2(2);
-		for (auto e : v2) {
-			REQUIRE(e == 2);
-		}
+	sfz::Vector<int,2> v;
+	SECTION("Data") {
+		REQUIRE(sizeof(sfz::Vector<int,2>) == sizeof(int)*2);
+		REQUIRE(sizeof(v.elements) == sizeof(int)*2);
+		v.elements[0] = 1;
+		v.elements[1] = 2;
+		REQUIRE(v.x == 1);
+		REQUIRE(v.y == 2);
 	}
-	SECTION("Initalizer list constructor assigns correct value to elements") {
-		sfz::Vector<int, 4> vector = {-2, 2, 1, 42};
-		REQUIRE(vector[0] == -2);
-		REQUIRE(vector[1] == 2);
-		REQUIRE(vector[2] == 1);
-		REQUIRE(vector[3] == 42);
-
-		sfz::Vector<int, 4> v2 = {-2, 2, 1};
-		REQUIRE(v2[0] == -2);
-		REQUIRE(v2[1] == 2);
-		REQUIRE(v2[2] == 1);
-		REQUIRE(v2[3] == 0);
+	SECTION("Array pointer constructor") {
+		int arr[] = {1, 2, 3};
+		sfz::Vector<int,2> v1{arr};
+		sfz::Vector<int,2> v2{arr+1};
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == 2);
+		REQUIRE(v2[0] == 2);
+		REQUIRE(v2[1] == 3);
 	}
-	SECTION("Copy constructor correctly copies vector") {
-		sfz::Vector<int, 4> vector{sfz::Vector<int, 4>{-2, 2, 1, 42}};
-		REQUIRE(vector[0] == -2);
-		REQUIRE(vector[1] == 2);
-		REQUIRE(vector[2] == 1);
-		REQUIRE(vector[3] == 42);
+	SECTION("Fill constructor") {
+		sfz::Vector<int,2> v1{3};
+		REQUIRE(v1.x == 3);
+		REQUIRE(v1.y == 3);
+	}
+	SECTION("Constructor (x, y)") {
+		sfz::Vector<int,2> v1{3, -1};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+	}
+	SECTION("Access [] operator") {
+		v[0] = 4;
+		v[1] = -2;
+		REQUIRE(v[0] == 4);
+		REQUIRE(v[1] == -2);
 	}
 }
 
-TEST_CASE("Assignment and accessing", "[sfz::Vector]")
+TEST_CASE("Vector<T,3> specialization", "[sfz::Vector]")
 {
-	sfz::Vector<int, 5> vector{-10, 10, 12, 13, -2};
-	SECTION("Correct start values") {
-		REQUIRE(vector[0] == -10);
-		REQUIRE(vector[1] == 10);
-		REQUIRE(vector[2] == 12);
-		REQUIRE(vector[3] == 13);
-		REQUIRE(vector[4] == -2);
+	sfz::Vector<int,3> v;
+	SECTION("Data") {
+		REQUIRE(sizeof(sfz::Vector<int,3>) == sizeof(int)*3);
+		REQUIRE(sizeof(v.elements) == sizeof(int)*3);
+		v.elements[0] = 1;
+		v.elements[1] = 2;
+		v.elements[2] = 3;
+		REQUIRE(v.x == 1);
+		REQUIRE(v.y == 2);
+		REQUIRE(v.z == 3);
+		REQUIRE(v.xy == (sfz::Vector<int,2>{1, 2}));
+		REQUIRE(v.yz == (sfz::Vector<int,2>{2, 3}));
 	}
-	SECTION("Assignment with [] operator") {
-		vector[1] = 4242;
-		REQUIRE(vector[1] == 4242);
-		vector[4] = 54;
-		REQUIRE(vector[4] == 54);
+	SECTION("Array pointer constructor") {
+		int arr[] = {1, 2, 3, 4};
+		sfz::Vector<int,3> v1{arr};
+		sfz::Vector<int,3> v2{arr+1};
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == 2);
+		REQUIRE(v1[2] == 3);
+		REQUIRE(v2[0] == 2);
+		REQUIRE(v2[1] == 3);
+		REQUIRE(v2[2] == 4);
+	}
+	SECTION("Fill constructor") {
+		sfz::Vector<int,3> v1{3};
+		REQUIRE(v1.x == 3);
+		REQUIRE(v1.y == 3);
+		REQUIRE(v1.z == 3);
+	}
+	SECTION("Constructor (x, y, z)") {
+		sfz::Vector<int,3> v1{3, -1, -2};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+	}
+	SECTION("Constructor (xy, z)") {
+		sfz::Vector<int,3> v1{sfz::Vector<int,2>{3, -1}, -2};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+	}
+	SECTION("Constructor (x, yz)") {
+		sfz::Vector<int,3> v1{3, sfz::Vector<int,2>{-1, -2}};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+	}
+	SECTION("Access [] operator") {
+		v[0] = 4;
+		v[1] = -2;
+		v[2] = 1;
+		REQUIRE(v[0] == 4);
+		REQUIRE(v[1] == -2);
+		REQUIRE(v[2] == 1);
+	}
+}
+
+TEST_CASE("Vector<T,4> specialization", "[sfz::Vector]")
+{
+	sfz::Vector<int,4> v;
+	SECTION("Data") {
+		REQUIRE(sizeof(sfz::Vector<int,4>) == sizeof(int)*4);
+		REQUIRE(sizeof(v.elements) == sizeof(int)*4);
+		v.elements[0] = 1;
+		v.elements[1] = 2;
+		v.elements[2] = 3;
+		v.elements[3] = 4;
+		REQUIRE(v.x == 1);
+		REQUIRE(v.y == 2);
+		REQUIRE(v.z == 3);
+		REQUIRE(v.w == 4);
+		REQUIRE(v.xyz == (sfz::Vector<int,3>{1, 2, 3}));
+		REQUIRE(v.yzw == (sfz::Vector<int,3>{2, 3, 4}));
+		REQUIRE(v.xy == (sfz::Vector<int,2>{1, 2}));
+		REQUIRE(v.zw == (sfz::Vector<int,2>{3, 4}));
+		REQUIRE(v.yz == (sfz::Vector<int,2>{2, 3}));
+	}
+	SECTION("Array pointer constructor") {
+		int arr[] = {1, 2, 3, 4, 5};
+		sfz::Vector<int,4> v1{arr};
+		sfz::Vector<int,4> v2{arr+1};
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == 2);
+		REQUIRE(v1[2] == 3);
+		REQUIRE(v1[3] == 4);
+		REQUIRE(v2[0] == 2);
+		REQUIRE(v2[1] == 3);
+		REQUIRE(v2[2] == 4);
+		REQUIRE(v2[3] == 5);
+	}
+	SECTION("Fill constructor") {
+		sfz::Vector<int,4> v1{3};
+		REQUIRE(v1.x == 3);
+		REQUIRE(v1.y == 3);
+		REQUIRE(v1.z == 3);
+		REQUIRE(v1.w == 3);
+	}
+	SECTION("Constructor (x, y, z, w)") {
+		sfz::Vector<int,4> v1{3, -1, -2, 9};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+		REQUIRE(v1[3] == 9);
+	}
+	SECTION("Constructor (xyz, w)") {
+		sfz::Vector<int,4> v1{sfz::Vector<int,3>{3, -1, -2}, 9};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+		REQUIRE(v1[3] == 9);
+	}
+	SECTION("Constructor (x, yzw)") {
+		sfz::Vector<int,4> v1{3, sfz::Vector<int,3>{-1, -2, 9}};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+		REQUIRE(v1[3] == 9);
+	}
+	SECTION("Constructor (xy, zw)") {
+		sfz::Vector<int,4> v1{sfz::Vector<int,2>{3, -1}, sfz::Vector<int,2>{-2, 9}};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+		REQUIRE(v1[3] == 9);
+	}
+	SECTION("Constructor (xy, z, w)") {
+		sfz::Vector<int,4> v1{sfz::Vector<int,2>{3, -1}, -2, 9};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+		REQUIRE(v1[3] == 9);
+	}
+	SECTION("Constructor (x, yz, w)") {
+		sfz::Vector<int,4> v1{3, sfz::Vector<int,2>{-1, -2}, 9};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+		REQUIRE(v1[3] == 9);
+	}
+	SECTION("Constructor (x, y, zw)") {
+		sfz::Vector<int,4> v1{3, -1, sfz::Vector<int,2>{-2, 9}};
+		REQUIRE(v1[0] == 3);
+		REQUIRE(v1[1] == -1);
+		REQUIRE(v1[2] == -2);
+		REQUIRE(v1[3] == 9);
+	}
+	SECTION("Access [] operator") {
+		v[0] = 4;
+		v[1] = -2;
+		v[2] = 1;
+		v[3] = 9;
+		REQUIRE(v[0] == 4);
+		REQUIRE(v[1] == -2);
+		REQUIRE(v[2] == 1);
+		REQUIRE(v[3] == 9);
+	}
+}
+
+TEST_CASE("Vector<T,N> general definition", "[sfz::Vector]")
+{
+	sfz::Vector<int,5> v;
+	SECTION("Data") {
+		REQUIRE(sizeof(sfz::Vector<int,5>) == sizeof(int)*5);
+		REQUIRE(sizeof(v.elements) == sizeof(int)*5);
+	}
+	SECTION("Array pointer constructor") {
+		int arr[] = {1, 2, 3, 4, 5, 6};
+		sfz::Vector<int,5> v1{arr};
+		sfz::Vector<int,5> v2{arr+1};
+		REQUIRE(v1[0] == 1);
+		REQUIRE(v1[1] == 2);
+		REQUIRE(v1[2] == 3);
+		REQUIRE(v1[3] == 4);
+		REQUIRE(v1[4] == 5);
+		REQUIRE(v2[0] == 2);
+		REQUIRE(v2[1] == 3);
+		REQUIRE(v2[2] == 4);
+		REQUIRE(v2[3] == 5);
+		REQUIRE(v2[4] == 6);
+	}
+	SECTION("Access [] operator") {
+		v[0] = 4;
+		v[1] = -2;
+		v[2] = 1;
+		v[3] = 27;
+		v[4] = -9;
+		REQUIRE(v[0] == 4);
+		REQUIRE(v[1] == -2);
+		REQUIRE(v[2] == 1);
+		REQUIRE(v[3] == 27);
+		REQUIRE(v[4] == -9);
 	}
 }
 
@@ -168,7 +351,8 @@ TEST_CASE("Length of vector", "[sfz::Vector]")
 	using sfz::squaredLength;
 	using sfz::length;
 	sfz::Vector<int, 2> v1{2, 0};
-	sfz::Vector<int, 5> v2{-2, 2, 2, -2, 3};
+	int v2Arr[] = {-2, 2, 2, -2, 3};
+	sfz::Vector<int, 5> v2{v2Arr};
 
 	SECTION("squaredLength()") {
 		REQUIRE(squaredLength(v1) == 4);

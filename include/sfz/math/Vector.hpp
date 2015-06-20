@@ -4,7 +4,6 @@
 
 #include <cstddef> // std::size_t
 #include <cstdint> // std::int32_t
-#include <initializer_list>
 #include <functional> // std::hash
 #include <cmath> // std::sqrt
 #include <string>
@@ -54,62 +53,84 @@ struct Vector final {
 	Vector<T, N>& operator= (const Vector<T, N>&) noexcept = default;
 	~Vector() noexcept = default;
 
-	explicit Vector(T value) noexcept;
-	Vector(std::initializer_list<T> list) noexcept;
+	explicit Vector(const T* arrayPtr) noexcept;
 
 	T& operator[] (const size_t index) noexcept;
-	T operator[] (const size_t index) const noexcept;
+	constexpr T operator[] (const size_t index) const noexcept;
 };
 
 template<typename T>
 struct Vector<T, 2> final {
-
-	T elements[2];
+	union {
+		T elements[2];
+		struct { T x, y; };
+	};	
 
 	constexpr Vector() noexcept = default;
 	constexpr Vector(const Vector<T, 2>&) noexcept = default;
 	Vector<T, 2>& operator= (const Vector<T, 2>&) noexcept = default;
 	~Vector() noexcept = default;
 
-	explicit Vector(T value) noexcept;
-	Vector(std::initializer_list<T> list) noexcept;
+	constexpr explicit Vector(const T* arrayPtr) noexcept;
+	constexpr explicit Vector(T value) noexcept;
+	constexpr Vector(T x, T y) noexcept;
 
 	T& operator[] (const size_t index) noexcept;
-	T operator[] (const size_t index) const noexcept;
+	constexpr T operator[] (const size_t index) const noexcept;
 };
 
 template<typename T>
 struct Vector<T, 3> final {
-
-	T elements[3];
+	union {
+		T elements[3];
+		struct { T x, y, z; };
+		struct { Vector<T,2> xy; };
+		struct { T xAlias; Vector<T,2> yz; };
+	};
 
 	constexpr Vector() noexcept = default;
 	constexpr Vector(const Vector<T, 3>&) noexcept = default;
 	Vector<T, 3>& operator= (const Vector<T, 3>&) noexcept = default;
 	~Vector() noexcept = default;
 
-	explicit Vector(T value) noexcept;
-	Vector(std::initializer_list<T> list) noexcept;
+	constexpr explicit Vector(const T* arrayPtr) noexcept;
+	constexpr explicit Vector(T value) noexcept;
+	constexpr Vector(T x, T y, T z) noexcept;
+	constexpr Vector(Vector<T,2> xy, T z) noexcept;
+	constexpr Vector(T x, Vector<T,2> yz) noexcept;
 
 	T& operator[] (const size_t index) noexcept;
-	T operator[] (const size_t index) const noexcept;
+	constexpr T operator[] (const size_t index) const noexcept;
 };
 
 template<typename T>
 struct Vector<T, 4> final {
-
-	T elements[4];
+	union {
+		T elements[4];
+		struct { T x, y, z, w; };
+		struct { Vector<T,3> xyz; };
+		struct { T xAlias1; Vector<T,3> yzw; };
+		struct { Vector<T,2> xy, zw; };
+		struct { T xAlias2; Vector<T,2> yz; };
+	};
 
 	constexpr Vector() noexcept = default;
 	constexpr Vector(const Vector<T, 4>&) noexcept = default;
 	Vector<T, 4>& operator= (const Vector<T, 4>&) noexcept = default;
 	~Vector() noexcept = default;
 
-	explicit Vector(T value) noexcept;
-	Vector(std::initializer_list<T> list) noexcept;
+	constexpr explicit Vector(const T* arrayPtr) noexcept;
+	constexpr explicit Vector(T value) noexcept;
+	constexpr Vector(T x, T y, T z, T w) noexcept;
+	constexpr Vector(Vector<T,3> xyz, T w) noexcept;
+	constexpr Vector(T x, Vector<T,3> yzw) noexcept;
+	constexpr Vector(Vector<T,2> xy, Vector<T,2> zw) noexcept;
+	constexpr Vector(Vector<T,2> xy, T z, T w) noexcept;
+	constexpr Vector(T x, Vector<T,2> yz, T w) noexcept;
+	constexpr Vector(T x, T y, Vector<T,2> zw) noexcept;
 
 	T& operator[] (const size_t index) noexcept;
-	T operator[] (const size_t index) const noexcept;
+	constexpr T operator[] (const size_t index) const noexcept;
 };
 
 // Vector functions

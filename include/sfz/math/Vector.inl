@@ -4,26 +4,10 @@ namespace sfz {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T,N>::Vector(T value) noexcept
+Vector<T,N>::Vector(const T* arrayPtr) noexcept
 {
 	for (size_t i = 0; i < N; ++i) {
-		elements[i] = value;
-	}
-}
-
-template<typename T, size_t N>
-Vector<T,N>::Vector(std::initializer_list<T> list) noexcept
-{
-	size_t listSize = list.size();
-	sfz_assert_debug(listSize <= N);
-	// Sets elements to values from initializer list.
-	T* elementItr = elements;
-	for (auto listElement : list) {
-		*elementItr++ = listElement;
-	}
-	// Sets remaining elements to 0.
-	for (size_t i = listSize; i < N; i++) {
-		elements[i] = 0;
+		elements[i] = arrayPtr[i];
 	}
 }
 
@@ -35,9 +19,8 @@ T& Vector<T,N>::operator[] (const size_t index) noexcept
 }
 
 template<typename T, size_t N>
-T Vector<T,N>::operator[] (const size_t index) const noexcept
+constexpr T Vector<T,N>::operator[] (const size_t index) const noexcept
 {
-	sfz_assert_debug(index < N);
 	return elements[index];
 }
 
@@ -45,28 +28,25 @@ T Vector<T,N>::operator[] (const size_t index) const noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-Vector<T,2>::Vector(T value) noexcept
-{
-	for (size_t i = 0; i < 2; ++i) {
-		elements[i] = value;
-	}
-}
+constexpr Vector<T,2>::Vector(const T* arrayPtr) noexcept
+:
+	x{arrayPtr[0]},
+	y{arrayPtr[1]}
+{ }
 
 template<typename T>
-Vector<T,2>::Vector(std::initializer_list<T> list) noexcept
-{
-	size_t listSize = list.size();
-	sfz_assert_debug(listSize <= 2);
-	// Sets elements to values from initializer list.
-	T* elementItr = elements;
-	for (auto listElement : list) {
-		*elementItr++ = listElement;
-	}
-	// Sets remaining elements to 0.
-	for (size_t i = listSize; i < 2; i++) {
-		elements[i] = 0;
-	}
-}
+constexpr Vector<T,2>::Vector(T value) noexcept
+:
+	x{value},
+	y{value}
+{ }
+
+template<typename T>
+constexpr Vector<T,2>::Vector(T x, T y) noexcept
+:
+	x{x},
+	y{y}
+{ }
 
 template<typename T>
 T& Vector<T,2>::operator[] (const size_t index) noexcept
@@ -76,9 +56,8 @@ T& Vector<T,2>::operator[] (const size_t index) noexcept
 }
 
 template<typename T>
-T Vector<T,2>::operator[] (const size_t index) const noexcept
+constexpr T Vector<T,2>::operator[] (const size_t index) const noexcept
 {
-	sfz_assert_debug(index < 2);
 	return elements[index];
 }
 
@@ -86,28 +65,44 @@ T Vector<T,2>::operator[] (const size_t index) const noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-Vector<T,3>::Vector(T value) noexcept
-{
-	for (size_t i = 0; i < 3; ++i) {
-		elements[i] = value;
-	}
-}
+constexpr Vector<T,3>::Vector(const T* arrayPtr) noexcept
+:
+	x{arrayPtr[0]},
+	y{arrayPtr[1]},
+	z{arrayPtr[2]}
+{ }
 
 template<typename T>
-Vector<T,3>::Vector(std::initializer_list<T> list) noexcept
-{
-	size_t listSize = list.size();
-	sfz_assert_debug(listSize <= 3);
-	// Sets elements to values from initializer list.
-	T* elementItr = elements;
-	for (auto listElement : list) {
-		*elementItr++ = listElement;
-	}
-	// Sets remaining elements to 0.
-	for (size_t i = listSize; i < 3; i++) {
-		elements[i] = 0;
-	}
-}
+constexpr Vector<T,3>::Vector(T value) noexcept
+:
+	x{value},
+	y{value},
+	z{value}
+{ }
+
+template<typename T>
+constexpr Vector<T,3>::Vector(T x, T y, T z) noexcept
+:
+	x{x},
+	y{y},
+	z{z}
+{ }
+
+template<typename T>
+constexpr Vector<T,3>::Vector(Vector<T,2> xy, T z) noexcept
+:
+	x{xy.elements[0]},
+	y{xy.elements[1]},
+	z{z}
+{ }
+
+template<typename T>
+constexpr Vector<T,3>::Vector(T x, Vector<T,2> yz) noexcept
+:
+	x{x},
+	y{yz.elements[0]},
+	z{yz.elements[1]}
+{ }
 
 template<typename T>
 T& Vector<T,3>::operator[] (const size_t index) noexcept
@@ -117,9 +112,8 @@ T& Vector<T,3>::operator[] (const size_t index) noexcept
 }
 
 template<typename T>
-T Vector<T,3>::operator[] (const size_t index) const noexcept
+constexpr T Vector<T,3>::operator[] (const size_t index) const noexcept
 {
-	sfz_assert_debug(index < 3);
 	return elements[index];
 }
 
@@ -127,28 +121,85 @@ T Vector<T,3>::operator[] (const size_t index) const noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-Vector<T,4>::Vector(T value) noexcept
-{
-	for (size_t i = 0; i < 4; ++i) {
-		elements[i] = value;
-	}
-}
+constexpr Vector<T,4>::Vector(const T* arrayPtr) noexcept
+:
+	x{arrayPtr[0]},
+	y{arrayPtr[1]},
+	z{arrayPtr[2]},
+	w{arrayPtr[3]}
+{ }
 
 template<typename T>
-Vector<T,4>::Vector(std::initializer_list<T> list) noexcept
-{
-	size_t listSize = list.size();
-	sfz_assert_debug(listSize <= 4);
-	// Sets elements to values from initializer list.
-	T* elementItr = elements;
-	for (auto listElement : list) {
-		*elementItr++ = listElement;
-	}
-	// Sets remaining elements to 0.
-	for (size_t i = listSize; i < 4; i++) {
-		elements[i] = 0;
-	}
-}
+constexpr Vector<T,4>::Vector(T value) noexcept
+:
+	x{value},
+	y{value},
+	z{value},
+	w{value}
+{ }
+
+template<typename T>
+constexpr Vector<T,4>::Vector(T x, T y, T z, T w) noexcept
+:
+	x{x},
+	y{y},
+	z{z},
+	w{w}
+{ }
+
+template<typename T>
+constexpr Vector<T,4>::Vector(Vector<T,3> xyz, T w) noexcept
+:
+	x{xyz.elements[0]},
+	y{xyz.elements[1]},
+	z{xyz.elements[2]},
+	w{w}
+{ }
+
+template<typename T>
+constexpr Vector<T,4>::Vector(T x, Vector<T,3> yzw) noexcept
+:
+	x{x},
+	y{yzw.elements[0]},
+	z{yzw.elements[1]},
+	w{yzw.elements[2]}
+{ }
+
+template<typename T>
+constexpr Vector<T,4>::Vector(Vector<T,2> xy, Vector<T,2> zw) noexcept
+:
+	x{xy.elements[0]},
+	y{xy.elements[1]},
+	z{zw.elements[0]},
+	w{zw.elements[1]}
+{ }
+
+template<typename T>
+constexpr Vector<T,4>::Vector(Vector<T,2> xy, T z, T w) noexcept
+:
+	x{xy.elements[0]},
+	y{xy.elements[1]},
+	z{z},
+	w{w}
+{ }
+
+template<typename T>
+constexpr Vector<T,4>::Vector(T x, Vector<T,2> yz, T w) noexcept
+:
+	x{x},
+	y{yz.elements[0]},
+	z{yz.elements[1]},
+	w{w}
+{ }
+
+template<typename T>
+constexpr Vector<T,4>::Vector(T x, T y, Vector<T,2> zw) noexcept
+:
+	x{x},
+	y{y},
+	z{zw.elements[0]},
+	w{zw.elements[1]}
+{ }
 
 template<typename T>
 T& Vector<T,4>::operator[] (const size_t index) noexcept
@@ -158,9 +209,8 @@ T& Vector<T,4>::operator[] (const size_t index) noexcept
 }
 
 template<typename T>
-T Vector<T,4>::operator[] (const size_t index) const noexcept
+constexpr T Vector<T,4>::operator[] (const size_t index) const noexcept
 {
-	sfz_assert_debug(index < 4);
 	return elements[index];
 }
 
