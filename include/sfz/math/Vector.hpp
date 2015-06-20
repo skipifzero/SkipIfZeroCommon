@@ -17,32 +17,28 @@ namespace sfz {
 using std::size_t;
 using std::int32_t;
 
-// Vector struct declaration
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 /**
- * @brief A mathematical vector POD class that imitates a built-in primitive.
+ * @brief A mathematical vector POD class that imitates a built-in primitive.
  *
- * The template is designed to be used with float and doubles in first hand, and everything should
- * work as expected with them. Integral types can also be used, but some things will not function
- * as expected due to truncation. Most notably taking the norm will most likely not give the
- * correct result as it involves taking the square root. Another trouble with integral types is the
- * risk of overflow. When calculating the norm you have to square each element in the vector, which
- * might wery well overflow if you have large elements.
+ * Typedefs are provided for float vectors (vec2, vec3 and vec4) and (32-bit signed) integer
+ * vectors (vec2i, vec3i, vec4i). Note that for integers some operations, such as as calculating
+ * the length, may give unexpected results due to truncation or overflow.
+ *
+ * 2, 3 and 4 dimensional vectors are specialized to have more constructors and ways of accessing
+ * data. For example, you can construct a vec3 with 3 floats (vec3(x, y, z)), or with a vec2 and a 
+ * float (vec3(vec2(x,y), z) or vec3(x, vec2(y, z))). To access the x value of a vec3 v you can
+ * write v[0], v.elements[0] or v.x, you can also access two adjacent elements as a vectory by
+ * writing v.xy or v.yz.
  *
  * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used
  * with standard primitives.
  *
- * Comparison operators are also overloaded, in practice this means that the vectors norm is
- * compared.
- *
- * Additional vector operations available in the VectorSupport.hpp header.
- *
- * @param T the element type
- * @param N the amount of elements in the vector
- *
  * @author Peter Hillerström <peter@hstroem.se>
  */
+
+// Vector struct declaration
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 template<typename T, size_t N>
 struct Vector final {
 
@@ -133,58 +129,49 @@ struct Vector<T, 4> final {
 	constexpr T operator[] (const size_t index) const noexcept;
 };
 
+using vec2 = Vector<float, 2>;
+using vec3 = Vector<float, 3>;
+using vec4 = Vector<float, 4>;
+
+using vec2i = Vector<int32_t, 2>;
+using vec3i = Vector<int32_t, 3>;
+using vec4i = Vector<int32_t, 4>;
+
 // Vector functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-/**
- * @brief Calculates the norm (length) of the vector.
- * Note when using discrete types (int, long, etc): This method will square each element of the
- * vector and add them together before taking the square root. This might result in an overflow
- * if the elements are too large. In that case the result of this function will be undefined.
- * Also, the return type will still be a discrete type, meaning that the result will be
- * truncated. If this is a problem you should use the squaredNorm() function and do the square
- * root operation yourself.
- * @return norm of the vector
- */
+/** @brief Calculates length of the vector */
 template<typename T, size_t N>
 T length(const Vector<T,N>& vector) noexcept;
 
-/**
- * @brief Sums the squares of each element in the vector (squared norm, i.e. squared length).
- * @return squared norm of the vector
- */
+/** @brief Calculates squared length of vector */
 template<typename T, size_t N>
 T squaredLength(const Vector<T,N>& vector) noexcept;
 
 /**
- * @brief Normalizes the vector and produces a unit vector.
- * Simply divides this vector by it's length to get the unit vector, i.e. the vector pointing
- * in the same direction with the norm 1. Returns 0-vector if the norm is 0.
- * @return the unit vector
+ * @brief Normalizes vector
+ * @sfz_assert_debug length of vector is not zero
  */
 template<typename T, size_t N>
 Vector<T,N> normalize(const Vector<T,N>& vector) noexcept;
 
+/** @brief Calculates the dot product of two vectors */
 template<typename T, size_t N>
 T dot(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
-/**
- * @brief Does an element-wise multiplication of two vectors.
- * @param the other vector
- * @return the resulting vector
- */
+/** @brief Element-wise multiplication of two vectors */
 template<typename T, size_t N>
 Vector<T,N> elemMult(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
-/**
- * @return the sum of all the elements in the vector
- */
+/** @brief Calculates the sum of all the elements in the vector */
 template<typename T, size_t N>
 T sum(const Vector<T,N>& vector) noexcept;
 
+/** @brief Hashes the vector */
 template<typename T, size_t N>
 size_t hash(const Vector<T,N>& vector) noexcept;
 
+/** @brief Creates string representation of the vector */
 template<typename T, size_t N>
 std::string to_string(const Vector<T,N>& vector) noexcept;
 
@@ -261,17 +248,6 @@ const T* end(const Vector<T, N>& vector) noexcept;
 
 template<typename T, size_t N>
 const T* cend(const Vector<T, N>& vector) noexcept;
-
-// Standard typedefs
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-using vec2 = Vector<float, 2>;
-using vec3 = Vector<float, 3>;
-using vec4 = Vector<float, 4>;
-
-using vec2i = Vector<int32_t, 2>;
-using vec3i = Vector<int32_t, 3>;
-using vec4i = Vector<int32_t, 4>;
 
 } // namespace sfz
 

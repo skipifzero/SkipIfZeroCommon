@@ -237,7 +237,7 @@ template<typename T, size_t N>
 Vector<T,N> normalize(const Vector<T,N>& vector) noexcept
 {
 	T lengthTmp = length(vector);
-	if (lengthTmp == 0) return vector;
+	sfz_assert_debug(lengthTmp != 0);
 	return vector/lengthTmp;
 }
 
