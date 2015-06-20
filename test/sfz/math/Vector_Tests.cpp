@@ -2,7 +2,6 @@
 #include <catch.hpp>
 
 #include "sfz/math/Vector.hpp"
-#include "sfz/math/VectorSupport.hpp"
 
 #include <unordered_map>
 #include <type_traits>
@@ -439,101 +438,7 @@ TEST_CASE("Dot (scalar) product", "[sfz::Vector]")
 	}
 }
 
-TEST_CASE("Element-wise multiplication", "[sfz::Vector]")
-{
-	using sfz::elemMult;
-	sfz::Vector<int, 3> v1{1, 0, -3};
-	sfz::Vector<int, 3> v2{2, 0, 2};
-
-	SECTION("Correctness test") {
-		auto v3 = elemMult(v1, v2);
-		REQUIRE(v3[0] == 2);
-		REQUIRE(v3[1] == 0);
-		REQUIRE(v3[2] == -6);
-	}
-	SECTION("Same vector") {
-		auto v3 = elemMult(v1, v1);
-		REQUIRE(v3[0] == 1);
-		REQUIRE(v3[1] == 0);
-		REQUIRE(v3[2] == 9);
-	}
-}
-
-TEST_CASE("Sum of vector", "[sfz::Vector]")
-{
-	using sfz::sum;
-	sfz::Vector<int, 4> v1{1, 2, -4, 9};
-	REQUIRE(sum(v1) == 8);
-}
-
-TEST_CASE("Converting to string", "[sfz::Vector]")
-{
-	using sfz::to_string;
-	sfz::Vector<int, 3> v{-1, 2, 10};
-	REQUIRE(to_string(v) == "[-1, 2, 10]");
-}
-
-TEST_CASE("Hashing", "[sfz::Vector]")
-{
-	sfz::Vector<int, 3> v1{2, 100, 32};
-	sfz::Vector<int, 3> v2{-1, 0, -10};
-	sfz::Vector<int, 3> v3{0, -9, 14};
-
-	// This test checks if unordered_map works as it should. Not a very good test, but the best I
-	// can come up with to test if hashing works as it should at the moment.
-	std::unordered_map<sfz::Vector<int, 3>, int> hashMap;
-	hashMap[v1] = 1;
-	hashMap[v2] = 2;
-	hashMap[v3] = 3;
-	REQUIRE(hashMap[v1] == 1);
-	REQUIRE(hashMap[v2] == 2);
-	REQUIRE(hashMap[v3] == 3);
-
-	REQUIRE(sfz::hash(v1) != sfz::hash(v2));
-	REQUIRE(sfz::hash(v2) != sfz::hash(v3));
-}
-
-TEST_CASE("Is proper POD", "[sfz::Vector]")
-{
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec2>::value);
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec2i>::value);
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec3>::value);
-	REQUIRE(std::is_trivially_default_constructible<sfz::vec3i>::value);
-
-	REQUIRE(std::is_trivially_copyable<sfz::vec2>::value);
-	REQUIRE(std::is_trivially_copyable<sfz::vec2i>::value);
-	REQUIRE(std::is_trivially_copyable<sfz::vec3>::value);
-	REQUIRE(std::is_trivially_copyable<sfz::vec3i>::value);
-
-	REQUIRE(std::is_trivial<sfz::vec2>::value);
-	REQUIRE(std::is_trivial<sfz::vec2i>::value);
-	REQUIRE(std::is_trivial<sfz::vec3>::value);
-	REQUIRE(std::is_trivial<sfz::vec3i>::value);
-
-	REQUIRE(std::is_standard_layout<sfz::vec2>::value);
-	REQUIRE(std::is_standard_layout<sfz::vec2i>::value);
-	REQUIRE(std::is_standard_layout<sfz::vec3>::value);
-	REQUIRE(std::is_standard_layout<sfz::vec3i>::value);
-
-#ifndef _MSC_VER
-	REQUIRE(std::is_pod<sfz::vec2>::value);
-	REQUIRE(std::is_pod<sfz::vec2i>::value);
-	REQUIRE(std::is_pod<sfz::vec3>::value);
-	REQUIRE(std::is_pod<sfz::vec3i>::value);
-#endif
-
-	REQUIRE(std::is_literal_type<sfz::vec2>::value);
-	REQUIRE(std::is_literal_type<sfz::vec2i>::value);
-	REQUIRE(std::is_literal_type<sfz::vec3>::value);
-	REQUIRE(std::is_literal_type<sfz::vec3i>::value);
-}
-
-
-// VectorSupport.hpp
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-TEST_CASE("Cross product", "[sfz::VectorSupport]")
+TEST_CASE("Cross product", "[sfz::Vector]")
 {
 	sfz::Vector<int, 3> v1{-1, 4, 0};
 	sfz::Vector<int, 3> v2{1, -2, 3};
@@ -563,6 +468,33 @@ TEST_CASE("Cross product", "[sfz::VectorSupport]")
 		REQUIRE(res2[1] == 0);
 		REQUIRE(res2[2] == 0);
 	}
+}
+
+TEST_CASE("Element-wise multiplication", "[sfz::Vector]")
+{
+	using sfz::elemMult;
+	sfz::Vector<int, 3> v1{1, 0, -3};
+	sfz::Vector<int, 3> v2{2, 0, 2};
+
+	SECTION("Correctness test") {
+		auto v3 = elemMult(v1, v2);
+		REQUIRE(v3[0] == 2);
+		REQUIRE(v3[1] == 0);
+		REQUIRE(v3[2] == -6);
+	}
+	SECTION("Same vector") {
+		auto v3 = elemMult(v1, v1);
+		REQUIRE(v3[0] == 1);
+		REQUIRE(v3[1] == 0);
+		REQUIRE(v3[2] == 9);
+	}
+}
+
+TEST_CASE("Sum of vector", "[sfz::Vector]")
+{
+	using sfz::sum;
+	sfz::Vector<int, 4> v1{1, 2, -4, 9};
+	REQUIRE(sum(v1) == 8);
 }
 
 TEST_CASE("Angle of vectors", "[sfz::VectorSupport]")
@@ -633,25 +565,64 @@ TEST_CASE("Rotating vectors", "[sfz::VectorSupport]")
 	}
 }
 
-TEST_CASE("Projecting a vector onto another vector", "[sfz::VectorSupport]")
+TEST_CASE("Converting to string", "[sfz::Vector]")
 {
-	sfz::Vector<int, 2> vUp{0, 2};
-	sfz::Vector<int, 2> vRight{3, 0};
-	sfz::Vector<int, 2> v{9, 12};
+	using sfz::to_string;
+	sfz::Vector<int, 3> v{-1, 2, 10};
+	REQUIRE(to_string(v) == "[-1, 2, 10]");
+}
 
-	SECTION("Basic test") {
-		auto res = projectOnto(v, vUp);
-		REQUIRE(res[0] == 0);
-		REQUIRE(res[1] == 12);
-	}
-	SECTION("Basic test 2") {
-		auto res = projectOnto(v, vRight);
-		REQUIRE(res[0] == 9);
-		REQUIRE(res[1] == 0);
-	}
-	SECTION("Returns 0 vector if target is 0 vector.") {
-		auto zero = sfz::Vector<int,2>{0,0};
-		auto res = projectOnto(v, zero);
-		REQUIRE(res == zero);
-	}
+TEST_CASE("Hashing", "[sfz::Vector]")
+{
+	sfz::Vector<int, 3> v1{2, 100, 32};
+	sfz::Vector<int, 3> v2{-1, 0, -10};
+	sfz::Vector<int, 3> v3{0, -9, 14};
+
+	// This test checks if unordered_map works as it should. Not a very good test, but the best I
+	// can come up with to test if hashing works as it should at the moment.
+	std::unordered_map<sfz::Vector<int, 3>, int> hashMap;
+	hashMap[v1] = 1;
+	hashMap[v2] = 2;
+	hashMap[v3] = 3;
+	REQUIRE(hashMap[v1] == 1);
+	REQUIRE(hashMap[v2] == 2);
+	REQUIRE(hashMap[v3] == 3);
+
+	REQUIRE(sfz::hash(v1) != sfz::hash(v2));
+	REQUIRE(sfz::hash(v2) != sfz::hash(v3));
+}
+
+TEST_CASE("Is proper POD", "[sfz::Vector]")
+{
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec2>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec2i>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec3>::value);
+	REQUIRE(std::is_trivially_default_constructible<sfz::vec3i>::value);
+
+	REQUIRE(std::is_trivially_copyable<sfz::vec2>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec2i>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec3>::value);
+	REQUIRE(std::is_trivially_copyable<sfz::vec3i>::value);
+
+	REQUIRE(std::is_trivial<sfz::vec2>::value);
+	REQUIRE(std::is_trivial<sfz::vec2i>::value);
+	REQUIRE(std::is_trivial<sfz::vec3>::value);
+	REQUIRE(std::is_trivial<sfz::vec3i>::value);
+
+	REQUIRE(std::is_standard_layout<sfz::vec2>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec2i>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec3>::value);
+	REQUIRE(std::is_standard_layout<sfz::vec3i>::value);
+
+#ifndef _MSC_VER
+	REQUIRE(std::is_pod<sfz::vec2>::value);
+	REQUIRE(std::is_pod<sfz::vec2i>::value);
+	REQUIRE(std::is_pod<sfz::vec3>::value);
+	REQUIRE(std::is_pod<sfz::vec3i>::value);
+#endif
+
+	REQUIRE(std::is_literal_type<sfz::vec2>::value);
+	REQUIRE(std::is_literal_type<sfz::vec2i>::value);
+	REQUIRE(std::is_literal_type<sfz::vec3>::value);
+	REQUIRE(std::is_literal_type<sfz::vec3i>::value);
 }

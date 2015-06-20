@@ -12,11 +12,6 @@
 #include "sfz/Assert.hpp"
 #include "sfz/math/MathConstants.hpp"
 
-namespace sfz {
-
-using std::size_t;
-using std::int32_t;
-
 /**
  * @brief A mathematical vector POD class that imitates a built-in primitive.
  *
@@ -35,6 +30,11 @@ using std::int32_t;
  *
  * @author Peter Hillerström <peter@hstroem.se>
  */
+
+namespace sfz {
+
+using std::size_t;
+using std::int32_t;
 
 // Vector struct declaration
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -159,6 +159,10 @@ Vector<T,N> normalize(const Vector<T,N>& vector) noexcept;
 template<typename T, size_t N>
 T dot(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
+/** @brief Calculates the cross product of two vectors */
+template<typename T>
+constexpr Vector<T,3> cross(const Vector<T,3>& left, const Vector<T,3>& right) noexcept;
+
 /** @brief Element-wise multiplication of two vectors */
 template<typename T, size_t N>
 Vector<T,N> elemMult(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
@@ -166,6 +170,26 @@ Vector<T,N> elemMult(const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 /** @brief Calculates the sum of all the elements in the vector */
 template<typename T, size_t N>
 T sum(const Vector<T,N>& vector) noexcept;
+
+/**
+ * @brief Calculates the positive angle (in radians) between two vectors
+ * Range: [0, Pi])
+ * @sfz_assert_debug norm of both vectors != 0
+ */
+template<typename T, size_t N>
+T angle(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
+
+/**
+ * @brief Calculates the positive angle (in radians) between the vector and the x-axis
+ * Range: [0, 2*Pi).
+ * @sfz_assert_debug norm of vector != 0
+ */
+template<typename T>
+T angle(Vector<T,2> vector) noexcept;
+
+/** @brief Rotates a 2-dimensional vector with the specified angle (in radians) around origo */
+template<typename T>
+Vector<T,2> rotate(Vector<T,2> vector, T angleRadians) noexcept;
 
 /** @brief Hashes the vector */
 template<typename T, size_t N>
@@ -263,5 +287,4 @@ struct hash<sfz::Vector<T,N>> {
 
 } // namespace std
 #include "Vector.inl"
-#include "VectorSupport.hpp"
 #endif

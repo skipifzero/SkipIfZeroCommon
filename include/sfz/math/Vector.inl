@@ -251,6 +251,14 @@ T dot(const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 	return product;
 }
 
+template<typename T>
+constexpr Vector<T,3> cross(const Vector<T,3>& left, const Vector<T,3>& right) noexcept
+{
+	return sfz::Vector<T,3>{left.y*right.z - left.z*right.y,
+	                        left.z*right.x - left.x*right.z,
+	                        left.x*right.y - left.y*right.x};
+}
+
 template<typename T, size_t N>
 Vector<T,N> elemMult(const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
@@ -269,6 +277,35 @@ T sum(const Vector<T,N>& vector) noexcept
 		result += vector.elements[i];
 	}
 	return result;
+}
+
+template<typename T, size_t N>
+T angle(const Vector<T,N>& left, const Vector<T,N>& right) noexcept
+{
+	T squaredLengthLeft = squaredLength(left);
+	sfz_assert_debug(squaredLengthLeft != 0);
+	T squaredLengthRight = squaredLength(right);
+	sfz_assert_debug(squaredLengthRight != 0);
+	return std::acos(dot(left, right)/(std::sqrt(squaredLengthLeft*squaredLengthRight)));
+}
+
+template<typename T>
+T angle(Vector<T,2> vector) noexcept
+{
+	sfz_assert_debug(!(vector.x == 0 && vector.y == 0));
+	T angle = std::atan2(vector.y, vector.x);
+	if (angle < T(0)) {
+		angle += T(2)*PI<T>();
+	}
+	return angle;
+}
+
+template<typename T>
+Vector<T,2> rotate(Vector<T,2> vector, T angleRadians) noexcept
+{
+	T cos = std::cos(angleRadians);
+	T sin = std::sin(angleRadians);
+	return Vector<T,2>{vector.x*cos - vector.y*sin, vector.x*sin + vector.y*cos};
 }
 
 template<typename T, size_t N>

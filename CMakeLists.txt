@@ -67,9 +67,7 @@ set(SOURCE_MATH_FILES
 	${INCLUDE_DIR}/sfz/math/MatrixSupport.hpp
 	${INCLUDE_DIR}/sfz/math/MatrixSupport.inl
 	${INCLUDE_DIR}/sfz/math/Vector.hpp
-	${INCLUDE_DIR}/sfz/math/Vector.inl
-	${INCLUDE_DIR}/sfz/math/VectorSupport.hpp
-	${INCLUDE_DIR}/sfz/math/VectorSupport.inl)
+	${INCLUDE_DIR}/sfz/math/Vector.inl)
 source_group(sfz_math FILES ${SOURCE_MATH_FILES})
 
 set(SOURCE_UTIL_FILES
