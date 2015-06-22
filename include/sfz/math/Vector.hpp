@@ -22,7 +22,7 @@
  * 2, 3 and 4 dimensional vectors are specialized to have more constructors and ways of accessing
  * data. For example, you can construct a vec3 with 3 floats (vec3(x, y, z)), or with a vec2 and a 
  * float (vec3(vec2(x,y), z) or vec3(x, vec2(y, z))). To access the x value of a vec3 v you can
- * write v[0], v.elements[0] or v.x, you can also access two adjacent elements as a vectory by
+ * write v[0], v.elements[0] or v.x, you can also access two adjacent elements as a vector by
  * writing v.xy or v.yz.
  *
  * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used
