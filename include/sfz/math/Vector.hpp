@@ -67,9 +67,9 @@ struct Vector<T, 2> final {
 	Vector<T, 2>& operator= (const Vector<T, 2>&) noexcept = default;
 	~Vector() noexcept = default;
 
-	constexpr explicit Vector(const T* arrayPtr) noexcept;
-	constexpr explicit Vector(T value) noexcept;
-	constexpr Vector(T x, T y) noexcept;
+	explicit Vector(const T* arrayPtr) noexcept;
+	explicit Vector(T value) noexcept;
+	Vector(T x, T y) noexcept;
 
 	T& operator[] (const size_t index) noexcept;
 	constexpr T operator[] (const size_t index) const noexcept;
@@ -89,11 +89,11 @@ struct Vector<T, 3> final {
 	Vector<T, 3>& operator= (const Vector<T, 3>&) noexcept = default;
 	~Vector() noexcept = default;
 
-	constexpr explicit Vector(const T* arrayPtr) noexcept;
-	constexpr explicit Vector(T value) noexcept;
-	constexpr Vector(T x, T y, T z) noexcept;
-	constexpr Vector(Vector<T,2> xy, T z) noexcept;
-	constexpr Vector(T x, Vector<T,2> yz) noexcept;
+	explicit Vector(const T* arrayPtr) noexcept;
+	explicit Vector(T value) noexcept;
+	Vector(T x, T y, T z) noexcept;
+	Vector(Vector<T,2> xy, T z) noexcept;
+	Vector(T x, Vector<T,2> yz) noexcept;
 
 	T& operator[] (const size_t index) noexcept;
 	constexpr T operator[] (const size_t index) const noexcept;
@@ -115,15 +115,15 @@ struct Vector<T, 4> final {
 	Vector<T, 4>& operator= (const Vector<T, 4>&) noexcept = default;
 	~Vector() noexcept = default;
 
-	constexpr explicit Vector(const T* arrayPtr) noexcept;
-	constexpr explicit Vector(T value) noexcept;
-	constexpr Vector(T x, T y, T z, T w) noexcept;
-	constexpr Vector(Vector<T,3> xyz, T w) noexcept;
-	constexpr Vector(T x, Vector<T,3> yzw) noexcept;
-	constexpr Vector(Vector<T,2> xy, Vector<T,2> zw) noexcept;
-	constexpr Vector(Vector<T,2> xy, T z, T w) noexcept;
-	constexpr Vector(T x, Vector<T,2> yz, T w) noexcept;
-	constexpr Vector(T x, T y, Vector<T,2> zw) noexcept;
+	explicit Vector(const T* arrayPtr) noexcept;
+	explicit Vector(T value) noexcept;
+	Vector(T x, T y, T z, T w) noexcept;
+	Vector(Vector<T,3> xyz, T w) noexcept;
+	Vector(T x, Vector<T,3> yzw) noexcept;
+	Vector(Vector<T,2> xy, Vector<T,2> zw) noexcept;
+	Vector(Vector<T,2> xy, T z, T w) noexcept;
+	Vector(T x, Vector<T,2> yz, T w) noexcept;
+	Vector(T x, T y, Vector<T,2> zw) noexcept;
 
 	T& operator[] (const size_t index) noexcept;
 	constexpr T operator[] (const size_t index) const noexcept;
