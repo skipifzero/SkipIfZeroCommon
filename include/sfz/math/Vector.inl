@@ -1,5 +1,7 @@
 namespace sfz {
 
+namespace vec {
+
 // Vector struct declaration: Vector<T,N>
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -483,6 +485,8 @@ const T* cend(const Vector<T, N>& vector) noexcept
 {
 	return vector.elements + N;
 }
+
+} // namespace vec
 
 } // namespace sfz
 

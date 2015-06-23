@@ -28,10 +28,16 @@
  * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used
  * with standard primitives.
  *
+ * The vector template and all its related functions are located in the sfz::vec namespace, this
+ * namespace is also included into sfz. What this means is that if you only want to include vector
+ * related stuff into your namespace you can just include sfz::vec.
+ *
  * @author Peter Hillerström <peter@hstroem.se>
  */
 
 namespace sfz {
+
+namespace vec {
 
 using std::size_t;
 using std::int32_t;
@@ -272,6 +278,10 @@ const T* end(const Vector<T, N>& vector) noexcept;
 
 template<typename T, size_t N>
 const T* cend(const Vector<T, N>& vector) noexcept;
+
+} // namespace vec
+
+using namespace vec;
 
 } // namespace sfz
 
