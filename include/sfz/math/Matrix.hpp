@@ -182,13 +182,6 @@ struct Matrix final {
 	Vector<T,M> operator* (const Vector<T,N>& vector) const noexcept;
 
 	Matrix<T,M,N> operator* (const T& other) const noexcept;
-
-	// Operators (comparison)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	bool operator== (const Matrix<T,M,N>& other) const noexcept;
-
-	bool operator!= (const Matrix<T,M,N>& other) const noexcept;
 };
 
 // Non-member operators (arithmetic)
@@ -200,7 +193,16 @@ Matrix<T,N,N>& operator*= (Matrix<T,N,N>& lhs, const Matrix<T,N,N>& rhs) noexcep
 template<typename T, size_t M, size_t N>
 Matrix<T,M,N> operator* (const T& lhs, const Matrix<T,M,N>& rhs) noexcept;
 
-// Non-member operators (others)
+// Operators (comparison)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+bool operator== (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept;
+
+template<typename T, size_t M, size_t N>
+bool operator!= (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept;
+
+// Operators (other)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>

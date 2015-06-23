@@ -30,7 +30,7 @@
  *
  * The vector template and all its related functions are located in the sfz::vec namespace, this
  * namespace is also included into sfz. What this means is that if you only want to include vector
- * related stuff into your namespace you can just include sfz::vec.
+ * related stuff into your namespace you can just include sfz::vec, otherwise just ignore it.
  *
  * @author Peter Hillerström <peter@hstroem.se>
  */

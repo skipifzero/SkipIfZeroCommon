@@ -288,28 +288,6 @@ Matrix<T,M,N> Matrix<T,M,N>::operator* (const T& other) const noexcept
 	return Matrix<T,M,N>{*this} *= other;
 }
 
-// Operators (comparison)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t M, size_t N>
-bool Matrix<T,M,N>::operator== (const Matrix<T,M,N>& other) const noexcept
-{
-	for (size_t i = 0; i < M; i++) {
-		for (size_t j = 0; j < N; j++) {
-			if (mElements[j][i] != other.mElements[j][i]) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-template<typename T, size_t M, size_t N>
-bool Matrix<T,M,N>::operator!= (const Matrix<T,M,N>& other) const noexcept
-{
-	return !((*this) == other);
-}
-
 // Non-member operators (arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -325,7 +303,30 @@ Matrix<T,M,N> operator* (const T& lhs, const Matrix<T,M,N>& rhs) noexcept
 	return rhs * lhs;
 }
 
-// Non-member operators (others)
+// Operators (comparison)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+bool operator== (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept
+{
+	for (size_t i = 0; i < M; i++) {
+		for (size_t j = 0; j < N; j++) {
+			if (lhs.mElements[j][i] != rhs.mElements[j][i]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+template<typename T, size_t M, size_t N>
+bool operator!= (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept
+{
+	return !(lhs == rhs);
+}
+
+
+// Operators (other)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
