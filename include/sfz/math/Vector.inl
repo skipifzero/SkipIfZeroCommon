@@ -358,7 +358,7 @@ Vector<T,N>& operator-= (Vector<T, N>& left, const Vector<T,N>& right) noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N>& operator*= (Vector<T, N>& left, const T& right) noexcept
+Vector<T,N>& operator*= (Vector<T, N>& left, T right) noexcept
 {
 	for (size_t i = 0; i < N; ++i) {
 		left.elements[i] *= right;
@@ -367,7 +367,7 @@ Vector<T,N>& operator*= (Vector<T, N>& left, const T& right) noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N>& operator/= (Vector<T, N>& left, const T& right) noexcept
+Vector<T,N>& operator/= (Vector<T, N>& left, T right) noexcept
 {
 	sfz_assert_debug(right != T(0));
 	for (size_t i = 0; i < N; ++i) {
@@ -380,41 +380,41 @@ Vector<T,N>& operator/= (Vector<T, N>& left, const T& right) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T,N> operator+ (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
+Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	Vector<T,N> temp = left;
 	return (temp += right);
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
+Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	Vector<T,N> temp = left;
 	return (temp -= right);
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator- (const Vector<T, N>& vector) noexcept
+Vector<T,N> operator- (const Vector<T,N>& vector) noexcept
 {
 	Vector<T,N> temp = vector;
 	return (temp *= T(-1));
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator* (const Vector<T, N>& left, const T& right) noexcept
+Vector<T,N> operator* (const Vector<T,N>& left, T right) noexcept
 {
 	Vector<T,N> temp = left;
 	return (temp *= right);
 }
 
 template<typename T, size_t N>
-Vector<T, N> operator* (const T& left, const Vector<T, N>& right) noexcept
+Vector<T,N> operator* (T left, const Vector<T,N>& right) noexcept
 {
 	return right * left;
 }
 
 template<typename T, size_t N>
-Vector<T,N> operator/ (const Vector<T, N>& left, const T& right) noexcept
+Vector<T,N> operator/ (const Vector<T,N>& left, T right) noexcept
 {
 	Vector<T,N> temp = left;
 	return (temp /= right);
@@ -424,7 +424,7 @@ Vector<T,N> operator/ (const Vector<T, N>& left, const T& right) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-bool operator== (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
+bool operator== (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	for (size_t i = 0; i < N; ++i) {
 		if (left.elements[i] != right.elements[i]) return false;
@@ -433,7 +433,7 @@ bool operator== (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
 }
 
 template<typename T, size_t N>
-bool operator!= (const Vector<T, N>& left, const Vector<T, N>& right) noexcept
+bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	return !(left == right);
 }

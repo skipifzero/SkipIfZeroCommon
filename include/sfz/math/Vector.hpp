@@ -209,48 +209,48 @@ std::string to_string(const Vector<T,N>& vector) noexcept;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T, N>& operator+= (Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+Vector<T,N>& operator+= (Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 template<typename T, size_t N>
-Vector<T, N>& operator-= (Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+Vector<T,N>& operator-= (Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 template<typename T, size_t N>
-Vector<T, N>& operator*= (Vector<T, N>& left, const T& right) noexcept;
+Vector<T,N>& operator*= (Vector<T,N>& left, T right) noexcept;
 
 /** @sfz_assert_debug rhs element != 0 */
 template<typename T, size_t N>
-Vector<T, N>& operator/= (Vector<T, N>& left, const T& right) noexcept;
+Vector<T,N>& operator/= (Vector<T,N>& left, T right) noexcept;
 
 // Operators (arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T, N> operator+ (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+Vector<T,N> operator+ (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 template<typename T, size_t N>
-Vector<T, N> operator- (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+Vector<T,N> operator- (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 template<typename T, size_t N>
-Vector<T, N> operator- (const Vector<T, N>& vector) noexcept;
+Vector<T,N> operator- (const Vector<T,N>& vector) noexcept;
 
 template<typename T, size_t N>
-Vector<T, N> operator* (const Vector<T, N>& left, const T& right) noexcept;
+Vector<T,N> operator* (const Vector<T,N>& left, T right) noexcept;
 
 template<typename T, size_t N>
-Vector<T, N> operator* (const T& left, const Vector<T, N>& right) noexcept;
+Vector<T,N> operator* (T left, const Vector<T,N>& right) noexcept;
 
 /** @sfz_assert_debug rhs element != 0 */
 template<typename T, size_t N>
-Vector<T, N> operator/ (const Vector<T, N>& left, const T& right) noexcept;
+Vector<T,N> operator/ (const Vector<T,N>& left, T right) noexcept;
 
 // Operators (comparison)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-bool operator== (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+bool operator== (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 template<typename T, size_t N>
-bool operator!= (const Vector<T, N>& left, const Vector<T, N>& right) noexcept;
+bool operator!= (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 // Operators (other)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

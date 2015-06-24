@@ -166,41 +166,43 @@ struct Matrix final {
 	Matrix<T,M,N>& operator-= (const Matrix<T,M,N>& other) noexcept;
 
 	Matrix<T,M,N>& operator*= (const T& other) noexcept;
-
-	// Operators (arithmetic)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	Matrix<T,M,N> operator+ (const Matrix<T,M,N>& other) const noexcept;
-
-	Matrix<T,M,N> operator- (const Matrix<T,M,N>& other) const noexcept;
-
-	Matrix<T,M,N> operator- () const noexcept;
-
-	template<size_t P>
-	Matrix<T,M,P> operator* (const Matrix<T,N,P>& other) const noexcept;
-
-	Vector<T,M> operator* (const Vector<T,N>& vector) const noexcept;
-
-	Matrix<T,M,N> operator* (const T& other) const noexcept;
 };
 
-// Non-member operators (arithmetic)
+// Operators (arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> operator+ (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> operator- (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> operator- (const Matrix<T,M,N>& matrix) noexcept;
+
+template<typename T, size_t M, size_t N, size_t P>
+Matrix<T,M,P> operator* (const Matrix<T,M,N>& lhs, const Matrix<T,N,P>& rhs) noexcept;
+
+template<typename T, size_t M, size_t N>
+Vector<T,M> operator* (const Matrix<T,M,N>& lhs, const Vector<T,N>& rhs) noexcept;
 
 template<typename T, size_t N>
 Matrix<T,N,N>& operator*= (Matrix<T,N,N>& lhs, const Matrix<T,N,N>& rhs) noexcept;
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N> operator* (const T& lhs, const Matrix<T,M,N>& rhs) noexcept;
+Matrix<T,M,N> operator* (const Matrix<T,M,N>& lhs, T rhs) noexcept;
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> operator* (T lhs, const Matrix<T,M,N>& rhs) noexcept;
 
 // Operators (comparison)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
-bool operator== (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept;
+bool operator== (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
 
 template<typename T, size_t M, size_t N>
-bool operator!= (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept;
+bool operator!= (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
 
 // Operators (other)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

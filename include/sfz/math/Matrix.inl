@@ -228,26 +228,28 @@ Matrix<T,M,N>& Matrix<T,M,N>::operator*= (const T& other) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N> Matrix<T,M,N>::operator+ (const Matrix<T,M,N>& other) const noexcept
+Matrix<T,M,N> operator+ (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 {
-	return Matrix<T,M,N>{*this} += other;
+	Matrix<T,M,N> temp{lhs};
+	return (temp += rhs);
 }
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N> Matrix<T,M,N>::operator- (const Matrix<T,M,N>& other) const noexcept
+Matrix<T,M,N> operator- (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 {
-	return Matrix<T,M,N>{*this} -= other;
+	Matrix<T,M,N> temp{lhs};
+	return (temp -= rhs);
 }
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N> Matrix<T,M,N>::operator- () const noexcept
+Matrix<T,M,N> operator- (const Matrix<T,M,N>& matrix) noexcept
 {
-	return Matrix<T,M,N>{*this} *= -1;
+	Matrix<T,M,N> temp{matrix};
+	return (temp *= T(-1));
 }
 
-template<typename T, size_t M, size_t N>
-template<size_t P>
-Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexcept
+template<typename T, size_t M, size_t N, size_t P>
+Matrix<T,M,P> operator* (const Matrix<T,M,N>& lhs, const Matrix<T,N,P>& rhs) noexcept
 {
 	Matrix<T,M,P> resMatrix;
 	for (size_t i = 0; i < M; i++) {
@@ -256,7 +258,7 @@ Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexce
 			size_t jInnerThis = 0;
 			size_t iInnerOther = 0;
 			while (jInnerThis < M) {
-				temp += mElements[jInnerThis][i] * other.mElements[j][iInnerOther];
+				temp += lhs.mElements[jInnerThis][i] * rhs.mElements[j][iInnerOther];
 				jInnerThis++;
 				iInnerOther++;
 			}
@@ -267,29 +269,20 @@ Matrix<T,M,P> Matrix<T,M,N>::operator* (const Matrix<T,N,P>& other) const noexce
 }
 
 template<typename T, size_t M, size_t N>
-Vector<T,M> Matrix<T,M,N>::operator* (const Vector<T,N>& vector) const noexcept
+Vector<T,M> operator* (const Matrix<T,M,N>& lhs, const Vector<T,N>& rhs) noexcept
 {
 	Vector<T,M> resVector;
-	for (size_t i = 0; i < M; i++) {
+	for (size_t i = 0; i < M; ++i) {
 		T temp = 0;
 		size_t jInnerThis = 0;
-		for (T vecElem : vector) {
-			temp += mElements[jInnerThis][i] * vecElem;
-			jInnerThis++;
+		for (int iVec = 0; iVec < N; ++iVec) {
+			temp += lhs.mElements[jInnerThis][i] * rhs.elements[iVec];
+			jInnerThis += 1;
 		}
 		resVector[i] = temp;
 	}
 	return resVector;
 }
-
-template<typename T, size_t M, size_t N>
-Matrix<T,M,N> Matrix<T,M,N>::operator* (const T& other) const noexcept
-{
-	return Matrix<T,M,N>{*this} *= other;
-}
-
-// Non-member operators (arithmetic)
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 Matrix<T,N,N>& operator*= (Matrix<T,N,N>& lhs, const Matrix<T,N,N>& rhs) noexcept
@@ -298,7 +291,14 @@ Matrix<T,N,N>& operator*= (Matrix<T,N,N>& lhs, const Matrix<T,N,N>& rhs) noexcep
 }
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N> operator* (const T& lhs, const Matrix<T,M,N>& rhs) noexcept
+Matrix<T,M,N> operator* (const Matrix<T,M,N>& lhs, T rhs) noexcept
+{
+	Matrix<T,M,N> temp{lhs};
+	return (temp *= rhs);
+}
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> operator* (T lhs, const Matrix<T,M,N>& rhs) noexcept
 {
 	return rhs * lhs;
 }
@@ -307,7 +307,7 @@ Matrix<T,M,N> operator* (const T& lhs, const Matrix<T,M,N>& rhs) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
-bool operator== (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept
+bool operator== (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 {
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
@@ -320,7 +320,7 @@ bool operator== (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcep
 }
 
 template<typename T, size_t M, size_t N>
-bool operator!= (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept
+bool operator!= (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 {
 	return !(lhs == rhs);
 }
