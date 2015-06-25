@@ -340,7 +340,7 @@ std::string to_string(const Vector<T,N>& vector) noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-Vector<T,N>& operator+= (Vector<T, N>& left, const Vector<T,N>& right) noexcept
+Vector<T,N>& operator+= (Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	for (size_t i = 0; i < N; ++i) {
 		left.elements[i] += right.elements[i];
@@ -349,7 +349,7 @@ Vector<T,N>& operator+= (Vector<T, N>& left, const Vector<T,N>& right) noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N>& operator-= (Vector<T, N>& left, const Vector<T,N>& right) noexcept
+Vector<T,N>& operator-= (Vector<T,N>& left, const Vector<T,N>& right) noexcept
 {
 	for (size_t i = 0; i < N; ++i) {
 		left.elements[i] -= right.elements[i];
@@ -358,7 +358,7 @@ Vector<T,N>& operator-= (Vector<T, N>& left, const Vector<T,N>& right) noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N>& operator*= (Vector<T, N>& left, T right) noexcept
+Vector<T,N>& operator*= (Vector<T,N>& left, T right) noexcept
 {
 	for (size_t i = 0; i < N; ++i) {
 		left.elements[i] *= right;
@@ -367,7 +367,7 @@ Vector<T,N>& operator*= (Vector<T, N>& left, T right) noexcept
 }
 
 template<typename T, size_t N>
-Vector<T,N>& operator/= (Vector<T, N>& left, T right) noexcept
+Vector<T,N>& operator/= (Vector<T,N>& left, T right) noexcept
 {
 	sfz_assert_debug(right != T(0));
 	for (size_t i = 0; i < N; ++i) {
@@ -451,37 +451,37 @@ std::ostream& operator<< (std::ostream& ostream, const Vector<T,N>& vector) noex
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
-T* begin(Vector<T, N>& vector) noexcept
+T* begin(Vector<T,N>& vector) noexcept
 {
 	return vector.elements;
 }
 
 template<typename T, size_t N>
-const T* begin(const Vector<T, N>& vector) noexcept
+const T* begin(const Vector<T,N>& vector) noexcept
 {
 	return vector.elements;
 }
 
 template<typename T, size_t N>
-const T* cbegin(const Vector<T, N>& vector) noexcept
+const T* cbegin(const Vector<T,N>& vector) noexcept
 {
 	return vector.elements;
 }
 
 template<typename T, size_t N>
-T* end(Vector<T, N>& vector) noexcept
+T* end(Vector<T,N>& vector) noexcept
 {
 	return vector.elements + N;
 }
 
 template<typename T, size_t N>
-const T* end(const Vector<T, N>& vector) noexcept
+const T* end(const Vector<T,N>& vector) noexcept
 {
 	return vector.elements + N;
 }
 
 template<typename T, size_t N>
-const T* cend(const Vector<T, N>& vector) noexcept
+const T* cend(const Vector<T,N>& vector) noexcept
 {
 	return vector.elements + N;
 }

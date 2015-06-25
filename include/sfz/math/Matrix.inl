@@ -192,36 +192,42 @@ std::string Matrix<T,M,N>::to_string() const noexcept
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N>& Matrix<T,M,N>::operator+= (const Matrix<T,M,N>& other) noexcept
+Matrix<T,M,N>& operator+= (Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 {
-	for (size_t i = 0; i < M; i++) {
-		for (size_t j = 0; j < N; j++) {
-			mElements[j][i] += other.mElements[j][i];
+	for (size_t i = 0; i < M; ++i) {
+		for (size_t j = 0; j < N; ++j) {
+			lhs.mElements[j][i] += rhs.mElements[j][i];
 		}
 	}
-	return *this;
+	return lhs;
 }
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N>& Matrix<T,M,N>::operator-= (const Matrix<T,M,N>& other) noexcept
+Matrix<T,M,N>& operator-= (Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 {
-	for (size_t i = 0; i < M; i++) {
-		for (size_t j = 0; j < N; j++) {
-			mElements[j][i] -= other.mElements[j][i];
+	for (size_t i = 0; i < M; ++i) {
+		for (size_t j = 0; j < N; ++j) {
+			lhs.mElements[j][i] -= rhs.mElements[j][i];
 		}
 	}
-	return *this;
+	return lhs;
 }
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N>& Matrix<T,M,N>::operator*= (const T& other) noexcept
+Matrix<T,M,N>& operator*= (Matrix<T,M,N>& lhs, T rhs) noexcept
 {
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
-			mElements[j][i] *= other;
+			lhs.mElements[j][i] *= rhs;
 		}
 	}
-	return *this;
+	return lhs;
+}
+
+template<typename T, size_t N>
+Matrix<T,N,N>& operator*= (Matrix<T,N,N>& lhs, const Matrix<T,N,N>& rhs) noexcept
+{
+	return (lhs = lhs * rhs);
 }
 
 // Operators (arithmetic)
@@ -282,12 +288,6 @@ Vector<T,M> operator* (const Matrix<T,M,N>& lhs, const Vector<T,N>& rhs) noexcep
 		resVector[i] = temp;
 	}
 	return resVector;
-}
-
-template<typename T, size_t N>
-Matrix<T,N,N>& operator*= (Matrix<T,N,N>& lhs, const Matrix<T,N,N>& rhs) noexcept
-{
-	return (lhs = lhs * rhs);
 }
 
 template<typename T, size_t M, size_t N>

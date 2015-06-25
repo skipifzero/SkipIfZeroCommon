@@ -58,12 +58,9 @@ struct Matrix final {
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	/**
-	 * @brief Default constructor, value of elements is undefined.
-	 */
 	constexpr Matrix() noexcept = default;
-
 	constexpr Matrix(const Matrix<T,M,N>&) noexcept = default;
+	Matrix<T,M,N>& operator= (const Matrix<T,M,N>&) noexcept = default;
 
 	/**
 	 * @brief Constructs a matrix with the given elements given in ROW-MAJOR order.
@@ -155,18 +152,22 @@ struct Matrix final {
 	size_t hash() const noexcept;
 
 	std::string to_string() const noexcept;
-
-	// Operators (arithmetic & assignment)
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	Matrix<T,M,N>& operator= (const Matrix<T,M,N>&) noexcept = default;
-
-	Matrix<T,M,N>& operator+= (const Matrix<T,M,N>& other) noexcept;
-
-	Matrix<T,M,N>& operator-= (const Matrix<T,M,N>& other) noexcept;
-
-	Matrix<T,M,N>& operator*= (const T& other) noexcept;
 };
+
+// Operators (arithmetic & assignment)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N>& operator+= (Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N>& operator-= (Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N>& operator*= (Matrix<T,M,N>& lhs, T rhs) noexcept;
+
+template<typename T, size_t N>
+Matrix<T,N,N>& operator*= (Matrix<T,N,N>& lhs, const Matrix<T,N,N>& rhs) noexcept;
 
 // Operators (arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -185,9 +186,6 @@ Matrix<T,M,P> operator* (const Matrix<T,M,N>& lhs, const Matrix<T,N,P>& rhs) noe
 
 template<typename T, size_t M, size_t N>
 Vector<T,M> operator* (const Matrix<T,M,N>& lhs, const Vector<T,N>& rhs) noexcept;
-
-template<typename T, size_t N>
-Matrix<T,N,N>& operator*= (Matrix<T,N,N>& lhs, const Matrix<T,N,N>& rhs) noexcept;
 
 template<typename T, size_t M, size_t N>
 Matrix<T,M,N> operator* (const Matrix<T,M,N>& lhs, T rhs) noexcept;
