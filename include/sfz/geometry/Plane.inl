@@ -47,7 +47,7 @@ inline std::string Plane::to_string() const noexcept
 {
 	std::string str;
 	str += "Normal = ";
-	str += sfz::to_string(mNormal);
+	str += sfz::vec::to_string(mNormal);
 	str += ", d = ";
 	str += std::to_string(mD);
 	return std::move(str);

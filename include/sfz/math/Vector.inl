@@ -498,7 +498,7 @@ namespace std {
 template<typename T, size_t N>
 size_t hash<sfz::Vector<T,N>>::operator() (const sfz::Vector<T,N>& vector) const noexcept
 {
-	return sfz::hash(vector);
+	return sfz::vec::hash(vector);
 }
 
 } // namespace std

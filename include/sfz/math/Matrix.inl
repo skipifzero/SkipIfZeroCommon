@@ -1,19 +1,5 @@
 namespace sfz {
 
-// Public constants
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-template<typename T, size_t M, size_t N>
-const Matrix<T,M,N>& Matrix<T,M,N>::ZERO() noexcept
-{
-	static const Matrix<T,M,N> zero = []() -> Matrix<T,M,N> {
-		Matrix<T,M,N> tmp;
-		tmp.fill(T(0));
-		return tmp;
-	}();
-	return zero; 
-}
-
 // Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -114,56 +100,69 @@ void Matrix<T,M,N>::setColumn(size_t j, const Vector<T,M>& column) noexcept
 	}
 }
 
+// Matrix constants
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
 template<typename T, size_t M, size_t N>
-void Matrix<T,M,N>::fill(const T value) noexcept
+Matrix<T,M,N> ZERO_MATRIX() noexcept
 {
-	for (size_t i = 0; i < M; i++) {
-		for (size_t j = 0; j < N; j++) {
-			mElements[j][i] = value;
+	static const Matrix<T,M,N> ZERO = []{ Matrix<T,M,N> temp; fill(temp, T(0)); return temp; }();
+	return ZERO;
+}
+
+// Matrix functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+void fill(Matrix<T, M, N>& matrix, T value)
+{
+	for (size_t i = 0; i < M; ++i) {
+		for (size_t j = 0; j < N; ++j) {
+			matrix.mElements[j][i] = value;
 		}
 	}
 }
 
 template<typename T, size_t M, size_t N>
-Matrix<T,M,N> Matrix<T,M,N>::elemMult(const Matrix<T,M,N>& other) const noexcept
+Matrix<T,M,N> elemMult(const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 {
 	Matrix<T,M,N> resMatrix;
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
-			resMatrix.mElements[j][i] = mElements[j][i] * other.mElements[j][i];
+			resMatrix.mElements[j][i] = lhs.mElements[j][i] * rhs.mElements[j][i];
 		}
 	}
 	return resMatrix;
 }
 
 template<typename T, size_t M, size_t N>
-Matrix<T,N,M> Matrix<T,M,N>::transpose() const noexcept
+Matrix<T,N,M> transpose(const Matrix<T,M,N>& matrix) noexcept
 {
 	Matrix<T,N,M> resMatrix;
 	for (size_t i = 0; i < N; i++) {
 		for (size_t j = 0; j < M; j++) {
-			resMatrix.mElements[j][i] = mElements[i][j];
+			resMatrix.mElements[j][i] = matrix.mElements[i][j];
 		}
 	}
 	return resMatrix;
 }
 
 template<typename T, size_t M, size_t N>
-size_t Matrix<T,M,N>::hash() const noexcept
+size_t hash(const Matrix<T,M,N>& matrix) noexcept
 {
 	std::hash<T> hasher;
 	size_t hash = 0;
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
 			// hash_combine algorithm from boost
-			hash ^= hasher(mElements[j][i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+			hash ^= hasher(matrix.mElements[j][i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		}
 	}
 	return hash;
 }
 
 template<typename T, size_t M, size_t N>
-std::string Matrix<T,M,N>::to_string() const noexcept
+std::string to_string(const Matrix<T,M,N>& matrix) noexcept
 {
 	using std::to_string;
 	std::string str;
@@ -174,7 +173,7 @@ std::string Matrix<T,M,N>::to_string() const noexcept
 		}
 		str += "{";
 		for (size_t j = 0; j < N; j++) {
-			str += to_string(at(i, j));
+			str += to_string(matrix.at(i, j));
 			if (j < N-1) {
 				str += ", ";
 			}
@@ -332,7 +331,7 @@ bool operator!= (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 template<typename T, size_t M, size_t N>
 std::ostream& operator<< (std::ostream& ostream, const Matrix<T,M,N>& matrix) noexcept
 {
-	return ostream << matrix.to_string();
+	return ostream << to_string(matrix);
 }
 
 } // namespace sfz
@@ -345,7 +344,7 @@ namespace std {
 template<typename T, size_t M, size_t N>
 size_t hash<sfz::Matrix<T,M,N>>::operator() (const sfz::Matrix<T,M,N>& matrix) const noexcept
 {
-	return matrix.hash();
+	return sfz::hash(matrix);
 }
 
 } // namespace std

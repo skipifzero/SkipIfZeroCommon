@@ -9,12 +9,6 @@
 #include <unordered_map>
 #include <type_traits>
 
-TEST_CASE("Constants", "[sfz::Matrix]")
-{
-	SECTION("ZERO()") {
-		REQUIRE((sfz::Matrix<int,2,2>::ZERO()) == (sfz::Matrix<int,2,2>{{0,0},{0,0}}));
-	}
-}
 
 TEST_CASE("Constructors", "[sfz::Matrix]")
 {
@@ -166,8 +160,8 @@ TEST_CASE("Element-wise multiplication", "[sfz::Matrix]")
 	sfz::mat2i m2{{1, 2},
 	              {3, 4}};
 
-	auto res1 = m1.elemMult(m2);
-	auto res2 = m2.elemMult(m1);
+	auto res1 = elemMult(m1, m2);
+	auto res2 = elemMult(m2, m1);
 
 	REQUIRE(res1 == res2);
 	REQUIRE(res1.at(0, 0) == 1);
@@ -183,17 +177,17 @@ TEST_CASE("Transpose", "[sfz::Matrix]")
 	sfz::Matrix<int, 2, 3> m2{{1, 2, 3},
 	                          {4, 5, 6}};
 
-	sfz::mat2i res1 = m1.transpose();
+	sfz::mat2i res1 = transpose(m1);
 	REQUIRE(res1 != m1);
-	REQUIRE(res1.transpose() == m1);
+	REQUIRE(transpose(res1) == m1);
 
 	REQUIRE(res1.at(0, 0) == 1);
 	REQUIRE(res1.at(0, 1) == 3);
 	REQUIRE(res1.at(1, 0) == 2);
 	REQUIRE(res1.at(1, 1) == 4);
 
-	sfz::Matrix<int, 3, 2> res2 = m2.transpose();
-	REQUIRE(res2.transpose() == m2);
+	sfz::Matrix<int, 3, 2> res2 = transpose(m2);
+	REQUIRE(transpose(res2) == m2);
 
 	REQUIRE(res2.at(0, 0) == 1);
 	REQUIRE(res2.at(0, 1) == 4);
@@ -412,8 +406,8 @@ TEST_CASE("Hashing", "[sfz::Matrix]")
 	REQUIRE(hashMap[m2] == 2);
 	REQUIRE(hashMap[m3] == 3);
 
-	REQUIRE(m1.hash() != m2.hash());
-	REQUIRE(m2.hash() != m3.hash());
+	REQUIRE(hash(m1) != hash(m2));
+	REQUIRE(hash(m2) != hash(m3));
 }
 
 TEST_CASE("Is proper POD", "[sfz::Matrix]")

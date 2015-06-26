@@ -37,11 +37,6 @@ using std::size_t;
 template<typename T, size_t M, size_t N>
 struct Matrix final {
 
-	// Public constants
-	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-	static const Matrix<T,M,N>& ZERO() noexcept;
-
 	// Public members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -135,24 +130,32 @@ struct Matrix final {
 	 * @param column the column vector to set
 	 */
 	void setColumn(size_t j, const Vector<T,M>& column) noexcept;
-
-	/**
-	 * @brief Assigns each element in the matrix with the specified value.
-	 */
-	void fill(const T value) noexcept;
-
-	/**
-	 * @brief Element-wise multiplication
-	 * @return the resulting matrix
-	 */
-	Matrix<T,M,N> elemMult(const Matrix<T,M,N>& other) const noexcept;
-
-	Matrix<T,N,M> transpose() const noexcept;
-
-	size_t hash() const noexcept;
-
-	std::string to_string() const noexcept;
 };
+
+// Matrix constants
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> ZERO_MATRIX() noexcept;
+
+// Matrix functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T, size_t M, size_t N>
+void fill(Matrix<T,M,N>& matrix, T value);
+
+/** @brief Element-wise multiplication of two matrices */
+template<typename T, size_t M, size_t N>
+Matrix<T,M,N> elemMult(const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
+
+template<typename T, size_t M, size_t N>
+Matrix<T,N,M> transpose(const Matrix<T,M,N>& matrix) noexcept;
+
+template<typename T, size_t M, size_t N>
+size_t hash(const Matrix<T,M,N>& matrix) noexcept;
+
+template<typename T, size_t M, size_t N>
+std::string to_string(const Matrix<T,M,N>& matrix) noexcept;
 
 // Operators (arithmetic & assignment)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

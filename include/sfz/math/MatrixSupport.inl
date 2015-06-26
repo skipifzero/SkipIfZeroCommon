@@ -82,7 +82,7 @@ template<typename T>
 Matrix<T,2,2> inverse(const Matrix<T,2,2>& m) noexcept
 {
 	const T det = determinant(m);
-	if (det == 0) return Matrix<T,2,2>::ZERO();
+	if (det == 0) return ZERO_MATRIX<T,2,2>();
 
 	Matrix<T,2,2> temp{{m.at(1, 1), -m.at(0, 1)},
 	                  {-m.at(1,0), m.at(0,0)}};
@@ -94,7 +94,7 @@ template<typename T>
 Matrix<T,3,3> inverse(const Matrix<T,3,3>& m) noexcept
 {
 	const T det = determinant(m);
-	if (det == 0) return Matrix<T,3,3>::ZERO();
+	if (det == 0) return ZERO_MATRIX<T,3,3>();
 
 	const T a = m.at(0,0);
 	const T b = m.at(0,1); 
@@ -125,7 +125,7 @@ template<typename T>
 Matrix<T,4,4> inverse(const Matrix<T,4,4>& m) noexcept
 {
 	const T det = determinant(m);
-	if (det == 0) return Matrix<T,4,4>::ZERO();
+	if (det == 0) return ZERO_MATRIX<T,4,4>();
 
 	const T m00 = m.at(0, 0), m01 = m.at(0, 1), m02 = m.at(0, 2), m03 = m.at(0, 3),
 	        m10 = m.at(1, 0), m11 = m.at(1, 1), m12 = m.at(1, 2), m13 = m.at(1, 3),
