@@ -47,8 +47,8 @@ struct Matrix final {
 	 */
 	T mElements[N][M];
 
-	T* glPtr() noexcept { return reinterpret_cast<T*>(mElements); }
-	const T* glPtr() const noexcept { return reinterpret_cast<const T*>(mElements); }
+	T* dataPtr() noexcept { return reinterpret_cast<T*>(mElements); }
+	const T* dataPtr() const noexcept { return reinterpret_cast<const T*>(mElements); }
 
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -56,6 +56,7 @@ struct Matrix final {
 	constexpr Matrix() noexcept = default;
 	constexpr Matrix(const Matrix<T,M,N>&) noexcept = default;
 	Matrix<T,M,N>& operator= (const Matrix<T,M,N>&) noexcept = default;
+	~Matrix() noexcept = default;
 
 	/**
 	 * @brief Constructs a matrix with the given elements given in ROW-MAJOR order.
@@ -67,68 +68,37 @@ struct Matrix final {
 	 */
 	Matrix(std::initializer_list<std::initializer_list<T>> list) noexcept;
 
-	~Matrix() noexcept = default;
-
 	// Member functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	/**
-	 * @brief General accessor returning the reference to element at the specified location.
+	 * @brief General accessor returning the reference to element at the i:th row and j:th column
 	 * @sfz_assert_debug location must be in range
-	 * @param i the i:th row
-	 * @param j the j:th column
-	 * @return reference to element at the specified location
 	 */
 	T& at(size_t i, size_t j) noexcept;
 
 	/**
-	 * @brief Returns the element at the specified location.
+	 * @brief Returns the element at the i:th row and j:th column
 	 * @sfz_assert_debug location must be in range
-	 * @param i the i:th row
-	 * @param j the j:th column
-	 * @return the element at the specified location
 	 */
 	T at(size_t i, size_t j) const noexcept;
 
-	/**
-	 * @brief Returns row at the specified location.
-	 * @sfz_assert_debug location must be in range
-	 * @param i the i:th row
-	 * @return the row at the specified location
-	 */
+	/** @sfz_assert_debug location must be in range */
 	Vector<T,N> rowAt(size_t i) const noexcept;
 
-	/**
-	 * @brief Returns column at the specified location.
-	 * @sfz_assert_debug location must be in range
-	 * @param j the j:th row
-	 * @return the column at the specified location
-	 */
+	/** @sfz_assert_debug location must be in range */
 	Vector<T,M> columnAt(size_t j) const noexcept;
 
 	/**
-	 * @brief Assigns value to element at the specified location.
+	 * @brief Assigns value to element at the i:th row and j:th column
 	 * @sfz_assert_debug location must be in range
-	 * @param i the i:th row
-	 * @param j the j:th column
-	 * @param value the value to assign
 	 */
 	void set(size_t i, size_t j, T value) noexcept;
 
-	/**
-	 * @brief Assigns vector the specified row.
-	 * @sfz_assert_debug location must be in range
-	 * @param i the i:th row
-	 * @param row the row vector to set
-	 */
+	/** @sfz_assert_debug location must be in range */
 	void setRow(size_t i, const Vector<T,N>& row) noexcept;
 
-	/**
-	 * @brief Assigns vector the specified column.
-	 * @sfz_assert_debug location must be in range
-	 * @param j the j:th column
-	 * @param column the column vector to set
-	 */
+	/** @sfz_assert_debug location must be in range */
 	void setColumn(size_t j, const Vector<T,M>& column) noexcept;
 };
 

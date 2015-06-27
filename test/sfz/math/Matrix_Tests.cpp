@@ -83,14 +83,14 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 	}
 }
 
-TEST_CASE("glPtr()", "[sfz::Matrix]") {
+TEST_CASE("dataPtr()", "[sfz::Matrix]") {
 	sfz::mat2i m1{{1, 2},
 	              {3, 4}};
 	const sfz::mat2i m2{{-1, -2},
 	                    {-3, -4}};
 	
-	int* ptr1 = m1.glPtr();
-	const int* ptr2 = m2.glPtr();
+	int* ptr1 = m1.dataPtr();
+	const int* ptr2 = m2.dataPtr();
 
 	REQUIRE(ptr1[0] == 1);
 	REQUIRE(ptr1[1] == 3);

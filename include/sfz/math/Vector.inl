@@ -21,8 +21,9 @@ T& Vector<T,N>::operator[] (const size_t index) noexcept
 }
 
 template<typename T, size_t N>
-constexpr T Vector<T,N>::operator[] (const size_t index) const noexcept
+T Vector<T,N>::operator[] (const size_t index) const noexcept
 {
+	sfz_assert_debug(index < N);
 	return elements[index];
 }
 
@@ -58,8 +59,9 @@ T& Vector<T,2>::operator[] (const size_t index) noexcept
 }
 
 template<typename T>
-constexpr T Vector<T,2>::operator[] (const size_t index) const noexcept
+T Vector<T,2>::operator[] (const size_t index) const noexcept
 {
+	sfz_assert_debug(index < 2);
 	return elements[index];
 }
 
@@ -114,8 +116,9 @@ T& Vector<T,3>::operator[] (const size_t index) noexcept
 }
 
 template<typename T>
-constexpr T Vector<T,3>::operator[] (const size_t index) const noexcept
+T Vector<T,3>::operator[] (const size_t index) const noexcept
 {
+	sfz_assert_debug(index < 3);
 	return elements[index];
 }
 
@@ -211,8 +214,9 @@ T& Vector<T,4>::operator[] (const size_t index) noexcept
 }
 
 template<typename T>
-constexpr T Vector<T,4>::operator[] (const size_t index) const noexcept
+T Vector<T,4>::operator[] (const size_t index) const noexcept
 {
+	sfz_assert_debug(index < 4);
 	return elements[index];
 }
 
