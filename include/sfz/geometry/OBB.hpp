@@ -44,7 +44,7 @@ public:
 	inline std::array<vec3,8> corners() const noexcept;
 	inline void corners(vec3* arrayOut) const noexcept;
 	inline vec3 closestPoint(const vec3& point) const noexcept;
-	inline OBB transformOBB(const mat4f& transform) const noexcept;
+	inline OBB transformOBB(const mat4& transform) const noexcept;
 
 	inline size_t hash() const noexcept;
 	inline std::string to_string() const noexcept;

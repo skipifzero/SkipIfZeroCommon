@@ -85,7 +85,7 @@ inline vec3 OBB::closestPoint(const vec3& point) const noexcept
 	return res;
 }
 
-inline OBB OBB::transformOBB(const mat4f& transform) const noexcept
+inline OBB OBB::transformOBB(const mat4& transform) const noexcept
 {
 	const vec3 newPos = transformPoint(transform, mCenter);
 	const vec3 newXHExt = transformDir(transform, mAxes[0] * mHalfExtents[0]);

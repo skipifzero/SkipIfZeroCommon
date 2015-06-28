@@ -19,10 +19,10 @@ namespace sfz {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-Matrix<T,3,3> mat3(const Matrix<T,4,4>& m) noexcept;
+Matrix<T,3,3> toMat3(const Matrix<T,4,4>& m) noexcept;
 
 template<typename T>
-Matrix<T,4,4> mat4(const Matrix<T,3,3>& m) noexcept;
+Matrix<T,4,4> toMat4(const Matrix<T,3,3>& m) noexcept;
 
 // Transforming 3D vector helpers
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

@@ -4,7 +4,7 @@ namespace sfz {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T>
-Matrix<T,3,3> mat3(const Matrix<T,4,4>& m) noexcept
+Matrix<T,3,3> toMat3(const Matrix<T,4,4>& m) noexcept
 {
 	return Matrix<T,3,3>{{m.at(0,0), m.at(0,1), m.at(0,2)},
 	                     {m.at(1,0), m.at(1,1), m.at(1,2)},
@@ -12,7 +12,7 @@ Matrix<T,3,3> mat3(const Matrix<T,4,4>& m) noexcept
 }
 
 template<typename T>
-Matrix<T,4,4> mat4(const Matrix<T,3,3>& m) noexcept
+Matrix<T,4,4> toMat4(const Matrix<T,3,3>& m) noexcept
 {
 	return Matrix<T,4,4>{{m.at(0,0), m.at(0,1), m.at(0,2), 0},
 	                     {m.at(1,0), m.at(1,1), m.at(1,2), 0},

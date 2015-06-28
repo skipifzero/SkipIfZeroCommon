@@ -4,6 +4,23 @@ namespace sfz {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t M, size_t N>
+Matrix<T,M,N>::Matrix(const T* arrayPtr, bool rowMajorData) noexcept
+{
+	T* data = this->data();
+	if (rowMajorData) {
+		for (size_t i = 0; i < M; ++i) {
+			for (size_t j = 0; j < N; ++j) {
+				data[j*M + i] = arrayPtr[i*N + j];
+			}
+		}
+	} else {
+		for (size_t i = 0; i < M*N; ++i) {
+			data[i] = arrayPtr[i];
+		}
+	}
+}
+
+template<typename T, size_t M, size_t N>
 Matrix<T,M,N>::Matrix(std::initializer_list<std::initializer_list<T>> list) noexcept
 {
 	sfz_assert_debug(list.size() <= M);

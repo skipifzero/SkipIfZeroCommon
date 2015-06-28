@@ -83,7 +83,7 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 	const vec3& bE = b.halfExtents();
 
 	// Compute the rotation matrix from b to a
-	mat3f R;
+	mat3 R;
 	for (size_t i = 0; i < 3; i++) {
 		for (size_t j = 0; j < 3; j++) {
 			R.set(i, j, dot(aU[i], bU[j]));
@@ -92,7 +92,7 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 
 	// Compute common subexpressions, epsilon term to counteract arithmetic errors
 	static const float EPSILON = 0.00001f;
-	mat3f AbsR;
+	mat3 AbsR;
 	for (size_t i = 0; i < 3; i++) {
 		for (size_t j = 0; j < 3; j++) {
 			AbsR.set(i, j, std::abs(R.at(i, j)) + EPSILON);

@@ -47,8 +47,8 @@ struct Matrix final {
 	 */
 	T mElements[N][M];
 
-	T* dataPtr() noexcept { return reinterpret_cast<T*>(mElements); }
-	const T* dataPtr() const noexcept { return reinterpret_cast<const T*>(mElements); }
+	T* data() noexcept { return reinterpret_cast<T*>(mElements); }
+	const T* data() const noexcept { return reinterpret_cast<const T*>(mElements); }
 
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -59,12 +59,17 @@ struct Matrix final {
 	~Matrix() noexcept = default;
 
 	/**
+	 * @brief Constructs a matrix with the elements in an array.
+	 * The rowMajorData flag determines whether the array is in row major or column major order.
+	 */
+	Matrix(const T* arrayPtr, bool rowMajorData) noexcept;
+
+	/**
 	 * @brief Constructs a matrix with the given elements given in ROW-MAJOR order.
 	 * The elements are given in row-major order because it's more natural to write and read a
 	 * matrix that way in source. This is however not how the elements will be saved as the
 	 * internal representation uses column-major order. Any unspecified elements will be set to 0.
 	 * @sfz_assert_debug if any of the lists are larger than the row or column it's trying to fill
-	 * @param list the (column) initializer list of (row) initializer lists
 	 */
 	Matrix(std::initializer_list<std::initializer_list<T>> list) noexcept;
 
@@ -184,13 +189,12 @@ std::ostream& operator<< (std::ostream& ostream, const Matrix<T,M,N>& matrix) no
 // Standard typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-using mat2f = Matrix<float,2,2>;
+using mat2 = Matrix<float,2,2>;
+using mat3 = Matrix<float,3,3>;
+using mat4 = Matrix<float,4,4>;
+
 using mat2i = Matrix<int,2,2>;
-
-using mat3f = Matrix<float,3,3>;
 using mat3i = Matrix<int,3,3>;
-
-using mat4f = Matrix<float,4,4>;
 using mat4i = Matrix<int,4,4>;
 
 } // namespace sfz
