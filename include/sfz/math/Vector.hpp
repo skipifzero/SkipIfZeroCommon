@@ -28,16 +28,10 @@
  * Satisfies the conditions of std::is_pod, std::is_trivial and std::is_standard_layout if used
  * with standard primitives.
  *
- * The vector template and all its related functions are located in the sfz::vec namespace, this
- * namespace is also included into sfz. What this means is that if you only want to include vector
- * related stuff into your namespace you can just include sfz::vec, otherwise just ignore it.
- *
  * @author Peter Hillerström <peter@hstroem.se>
  */
 
 namespace sfz {
-
-namespace vec {
 
 using std::size_t;
 using std::int32_t;
@@ -51,8 +45,8 @@ struct Vector final {
 	T elements[N];
 
 	constexpr Vector() noexcept = default;
-	constexpr Vector(const Vector<T, N>&) noexcept = default;
-	Vector<T, N>& operator= (const Vector<T, N>&) noexcept = default;
+	constexpr Vector(const Vector<T,N>&) noexcept = default;
+	Vector<T,N>& operator= (const Vector<T,N>&) noexcept = default;
 	~Vector() noexcept = default;
 
 	explicit Vector(const T* arrayPtr) noexcept;
@@ -62,15 +56,15 @@ struct Vector final {
 };
 
 template<typename T>
-struct Vector<T, 2> final {
+struct Vector<T,2> final {
 	union {
 		T elements[2];
 		struct { T x, y; };
 	};	
 
 	constexpr Vector() noexcept = default;
-	constexpr Vector(const Vector<T, 2>&) noexcept = default;
-	Vector<T, 2>& operator= (const Vector<T, 2>&) noexcept = default;
+	constexpr Vector(const Vector<T,2>&) noexcept = default;
+	Vector<T,2>& operator= (const Vector<T,2>&) noexcept = default;
 	~Vector() noexcept = default;
 
 	explicit Vector(const T* arrayPtr) noexcept;
@@ -82,7 +76,7 @@ struct Vector<T, 2> final {
 };
 
 template<typename T>
-struct Vector<T, 3> final {
+struct Vector<T,3> final {
 	union {
 		T elements[3];
 		struct { T x, y, z; };
@@ -91,8 +85,8 @@ struct Vector<T, 3> final {
 	};
 
 	constexpr Vector() noexcept = default;
-	constexpr Vector(const Vector<T, 3>&) noexcept = default;
-	Vector<T, 3>& operator= (const Vector<T, 3>&) noexcept = default;
+	constexpr Vector(const Vector<T,3>&) noexcept = default;
+	Vector<T,3>& operator= (const Vector<T,3>&) noexcept = default;
 	~Vector() noexcept = default;
 
 	explicit Vector(const T* arrayPtr) noexcept;
@@ -106,7 +100,7 @@ struct Vector<T, 3> final {
 };
 
 template<typename T>
-struct Vector<T, 4> final {
+struct Vector<T,4> final {
 	union {
 		T elements[4];
 		struct { T x, y, z, w; };
@@ -117,8 +111,8 @@ struct Vector<T, 4> final {
 	};
 
 	constexpr Vector() noexcept = default;
-	constexpr Vector(const Vector<T, 4>&) noexcept = default;
-	Vector<T, 4>& operator= (const Vector<T, 4>&) noexcept = default;
+	constexpr Vector(const Vector<T,4>&) noexcept = default;
+	Vector<T,4>& operator= (const Vector<T,4>&) noexcept = default;
 	~Vector() noexcept = default;
 
 	explicit Vector(const T* arrayPtr) noexcept;
@@ -135,13 +129,25 @@ struct Vector<T, 4> final {
 	T operator[] (const size_t index) const noexcept;
 };
 
-using vec2 = Vector<float, 2>;
-using vec3 = Vector<float, 3>;
-using vec4 = Vector<float, 4>;
+using vec2 = Vector<float,2>;
+using vec3 = Vector<float,3>;
+using vec4 = Vector<float,4>;
 
-using vec2i = Vector<int32_t, 2>;
-using vec3i = Vector<int32_t, 3>;
-using vec4i = Vector<int32_t, 4>;
+using vec2i = Vector<int32_t,2>;
+using vec3i = Vector<int32_t,3>;
+using vec4i = Vector<int32_t,4>;
+
+// Vector constants
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T = float>
+Vector<T,3> UNIT_X() noexcept;
+
+template<typename T = float>
+Vector<T,3> UNIT_Y() noexcept;
+
+template<typename T = float>
+Vector<T,3> UNIT_Z() noexcept;
 
 // Vector functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -278,10 +284,6 @@ const T* end(const Vector<T,N>& vector) noexcept;
 
 template<typename T, size_t N>
 const T* cend(const Vector<T,N>& vector) noexcept;
-
-} // namespace vec
-
-using namespace vec;
 
 } // namespace sfz
 

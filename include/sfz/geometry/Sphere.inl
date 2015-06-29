@@ -39,7 +39,7 @@ inline size_t Sphere::hash() const noexcept
 inline std::string Sphere::to_string() const noexcept
 {
 	std::string str{"Center: "};
-	str += sfz::vec::to_string(mCenter);
+	str += sfz::to_string(mCenter);
 	str += "\nRadius: ";
 	str += std::to_string(mRadius);
 	return std::move(str);

@@ -1,7 +1,5 @@
 namespace sfz {
 
-namespace vec {
-
 // Vector struct declaration: Vector<T,N>
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -220,13 +218,34 @@ T Vector<T,4>::operator[] (const size_t index) const noexcept
 	return elements[index];
 }
 
+// Vector constants
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+template<typename T = float>
+Vector<T,3> UNIT_X() noexcept
+{
+	return Vector<T,3>{T(1), T(0), T(0)};
+}
+
+template<typename T = float>
+Vector<T,3> UNIT_Y() noexcept
+{
+	return Vector<T,3>{T(0), T(1), T(0)};
+}
+
+template<typename T = float>
+Vector<T,3> UNIT_Z() noexcept
+{
+	return Vector<T,3>{T(0), T(0), T(1)};
+}
+
 // Vector functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 template<typename T, size_t N>
 T length(const Vector<T,N>& vector) noexcept
 {
-	return std::sqrt(squaredLength(vector));
+	return T(std::sqrt(squaredLength(vector)));
 }
 
 template<typename T, size_t N>
@@ -490,8 +509,6 @@ const T* cend(const Vector<T,N>& vector) noexcept
 	return vector.elements + N;
 }
 
-} // namespace vec
-
 } // namespace sfz
 
 // Specializations of standard library for sfz::Vector
@@ -502,7 +519,7 @@ namespace std {
 template<typename T, size_t N>
 size_t hash<sfz::Vector<T,N>>::operator() (const sfz::Vector<T,N>& vector) const noexcept
 {
-	return sfz::vec::hash(vector);
+	return sfz::hash(vector);
 }
 
 } // namespace std

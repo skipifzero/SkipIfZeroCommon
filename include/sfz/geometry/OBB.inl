@@ -111,15 +111,15 @@ inline size_t OBB::hash() const noexcept
 inline std::string OBB::to_string() const noexcept
 {
 	std::string str{"Center: "};
-	str += sfz::vec::to_string(mCenter);
+	str += sfz::to_string(mCenter);
 	str += "\nX-axis: ";
-	str += sfz::vec::to_string(mAxes[0]);
+	str += sfz::to_string(mAxes[0]);
 	str += "\nY-axis: ";
-	str += sfz::vec::to_string(mAxes[1]);
+	str += sfz::to_string(mAxes[1]);
 	str += "\nZ-axis: ";
-	str += sfz::vec::to_string(mAxes[2]);
+	str += sfz::to_string(mAxes[2]);
 	str += "\nExtents: ";
-	str += sfz::vec::to_string(mHalfExtents*2.0f);
+	str += sfz::to_string(mHalfExtents*2.0f);
 	return std::move(str);
 }
 
