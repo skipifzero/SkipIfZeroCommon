@@ -38,15 +38,15 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 		REQUIRE(m1.at(2, 1) == 8);
 		REQUIRE(m1.at(2, 2) == 9);
 
-		REQUIRE(m1.mElements[0][0] == 1);
-		REQUIRE(m1.mElements[0][1] == 4);
-		REQUIRE(m1.mElements[0][2] == 7);
-		REQUIRE(m1.mElements[1][0] == 2);
-		REQUIRE(m1.mElements[1][1] == 5);
-		REQUIRE(m1.mElements[1][2] == 8);
-		REQUIRE(m1.mElements[2][0] == 3);
-		REQUIRE(m1.mElements[2][1] == 6);
-		REQUIRE(m1.mElements[2][2] == 9);
+		REQUIRE(m1.elements[0][0] == 1);
+		REQUIRE(m1.elements[0][1] == 4);
+		REQUIRE(m1.elements[0][2] == 7);
+		REQUIRE(m1.elements[1][0] == 2);
+		REQUIRE(m1.elements[1][1] == 5);
+		REQUIRE(m1.elements[1][2] == 8);
+		REQUIRE(m1.elements[2][0] == 3);
+		REQUIRE(m1.elements[2][1] == 6);
+		REQUIRE(m1.elements[2][2] == 9);
 
 		sfz::mat2i m2{{1}};
 
@@ -55,10 +55,10 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 		REQUIRE(m2.at(1, 0) == 0);
 		REQUIRE(m2.at(1, 1) == 0);
 
-		REQUIRE(m2.mElements[0][0] == 1);
-		REQUIRE(m2.mElements[0][1] == 0);
-		REQUIRE(m2.mElements[1][0] == 0);
-		REQUIRE(m2.mElements[1][1] == 0);
+		REQUIRE(m2.elements[0][0] == 1);
+		REQUIRE(m2.elements[0][1] == 0);
+		REQUIRE(m2.elements[1][0] == 0);
+		REQUIRE(m2.elements[1][1] == 0);
 
 		sfz::Matrix<int, 2, 3> m3{{1, 2, 3}, {4, 5, 6}};
 
@@ -69,12 +69,12 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 		REQUIRE(m3.at(1, 1) == 5);
 		REQUIRE(m3.at(1, 2) == 6);
 
-		REQUIRE(m3.mElements[0][0] == 1);
-		REQUIRE(m3.mElements[0][1] == 4);
-		REQUIRE(m3.mElements[1][0] == 2);
-		REQUIRE(m3.mElements[1][1] == 5);
-		REQUIRE(m3.mElements[2][0] == 3);
-		REQUIRE(m3.mElements[2][1] == 6);
+		REQUIRE(m3.elements[0][0] == 1);
+		REQUIRE(m3.elements[0][1] == 4);
+		REQUIRE(m3.elements[1][0] == 2);
+		REQUIRE(m3.elements[1][1] == 5);
+		REQUIRE(m3.elements[2][0] == 3);
+		REQUIRE(m3.elements[2][1] == 6);
 
 		sfz::Matrix<int, 3, 2> m4{{1, 0}, {0, 1}, {0, 0}};
 
@@ -85,12 +85,12 @@ TEST_CASE("Constructors", "[sfz::Matrix]")
 		REQUIRE(m4.at(2, 0) == 0);
 		REQUIRE(m4.at(2, 1) == 0);
 
-		REQUIRE(m4.mElements[0][0] == 1);
-		REQUIRE(m4.mElements[0][1] == 0);
-		REQUIRE(m4.mElements[0][2] == 0);
-		REQUIRE(m4.mElements[1][0] == 0);
-		REQUIRE(m4.mElements[1][1] == 1);
-		REQUIRE(m4.mElements[1][2] == 0);
+		REQUIRE(m4.elements[0][0] == 1);
+		REQUIRE(m4.elements[0][1] == 0);
+		REQUIRE(m4.elements[0][2] == 0);
+		REQUIRE(m4.elements[1][0] == 0);
+		REQUIRE(m4.elements[1][1] == 1);
+		REQUIRE(m4.elements[1][2] == 0);
 	}
 }
 

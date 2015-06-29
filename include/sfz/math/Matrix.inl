@@ -29,18 +29,18 @@ Matrix<T,M,N>::Matrix(std::initializer_list<std::initializer_list<T>> list) noex
 		sfz_assert_debug(rowList.size() <= N);
 		size_t j = 0;
 		for (T element : rowList) {
-			mElements[j][i] = element;
+			elements[j][i] = element;
 			j++;
 		}
 		while (j < N) {
-			mElements[j][i] = 0;
+			elements[j][i] = 0;
 			j++;
 		}
 		i++;
 	}
 	while (i < M) {
 		for (size_t j = 0; j < N; j++) {
-			mElements[j][i] = 0;
+			elements[j][i] = 0;
 		}
 		i++;
 	}
@@ -54,7 +54,7 @@ T& Matrix<T,M,N>::at(size_t i, size_t j) noexcept
 {
 	sfz_assert_debug(i < M);
 	sfz_assert_debug(j < N);
-	return mElements[j][i];
+	return elements[j][i];
 }
 
 template<typename T, size_t M, size_t N>
@@ -62,7 +62,7 @@ T Matrix<T,M,N>::at(size_t i, size_t j) const noexcept
 {
 	sfz_assert_debug(i < M);
 	sfz_assert_debug(j < N);
-	return mElements[j][i];
+	return elements[j][i];
 }
 
 template<typename T, size_t M, size_t N>
@@ -71,7 +71,7 @@ Vector<T,N> Matrix<T,M,N>::rowAt(size_t i) const noexcept
 	sfz_assert_debug(i < M);
 	Vector<T,N> row;
 	for (size_t j = 0; j < N; j++) {
-		row[j] = mElements[j][i];
+		row[j] = elements[j][i];
 	}
 	return row;
 }
@@ -82,7 +82,7 @@ Vector<T,M> Matrix<T,M,N>::columnAt(size_t j) const noexcept
 	sfz_assert_debug(j < N);
 	Vector<T,M> column;
 	for (size_t i = 0; i < M; i++) {
-		column[i] = mElements[j][i];
+		column[i] = elements[j][i];
 	}
 	return column;
 }
@@ -92,7 +92,7 @@ void Matrix<T,M,N>::set(size_t i, size_t j, T value) noexcept
 {
 	sfz_assert_debug(i < M);
 	sfz_assert_debug(j < N);
-	mElements[j][i] = value;
+	elements[j][i] = value;
 }
 
 template<typename T, size_t M, size_t N>
@@ -101,7 +101,7 @@ void Matrix<T,M,N>::setRow(size_t i, const Vector<T,N>& row) noexcept
 	sfz_assert_debug(i < M);
 	size_t j = 0;
 	for (auto element : row) {
-		mElements[j][i] = element;
+		elements[j][i] = element;
 		j++;
 	}
 }
@@ -112,7 +112,7 @@ void Matrix<T,M,N>::setColumn(size_t j, const Vector<T,M>& column) noexcept
 	sfz_assert_debug(j < N);
 	size_t i = 0;
 	for (auto element : column) {
-		mElements[j][i] = element;
+		elements[j][i] = element;
 		i++;
 	}
 }
@@ -135,7 +135,7 @@ void fill(Matrix<T, M, N>& matrix, T value)
 {
 	for (size_t i = 0; i < M; ++i) {
 		for (size_t j = 0; j < N; ++j) {
-			matrix.mElements[j][i] = value;
+			matrix.elements[j][i] = value;
 		}
 	}
 }
@@ -146,7 +146,7 @@ Matrix<T,M,N> elemMult(const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexc
 	Matrix<T,M,N> resMatrix;
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
-			resMatrix.mElements[j][i] = lhs.mElements[j][i] * rhs.mElements[j][i];
+			resMatrix.elements[j][i] = lhs.elements[j][i] * rhs.elements[j][i];
 		}
 	}
 	return resMatrix;
@@ -158,7 +158,7 @@ Matrix<T,N,M> transpose(const Matrix<T,M,N>& matrix) noexcept
 	Matrix<T,N,M> resMatrix;
 	for (size_t i = 0; i < N; i++) {
 		for (size_t j = 0; j < M; j++) {
-			resMatrix.mElements[j][i] = matrix.mElements[i][j];
+			resMatrix.elements[j][i] = matrix.elements[i][j];
 		}
 	}
 	return resMatrix;
@@ -172,7 +172,7 @@ size_t hash(const Matrix<T,M,N>& matrix) noexcept
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
 			// hash_combine algorithm from boost
-			hash ^= hasher(matrix.mElements[j][i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+			hash ^= hasher(matrix.elements[j][i]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
 		}
 	}
 	return hash;
@@ -212,7 +212,7 @@ Matrix<T,M,N>& operator+= (Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcep
 {
 	for (size_t i = 0; i < M; ++i) {
 		for (size_t j = 0; j < N; ++j) {
-			lhs.mElements[j][i] += rhs.mElements[j][i];
+			lhs.elements[j][i] += rhs.elements[j][i];
 		}
 	}
 	return lhs;
@@ -223,7 +223,7 @@ Matrix<T,M,N>& operator-= (Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcep
 {
 	for (size_t i = 0; i < M; ++i) {
 		for (size_t j = 0; j < N; ++j) {
-			lhs.mElements[j][i] -= rhs.mElements[j][i];
+			lhs.elements[j][i] -= rhs.elements[j][i];
 		}
 	}
 	return lhs;
@@ -234,7 +234,7 @@ Matrix<T,M,N>& operator*= (Matrix<T,M,N>& lhs, T rhs) noexcept
 {
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
-			lhs.mElements[j][i] *= rhs;
+			lhs.elements[j][i] *= rhs;
 		}
 	}
 	return lhs;
@@ -280,11 +280,11 @@ Matrix<T,M,P> operator* (const Matrix<T,M,N>& lhs, const Matrix<T,N,P>& rhs) noe
 			size_t jInnerThis = 0;
 			size_t iInnerOther = 0;
 			while (jInnerThis < M) {
-				temp += lhs.mElements[jInnerThis][i] * rhs.mElements[j][iInnerOther];
+				temp += lhs.elements[jInnerThis][i] * rhs.elements[j][iInnerOther];
 				jInnerThis++;
 				iInnerOther++;
 			}
-			resMatrix.mElements[j][i] = temp;
+			resMatrix.elements[j][i] = temp;
 		}
 	}
 	return resMatrix;
@@ -298,7 +298,7 @@ Vector<T,M> operator* (const Matrix<T,M,N>& lhs, const Vector<T,N>& rhs) noexcep
 		T temp = 0;
 		size_t jInnerThis = 0;
 		for (int iVec = 0; iVec < N; ++iVec) {
-			temp += lhs.mElements[jInnerThis][i] * rhs.elements[iVec];
+			temp += lhs.elements[jInnerThis][i] * rhs.elements[iVec];
 			jInnerThis += 1;
 		}
 		resVector[i] = temp;
@@ -327,7 +327,7 @@ bool operator== (const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 {
 	for (size_t i = 0; i < M; i++) {
 		for (size_t j = 0; j < N; j++) {
-			if (lhs.mElements[j][i] != rhs.mElements[j][i]) {
+			if (lhs.elements[j][i] != rhs.elements[j][i]) {
 				return false;
 			}
 		}

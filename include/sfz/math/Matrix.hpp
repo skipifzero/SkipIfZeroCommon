@@ -45,10 +45,10 @@ struct Matrix final {
 	 * This is column-major order (i.e. N columns of size M), so the pointer can be supplied to
 	 * OpenGL directly with the transpose flag set to GL_FALSE.
 	 */
-	T mElements[N][M];
+	T elements[N][M];
 
-	T* data() noexcept { return reinterpret_cast<T*>(mElements); }
-	const T* data() const noexcept { return reinterpret_cast<const T*>(mElements); }
+	T* data() noexcept { return reinterpret_cast<T*>(elements); }
+	const T* data() const noexcept { return reinterpret_cast<const T*>(elements); }
 
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
