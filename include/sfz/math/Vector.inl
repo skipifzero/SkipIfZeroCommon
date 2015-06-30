@@ -221,19 +221,19 @@ T Vector<T,4>::operator[] (const size_t index) const noexcept
 // Vector constants
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-template<typename T = float>
+template<typename T>
 Vector<T,3> UNIT_X() noexcept
 {
 	return Vector<T,3>{T(1), T(0), T(0)};
 }
 
-template<typename T = float>
+template<typename T>
 Vector<T,3> UNIT_Y() noexcept
 {
 	return Vector<T,3>{T(0), T(1), T(0)};
 }
 
-template<typename T = float>
+template<typename T>
 Vector<T,3> UNIT_Z() noexcept
 {
 	return Vector<T,3>{T(0), T(0), T(1)};

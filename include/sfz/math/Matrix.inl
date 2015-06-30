@@ -297,7 +297,7 @@ Vector<T,M> operator* (const Matrix<T,M,N>& lhs, const Vector<T,N>& rhs) noexcep
 	for (size_t i = 0; i < M; ++i) {
 		T temp = 0;
 		size_t jInnerThis = 0;
-		for (int iVec = 0; iVec < N; ++iVec) {
+		for (size_t iVec = 0; iVec < N; ++iVec) {
 			temp += lhs.elements[jInnerThis][i] * rhs.elements[iVec];
 			jInnerThis += 1;
 		}
