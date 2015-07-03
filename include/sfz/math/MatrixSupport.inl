@@ -26,18 +26,18 @@ Matrix<T,4,4> toMat4(const Matrix<T,3,3>& m) noexcept
 template<typename T>
 Vector<T,3> transformPoint(const Matrix<T,4,4>& m, const Vector<T,3>& p) noexcept
 {
-	Vector<T,4> v4{p[0], p[1], p[2], 1};
+	Vector<T,4> v4{p, T(1)};
 	v4 = m * v4;
 	v4 = v4 / v4[3];
-	return Vector<T,3>{v4[0], v4[1], v4[2]};
+	return v4.xyz;
 }
 
 template<typename T>
 Vector<T,3> transformDir(const Matrix<T,4,4>& m, const Vector<T,3>& d) noexcept
 {
-	Vector<T,4> v4{d[0], d[1], d[2], 0};
+	Vector<T,4> v4{d, T(0)};
 	v4 = m * v4;
-	return Vector<T,3>{v4[0], v4[1], v4[2]};
+	return v4.xyz;
 }
 
 // Common specialized operations
@@ -162,62 +162,62 @@ Matrix<T,4,4> inverse(const Matrix<T,4,4>& m) noexcept
 template<typename T>
 Matrix<T,3,3> xRotationMatrix3(T angleRads) noexcept
 {
-	using std::cos;
-	using std::sin;
+	T cosA = std::cos(angleRads);
+	T sinA = std::sin(angleRads);
 	return Matrix<T,3,3>{{1, 0, 0},
-	                     {0, cos(angleRads), -sin(angleRads)},
-	                     {0, sin(angleRads), cos(angleRads)}};
+	                     {0, cosA, -sinA},
+	                     {0, sinA, cosA}};
 }
 
 template<typename T>
 Matrix<T,4,4> xRotationMatrix4(T angleRads) noexcept
 {
-	using std::cos;
-	using std::sin;
+	T cosA = std::cos(angleRads);
+	T sinA = std::sin(angleRads);
 	return Matrix<T,4,4>{{1, 0, 0, 0},
-	                     {0, cos(angleRads), -sin(angleRads), 0},
-	                     {0, sin(angleRads), cos(angleRads), 0},
+	                     {0, cosA, -sinA, 0},
+	                     {0, sinA, cosA, 0},
 	                     {0, 0, 0, 1}};
 }
 
 template<typename T>
 Matrix<T,3,3> yRotationMatrix3(T angleRads) noexcept
 {
-	using std::cos;
-	using std::sin;
-	return Matrix<T,3,3>{{cos(angleRads), 0, sin(angleRads)},
+	T cosA = std::cos(angleRads);
+	T sinA = std::sin(angleRads);
+	return Matrix<T,3,3>{{cosA, 0, sinA},
 	                     {0, 1, 0},
-	                     {-sin(angleRads), 0, cos(angleRads)}};
+	                     {-sinA, 0, cosA}};
 }
 
 template<typename T>
 Matrix<T,4,4> yRotationMatrix4(T angleRads) noexcept
 {
-	using std::cos;
-	using std::sin;
-	return Matrix<T,4,4>{{cos(angleRads), 0, sin(angleRads), 0},
+	T cosA = std::cos(angleRads);
+	T sinA = std::sin(angleRads);
+	return Matrix<T,4,4>{{cosA, 0, sinA, 0},
 	                     {0, 1, 0, 0},
-	                     {-sin(angleRads), 0, cos(angleRads), 0},
+	                     {-sinA, 0, cosA, 0},
 	                     {0, 0, 0, 1}};
 }
 
 template<typename T>
 Matrix<T,3,3> zRotationMatrix3(T angleRads) noexcept
 {
-	using std::cos;
-	using std::sin;
-	return Matrix<T,3,3>{{cos(angleRads), -sin(angleRads), 0},
-	                     {sin(angleRads), cos(angleRads), 0},
+	T cosA = std::cos(angleRads);
+	T sinA = std::sin(angleRads);
+	return Matrix<T,3,3>{{cosA, -sinA, 0},
+	                     {sinA, cosA, 0},
 	                     {0, 0, 1}};
 }
 
 template<typename T>
 Matrix<T,4,4> zRotationMatrix4(T angleRads) noexcept
 {
-	using std::cos;
-	using std::sin;
-	return Matrix<T,4,4>{{cos(angleRads), -sin(angleRads), 0, 0},
-	                     {sin(angleRads), cos(angleRads), 0, 0},
+	T cosA = std::cos(angleRads);
+	T sinA = std::sin(angleRads);
+	return Matrix<T,4,4>{{cosA, -sinA, 0, 0},
+	                     {sinA, cosA, 0, 0},
 	                     {0, 0, 1, 0},
 	                     {0, 0, 0, 1}};
 }
@@ -410,11 +410,7 @@ Matrix<T,4,4> lookAt(const Vector<T,3>& cameraPosition, const Vector<T,3> camera
 template<typename T>
 Vector<T,3> translation(const Matrix<T,4,4>& transform) noexcept
 {
-	Vector<T,3> temp;
-	temp[0] = transform.at(0, 3);
-	temp[1] = transform.at(1, 3);
-	temp[2] = transform.at(2, 3);
-	return temp;
+	return transform.columnAt(3).xyz;
 }
 
 template<typename T>
@@ -446,11 +442,7 @@ void scaling(Matrix<T,4,4>& transform, const Vector<T,3>& scaling) noexcept
 template<typename T>
 Vector<T,3> forward(const Matrix<T,4,4>& transform) noexcept
 {
-	Vector<T,3> temp;
-	temp[0] = transform.at(0, 2);
-	temp[1] = transform.at(1, 2);
-	temp[2] = transform.at(2, 2);
-	return temp;
+	return transform.columnAt(2).xyz;
 }
 
 template<typename T>
@@ -476,11 +468,7 @@ void backward(Matrix<T,4,4>& transform, const Vector<T,3>& backward) noexcept
 template<typename T>
 Vector<T,3> up(const Matrix<T,4,4>& transform) noexcept
 {
-	Vector<T,3> temp;
-	temp[0] = transform.at(0, 1);
-	temp[1] = transform.at(1, 1);
-	temp[2] = transform.at(2, 1);
-	return temp;
+	return transform.columnAt(1).xyz;
 }
 
 template<typename T>
@@ -506,11 +494,7 @@ void down(Matrix<T,4,4>& transform, const Vector<T,3>& down) noexcept
 template<typename T>
 Vector<T,3> right(const Matrix<T,4,4>& transform) noexcept
 {
-	Vector<T,3> temp;
-	temp[0] = transform.at(0, 0);
-	temp[1] = transform.at(1, 0);
-	temp[2] = transform.at(2, 0);
-	return temp;
+	return transform.columnAt(0).xyz;
 }
 
 template<typename T>
