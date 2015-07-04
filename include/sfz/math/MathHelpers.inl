@@ -46,9 +46,17 @@ bool approxEqual(const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept
 }
 
 template<typename ArgT, typename FloatT>
-ArgT lerp(const ArgT& v0, const ArgT& v1, FloatT t) noexcept
+ArgT lerp(ArgT v0, ArgT v1, FloatT t) noexcept
 {
 	return (FloatT(1)-t)*v0 + t*v1;
+}
+
+template<typename T>
+T clamp(T value, T minValue, T maxValue)
+{
+	using std::min;
+	using std::max;
+	return max(minValue, min(value, maxValue));
 }
 
 } // namespace sfz

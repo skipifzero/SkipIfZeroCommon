@@ -2,6 +2,7 @@
 #ifndef SFZ_MATH_MATH_HELPERS_HPP
 #define SFZ_MATH_MATH_HELPERS_HPP
 
+#include <algorithm>
 #include <cmath>
 #include <type_traits>
 
@@ -38,7 +39,10 @@ bool approxEqual(const Matrix<T,M,N>& lhs, const Matrix<T,M,N>& rhs) noexcept;
  * @see http://en.wikipedia.org/wiki/Lerp_%28computing%29
  */
 template<typename ArgT, typename FloatT>
-ArgT lerp(const ArgT& v0, const ArgT& v1, FloatT t) noexcept;
+ArgT lerp(ArgT v0, ArgT v1, FloatT t) noexcept;
+
+template<typename T>
+T clamp(T value, T minValue, T maxValue);
 
 } // namespace sfz
 #include "sfz/math/MathHelpers.inl"
