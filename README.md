@@ -1,2 +1,2 @@
-# SkipIfZeroGraphics
-A collection of various graphics related utilites.
+# SkipIfZero Graphics
+SkipIfZero Graphics is a collection of variuous graphics related utilities and wrappers.
