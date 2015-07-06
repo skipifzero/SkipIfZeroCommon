@@ -27,7 +27,7 @@ endif()
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 #set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test)
-#set(EXTERNALS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/externals)
+set(EXTERNALS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/externals)
 set(CMAKE_MODULES ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 # Adds our cmake modules to module path.
@@ -42,12 +42,23 @@ find_package(SDL2_image REQUIRED) # ${SDL2_IMAGE_INCLUDE_DIR}, ${SDL2_IMAGE_LIBR
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/SkipIfZeroCommon)
 # add_subdirectory(${EXTERNALS_DIR}/catch)
 
+# GLEW
+# find_package(GLEW REQUIRED) # ${GLEW_INCLUDE_DIRS}, ${GLEW_LIBRARIES}
+add_definitions(-DGLEW_STATIC)
+add_subdirectory(${EXTERNALS_DIR}/glew)
+
+# Links OpenGL
+find_package(OpenGL REQUIRED) # ${OPENGL_INCLUDE_DIR}, ${OPENGL_LIBRARIES}
+
 # Include directories
 include_directories(
 	${INCLUDE_DIR}
 	${SFZ_COMMON_INCLUDE_DIRS}
 	${SDL2_INCLUDE_DIR}
-	${SDL2_IMAGE_INCLUDE_DIR})
+	${SDL2_IMAGE_INCLUDE_DIR}
+	${GLEW_INCLUDE_DIRS}
+	${OPENGL_INCLUDE_DIR}
+)
 
 # Sources and headers needed to compile library
 set(SOURCE_BASE_FILES
@@ -95,6 +106,8 @@ target_link_libraries(
 	${SFZ_COMMON_LIBRARIES}
 	${SDL2_LIBRARY}
 	${SDL2_IMAGE_LIBRARY}
+	${GLEW_LIBRARIES}
+	${OPENGL_LIBRARIES}
 )
 
 # Variables for linking library
