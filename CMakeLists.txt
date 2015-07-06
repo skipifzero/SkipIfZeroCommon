@@ -50,6 +50,27 @@ include_directories(
 	${SDL2_IMAGE_INCLUDE_DIR})
 
 # Sources and headers needed to compile library
+set(SOURCE_BASE_FILES
+	${INCLUDE_DIR}/sfz/GL.hpp
+	${INCLUDE_DIR}/sfz/SDL.hpp)
+source_group(sfz_graphics FILES ${SOURCE_BASE_FILES})
+
+set(SOURCE_GL_FILES
+	${INCLUDE_DIR}/sfz/gl/Alignment.hpp
+	${INCLUDE_DIR}/sfz/gl/Context.hpp
+	 ${SOURCE_DIR}/sfz/gl/Context.cpp
+	${INCLUDE_DIR}/sfz/gl/OpenGL.hpp
+	${INCLUDE_DIR}/sfz/gl/SpriteBatch.hpp
+	 ${SOURCE_DIR}/sfz/gl/SpriteBatch.cpp
+	${INCLUDE_DIR}/sfz/gl/Texture.hpp
+	 ${SOURCE_DIR}/sfz/gl/Texture.cpp
+	${INCLUDE_DIR}/sfz/gl/TexturePacker.hpp
+	 ${SOURCE_DIR}/sfz/gl/TexturePacker.cpp
+	${INCLUDE_DIR}/sfz/gl/TextureRegion.hpp
+	${INCLUDE_DIR}/sfz/gl/Utils.hpp
+	 ${SOURCE_DIR}/sfz/gl/Utils.cpp)
+source_group(gl FILES ${SOURCE_GL_FILES})
+
 set(SOURCE_SDL_FILES
 	${INCLUDE_DIR}/sfz/sdl/GameController.hpp
 	 ${SOURCE_DIR}/sfz/sdl/GameController.cpp
@@ -57,9 +78,11 @@ set(SOURCE_SDL_FILES
 	 ${SOURCE_DIR}/sfz/sdl/Session.cpp
 	${INCLUDE_DIR}/sfz/sdl/Window.hpp
 	 ${SOURCE_DIR}/sfz/sdl/Window.cpp)
-source_group(sdl FILES ${SOURCE_GENERAL_FILES})
+source_group(sdl FILES ${SOURCE_SDL_FILES})
 
 set(SOURCE_ALL_FILES
+	${SOURCE_BASE_FILES}
+	${SOURCE_GL_FILES}
 	${SOURCE_SDL_FILES})
 
 # Library compile target
