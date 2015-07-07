@@ -39,8 +39,8 @@ find_package(SDL2_image REQUIRED) # ${SDL2_IMAGE_INCLUDE_DIR}, ${SDL2_IMAGE_LIBR
 
 
 # Subdirectories (libraries)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/SkipIfZeroCommon)
-# add_subdirectory(${EXTERNALS_DIR}/catch)
+# SkipIfZeroCommon # ${SFZ_COMMON_INCLUDE_DIRS}, ${SFZ_COMMON_LIBRARIES}
+add_subdirectory(${EXTERNALS_DIR}/SkipIfZeroCommon)
 
 # GLEW
 # find_package(GLEW REQUIRED) # ${GLEW_INCLUDE_DIRS}, ${GLEW_LIBRARIES}
