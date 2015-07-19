@@ -1,7 +1,8 @@
 #include "sfz/util/IO.hpp"
 #include "sfz/Assert.hpp"
 
-#include <cstdio>
+#include <cstdio> // fopen, fwrite, BUFSIZ
+#include <cstdint>
 
 #if defined(_WIN32)
 #define NOMINMAX
@@ -18,6 +19,9 @@
 #endif
 
 namespace sfz {
+
+using std::size_t;
+using std::uint8_t;
 
 const std::string& myDocumentsPath() noexcept
 {
@@ -71,6 +75,26 @@ bool createDirectory(const char* path) noexcept
 	if (res == 0) return true;
 	else return false;
 #endif
+}
+
+bool copyFile(const char* srcPath, const char* dstPath) noexcept
+{
+	uint8_t buffer[BUFSIZ];
+
+	std::FILE* source = std::fopen(srcPath, "rb");
+	std::FILE* destination = std::fopen(dstPath, "wb");
+	if (source == NULL) return false;
+	if (destination == NULL) return false;
+
+	size_t size;
+	while ((size = std::fread(buffer, 1, BUFSIZ, source)) > 0) {
+		std::fwrite(buffer, 1, size, destination);
+	}
+
+	std::fclose(source);
+	std::fclose(destination);
+
+	return true;
 }
 
 } // namespace sfz
