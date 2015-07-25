@@ -64,7 +64,8 @@ include_directories(
 # Sources and headers needed to compile library
 set(SOURCE_BASE_FILES
 	${INCLUDE_DIR}/sfz/GL.hpp
-	${INCLUDE_DIR}/sfz/SDL.hpp)
+	${INCLUDE_DIR}/sfz/SDL.hpp
+	${INCLUDE_DIR}/sfz/Screens.hpp)
 source_group(sfz_graphics FILES ${SOURCE_BASE_FILES})
 
 set(SOURCE_GL_FILES
@@ -94,10 +95,16 @@ set(SOURCE_SDL_FILES
 	 ${SOURCE_DIR}/sfz/sdl/Window.cpp)
 source_group(sdl FILES ${SOURCE_SDL_FILES})
 
+set(SOURCE_SCREENS_FILES
+	${INCLUDE_DIR}/sfz/screens/BaseScreen.hpp
+	${INCLUDE_DIR}/sfz/screens/GameLoop.hpp
+	 ${SOURCE_DIR}/sfz/screens/GameLoop.cpp)
+
 set(SOURCE_ALL_FILES
 	${SOURCE_BASE_FILES}
 	${SOURCE_GL_FILES}
-	${SOURCE_SDL_FILES})
+	${SOURCE_SDL_FILES}
+	${SOURCE_SCREENS_FILES})
 
 # Library compile target
 add_library(SkipIfZeroGraphics ${SOURCE_ALL_FILES})
