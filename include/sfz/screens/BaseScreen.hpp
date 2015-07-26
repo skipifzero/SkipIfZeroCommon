@@ -3,33 +3,37 @@
 #define SFZ_SCREENS_BASE_SCREEN_HPP
 
 #include <memory>
+#include <vector>
+
+#include "sfz/SDL.hpp"
 
 namespace sfz {
 
 using std::shared_ptr;
+using std::vector;
 
-class BaseScreen; // Forward declaration for GameLoopOp
+class BaseScreen; // Forward declaration for ScreenUpdateOp
 
-// GameLoopOp
+// ScreenUpdateOp
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-enum class GameLoopOpType {
+enum class ScreenUpdateOpType {
 	NO_OPERATION,
 	SWITCH_SCREEN,
 	QUIT_APPLICATION
 };
 
-struct GameLoopOp final {
-	GameLoopOp() noexcept = default;
-	GameLoopOp(const GameLoopOp&) noexcept = default;
-	GameLoopOp& operator= (const GameLoopOp&) noexcept = default;
-	inline GameLoopOp(GameLoopOpType type, shared_ptr<BaseScreen> newScreen = nullptr) noexcept
+struct ScreenUpdateOp final {
+	ScreenUpdateOp() noexcept = default;
+	ScreenUpdateOp(const ScreenUpdateOp&) noexcept = default;
+	ScreenUpdateOp& operator= (const ScreenUpdateOp&) noexcept = default;
+	inline ScreenUpdateOp(ScreenUpdateOpType type, shared_ptr<BaseScreen> screen = nullptr) noexcept
 	:
 		type{type},
-		newScreen{newScreen}
+		newScreen{screen}
 	{ }
 
-	GameLoopOpType type;
+	ScreenUpdateOpType type;
 	shared_ptr<BaseScreen> newScreen;
 };
 
@@ -40,7 +44,7 @@ class BaseScreen {
 public:
 	virtual ~BaseScreen() = default;
 
-	virtual GameLoopOp update(float delta) = 0;
+	virtual ScreenUpdateOp update(const vector<SDL_Event>& events, float delta) = 0;
 	virtual void render(float delta) = 0;
 };
 

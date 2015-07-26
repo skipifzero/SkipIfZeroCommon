@@ -4,6 +4,7 @@
 
 #include <chrono>
 #include <memory>
+#include <vector>
 
 #include "sfz/screens/BaseScreen.hpp"
 #include "sfz/sdl/Window.hpp"
@@ -11,6 +12,7 @@
 namespace sfz {
 
 using std::shared_ptr;
+using std::vector;
 
 class GameLoop final {
 public:
@@ -33,12 +35,14 @@ private:
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	float calculateDelta() noexcept;
+	void processEvents() noexcept;
 
 	// Private members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	sdl::Window& mWindow;
 	std::chrono::high_resolution_clock::time_point mPreviousTime;
+	vector<SDL_Event> mEvents;
 	shared_ptr<BaseScreen> mCurrentScreen;
 };
 

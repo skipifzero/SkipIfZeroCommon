@@ -20,10 +20,11 @@ void GameLoop::run()
 
 	while (true) {
 		delta = calculateDelta();
+		processEvents();
 
-		GameLoopOp op = mCurrentScreen->update(delta);
-		if (op.type == GameLoopOpType::QUIT_APPLICATION) return;
-		if (op.type == GameLoopOpType::SWITCH_SCREEN) {
+		ScreenUpdateOp op = mCurrentScreen->update(mEvents, delta);
+		if (op.type == ScreenUpdateOpType::QUIT_APPLICATION) return;
+		if (op.type == ScreenUpdateOpType::SWITCH_SCREEN) {
 			mCurrentScreen = op.newScreen;
 			continue;
 		}
@@ -45,6 +46,19 @@ float GameLoop::calculateDelta() noexcept
 	float delta = duration_cast<duration<float>>(currentTime - mPreviousTime).count();
 	mPreviousTime = currentTime;
 	return delta;
+}
+
+void GameLoop::processEvents() noexcept
+{
+	mEvents.clear();
+
+	SDL_Event event;
+	while (SDL_PollEvent(&event) != 0) {
+		switch (event.type) {
+		default:
+			mEvents.push_back(event);
+		}
+	}
 }
 
 } // namespace sfz
