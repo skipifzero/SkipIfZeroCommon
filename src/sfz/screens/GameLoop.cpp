@@ -5,31 +5,60 @@ namespace sfz {
 // GameLoop: Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-GameLoop::GameLoop(sdl::Window& window, const shared_ptr<BaseScreen>& initialScreen) noexcept
+GameLoop::GameLoop(sdl::Window& window) noexcept
 :
-	mWindow{window},
-	mCurrentScreen{initialScreen}
+	mWindow{window}
 { }
 
 // GameLoop: Public methods
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-void GameLoop::run()
+void GameLoop::run(shared_ptr<BaseScreen> currentScreen)
 {
 	float delta = calculateDelta();
+	SDL_Event event;
 
 	while (true) {
+		// Calculate delta
 		delta = calculateDelta();
-		processEvents();
 
-		ScreenUpdateOp op = mCurrentScreen->update(mEvents, delta);
-		if (op.type == ScreenUpdateOpType::QUIT_APPLICATION) return;
-		if (op.type == ScreenUpdateOpType::SWITCH_SCREEN) {
-			mCurrentScreen = op.newScreen;
+		// Process events
+		mEvents.clear();
+		while (SDL_PollEvent(&event) != 0) {
+			switch (event.type) {
+			case SDL_QUIT:
+				currentScreen->onQuit();
+				return;
+			case SDL_WINDOWEVENT:
+				switch (event.window.event) {
+				case SDL_WINDOWEVENT_RESIZED:
+					currentScreen->onResize(vec2{(float)event.window.data1,
+					                             (float)event.window.data1});
+					break;
+				default:
+					mEvents.push_back(event);
+					break;
+				}
+				break;
+			default:
+				mEvents.push_back(event);
+				break;
+			}
+		}
+
+		// Update current screen
+		ScreenUpdateOp op = currentScreen->update(mEvents, delta);
+
+		// Perform eventual operations requested by screen update
+		if (op.type == ScreenUpdateOpType::QUIT_APPLICATION) {
+			currentScreen->onQuit();
+		} else if (op.type == ScreenUpdateOpType::SWITCH_SCREEN) {
+			currentScreen = op.newScreen;
 			continue;
 		}
 
-		mCurrentScreen->render(delta);
+		// Render current screen
+		currentScreen->render(delta);
 
 		SDL_GL_SwapWindow(mWindow.mPtr);
 	}
@@ -46,19 +75,6 @@ float GameLoop::calculateDelta() noexcept
 	float delta = duration_cast<duration<float>>(currentTime - mPreviousTime).count();
 	mPreviousTime = currentTime;
 	return delta;
-}
-
-void GameLoop::processEvents() noexcept
-{
-	mEvents.clear();
-
-	SDL_Event event;
-	while (SDL_PollEvent(&event) != 0) {
-		switch (event.type) {
-		default:
-			mEvents.push_back(event);
-		}
-	}
 }
 
 } // namespace sfz

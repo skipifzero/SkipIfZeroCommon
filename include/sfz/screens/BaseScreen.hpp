@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "sfz/SDL.hpp"
+#include "sfz/math/Vector.hpp"
 
 namespace sfz {
 
@@ -46,7 +47,13 @@ public:
 
 	virtual ScreenUpdateOp update(const vector<SDL_Event>& events, float delta) = 0;
 	virtual void render(float delta) = 0;
+
+	virtual void onQuit();
+	virtual void onResize(vec2 dimensions);
 };
+
+inline void BaseScreen::onQuit() { /* Default empty implementation. */ }
+inline void BaseScreen::onResize(vec2) { /* Default empty implementation. */ }
 
 } // namespace sfz
 

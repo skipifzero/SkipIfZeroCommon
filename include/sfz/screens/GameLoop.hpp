@@ -8,6 +8,7 @@
 
 #include "sfz/screens/BaseScreen.hpp"
 #include "sfz/sdl/Window.hpp"
+#include "sfz/math/Vector.hpp"
 
 namespace sfz {
 
@@ -23,19 +24,18 @@ public:
 	GameLoop(const GameLoop&) = delete;
 	GameLoop& operator= (const GameLoop&) = delete;
 
-	GameLoop(sdl::Window& window, const shared_ptr<BaseScreen>& initialScreen) noexcept;
+	GameLoop(sdl::Window& window) noexcept;
 
 	// Public methods
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	void run();
+	void run(shared_ptr<BaseScreen> currentScreen);
 
 private:
 	// Private methods
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 	float calculateDelta() noexcept;
-	void processEvents() noexcept;
 
 	// Private members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -43,7 +43,6 @@ private:
 	sdl::Window& mWindow;
 	std::chrono::high_resolution_clock::time_point mPreviousTime;
 	vector<SDL_Event> mEvents;
-	shared_ptr<BaseScreen> mCurrentScreen;
 };
 
 } // namesapce sfz
