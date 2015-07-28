@@ -12,6 +12,7 @@ namespace sdl {
 
 using std::uint8_t;
 using std::int32_t;
+using sfz::vec2;
 
 // GameController structs & enums
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -45,11 +46,11 @@ struct GameController final {
 	Button mButtonBack = Button::NOT_PRESSED;
 	Button mButtonGuide = Button::NOT_PRESSED;
 
-	/** Range (norm of vector): (middle) [0.0f, 1.0f] (fully-pressed) */
-	sfz::vec2 mLeftStick;
+	/** Length of vector is (approximately) in range (not pressed) [0.0f, 1.0f] (fully-pressed) */
+	vec2 mLeftStick;
 
-	/** Range (norm of vector): (middle) [0.0f, 1.0f] (fully-pressed) */
-	sfz::vec2 mRightStick;
+	/** Length of vector is (approximately) in range (not pressed) [0.0f, 1.0f] (fully-pressed) */
+	vec2 mRightStick;
 
 	float mLeftStickDeadzone = 0.15f;
 	float mRightStickDeadzone = 0.15f;

@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "sfz/SDL.hpp"
+#include "sfz/sdl/GameController.hpp"
 #include "sfz/math/Vector.hpp"
 
 namespace sfz {
@@ -45,7 +45,9 @@ class BaseScreen {
 public:
 	virtual ~BaseScreen() = default;
 
-	virtual ScreenUpdateOp update(const vector<SDL_Event>& events, float delta) = 0;
+	virtual ScreenUpdateOp update(const vector<SDL_Event>& events,
+	                              const vector<sdl::GameController>& controllers,
+	                              float delta) = 0;
 	virtual void render(float delta) = 0;
 
 	virtual void onQuit();
