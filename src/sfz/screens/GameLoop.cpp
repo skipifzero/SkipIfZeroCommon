@@ -2,7 +2,9 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cstdint>
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 
 #include "sfz/sdl/GameController.hpp"
@@ -13,7 +15,9 @@ namespace sfz {
 // Typedefs
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+using std::int32_t;
 using time_point = std::chrono::high_resolution_clock::time_point;
+using std::unordered_map;
 using std::vector;
 
 // Static helper functions
@@ -30,43 +34,20 @@ static float calculateDelta(time_point& previousTime) noexcept
 	return delta;
 }
 
-static int initControllers(vector<sdl::GameController>& controllers,
-                           vector<SDL_GameController*>& controllerPtrs) noexcept
+static void initControllers(unordered_map<int32_t, sdl::GameController>& controllers) noexcept
 {
-	/*for (SDL_GameController*& c : controllerPtrs) {
-		if (c != NULL) {
-			SDL_GameControllerClose(c);
-		}
-		c = NULL;
-	}*/
+	controllers.clear();
 
 	int numJoysticks = SDL_NumJoysticks();
-	if (numJoysticks <= 0) {
-		std::cerr << "No joystics connected." << std::endl;
-		return 0;
-	}
-
-	int numConnected = 0;
 	for (int i = 0; i < numJoysticks; ++i) {
-		if (!SDL_IsGameController(i)) {
-			std::cerr << "Joystick id " << i << " is not a Game Controller." << std::endl;
-			continue;
-		}
+		if (!SDL_IsGameController(i)) continue;
+		
+		sdl::GameController c{i};
+		if (c.id() == -1) continue;
+		if (controllers.find(c.id()) != controllers.end()) continue;
 
-		SDL_GameController* ptr = SDL_GameControllerOpen(i);
-		if (ptr == NULL) {
-			std::cerr << "Couldn't open Game Controller at id " << i << std::endl;
-			continue;
-		}
-		controllerPtrs.push_back(ptr);
-		controllers.emplace_back();
-
-		std::cout << "Added Game Controller [" << numConnected << "] (id " << i << "): "
-		          << SDL_GameControllerName(controllerPtrs[numConnected]) << std::endl;
-		numConnected++;
+		controllers[c.id()] = std::move(c);
 	}
-
-	return numConnected;
 }
 
 // GameLoop function
@@ -75,9 +56,8 @@ static int initControllers(vector<sdl::GameController>& controllers,
 void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 {
 	// Initialize controllers
-	vector<sdl::GameController> controllers;
-	vector<SDL_GameController*> controllerPtrs;
-	int numActiveControllers = initControllers(controllers, controllerPtrs);
+	unordered_map<int32_t, sdl::GameController> controllers;
+	initControllers(controllers);
 
 	// Initialize time delta
 	time_point previousTime;
@@ -85,6 +65,7 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 
 	// Initialize SDL events
 	vector<SDL_Event> events;
+	vector<SDL_Event> controllerEvents;
 	SDL_Event event;
 
 	while (true) {
@@ -92,14 +73,9 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 		delta = calculateDelta(previousTime);
 		delta = std::max(delta, 0.25f);
 
-		// Starts updating controller structs
-		for (size_t i = 0; i < controllerPtrs.size(); i++) {
-			if (controllerPtrs[i] == NULL) break;
-			sdl::updateStart(controllers[i]);
-		}
-
 		// Process events
 		events.clear();
+		controllerEvents.clear();
 		while (SDL_PollEvent(&event) != 0) {
 			switch (event.type) {
 
@@ -123,17 +99,10 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 			case SDL_CONTROLLERDEVICEADDED:
 			case SDL_CONTROLLERDEVICEREMOVED:
 			case SDL_CONTROLLERDEVICEREMAPPED:
-				// TODO: Should really do something.
-				std::cerr << "Controller configuration changed, not yet implemented." << std::endl;
-				break;
 			case SDL_CONTROLLERBUTTONDOWN:
 			case SDL_CONTROLLERBUTTONUP:
-				if (event.cbutton.which >= controllers.size()) break;
-				sdl::updateProcessEvent(controllers[event.cbutton.which], event);
-				break;
 			case SDL_CONTROLLERAXISMOTION:
-				if (event.caxis.which >= controllers.size()) break;
-				sdl::updateProcessEvent(controllers[event.caxis.which], event);
+				controllerEvents.push_back(event);
 				break;
 
 			default:
@@ -142,11 +111,8 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 			}
 		}
 
-		// Finish updating controller structs
-		for (size_t i = 0; i < controllers.size(); i++) {
-			if (controllerPtrs[i] == NULL) break;
-			sdl::updateFinish(controllers[i]);
-		}
+		// Updates controllers
+		update(controllers, controllerEvents);
 
 		// Update current screen
 		ScreenUpdateOp op = currentScreen->update(events, controllers, delta);

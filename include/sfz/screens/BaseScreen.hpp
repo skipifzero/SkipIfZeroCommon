@@ -2,7 +2,9 @@
 #ifndef SFZ_SCREENS_BASE_SCREEN_HPP
 #define SFZ_SCREENS_BASE_SCREEN_HPP
 
+#include <cstdint>
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include "sfz/sdl/GameController.hpp"
@@ -10,7 +12,9 @@
 
 namespace sfz {
 
+using std::int32_t;
 using std::shared_ptr;
+using std::unordered_map;
 using std::vector;
 
 class BaseScreen; // Forward declaration for ScreenUpdateOp
@@ -46,7 +50,7 @@ public:
 	virtual ~BaseScreen() = default;
 
 	virtual ScreenUpdateOp update(const vector<SDL_Event>& events,
-	                              const vector<sdl::GameController>& controllers,
+	                              const unordered_map<int32_t, sdl::GameController>& controllers,
 	                              float delta) = 0;
 	virtual void render(float delta) = 0;
 
