@@ -25,7 +25,8 @@ class BaseScreen; // Forward declaration for ScreenUpdateOp
 enum class ScreenUpdateOpType {
 	NO_OPERATION,
 	SWITCH_SCREEN,
-	QUIT_APPLICATION
+	QUIT_APPLICATION,
+	REINITIALIZE_CONTROLLERS
 };
 
 struct ScreenUpdateOp final {

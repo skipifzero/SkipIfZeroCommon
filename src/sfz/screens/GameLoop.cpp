@@ -118,11 +118,21 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 		ScreenUpdateOp op = currentScreen->update(events, controllers, delta);
 
 		// Perform eventual operations requested by screen update
-		if (op.type == ScreenUpdateOpType::QUIT_APPLICATION) {
-			currentScreen->onQuit();
-		} else if (op.type == ScreenUpdateOpType::SWITCH_SCREEN) {
+		switch (op.type) {
+		case ScreenUpdateOpType::SWITCH_SCREEN:
 			currentScreen = op.newScreen;
 			continue;
+		case ScreenUpdateOpType::QUIT_APPLICATION:
+			currentScreen->onQuit();
+			return;
+		case ScreenUpdateOpType::REINITIALIZE_CONTROLLERS:
+			initControllers(controllers);
+			continue;
+
+		case ScreenUpdateOpType::NO_OPERATION:
+		default:
+			// Do nothing
+			break;
 		}
 
 		// Render current screen
