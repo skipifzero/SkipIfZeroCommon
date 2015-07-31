@@ -49,7 +49,7 @@ On Mac OS X you might also want to generate an Xcode project, you can do this us
 	cmake .. -GXcode
 
 	// Builds tests
-	cmake .. -GXcode -DSFZ_COMMON_BUILD_TESTS:BOOLEAN=TRUE
+	cmake .. -GXcode -DSFZ_GRAPHICS_BUILD_TESTS:BOOLEAN=TRUE
 
 ### Windows
 
@@ -68,7 +68,9 @@ Up to date OpenGL drivers are by default not shipped with Windows. As long as yo
 Create a directory called `build` inside the project root directory and then open `cmd` inside this `build` directory. Run the following command:
 
 	cmake .. -G "Visual Studio 14 2015 Win64"
-
+    
+    // With tests
+    cmake .. -G "Visual Studio 14 2015 Win64" -DSFZ_GRAPHICS_BUILD_TESTS:BOOLEAN=TRUE
 ## Linking
 
 ### CMake
