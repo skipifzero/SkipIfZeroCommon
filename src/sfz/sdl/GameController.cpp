@@ -114,20 +114,44 @@ GameController::~GameController() noexcept
 
 void update(unordered_map<int32_t,GameController>& controllers, const vector<SDL_Event>& events) noexcept
 {
-	/*for (auto& c : controllers) updateStart(c);
+	for (auto& c : controllers) updateStart(std::get<1>(c));
 
 	for (const SDL_Event& event : events) {
 		switch (event.type) {
 		case SDL_CONTROLLERDEVICEADDED:
+			// which is the device index in this context
+			{
+				GameController c{event.cdevice.which};
+				if (c.id() == -1) break;
+				if (controllers.find(c.id()) != controllers.end()) break;
+				controllers[c.id()] = std::move(c);
+			}
+			break;
 		case SDL_CONTROLLERDEVICEREMOVED:
+			// which is the joystick id in this context
+			if (controllers.find(event.cdevice.which) != controllers.end()) {
+				controllers.erase(event.cdevice.which);
+			}
+			break;
 		case SDL_CONTROLLERDEVICEREMAPPED:
+			// TODO: Nothing of value to do here?
+			break;
+			
 		case SDL_CONTROLLERBUTTONDOWN:
 		case SDL_CONTROLLERBUTTONUP:
+			if (controllers.find(event.cbutton.which) != controllers.end()) {
+				updateProcessEvent(controllers[event.cbutton.which], event);
+			}
+			break;
 		case SDL_CONTROLLERAXISMOTION:
+			if (controllers.find(event.caxis.which) != controllers.end()) {
+				updateProcessEvent(controllers[event.caxis.which], event);
+			}
+			break;
 		}
 	}
 
-	for (auto& c : controllers) updateFinish(c);*/
+	for (auto& c : controllers) updateFinish(std::get<1>(c));
 }
 
 void updateStart(GameController& c) noexcept
