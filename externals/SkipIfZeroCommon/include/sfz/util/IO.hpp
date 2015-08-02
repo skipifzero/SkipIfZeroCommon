@@ -15,8 +15,11 @@ const std::string& gameBaseFolderPath() noexcept;
 /** @brief Returns whether a given directory exists or not. */
 bool directoryExists(const char* path) noexcept;
 
-/* @brief Attempts to create a directory and returns whether successful or not. */
+/** @brief Attempts to create a directory and returns whether successful or not. */
 bool createDirectory(const char* path) noexcept;
+
+/** @brief Attempts to copy file from source to destination. */ 
+bool copyFile(const char* srcPath, const char* dstPath) noexcept;
 
 } // namespace sfz
 
