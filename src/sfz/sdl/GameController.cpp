@@ -128,7 +128,7 @@ void update(unordered_map<int32_t,GameController>& controllers, const vector<SDL
 	for (const SDL_Event& event : events) {
 		switch (event.type) {
 		case SDL_CONTROLLERDEVICEADDED:
-			// which is the device index in this context
+			// 'which' is the device index in this context
 			{
 				GameController c{event.cdevice.which};
 				if (c.id() == -1) break;
@@ -137,7 +137,7 @@ void update(unordered_map<int32_t,GameController>& controllers, const vector<SDL
 			}
 			break;
 		case SDL_CONTROLLERDEVICEREMOVED:
-			// which is the joystick id in this context
+			// 'which' is the joystick id in this context
 			if (controllers.find(event.cdevice.which) != controllers.end()) {
 				controllers.erase(event.cdevice.which);
 			}
@@ -156,6 +156,9 @@ void update(unordered_map<int32_t,GameController>& controllers, const vector<SDL
 			if (controllers.find(event.caxis.which) != controllers.end()) {
 				updateProcessEvent(controllers[event.caxis.which], event);
 			}
+			break;
+
+		default:
 			break;
 		}
 	}
