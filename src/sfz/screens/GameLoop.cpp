@@ -74,7 +74,8 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 
 		// Process events
 		state.events.clear();
-		state.handledEvents.clear();
+		state.controllerEvents.clear();
+		state.mouseEvents.clear();
 		while (SDL_PollEvent(&event) != 0) {
 			switch (event.type) {
 
@@ -100,7 +101,15 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 			case SDL_CONTROLLERBUTTONDOWN:
 			case SDL_CONTROLLERBUTTONUP:
 			case SDL_CONTROLLERAXISMOTION:
-				state.handledEvents.push_back(event);
+				state.controllerEvents.push_back(event);
+				break;
+
+			// Mouse events
+			case SDL_MOUSEMOTION:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+			case SDL_MOUSEWHEEL:
+				state.mouseEvents.push_back(event);
 				break;
 
 			default:
@@ -110,7 +119,10 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 		}
 
 		// Updates controllers
-		update(state.controllers, state.handledEvents);
+		update(state.controllers, state.controllerEvents);
+
+		// Updates mouse
+		state.rawMouse.update(window, state.mouseEvents);
 
 		// Update current screen
 		UpdateOp op = currentScreen->update(state);

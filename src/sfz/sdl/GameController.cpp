@@ -159,6 +159,7 @@ void update(unordered_map<int32_t,GameController>& controllers, const vector<SDL
 			break;
 
 		default:
+			// Do nothing
 			break;
 		}
 	}

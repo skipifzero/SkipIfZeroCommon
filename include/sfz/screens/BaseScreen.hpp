@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "sfz/sdl/GameController.hpp"
+#include "sfz/sdl/Mouse.hpp"
 #include "sfz/math/Vector.hpp"
 
 namespace sfz {
@@ -56,8 +57,10 @@ struct UpdateState final {
 	UpdateState& operator= (const UpdateState&) = delete;
 
 	vector<SDL_Event> events;
-	vector<SDL_Event> handledEvents;
+	vector<SDL_Event> controllerEvents;
+	vector<SDL_Event> mouseEvents;
 	unordered_map<int32_t, sdl::GameController> controllers;
+	sdl::Mouse rawMouse;
 	float delta;
 };
 

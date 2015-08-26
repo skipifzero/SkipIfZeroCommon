@@ -13,7 +13,6 @@
 
 namespace sdl {
 
-using std::uint8_t;
 using std::int32_t;
 using sfz::vec2;
 using std::unordered_map;
