@@ -149,6 +149,8 @@ void runGameLoop(sdl::Window& window, shared_ptr<BaseScreen> currentScreen)
 		currentScreen->render(state);
 
 		SDL_GL_SwapWindow(window.mPtr);
+		// Hack that silences OpenGL warnings from SDL_GL_SwapWindow() on MSVC for some reason.
+		int val; SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &val);
 	}
 }
 
