@@ -50,6 +50,10 @@ source_group(sfz FILES ${SOURCE_GENERAL_FILES})
 set(SOURCE_GEOMETRY_FILES
 	${INCLUDE_DIR}/sfz/geometry/AABB.hpp
 	${INCLUDE_DIR}/sfz/geometry/AABB.inl
+	${INCLUDE_DIR}/sfz/geometry/AABB2D.hpp
+	${INCLUDE_DIR}/sfz/geometry/AABB2D.inl
+	${INCLUDE_DIR}/sfz/geometry/Circle.hpp
+	${INCLUDE_DIR}/sfz/geometry/Circle.inl
 	${INCLUDE_DIR}/sfz/geometry/Intersection.hpp
 	 ${SOURCE_DIR}/sfz/geometry/Intersection.cpp
 	${INCLUDE_DIR}/sfz/geometry/OBB.hpp
