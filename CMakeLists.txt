@@ -77,6 +77,8 @@ set(SOURCE_MATH_FILES
 source_group(sfz_math FILES ${SOURCE_MATH_FILES})
 
 set(SOURCE_UTIL_FILES
+	${INCLUDE_DIR}/sfz/util/IniParser.hpp
+	 ${SOURCE_DIR}/sfz/util/IniParser.cpp
 	${INCLUDE_DIR}/sfz/util/IO.hpp
 	 ${SOURCE_DIR}/sfz/util/IO.cpp
 	${INCLUDE_DIR}/sfz/util/StopWatch.hpp
