@@ -181,7 +181,7 @@ T sum(const Vector<T,N>& vector) noexcept;
 
 /**
  * @brief Calculates the positive angle (in radians) between two vectors
- * Range: [0, Pi])
+ * Range: [0, Pi)
  * @sfz_assert_debug norm of both vectors != 0
  */
 template<typename T, size_t N>
@@ -302,5 +302,5 @@ struct hash<sfz::Vector<T,N>> {
 };
 
 } // namespace std
-#include "Vector.inl"
+#include "sfz/math/Vector.inl"
 #endif
