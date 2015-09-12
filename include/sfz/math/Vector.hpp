@@ -227,6 +227,10 @@ Vector<T,N>& operator*= (Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 template<typename T, size_t N>
 Vector<T,N>& operator/= (Vector<T,N>& left, T right) noexcept;
 
+/** @brief Element-wise division assignment, @sfz_assert_debug all elements of rhs != 0. */
+template<typename T, size_t N>
+Vector<T,N>& operator/= (Vector<T,N>& left, const Vector<T,N>& right) noexcept;
+
 // Operators (arithmetic)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -252,6 +256,10 @@ Vector<T,N> operator* (T left, const Vector<T,N>& right) noexcept;
 /** @sfz_assert_debug rhs element != 0 */
 template<typename T, size_t N>
 Vector<T,N> operator/ (const Vector<T,N>& left, T right) noexcept;
+
+/** @brief Element-wise division of two vectors, @sfz_assert_debug all elements of rhs != 0. */
+template<typename T, size_t N>
+Vector<T,N> operator/ (const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
 
 // Operators (comparison)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
