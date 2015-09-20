@@ -79,6 +79,7 @@ set(SOURCE_GL_FILES
 	 ${SOURCE_DIR}/sfz/gl/SpriteBatch.cpp
 	${INCLUDE_DIR}/sfz/gl/Texture.hpp
 	 ${SOURCE_DIR}/sfz/gl/Texture.cpp
+	${INCLUDE_DIR}/sfz/gl/TextureEnums.hpp
 	${INCLUDE_DIR}/sfz/gl/TexturePacker.hpp
 	 ${SOURCE_DIR}/sfz/gl/TexturePacker.cpp
 	${INCLUDE_DIR}/sfz/gl/TextureRegion.hpp
