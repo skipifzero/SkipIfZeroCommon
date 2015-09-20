@@ -11,7 +11,7 @@
 #include <sfz/PopWarnings.hpp>
 
 #include <sfz/gl/OpenGL.hpp>
-#include "sfz/gl/Utils.hpp"
+#include "sfz/gl/GLUtils.hpp"
 #include <new> // std::nothrow
 #include <cstring> // std::memcpy
 #include <iostream>

@@ -7,7 +7,7 @@
 #include <sfz/PopWarnings.hpp>
 
 #include "sfz/gl/OpenGL.hpp"
-#include "sfz/gl/Utils.hpp"
+#include "sfz/gl/GLUtils.hpp"
 
 #include <algorithm> // std::swap
 #include <cstring> // std::memcpy
