@@ -77,6 +77,8 @@ set(SOURCE_GL_FILES
 	${INCLUDE_DIR}/sfz/gl/GLUtils.hpp
 	 ${SOURCE_DIR}/sfz/gl/GLUtils.cpp
 	${INCLUDE_DIR}/sfz/gl/OpenGL.hpp
+	${INCLUDE_DIR}/sfz/gl/ShaderProgram.hpp
+	 ${SOURCE_DIR}/sfz/gl/ShaderProgram.cpp
 	${INCLUDE_DIR}/sfz/gl/SpriteBatch.hpp
 	 ${SOURCE_DIR}/sfz/gl/SpriteBatch.cpp
 	${INCLUDE_DIR}/sfz/gl/Texture.hpp
