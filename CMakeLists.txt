@@ -109,7 +109,7 @@ set(SOURCE_GL_FILES
 	${INCLUDE_DIR}/sfz/gl/TexturePacker.hpp
 	 ${SOURCE_DIR}/sfz/gl/TexturePacker.cpp
 	${INCLUDE_DIR}/sfz/gl/TextureRegion.hpp)
-source_group(gl FILES ${SOURCE_GL_FILES})
+source_group(sfz_gl FILES ${SOURCE_GL_FILES})
 
 set(SOURCE_MATH_FILES
 	${INCLUDE_DIR}/sfz/math/MathConstants.hpp
@@ -133,13 +133,13 @@ set(SOURCE_SDL_FILES
 	 ${SOURCE_DIR}/sfz/sdl/Session.cpp
 	${INCLUDE_DIR}/sfz/sdl/Window.hpp
 	 ${SOURCE_DIR}/sfz/sdl/Window.cpp)
-source_group(sdl FILES ${SOURCE_SDL_FILES})
+source_group(sfz_sdl FILES ${SOURCE_SDL_FILES})
 
 set(SOURCE_SCREENS_FILES
 	${INCLUDE_DIR}/sfz/screens/BaseScreen.hpp
 	${INCLUDE_DIR}/sfz/screens/GameLoop.hpp
 	 ${SOURCE_DIR}/sfz/screens/GameLoop.cpp)
-source_group(screens FILES ${SOURCE_SCREENS_FILES})
+source_group(sfz_screens FILES ${SOURCE_SCREENS_FILES})
 
 set(SOURCE_UTIL_FILES
 	${INCLUDE_DIR}/sfz/util/IniParser.hpp
@@ -187,9 +187,17 @@ set(SFZ_COMMON_LIBRARIES
 	PARENT_SCOPE)
 
 # Test addding function
-function(add_test_file test_name test_file_path)
+function(add_test_file test_name test_files)
 	set(test_name_name ${test_name})
-	add_executable(${test_name} ${test_file_path} ${SOURCE_ALL_FILES}) # Link with all files
+	add_executable(${test_name} ${test_files} ${SOURCE_ALL_FILES}) # Link with all files
+	target_link_libraries(
+		${test_name}
+		
+		${SDL2_LIBRARY}
+		${SDL2_IMAGE_LIBRARY}
+		${GLEW_LIBRARIES}
+		${OPENGL_LIBRARIES}
+	)
 	add_test(${test_name_name} ${test_name})
 endfunction(add_test_file)
 
