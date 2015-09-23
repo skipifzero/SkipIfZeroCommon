@@ -4,16 +4,20 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace sfz {
 
 using std::int64_t;
+using std::string;
+using std::uint8_t;
+using std::vector;
 
 /** @brief Returns path to MyDocuments on Windows, user root (~) on Unix. */
-const std::string& myDocumentsPath() noexcept;
+const string& myDocumentsPath() noexcept;
 
 /** @brief Returns path to where game folders with saves should be placed. */
-const std::string& gameBaseFolderPath() noexcept;
+const string& gameBaseFolderPath() noexcept;
 
 /** @brief Returns whether a given file exists or not. */
 bool fileExists(const char* path) noexcept;
@@ -32,6 +36,9 @@ bool copyFile(const char* srcPath, const char* dstPath) noexcept;
 
 /** @brief Returns size of file in bytes, negative value if error. */
 int64_t sizeofFile(const char* path) noexcept;
+
+/** @brief Reads an entiry binary file, returns empty vector if error. */
+vector<uint8_t> readBinaryFile(const char* path) noexcept;
 
 } // namespace sfz
 

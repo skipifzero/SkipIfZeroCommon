@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstdio> // fopen, fwrite, BUFSIZ
 #include <cstdint>
+#include <cstring>
 
 #if defined(_WIN32)
 #define NOMINMAX
@@ -24,14 +25,14 @@ namespace sfz {
 using std::size_t;
 using std::uint8_t;
 
-const std::string& myDocumentsPath() noexcept
+const string& myDocumentsPath() noexcept
 {
-	static const std::string path = []() {
+	static const string path = []() {
 #ifdef _WIN32
 		char tempPath[MAX_PATH];
 		HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, tempPath);
 		if (result != S_OK) sfz_error("Could not retrieve MyDocuments path.");
-		return std::string{tempPath};
+		return string{tempPath};
 #else
 		return std::getenv("HOME");
 #endif
@@ -39,7 +40,7 @@ const std::string& myDocumentsPath() noexcept
 	return path;
 }
 
-const std::string& gameBaseFolderPath() noexcept
+const string& gameBaseFolderPath() noexcept
 {
 	static const std::string path = myDocumentsPath() + "/My Games";
 	return path;
@@ -122,6 +123,36 @@ int64_t sizeofFile(const char* path) noexcept
 	int64_t size = std::ftell(file);
 	std::fclose(file);
 	return size;
+}
+
+vector<uint8_t> readBinaryFile(const char* path) noexcept
+{
+	// Open file
+	std::FILE* file = std::fopen(path, "rb");
+	if (file == NULL) return vector<uint8_t>{};
+
+	// Get size of file
+	std::fseek(file, 0, SEEK_END);
+	int64_t size = std::ftell(file);
+	std::rewind(file); // Rewind position to beginning of file
+	if (size < 0) {
+		std::fclose(file);
+		return vector<uint8_t>{};
+	}
+
+	// Create vector with enough capacity to fit file
+	vector<uint8_t> temp(static_cast<size_t>(size+1));
+	uint8_t* tempPtr = temp.data();
+
+	// Read the file into the vector
+	uint8_t buffer[BUFSIZ];
+	size_t readSize;
+	while ((readSize = std::fread(buffer, 1, BUFSIZ, file)) > 0) {
+		std::memcpy(tempPtr, buffer, readSize);
+		tempPtr += readSize;
+	}
+
+	return std::move(temp);
 }
 
 } // namespace sfz
