@@ -167,7 +167,6 @@ target_link_libraries(
 	SkipIfZeroCommon
 
 	${SDL2_LIBRARY}
-	${SDL2_IMAGE_LIBRARY}
 	${GLEW_LIBRARIES}
 	${OPENGL_LIBRARIES}
 )
@@ -194,7 +193,6 @@ function(add_test_file test_name test_files)
 		${test_name}
 		
 		${SDL2_LIBRARY}
-		${SDL2_IMAGE_LIBRARY}
 		${GLEW_LIBRARIES}
 		${OPENGL_LIBRARIES}
 	)

@@ -1,7 +1,7 @@
 # SkipIfZero Common
-SkipIfZero Common is a collection of code intended for games and graphical application development, it is the basis for all SkipIfZero C++ & OpenGL projects. It contains a linear algebra math library, a geometry library with intersection tests, OpenGL utilities, SDL wrappers including a practical gameloop wrapper which handles various forms of input for you, other utilities (such as an ini parser) and more.
+SkipIfZero Common is a collection of code intended for games and graphical application development, it is the basis for all SkipIfZero C++ OpenGL projects. It contains a linear algebra math library, a geometry library with intersection tests, OpenGL utilities, SDL wrappers (including a gameloop wrapper which handles various forms of input), other utilities (such as an ini parser) and more.
 
-SkipIfZero Common also handles common dependencies in C++ OpenGL applications. It links to SDL and OpenGL and also exposes these libraries through CMake, no need to link them individually. It also comes bundled with a few libraries (among them GLEW) in order to minimize external dependency requirements.
+SkipIfZero Common handles common dependencies in C++ OpenGL applications. It links to SDL and OpenGL and exposes these libraries through CMake, no need to link them individually. It also comes bundled with a few libraries (among them GLEW) in order to minimize external dependency requirements.
 
 ## Building
 It is advisable to let CMake generate the wanted build solution in a directory called `build` inside the project folder as this folder is ignored by git. The CMake variable `SFZ_COMMON_BUILD_TESTS` determines whether the tests should be built or not.
@@ -15,9 +15,6 @@ It is advisable to let CMake generate the wanted build solution in a directory c
 ### Windows
 
 #### Installing dependencies
-
-##### CMake
-Install latest version of CMake and add it to your `Path` variable. Warning: Backup your `Path` before installing. The installer is buggy and has on occasion deleted all the contents of my `Path` variable.
 
 ##### SDL2
 Download and install the SDL2 development libraries for Visual C++ from the official website. Then create an environment variable called `SDL2` and point it to the root of the SDL2 installation.
@@ -91,7 +88,9 @@ Now you can link SkipIfZero Common with the following commands:
 
 If you also want to build the tests (but really, why would you in this situation?) you also need to define `SFZ_COMMON_BUILD_TESTS` before adding the directory.
 
-This will also link and expose SDL2, OpenGL and GLEW to the including project.
+In addition to SkipIfZero Common, the `${SFZ_COMMON_INCLUDE_DIRS}` and `${SFZ_COMMON_LIBRARIES` variables expose SDL2, OpenGL and GLEW to the including project.
 
 ## License
 Licensed under zlib, this means that you can basically use the code however you want as long as you give credit and don't claim you wrote it yourself. See LICENSE file for more info.
+
+Libraries used by SkipIfZero Common fall under various licenses, see their respective LICENSE file for more info.
