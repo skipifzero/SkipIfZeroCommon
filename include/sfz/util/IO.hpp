@@ -31,6 +31,12 @@ bool createFile(const char* path) noexcept;
 /** @brief Attempts to create a directory and returns whether successful or not. */
 bool createDirectory(const char* path) noexcept;
 
+/** @brief Attempts to delete a given file and returns whether successful or not. */
+bool deleteFile(const char* path) noexcept;
+
+/** @brief Attempts to delete a given directory, will ONLY work if directory is empty. */
+bool deleteDirectory(const char* path) noexcept;
+
 /** @brief Attempts to copy file from source to destination. */ 
 bool copyFile(const char* srcPath, const char* dstPath) noexcept;
 

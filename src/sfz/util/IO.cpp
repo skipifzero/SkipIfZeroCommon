@@ -86,12 +86,27 @@ bool createDirectory(const char* path) noexcept
 {
 #ifdef _WIN32
 	int res = _mkdir(path);
-	if (res == 0) return true;
-	return false;
+	return res == 0;
 #else
 	int res = mkdir(path, 0775);
-	if (res == 0) return true;
-	else return false;
+	return res == 0;
+#endif
+}
+
+bool deleteFile(const char* path) noexcept
+{
+	int res = std::remove(path);
+	return res == 0;
+}
+
+bool deleteDirectory(const char* path) noexcept
+{
+#ifdef _WIN32
+	int res = _rmdir(path);
+	return res == 0;
+#else
+	int res = std::remove(path);
+	return res == 0;
 #endif
 }
 

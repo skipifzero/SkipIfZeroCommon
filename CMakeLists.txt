@@ -202,8 +202,10 @@ endfunction(add_test_file)
 # Tests
 if(SFZ_COMMON_BUILD_TESTS)
 	enable_testing(true)
-	add_test_file(Vector_Tests ${TEST_DIR}/sfz/math/Vector_Tests.cpp)
-	add_test_file(Matrix_Tests ${TEST_DIR}/sfz/math/Matrix_Tests.cpp)
-	add_test_file(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
 	add_test_file(Intersection_Tests ${TEST_DIR}/sfz/geometry/Intersection_Tests.cpp)
+	add_test_file(IO_Tests ${TEST_DIR}/sfz/util/IO_Tests.cpp)
+	add_test_file(MathConstants_Tests ${TEST_DIR}/sfz/math/MathConstants_Tests.cpp)
+	add_test_file(Matrix_Tests ${TEST_DIR}/sfz/math/Matrix_Tests.cpp)
+	add_test_file(Vector_Tests ${TEST_DIR}/sfz/math/Vector_Tests.cpp)
+	
 endif()
