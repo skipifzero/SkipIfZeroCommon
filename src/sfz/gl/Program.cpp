@@ -56,7 +56,8 @@ static bool linkProgram(GLuint program) noexcept
 // Program: Constructor functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-Program Program::fromSource(const char* vertexSrc, const char* geometrySrc, const char* fragmentSrc) noexcept
+Program Program::fromSource(const char* vertexSrc, const char* geometrySrc, const char* fragmentSrc,
+                            void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
 	GLuint vertexShader = compileShader(vertexSrc, GL_VERTEX_SHADER);
 	if (vertexShader == 0) {
@@ -82,7 +83,8 @@ Program Program::fromSource(const char* vertexSrc, const char* geometrySrc, cons
 	glAttachShader(shaderProgram, geometryShader);
 	glAttachShader(shaderProgram, fragmentShader);
 
-	// TODO: glBindAttribLocation() & glBindFragDataLocation() here?
+	// glBindAttribLocation() & glBindFragDataLocation()
+	if (bindAttribFragFunc != nullptr) bindAttribFragFunc(shaderProgram);
 
 	bool linkSuccess = linkProgram(shaderProgram);
 
@@ -102,15 +104,18 @@ Program Program::fromSource(const char* vertexSrc, const char* geometrySrc, cons
 	
 	Program temp;
 	temp.mHandle = shaderProgram;
+	temp.mBindAttribFragFunc = bindAttribFragFunc;
 	return std::move(temp);
 }
 
-Program Program::fromSource(const string& vertexSrc, const string& geometrySrc, const string& fragmentSrc) noexcept
+Program Program::fromSource(const string& vertexSrc, const string& geometrySrc, const string& fragmentSrc,
+                            void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
-	return fromSource(vertexSrc.c_str(), geometrySrc.c_str(), fragmentSrc.c_str());
+	return fromSource(vertexSrc.c_str(), geometrySrc.c_str(), fragmentSrc.c_str(), bindAttribFragFunc);
 }
 
-Program Program::fromSource(const char* vertexSrc, const char* fragmentSrc) noexcept
+Program Program::fromSource(const char* vertexSrc, const char* fragmentSrc,
+                            void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
 	GLuint vertexShader = compileShader(vertexSrc, GL_VERTEX_SHADER);
 	if (vertexShader == 0) {
@@ -129,7 +134,8 @@ Program Program::fromSource(const char* vertexSrc, const char* fragmentSrc) noex
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
 
-	// TODO: glBindAttribLocation() & glBindFragDataLocation() here?
+	// glBindAttribLocation() & glBindFragDataLocation()
+	if (bindAttribFragFunc != nullptr) bindAttribFragFunc(shaderProgram);
 
 	bool linkSuccess = linkProgram(shaderProgram);
 
@@ -147,64 +153,76 @@ Program Program::fromSource(const char* vertexSrc, const char* fragmentSrc) noex
 	
 	Program temp;
 	temp.mHandle = shaderProgram;
+	temp.mBindAttribFragFunc = bindAttribFragFunc;
 	return temp;
 }
 
-Program Program::fromSource(const string& vertexSrc, const string& fragmentSrc) noexcept
+Program Program::fromSource(const string& vertexSrc, const string& fragmentSrc,
+                            void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
-	return fromSource(vertexSrc.c_str(), fragmentSrc.c_str());
+	return fromSource(vertexSrc.c_str(), fragmentSrc.c_str(), bindAttribFragFunc);
 }
 
-Program Program::postProcessFromSource(const char* postProcessSrc) noexcept
+Program Program::postProcessFromSource(const char* postProcessSrc,
+                                       void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
 	// TODO: Implement
 	return Program{};
 }
 
-Program Program::postProcessFromSource(const string& postProcessSrc) noexcept
+Program Program::postProcessFromSource(const string& postProcessSrc,
+                                       void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
-	return postProcessFromSource(postProcessSrc.c_str());
+	return postProcessFromSource(postProcessSrc.c_str(), bindAttribFragFunc);
 }
 
 
-Program Program::fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath) noexcept
+Program Program::fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath,
+                          void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
 	Program tmp;
 	tmp.mVertexPath = vertexPath;
 	tmp.mGeometryPath = geometryPath;
 	tmp.mFragmentPath = fragmentPath;
+	tmp.mBindAttribFragFunc = bindAttribFragFunc;
 	tmp.reload();
 	return tmp;
 }
 
-Program Program::fromFile(const string& vertexPath, const string& geometryPath, const string& fragmentPath) noexcept
+Program Program::fromFile(const string& vertexPath, const string& geometryPath, const string& fragmentPath,
+                          void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
-	return fromFile(vertexPath.c_str(), geometryPath.c_str(), fragmentPath.c_str());
+	return fromFile(vertexPath.c_str(), geometryPath.c_str(), fragmentPath.c_str(), bindAttribFragFunc);
 }
 
-Program Program::fromFile(const char* vertexPath, const char* fragmentPath) noexcept
+Program Program::fromFile(const char* vertexPath, const char* fragmentPath,
+                          void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
 	Program tmp;
 	tmp.mVertexPath = vertexPath;
 	tmp.mFragmentPath = fragmentPath;
+	tmp.mBindAttribFragFunc = bindAttribFragFunc;
 	tmp.reload();
 	return tmp;
 }
 
-Program Program::fromFile(const string& vertexPath, const string& fragmentPath) noexcept
+Program Program::fromFile(const string& vertexPath, const string& fragmentPath,
+                          void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
-	return fromFile(vertexPath.c_str(), fragmentPath.c_str());
+	return fromFile(vertexPath.c_str(), fragmentPath.c_str(), bindAttribFragFunc);
 }
 
-Program Program::postProcessFromFile(const char* postProcessPath) noexcept
+Program Program::postProcessFromFile(const char* postProcessPath,
+                                     void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
 	// TODO: Implement
 	return Program{};
 }
 
-Program Program::postProcessFromFile(const string& postProcessPath) noexcept
+Program Program::postProcessFromFile(const string& postProcessPath,
+                                     void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
-	return postProcessFromFile(postProcessPath.c_str());
+	return postProcessFromFile(postProcessPath.c_str(), bindAttribFragFunc);
 }
 
 // Program: Public methods
@@ -217,13 +235,13 @@ bool Program::reload() noexcept
 	const string fragmentSrc = sfz::readTextFile(mFragmentPath.c_str());
 
 	if ((vertexSrc.size() > 0) && (geometrySrc.size() > 0) && (fragmentSrc.size() > 0)) {
-		Program tmp = Program::fromSource(vertexSrc, geometrySrc, fragmentSrc);
+		Program tmp = Program::fromSource(vertexSrc, geometrySrc, fragmentSrc, mBindAttribFragFunc);
 		if (!tmp.isValid()) return false;
 		*this = std::move(tmp);
 		return true;
 	}
 	else if ((vertexSrc.size() > 0) && (fragmentSrc.size() > 0)) {
-		Program tmp = Program::fromSource(vertexSrc, fragmentSrc);
+		Program tmp = Program::fromSource(vertexSrc, fragmentSrc, mBindAttribFragFunc);
 		if (!tmp.isValid()) return false;
 		*this = std::move(tmp);
 		return true;
@@ -238,19 +256,13 @@ bool Program::reload() noexcept
 // Program: Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-Program::Program() noexcept
-:
-	mVertexPath{""},
-	mGeometryPath{""},
-	mFragmentPath{""}
-{ }
-
 Program::Program(Program&& other) noexcept
 {
 	std::swap(this->mHandle, other.mHandle);
 	std::swap(this->mVertexPath, other.mVertexPath);
 	std::swap(this->mGeometryPath, other.mGeometryPath);
 	std::swap(this->mFragmentPath, other.mFragmentPath);
+	std::swap(this->mBindAttribFragFunc, other.mBindAttribFragFunc);
 }
 
 Program& Program::operator= (Program&& other) noexcept
@@ -259,6 +271,7 @@ Program& Program::operator= (Program&& other) noexcept
 	std::swap(this->mVertexPath, other.mVertexPath);
 	std::swap(this->mGeometryPath, other.mGeometryPath);
 	std::swap(this->mFragmentPath, other.mFragmentPath);
+	std::swap(this->mBindAttribFragFunc, other.mBindAttribFragFunc);
 	return *this;
 }
 

@@ -18,19 +18,31 @@ public:
 	// Constructor functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-	Program fromSource(const char* vertexSrc, const char* geometrySrc, const char* fragmentSrc) noexcept;
-	Program fromSource(const string& vertexSrc, const string& geometrySrc, const string& fragmentSrc) noexcept;
-	Program fromSource(const char* vertexSrc, const char* fragmentSrc) noexcept;
-	Program fromSource(const string& vertexSrc, const string& fragmentSrc) noexcept;
-	Program postProcessFromSource(const char* postProcessSrc) noexcept;
-	Program postProcessFromSource(const string& postProcessSrc) noexcept;
+	static Program fromSource(const char* vertexSrc, const char* geometrySrc, const char* fragmentSrc,
+	                          void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program fromSource(const string& vertexSrc, const string& geometrySrc, const string& fragmentSrc,
+	                          void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program fromSource(const char* vertexSrc, const char* fragmentSrc,
+	                          void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program fromSource(const string& vertexSrc, const string& fragmentSrc,
+	                          void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program postProcessFromSource(const char* postProcessSrc,
+	                                     void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program postProcessFromSource(const string& postProcessSrc,
+	                                     void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
 
-	Program fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath) noexcept;
-	Program fromFile(const string& vertexPath, const string& geometryPath, const string& fragmentPath) noexcept;
-	Program fromFile(const char* vertexPath, const char* fragmentPath) noexcept;
-	Program fromFile(const string& vertexPath, const string& fragmentPath) noexcept;
-	Program postProcessFromFile(const char* postProcessPath) noexcept;
-	Program postProcessFromFile(const string& postProcessPath) noexcept;
+	static Program fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath,
+	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program fromFile(const string& vertexPath, const string& geometryPath, const string& fragmentPath,
+	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program fromFile(const char* vertexPath, const char* fragmentPath,
+	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program fromFile(const string& vertexPath, const string& fragmentPath,
+	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program postProcessFromFile(const char* postProcessPath,
+	                                   void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
+	static Program postProcessFromFile(const string& postProcessPath,
+	                                   void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
 
 	// Public methods
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -42,10 +54,10 @@ public:
 	// Constructors & destructors
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	Program() = default;
 	Program(const Program&) = delete;
 	Program& operator= (const Program&) = delete;
 
-	Program() noexcept;
 	Program(Program&& other) noexcept;
 	Program& operator= (Program&& other) noexcept;
 	~Program() noexcept;
@@ -54,8 +66,16 @@ private:
 	// Private members
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	// The handle to the current OpenGL program
 	uint32_t mHandle = 0;
-	string mVertexPath, mGeometryPath, mFragmentPath;
+
+	// Optional paths to shader source files
+	string mVertexPath = "";
+	string mGeometryPath = "";
+	string mFragmentPath = "";
+
+	// Optional function used to call glBindAttribLocation() & glBindFragDataLocation()
+	void(*mBindAttribFragFunc)(uint32_t shaderProgram) = nullptr;
 };
 
 } // namespace gl
