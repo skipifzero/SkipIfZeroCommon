@@ -1,10 +1,11 @@
-#include "sfz/gl/ShaderProgram.hpp"
+#include "sfz/gl/Program.hpp"
 
 #include <algorithm>
 #include <iostream>
 #include <new>
 
 #include "sfz/gl/OpenGL.hpp"
+#include "sfz/util/IO.hpp"
 
 namespace gl {
 
@@ -52,27 +53,27 @@ static bool linkProgram(GLuint program) noexcept
 	return true;
 }
 
-// ShaderProgram: Constructor functions
+// Program: Constructor functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-ShaderProgram ShaderProgram::fromSource(const char* vertexSrc, const char* geometrySrc, const char* fragmentSrc) noexcept
+Program Program::fromSource(const char* vertexSrc, const char* geometrySrc, const char* fragmentSrc) noexcept
 {
 	GLuint vertexShader = compileShader(vertexSrc, GL_VERTEX_SHADER);
 	if (vertexShader == 0) {
 		std::cerr << "Couldn't compile vertex shader." << std::endl;
-		return ShaderProgram{};
+		return Program{};
 	}
 
 	GLuint geometryShader = compileShader(geometrySrc, GL_GEOMETRY_SHADER);
 	if (geometryShader == 0) {
 		std::cerr << "Couldn't compile geometry shader." << std::endl;
-		return ShaderProgram{};
+		return Program{};
 	}
 	
 	GLuint fragmentShader = compileShader(fragmentSrc, GL_FRAGMENT_SHADER);
 	if (fragmentShader == 0) {
 		std::cerr << "Couldn't compile fragment shader." << std::endl;
-		return ShaderProgram{};
+		return Program{};
 	}
 
 	GLuint shaderProgram = glCreateProgram();
@@ -96,31 +97,31 @@ ShaderProgram ShaderProgram::fromSource(const char* vertexSrc, const char* geome
 	if (!linkSuccess) {
 		glDeleteProgram(shaderProgram);
 		std::cerr << "Couldn't link shader program." << std::endl;
-		return ShaderProgram{};
+		return Program{};
 	}
 	
-	ShaderProgram temp;
+	Program temp;
 	temp.mHandle = shaderProgram;
 	return std::move(temp);
 }
 
-ShaderProgram ShaderProgram::fromSource(const string& vertexSrc, const string& geometrySrc, const string& fragmentSrc) noexcept
+Program Program::fromSource(const string& vertexSrc, const string& geometrySrc, const string& fragmentSrc) noexcept
 {
 	return fromSource(vertexSrc.c_str(), geometrySrc.c_str(), fragmentSrc.c_str());
 }
 
-ShaderProgram ShaderProgram::fromSource(const char* vertexSrc, const char* fragmentSrc) noexcept
+Program Program::fromSource(const char* vertexSrc, const char* fragmentSrc) noexcept
 {
 	GLuint vertexShader = compileShader(vertexSrc, GL_VERTEX_SHADER);
 	if (vertexShader == 0) {
 		std::cerr << "Couldn't compile vertex shader." << std::endl;
-		return ShaderProgram{};
+		return Program{};
 	}
 	
 	GLuint fragmentShader = compileShader(fragmentSrc, GL_FRAGMENT_SHADER);
 	if (fragmentShader == 0) {
 		std::cerr << "Couldn't compile fragment shader." << std::endl;
-		return ShaderProgram{};
+		return Program{};
 	}
 
 	GLuint shaderProgram = glCreateProgram();
@@ -141,85 +142,110 @@ ShaderProgram ShaderProgram::fromSource(const char* vertexSrc, const char* fragm
 	if (!linkSuccess) {
 		glDeleteProgram(shaderProgram);
 		std::cerr << "Couldn't link shader program." << std::endl;
-		return ShaderProgram{};
+		return Program{};
 	}
 	
-	ShaderProgram temp;
+	Program temp;
 	temp.mHandle = shaderProgram;
 	return temp;
 }
 
-ShaderProgram ShaderProgram::fromSource(const string& vertexSrc, const string& fragmentSrc) noexcept
+Program Program::fromSource(const string& vertexSrc, const string& fragmentSrc) noexcept
 {
 	return fromSource(vertexSrc.c_str(), fragmentSrc.c_str());
 }
 
-ShaderProgram ShaderProgram::postProcessFromSource(const char* postProcessSrc) noexcept
+Program Program::postProcessFromSource(const char* postProcessSrc) noexcept
 {
 	// TODO: Implement
-	return ShaderProgram{};
+	return Program{};
 }
 
-ShaderProgram ShaderProgram::postProcessFromSource(const string& postProcessSrc) noexcept
+Program Program::postProcessFromSource(const string& postProcessSrc) noexcept
 {
 	return postProcessFromSource(postProcessSrc.c_str());
 }
 
 
-ShaderProgram ShaderProgram::fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath) noexcept
+Program Program::fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath) noexcept
 {
-	// TODO: Implement
-	return ShaderProgram{};
+	Program tmp;
+	tmp.mVertexPath = vertexPath;
+	tmp.mGeometryPath = geometryPath;
+	tmp.mFragmentPath = fragmentPath;
+	tmp.reload();
+	return tmp;
 }
 
-ShaderProgram ShaderProgram::fromFile(const string& vertexPath, const string& geometryPath, const string& fragmentPath) noexcept
+Program Program::fromFile(const string& vertexPath, const string& geometryPath, const string& fragmentPath) noexcept
 {
 	return fromFile(vertexPath.c_str(), geometryPath.c_str(), fragmentPath.c_str());
 }
 
-ShaderProgram ShaderProgram::fromFile(const char* vertexPath, const char* fragmentPath) noexcept
+Program Program::fromFile(const char* vertexPath, const char* fragmentPath) noexcept
 {
-	// TODO: Implement
-	return ShaderProgram{};
+	Program tmp;
+	tmp.mVertexPath = vertexPath;
+	tmp.mFragmentPath = fragmentPath;
+	tmp.reload();
+	return tmp;
 }
 
-ShaderProgram ShaderProgram::fromFile(const string& vertexPath, const string& fragmentPath) noexcept
+Program Program::fromFile(const string& vertexPath, const string& fragmentPath) noexcept
 {
 	return fromFile(vertexPath.c_str(), fragmentPath.c_str());
 }
 
-ShaderProgram ShaderProgram::postProcessFromFile(const char* postProcessPath) noexcept
+Program Program::postProcessFromFile(const char* postProcessPath) noexcept
 {
 	// TODO: Implement
-	return ShaderProgram{};
+	return Program{};
 }
 
-ShaderProgram ShaderProgram::postProcessFromFile(const string& postProcessPath) noexcept
+Program Program::postProcessFromFile(const string& postProcessPath) noexcept
 {
 	return postProcessFromFile(postProcessPath.c_str());
 }
 
-// ShaderProgram: Public methods
+// Program: Public methods
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-bool ShaderProgram::reload() noexcept
+bool Program::reload() noexcept
 {
-	// TODO: Implement
+	const string vertexSrc = sfz::readTextFile(mVertexPath.c_str());
+	const string geometrySrc = sfz::readTextFile(mGeometryPath.c_str());
+	const string fragmentSrc = sfz::readTextFile(mFragmentPath.c_str());
+
+	if ((vertexSrc.size() > 0) && (geometrySrc.size() > 0) && (fragmentSrc.size() > 0)) {
+		Program tmp = Program::fromSource(vertexSrc, geometrySrc, fragmentSrc);
+		if (!tmp.isValid()) return false;
+		*this = std::move(tmp);
+		return true;
+	}
+	else if ((vertexSrc.size() > 0) && (fragmentSrc.size() > 0)) {
+		Program tmp = Program::fromSource(vertexSrc, fragmentSrc);
+		if (!tmp.isValid()) return false;
+		*this = std::move(tmp);
+		return true;
+	}
+
+	// TODO: Handle post-process shaders
+
 	return false;
 }
 
 
-// ShaderProgram: Constructors & destructors
+// Program: Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-ShaderProgram::ShaderProgram() noexcept
+Program::Program() noexcept
 :
 	mVertexPath{""},
 	mGeometryPath{""},
 	mFragmentPath{""}
 { }
 
-ShaderProgram::ShaderProgram(ShaderProgram&& other) noexcept
+Program::Program(Program&& other) noexcept
 {
 	std::swap(this->mHandle, other.mHandle);
 	std::swap(this->mVertexPath, other.mVertexPath);
@@ -227,7 +253,7 @@ ShaderProgram::ShaderProgram(ShaderProgram&& other) noexcept
 	std::swap(this->mFragmentPath, other.mFragmentPath);
 }
 
-ShaderProgram& ShaderProgram::operator= (ShaderProgram&& other) noexcept
+Program& Program::operator= (Program&& other) noexcept
 {
 	std::swap(this->mHandle, other.mHandle);
 	std::swap(this->mVertexPath, other.mVertexPath);
@@ -236,7 +262,7 @@ ShaderProgram& ShaderProgram::operator= (ShaderProgram&& other) noexcept
 	return *this;
 }
 
-ShaderProgram::~ShaderProgram() noexcept
+Program::~Program() noexcept
 {
 	glDeleteProgram(mHandle); // Silently ignored if mHandle == 0.
 }

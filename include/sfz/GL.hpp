@@ -5,7 +5,7 @@
 #include "sfz/gl/Alignment.hpp"
 #include "sfz/gl/Context.hpp"
 #include "sfz/gl/FontRenderer.hpp"
-#include "sfz/gl/ShaderProgram.hpp"
+#include "sfz/gl/Program.hpp"
 #include "sfz/gl/SpriteBatch.hpp"
 #include "sfz/gl/Texture.hpp"
 #include "sfz/gl/TextureEnums.hpp"
