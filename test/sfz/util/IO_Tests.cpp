@@ -69,7 +69,7 @@ TEST_CASE("writeBinaryFile() & readBinaryFile() & sizeofFile(), ", "[sfz::IO]")
 		REQUIRE(sfz::deleteFile(fpath));
 		fileExists = sfz::fileExists(fpath);
 	}
-	REQUIRE(fpath);
+	REQUIRE(!fileExists);
 
 	REQUIRE(sfz::writeBinaryFile(fpath, data, sizeof(data)));
 	REQUIRE(sfz::readBinaryFile(fpath, data2, sizeof(data2)) == 0);
@@ -84,4 +84,29 @@ TEST_CASE("writeBinaryFile() & readBinaryFile() & sizeofFile(), ", "[sfz::IO]")
 
 	REQUIRE(sfz::deleteFile(fpath));
 	REQUIRE(!sfz::fileExists(fpath));
+}
+
+TEST_CASE("readTextFile()", "[sfz::IO]")
+{
+	const string filePath = basePath() + stupidFileName();
+	const char* fpath = filePath.c_str();
+	const char* strToWrite = "Hello World!\nHello World 2!\nHello World 3!";
+
+	bool fileExists = sfz::fileExists(fpath);
+	if (fileExists) {
+		REQUIRE(sfz::deleteFile(fpath));
+		fileExists = sfz::fileExists(fpath);
+	}
+	REQUIRE(!fileExists);
+
+	REQUIRE(sfz::writeBinaryFile(fpath, (const uint8_t*)strToWrite, sizeof(strToWrite)));
+	REQUIRE(sfz::fileExists(fpath));
+
+	string fileStr = sfz::readTextFile(fpath);
+	REQUIRE(fileStr.size() >= sizeof(strToWrite));
+	for (size_t i = 0; i < sizeof(strToWrite); ++i) {
+		REQUIRE(fileStr[i] == strToWrite[i]);
+	}
+
+	REQUIRE(sfz::deleteFile(fpath));
 }

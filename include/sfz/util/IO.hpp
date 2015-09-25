@@ -53,6 +53,9 @@ int32_t readBinaryFile(const char* path, uint8_t* dataOut, size_t maxNumBytes) n
 /** @brief Reads an entiry binary file, returns empty vector if error. */
 vector<uint8_t> readBinaryFile(const char* path) noexcept;
 
+/** @brief Reads an entire text file, returns empty string if error. */
+string readTextFile(const char* path) noexcept;
+
 /** @brief Writes memory to binary file, returns whether successful or not. */
 bool writeBinaryFile(const char* path, const uint8_t* data, size_t numBytes) noexcept;
 

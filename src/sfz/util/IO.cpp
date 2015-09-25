@@ -208,6 +208,43 @@ vector<uint8_t> readBinaryFile(const char* path) noexcept
 	return std::move(temp);
 }
 
+string readTextFile(const char* path) noexcept
+{
+	// Open file
+	std::FILE* file = std::fopen(path, "r");
+	if (file == NULL) return "";
+
+	// Get size of file
+	std::fseek(file, 0, SEEK_END);
+	int64_t size = std::ftell(file);
+	std::rewind(file); // Rewind position to beginning of file
+	if (size < 0) {
+		std::fclose(file);
+		return "";
+	}
+
+	// Create string with enough capacity to fit file
+	string str = "";
+	str.reserve(static_cast<size_t>(size + 1));
+
+	// Read the file into the vector
+	uint8_t buffer[BUFSIZ+1];
+	buffer[BUFSIZ] = '\0';
+	size_t readSize;
+	while ((readSize = std::fread(buffer, 1, BUFSIZ, file)) > 0) {
+
+		if (readSize < BUFSIZ) {
+			buffer[readSize] = '\0';
+			str += (char*)buffer;
+		} else {
+			str += (char*)buffer;
+		}
+	}
+
+	std::fclose(file);
+	return std::move(str);
+}
+
 bool writeBinaryFile(const char* path, const uint8_t* data, size_t numBytes) noexcept
 {
 	// Open file
