@@ -28,23 +28,15 @@ TEST_CASE("createFile() & fileExists() & deleteFile()", "[sfz::IO]")
 
 	bool resExists1 = sfz::fileExists(fpath);
 	if (resExists1) {
-		bool del = sfz::deleteFile(fpath);
-		REQUIRE(del);
+		REQUIRE(sfz::deleteFile(fpath));
 		resExists1 = sfz::fileExists(fpath);
 	}
 	REQUIRE(!resExists1);
 
-	bool resCreate = sfz::createFile(fpath);
-	REQUIRE(resCreate);
-
-	bool resExists2 = sfz::fileExists(fpath);
-	REQUIRE(resExists2);
-
-	bool resDelete = sfz::deleteFile(fpath);
-	REQUIRE(resDelete);
-
-	bool resExists3 = sfz::fileExists(fpath);
-	REQUIRE(!resExists3);
+	REQUIRE(sfz::createFile(fpath));
+	REQUIRE(sfz::fileExists(fpath));
+	REQUIRE(sfz::deleteFile(fpath));
+	REQUIRE(!sfz::fileExists(fpath));
 }
 
 TEST_CASE("createDirectory() & directoryExists() & deleteDirectory()", "[sfz::IO]")
@@ -54,21 +46,42 @@ TEST_CASE("createDirectory() & directoryExists() & deleteDirectory()", "[sfz::IO
 
 	bool resExists1 = sfz::directoryExists(dpath);
 	if (resExists1) {
-		bool del = sfz::deleteDirectory(dpath);
-		REQUIRE(del);
+		REQUIRE(sfz::deleteDirectory(dpath));
 		resExists1 = sfz::directoryExists(dpath);
 	}
 	REQUIRE(!resExists1);
 
-	bool resCreate = sfz::createDirectory(dpath);
-	REQUIRE(resCreate);
+	REQUIRE(sfz::createDirectory(dpath));
+	REQUIRE(sfz::directoryExists(dpath));
+	REQUIRE(sfz::deleteDirectory(dpath));
+	REQUIRE(!sfz::directoryExists(dpath));
+}
 
-	bool resExists2 = sfz::directoryExists(dpath);
-	REQUIRE(resExists2);
+TEST_CASE("writeBinaryFile() & readBinaryFile() & sizeofFile(), ", "[sfz::IO]")
+{
+	const string filePath = basePath() + stupidFileName();
+	const char* fpath = filePath.c_str();
+	const uint8_t data[] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+	uint8_t data2[sizeof(data)];
 
-	bool resDelete = sfz::deleteDirectory(dpath);
-	REQUIRE(resDelete);
+	bool fileExists = sfz::fileExists(fpath);
+	if (fileExists) {
+		REQUIRE(sfz::deleteFile(fpath));
+		fileExists = sfz::fileExists(fpath);
+	}
+	REQUIRE(fpath);
 
-	bool resExists3 = sfz::directoryExists(dpath);
-	REQUIRE(!resExists3);
+	REQUIRE(sfz::writeBinaryFile(fpath, data, sizeof(data)));
+	REQUIRE(sfz::readBinaryFile(fpath, data2, sizeof(data2)) == 0);
+	auto data3 = sfz::readBinaryFile(fpath);
+	REQUIRE(data3.size() == sizeof(data));
+	REQUIRE(sizeof(data) == (size_t)sfz::sizeofFile(fpath));
+
+	for (size_t i = 0; i < sizeof(data); ++i) {
+		REQUIRE(data[i] == data2[i]);
+		REQUIRE(data[i] == data3[i]);
+	}
+
+	REQUIRE(sfz::deleteFile(fpath));
+	REQUIRE(!sfz::fileExists(fpath));
 }

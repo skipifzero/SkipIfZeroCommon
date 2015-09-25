@@ -115,9 +115,12 @@ bool copyFile(const char* srcPath, const char* dstPath) noexcept
 	uint8_t buffer[BUFSIZ];
 
 	std::FILE* source = std::fopen(srcPath, "rb");
-	std::FILE* destination = std::fopen(dstPath, "wb");
 	if (source == NULL) return false;
-	if (destination == NULL) return false;
+	std::FILE* destination = std::fopen(dstPath, "wb");
+	if (destination == NULL) {
+		std::fclose(source);
+		return false;
+	}
 
 	size_t size;
 	while ((size = std::fread(buffer, 1, BUFSIZ, source)) > 0) {
@@ -140,6 +143,33 @@ int64_t sizeofFile(const char* path) noexcept
 	return size;
 }
 
+int32_t readBinaryFile(const char* path, uint8_t* dataOut, size_t maxNumBytes) noexcept
+{
+	// Open file
+	std::FILE* file = std::fopen(path, "rb");
+	if (file == NULL) return -1;
+
+	// Read the file into memory
+	uint8_t buffer[BUFSIZ];
+	size_t readSize;
+	size_t currOffs = 0;
+	while ((readSize = std::fread(buffer, 1, BUFSIZ, file)) > 0) {
+
+		// Check if memory has enough space left
+		if ((currOffs + readSize) > maxNumBytes) {
+			std::fclose(file);
+			std::memcpy(dataOut + currOffs, buffer, maxNumBytes - currOffs);
+			return -2;
+		}
+
+		std::memcpy(dataOut + currOffs, buffer, readSize);
+		currOffs += readSize;
+	}
+
+	std::fclose(file);
+	return 0;
+}
+
 vector<uint8_t> readBinaryFile(const char* path) noexcept
 {
 	// Open file
@@ -156,18 +186,37 @@ vector<uint8_t> readBinaryFile(const char* path) noexcept
 	}
 
 	// Create vector with enough capacity to fit file
-	vector<uint8_t> temp(static_cast<size_t>(size+1));
-	uint8_t* tempPtr = temp.data();
+	vector<uint8_t> temp(static_cast<size_t>(size));
 
 	// Read the file into the vector
 	uint8_t buffer[BUFSIZ];
 	size_t readSize;
+	size_t currOffs = 0;
 	while ((readSize = std::fread(buffer, 1, BUFSIZ, file)) > 0) {
-		std::memcpy(tempPtr, buffer, readSize);
-		tempPtr += readSize;
+
+		// Ensure vector has space.
+		if ((temp.data() + currOffs + readSize) > (temp.data() + temp.size())) {
+			size_t diff = (temp.data() + currOffs + readSize) - (temp.data() + temp.size());
+			temp.resize(temp.size() + diff, 0);
+		}
+
+		std::memcpy(temp.data() + currOffs, buffer, readSize);
+		currOffs += readSize;
 	}
 
+	std::fclose(file);
 	return std::move(temp);
+}
+
+bool writeBinaryFile(const char* path, const uint8_t* data, size_t numBytes) noexcept
+{
+	// Open file
+	std::FILE* file = std::fopen(path, "wb");
+	if (file == NULL) return false;
+
+	size_t numWritten = std::fwrite(data, 1, numBytes, file);
+	std::fclose(file);
+	return (numWritten == numBytes);
 }
 
 } // namespace sfz

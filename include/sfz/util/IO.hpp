@@ -8,6 +8,7 @@
 
 namespace sfz {
 
+using std::int32_t;
 using std::int64_t;
 using std::string;
 using std::uint8_t;
@@ -43,8 +44,17 @@ bool copyFile(const char* srcPath, const char* dstPath) noexcept;
 /** @brief Returns size of file in bytes, negative value if error. */
 int64_t sizeofFile(const char* path) noexcept;
 
+/** 
+ * @brief Reads binary file to pre-allocated memory.
+ * @return 0 on success, -1 on error, -2 if file was larger than pre-allocated memory
+ */
+int32_t readBinaryFile(const char* path, uint8_t* dataOut, size_t maxNumBytes) noexcept;
+
 /** @brief Reads an entiry binary file, returns empty vector if error. */
 vector<uint8_t> readBinaryFile(const char* path) noexcept;
+
+/** @brief Writes memory to binary file, returns whether successful or not. */
+bool writeBinaryFile(const char* path, const uint8_t* data, size_t numBytes) noexcept;
 
 } // namespace sfz
 
