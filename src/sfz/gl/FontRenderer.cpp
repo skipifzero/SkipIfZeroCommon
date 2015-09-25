@@ -11,19 +11,20 @@
 #include "sfz/gl/OpenGL.hpp"
 #include "sfz/gl/GLUtils.hpp"
 
-#include <new> // std::nothrow
+#include "sfz/util/IO.hpp"
+
 #include <cstdio>
 #include <cstdlib> // malloc
 #include <cstring> // std::memcpy
 #include <iostream> // std::cerr
 #include <exception> // std::terminate
+#include <new> // std::nothrow
+#include <vector>
 
 namespace gl {
 
-// Anonymous namespace
+// Static functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-namespace {
 
 // Anonymous: UTF8 decoder
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -49,7 +50,7 @@ static const uint8_t utf8d[] =
 	1,3,1,1,1,1,1,3,1,3,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1, // s7..s8
 };
 
-bool decode(uint32_t* state, uint32_t* codep, uint32_t byte)
+static bool decode(uint32_t* state, uint32_t* codep, uint32_t byte)
 {
 	uint32_t type = utf8d[byte];
 	*codep = (*state != 0) ? (byte & 0x3fu) | (*codep << 6) : (0xff >> type) & (byte);
@@ -60,7 +61,7 @@ bool decode(uint32_t* state, uint32_t* codep, uint32_t byte)
 // Anonymous: Shaders
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-const char* FONT_RENDERER_FRAGMENT_SHADER_SRC = R"(
+static const char* FONT_RENDERER_FRAGMENT_SHADER_SRC = R"(
 	#version 330
 
 	precision highp float; // required by GLSL spec Sect 4.5.3
@@ -84,7 +85,7 @@ const char* FONT_RENDERER_FRAGMENT_SHADER_SRC = R"(
 // Anonymous: Functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-float anisotropicFactor(TextureFiltering filtering) noexcept
+static float anisotropicFactor(TextureFiltering filtering) noexcept
 {
 	switch (filtering) {
 	case TextureFiltering::ANISOTROPIC_1: return 1.0f;
@@ -97,34 +98,13 @@ float anisotropicFactor(TextureFiltering filtering) noexcept
 	}
 }
 
-uint8_t* loadTTFBuffer(const string& path) noexcept
-{
-	const size_t MAX_TTF_BUFFER_SIZE = 1<<22; // 4 MiB
-	uint8_t* buffer = new (std::nothrow) uint8_t[MAX_TTF_BUFFER_SIZE];
-
-	std::FILE* ttfFile = std::fopen(path.c_str(), "rb");
-	if (ttfFile == NULL) {
-		std::cerr << "Couldn't open TTF file at: " << path << std::endl;
-		std::terminate();
-	}
-
-	size_t readCount = std::fread(buffer, sizeof(uint8_t), MAX_TTF_BUFFER_SIZE, ttfFile);
-	if (readCount == 0) {
-		std::cerr << "Loaded no bytes from TTF file at: " << path << std::endl;
-		std::terminate();
-	}
-
-	std::fclose(ttfFile);
-	return buffer;
-}
-
-struct CharInfo {
+static struct CharInfo {
 	vec2 pos;
 	vec2 dim;
 	TextureRegion texRegion;
 };
 
-void calculateCharInfo(CharInfo& info, void* chardata, vec2 pixelToUV, uint32_t codeIndex,
+static void calculateCharInfo(CharInfo& info, void* chardata, vec2 pixelToUV, uint32_t codeIndex,
                        vec2& pos, float scale) noexcept
 {
 	stbtt_packedchar& c = reinterpret_cast<stbtt_packedchar*>(chardata)[codeIndex];
@@ -138,8 +118,6 @@ void calculateCharInfo(CharInfo& info, void* chardata, vec2 pixelToUV, uint32_t 
 
 	pos[0] += c.xadvance * scale;
 }
-
-} // anonymous namespace
 
 // FontRenderer: Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -164,16 +142,19 @@ FontRenderer::FontRenderer(const string& fontPath, uint32_t texWidth, uint32_t t
 
 	stbtt_PackSetOversampling(&packContext, 2, 2);
 
-	uint8_t* ttfBuffer = loadTTFBuffer(fontPath);
+	std::vector<uint8_t> ttfBuffer = sfz::readBinaryFile(fontPath.c_str());
+	if (ttfBuffer.size() == 0) {
+		std::cerr << "Couldn't open TTF file at: " << fontPath << std::endl;
+		std::terminate();
+	}
 
-	if (stbtt_PackFontRange(&packContext, ttfBuffer, 0, mFontSize, FIRST_CHAR, CHAR_COUNT,
+	if (stbtt_PackFontRange(&packContext, ttfBuffer.data(), 0, mFontSize, FIRST_CHAR, CHAR_COUNT,
 	                    reinterpret_cast<stbtt_packedchar*>(mPackedChars)) == 0) {
 		std::cerr << "FontRenderer: Couldn't pack font, texture likely too small." << std::endl;
 		std::terminate();
 	}
 
 	stbtt_PackEnd(&packContext);
-	delete[] ttfBuffer;
 
 	glGenTextures(1, &mFontTexture);
 	glBindTexture(GL_TEXTURE_2D, mFontTexture);
