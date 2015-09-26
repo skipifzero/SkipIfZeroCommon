@@ -31,34 +31,6 @@ bool checkGLError() noexcept;
  */
 bool checkAllGLErrors() noexcept;
 
-/**
- * @brief Prints the error log returned by glShaderInfoLog().
- */
-void printShaderInfoLog(uint32_t program) noexcept;
-
-/**
- * @brief Creates and compiles a vertex shader with the specified source.
- * Terminates program if shader compilation failed.
- * @param shaderSource the source code of the vertex shader
- * @return the newly created and compiled vertex shader object
- */
-uint32_t compileVertexShader(const string& shaderSource) noexcept; 
-
-/**
- * @brief Creates and compiles a fragment shader with the specified source.
- * Terminates program if shader compilation failed.
- * @param shaderSource the source code of the fragment shader
- * @return the newly created and compiled fragment shader object
- */
-uint32_t compileFragmentShader(const string& shaderSource) noexcept;
-
-/**
- * @brief Links the specified program.
- * Terminates program if linking failed.
- * @param program the program
- */
-void linkProgram(uint32_t program) noexcept;
-
 // Uniform setters
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

@@ -26,10 +26,6 @@ public:
 	                          void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
 	static Program fromSource(const string& vertexSrc, const string& fragmentSrc,
 	                          void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
-	static Program postProcessFromSource(const char* postProcessSrc,
-	                                     void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
-	static Program postProcessFromSource(const string& postProcessSrc,
-	                                     void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
 
 	static Program fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath,
 	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
@@ -39,10 +35,6 @@ public:
 	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
 	static Program fromFile(const string& vertexPath, const string& fragmentPath,
 	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
-	static Program postProcessFromFile(const char* postProcessPath,
-	                                   void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
-	static Program postProcessFromFile(const string& postProcessPath,
-	                                   void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
 
 	// Public methods
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -77,6 +69,22 @@ private:
 	// Optional function used to call glBindAttribLocation() & glBindFragDataLocation()
 	void(*mBindAttribFragFunc)(uint32_t shaderProgram) = nullptr;
 };
+
+// Program compilation & linking helper functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/** 
+ * @brief Compiles shader
+ * @param shaderType is a GLenum and can for example be of type GL_FRAGMENT_SHADER
+ * @return the compiled shader, 0 if failed.
+ */
+uint32_t compileShader(const char* source, uint32_t shaderType) noexcept;
+
+/** Links an OpenGL program and returns whether succesful or not. */
+bool linkProgram(uint32_t program) noexcept;
+
+/** Prints the shader info log, typically called if compilation (or linking) failed. */
+void printShaderInfoLog(uint32_t shader) noexcept;
 
 } // namespace gl
 #endif

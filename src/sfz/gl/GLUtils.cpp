@@ -31,69 +31,6 @@ bool checkAllGLErrors() noexcept
 	return foundError;
 }
 
-void printShaderInfoLog(uint32_t program) noexcept
-{
-	int logLength;
-	glGetShaderiv(program, GL_INFO_LOG_LENGTH, &logLength);
-	char* log = new char[logLength+1];
-	glGetShaderInfoLog(program, logLength, NULL, log);
-	std::cerr << log << std::endl;
-	delete[] log;
-}
-
-uint32_t compileVertexShader(const string& shaderSource) noexcept
-{
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	const char* shaderSourcePtr = shaderSource.c_str();
-	glShaderSource(vertexShader, 1, &shaderSourcePtr, NULL);
-	glCompileShader(vertexShader);
-	{
-		int compileSuccess;
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compileSuccess);
-		if (!compileSuccess) {
-			printShaderInfoLog(vertexShader);
-			checkAllGLErrors();
-			std::terminate();
-		}
-	}
-	checkAllGLErrors();
-	return vertexShader;
-}
-
-uint32_t compileFragmentShader(const string& shaderSource) noexcept
-{
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	const char* shaderSourcePtr = shaderSource.c_str();
-	glShaderSource(fragmentShader, 1, &shaderSourcePtr, NULL);
-	glCompileShader(fragmentShader);
-	{
-		int compileSuccess;
-		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compileSuccess);
-		if (!compileSuccess) {
-			printShaderInfoLog(fragmentShader);
-			checkAllGLErrors();
-			std::terminate();
-		}
-	}
-	checkAllGLErrors();
-	return fragmentShader;
-}
-
-void linkProgram(uint32_t program) noexcept
-{
-	glLinkProgram(program);
-	{
-		GLint linkSuccess = 0;
-		glGetProgramiv(program, GL_LINK_STATUS, &linkSuccess);
-		if (!linkSuccess) {
-			printShaderInfoLog(program);
-			checkAllGLErrors();
-			std::terminate();
-		}
-	}
-	checkAllGLErrors();
-}
-
 // Uniform setters: int
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

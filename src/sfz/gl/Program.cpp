@@ -9,50 +9,6 @@
 
 namespace gl {
 
-// Static function
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-static void printShaderInfoLog(GLuint shader) noexcept
-{
-	int logLength;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-	char* log = new (std::nothrow) char[(size_t)logLength+1];
-	glGetShaderInfoLog(shader, logLength, NULL, log);
-	std::cerr << log << std::endl;
-	delete[] log;
-}
-
-/* Returns 0 if shader compilation failed. */
-static GLuint compileShader(const char* source, GLenum shaderType) noexcept
-{
-	GLuint shader = glCreateShader(shaderType);
-	glShaderSource(shader, 1, &source, NULL);
-	glCompileShader(shader);
-
-	int compileSuccess;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &compileSuccess);
-	if (!compileSuccess) {
-		printShaderInfoLog(shader);
-		glDeleteShader(shader);
-		return 0;
-	}
-	
-	return shader;
-}
-
-/* Returns false if linking failed. */
-static bool linkProgram(GLuint program) noexcept
-{
-	glLinkProgram(program);
-	GLint linkSuccess = 0;
-	glGetProgramiv(program, GL_LINK_STATUS, &linkSuccess);
-	if (!linkSuccess) {
-		printShaderInfoLog(program);
-		return false;
-	}
-	return true;
-}
-
 // Program: Constructor functions
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -163,19 +119,6 @@ Program Program::fromSource(const string& vertexSrc, const string& fragmentSrc,
 	return fromSource(vertexSrc.c_str(), fragmentSrc.c_str(), bindAttribFragFunc);
 }
 
-Program Program::postProcessFromSource(const char* postProcessSrc,
-                                       void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
-{
-	// TODO: Implement
-	return Program{};
-}
-
-Program Program::postProcessFromSource(const string& postProcessSrc,
-                                       void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
-{
-	return postProcessFromSource(postProcessSrc.c_str(), bindAttribFragFunc);
-}
-
 
 Program Program::fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath,
                           void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
@@ -210,19 +153,6 @@ Program Program::fromFile(const string& vertexPath, const string& fragmentPath,
                           void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
 	return fromFile(vertexPath.c_str(), fragmentPath.c_str(), bindAttribFragFunc);
-}
-
-Program Program::postProcessFromFile(const char* postProcessPath,
-                                     void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
-{
-	// TODO: Implement
-	return Program{};
-}
-
-Program Program::postProcessFromFile(const string& postProcessPath,
-                                     void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
-{
-	return postProcessFromFile(postProcessPath.c_str(), bindAttribFragFunc);
 }
 
 // Program: Public methods
@@ -278,6 +208,48 @@ Program& Program::operator= (Program&& other) noexcept
 Program::~Program() noexcept
 {
 	glDeleteProgram(mHandle); // Silently ignored if mHandle == 0.
+}
+
+// Program compilation & linking helper functions
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+uint32_t compileShader(const char* source, uint32_t shaderType) noexcept
+{
+	GLuint shader = glCreateShader(shaderType);
+	glShaderSource(shader, 1, &source, NULL);
+	glCompileShader(shader);
+
+	int compileSuccess;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &compileSuccess);
+	if (!compileSuccess) {
+		printShaderInfoLog(shader);
+		glDeleteShader(shader);
+		return 0;
+	}
+
+	return shader;
+}
+
+bool linkProgram(uint32_t program) noexcept
+{
+	glLinkProgram(program);
+	GLint linkSuccess = 0;
+	glGetProgramiv(program, GL_LINK_STATUS, &linkSuccess);
+	if (!linkSuccess) {
+		printShaderInfoLog(program);
+		return false;
+	}
+	return true;
+}
+
+void printShaderInfoLog(uint32_t shader) noexcept
+{
+	int logLength;
+	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+	char* log = new (std::nothrow) char[(size_t)logLength+1];
+	glGetShaderInfoLog(shader, logLength, NULL, log);
+	std::cerr << log << std::endl;
+	delete[] log;
 }
 
 } // namespace gl
