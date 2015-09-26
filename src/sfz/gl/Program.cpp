@@ -144,12 +144,21 @@ bool Program::reload() noexcept
 		Program tmp = Program::fromSource(vertexSrc.c_str(), geometrySrc.c_str(), fragmentSrc.c_str(),
 		                                  mBindAttribFragFunc);
 		if (!tmp.isValid()) return false;
+
+		tmp.mVertexPath = this->mVertexPath;
+		tmp.mGeometryPath = this->mGeometryPath;
+		tmp.mFragmentPath = this->mFragmentPath;
+		tmp.mBindAttribFragFunc = this->mBindAttribFragFunc;
 		*this = std::move(tmp);
 		return true;
 	}
 	else if ((vertexSrc.size() > 0) && (fragmentSrc.size() > 0)) {
 		Program tmp = Program::fromSource(vertexSrc.c_str(), fragmentSrc.c_str(), mBindAttribFragFunc);
 		if (!tmp.isValid()) return false;
+
+		tmp.mVertexPath = this->mVertexPath;
+		tmp.mFragmentPath = this->mFragmentPath;
+		tmp.mBindAttribFragFunc = this->mBindAttribFragFunc;
 		*this = std::move(tmp);
 		return true;
 	}
