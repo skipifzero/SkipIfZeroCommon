@@ -6,6 +6,7 @@
 #include <stb_image.h>
 #include <sfz/PopWarnings.hpp>
 
+#include "sfz/Assert.hpp"
 #include "sfz/gl/OpenGL.hpp"
 #include "sfz/gl/GLUtils.hpp"
 

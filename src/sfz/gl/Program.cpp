@@ -64,12 +64,6 @@ Program Program::fromSource(const char* vertexSrc, const char* geometrySrc, cons
 	return std::move(temp);
 }
 
-Program Program::fromSource(const string& vertexSrc, const string& geometrySrc, const string& fragmentSrc,
-                            void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
-{
-	return fromSource(vertexSrc.c_str(), geometrySrc.c_str(), fragmentSrc.c_str(), bindAttribFragFunc);
-}
-
 Program Program::fromSource(const char* vertexSrc, const char* fragmentSrc,
                             void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
@@ -111,12 +105,6 @@ Program Program::fromSource(const char* vertexSrc, const char* fragmentSrc,
 	temp.mHandle = shaderProgram;
 	temp.mBindAttribFragFunc = bindAttribFragFunc;
 	return temp;
-}
-
-Program Program::fromSource(const string& vertexSrc, const string& fragmentSrc,
-                            void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
-{
-	return fromSource(vertexSrc.c_str(), fragmentSrc.c_str(), bindAttribFragFunc);
 }
 
 
@@ -165,13 +153,14 @@ bool Program::reload() noexcept
 	const string fragmentSrc = sfz::readTextFile(mFragmentPath.c_str());
 
 	if ((vertexSrc.size() > 0) && (geometrySrc.size() > 0) && (fragmentSrc.size() > 0)) {
-		Program tmp = Program::fromSource(vertexSrc, geometrySrc, fragmentSrc, mBindAttribFragFunc);
+		Program tmp = Program::fromSource(vertexSrc.c_str(), geometrySrc.c_str(), fragmentSrc.c_str(),
+		                                  mBindAttribFragFunc);
 		if (!tmp.isValid()) return false;
 		*this = std::move(tmp);
 		return true;
 	}
 	else if ((vertexSrc.size() > 0) && (fragmentSrc.size() > 0)) {
-		Program tmp = Program::fromSource(vertexSrc, fragmentSrc, mBindAttribFragFunc);
+		Program tmp = Program::fromSource(vertexSrc.c_str(), fragmentSrc.c_str(), mBindAttribFragFunc);
 		if (!tmp.isValid()) return false;
 		*this = std::move(tmp);
 		return true;
@@ -250,6 +239,186 @@ void printShaderInfoLog(uint32_t shader) noexcept
 	glGetShaderInfoLog(shader, logLength, NULL, log);
 	std::cerr << log << std::endl;
 	delete[] log;
+}
+
+// Uniform setters: int
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+void setUniform(int location, int i) noexcept
+{
+	glUniform1i(location, i);
+}
+
+void setUniform(const Program& program, const char* name, int i) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, i);
+}
+
+void setUniform(int location, const int* intArray, size_t count) noexcept
+{
+	glUniform1iv(location, count, intArray);
+}
+
+void setUniform(const Program& program, const char* name, const int* intArray, size_t count) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, intArray, count);
+}
+
+// Uniform setters: float
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+void setUniform(int location, float f) noexcept
+{
+	glUniform1f(location, f);
+}
+
+void setUniform(const Program& program, const char* name, float f) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, f);
+}
+
+void setUniform(int location, const float* floatArray, size_t count) noexcept
+{
+	glUniform1fv(location, count, floatArray);
+}
+
+void setUniform(const Program& program, const char* name, const float* floatArray, size_t count) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, floatArray, count);
+}
+
+// Uniform setters: vec2
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+void setUniform(int location, vec2 vector) noexcept
+{
+	glUniform2fv(location, 1, vector.elements);
+}
+
+void setUniform(const Program& program, const char* name, vec2 vector) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, vector);
+}
+
+void setUniform(int location, const vec2* vectorArray, size_t count) noexcept
+{
+	static_assert(sizeof(vec2) == sizeof(float)*2, "vec2 is padded");
+	glUniform2fv(location, count, vectorArray[0].elements);
+}
+
+void setUniform(const Program& program, const char* name, const vec2* vectorArray, size_t count) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, vectorArray, count);
+}
+
+// Uniform setters: vec3
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+void setUniform(int location, const vec3& vector) noexcept
+{
+	glUniform3fv(location, 1, vector.elements);
+}
+
+void setUniform(const Program& program, const char* name, const vec3& vector) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, vector);
+}
+
+void setUniform(int location, const vec3* vectorArray, size_t count) noexcept
+{
+	static_assert(sizeof(vec3) == sizeof(float)*3, "vec3 is padded");
+	glUniform3fv(location, count, vectorArray[0].elements);
+}
+
+void setUniform(const Program& program, const char* name, const vec3* vectorArray, size_t count) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, vectorArray, count);
+}
+
+// Uniform setters: vec4
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+void setUniform(int location, const vec4& vector) noexcept
+{
+	glUniform4fv(location, 1, vector.elements);
+}
+
+void setUniform(const Program& program, const char* name, const vec4& vector) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, vector);
+}
+
+void setUniform(int location, const vec4* vectorArray, size_t count) noexcept
+{
+	static_assert(sizeof(vec4) == sizeof(float)*4, "vec4 is padded");
+	glUniform4fv(location, count, vectorArray[0].elements);
+}
+
+void setUniform(const Program& program, const char* name, const vec4* vectorArray, size_t count) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, vectorArray, count);
+}
+
+// Uniform setters: mat3
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+void setUniform(int location, const mat3& matrix) noexcept
+{
+	glUniformMatrix3fv(location, 1, false, matrix.data());
+}
+
+void setUniform(const Program& program, const char* name, const mat3& matrix) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, matrix);
+}
+
+void setUniform(int location, const mat3* matrixArray, size_t count) noexcept
+{
+	static_assert(sizeof(mat3) == sizeof(float)*9, "mat3 is padded");
+	glUniformMatrix3fv(location, count, false, matrixArray[0].data());
+}
+
+void setUniform(const Program& program, const char* name, const mat3* matrixArray, size_t count) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, matrixArray, count);
+}
+
+// Uniform setters: mat4
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+void setUniform(int location, const mat4& matrix) noexcept
+{
+	glUniformMatrix4fv(location, 1, false, matrix.data());
+}
+
+void setUniform(const Program& program, const char* name, const mat4& matrix) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, matrix);
+}
+
+void setUniform(int location, const mat4* matrixArray, size_t count) noexcept
+{
+	static_assert(sizeof(mat4) == sizeof(float)*16, "mat4 is padded");
+	glUniformMatrix4fv(location, count, false, matrixArray[0].data());
+}
+
+void setUniform(const Program& program, const char* name, const mat4* matrixArray, size_t count) noexcept
+{
+	int loc = glGetUniformLocation(program.handle(), name);
+	setUniform(loc, matrixArray, count);
 }
 
 } // namespace gl
