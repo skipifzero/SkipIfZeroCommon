@@ -120,12 +120,6 @@ Program Program::fromFile(const char* vertexPath, const char* geometryPath, cons
 	return tmp;
 }
 
-Program Program::fromFile(const string& vertexPath, const string& geometryPath, const string& fragmentPath,
-                          void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
-{
-	return fromFile(vertexPath.c_str(), geometryPath.c_str(), fragmentPath.c_str(), bindAttribFragFunc);
-}
-
 Program Program::fromFile(const char* vertexPath, const char* fragmentPath,
                           void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
 {
@@ -135,12 +129,6 @@ Program Program::fromFile(const char* vertexPath, const char* fragmentPath,
 	tmp.mBindAttribFragFunc = bindAttribFragFunc;
 	tmp.reload();
 	return tmp;
-}
-
-Program Program::fromFile(const string& vertexPath, const string& fragmentPath,
-                          void(*bindAttribFragFunc)(uint32_t shaderProgram)) noexcept
-{
-	return fromFile(vertexPath.c_str(), fragmentPath.c_str(), bindAttribFragFunc);
 }
 
 // Program: Public methods
@@ -165,8 +153,6 @@ bool Program::reload() noexcept
 		*this = std::move(tmp);
 		return true;
 	}
-
-	// TODO: Handle post-process shaders
 
 	return false;
 }

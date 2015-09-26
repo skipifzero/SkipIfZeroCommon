@@ -28,22 +28,31 @@ public:
 	// Constructor functions
 	// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+	/**
+	 * @brief Constructs an OpenGL program given source strings
+	 * The reload() function will not have any effect on a program created directly from source by
+	 * this function.
+	 * @param *Src the source string for a specific shader
+	 * @param bindAttribFragFunc an optional function pointer used to call glBindAttribLocation() & 
+	 *                           glBindFragDataLocation()
+	 */
+
 	static Program fromSource(const char* vertexSrc, const char* geometrySrc, const char* fragmentSrc,
 	                          void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
-	
 	static Program fromSource(const char* vertexSrc, const char* fragmentSrc,
 	                          void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
 
+	/**
+	 * @brief Constructs an OpenGL program given file paths to source
+	 * The file paths are stored and when reload() is called the program will be recompiled.
+	 * @param *Path the path to the file containing the shader source for a specific shader
+	 * @param bindAttribFragFunc an optional function pointer used to call glBindAttribLocation() & 
+	 *                           glBindFragDataLocation()
+	 */
+
 	static Program fromFile(const char* vertexPath, const char* geometryPath, const char* fragmentPath,
 	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
-	
-	static Program fromFile(const string& vertexPath, const string& geometryPath, const string& fragmentPath,
-	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
-	
 	static Program fromFile(const char* vertexPath, const char* fragmentPath,
-	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
-	
-	static Program fromFile(const string& vertexPath, const string& fragmentPath,
 	                        void(*bindAttribFragFunc)(uint32_t shaderProgram) = nullptr) noexcept;
 
 	// Public methods
@@ -51,6 +60,15 @@ public:
 
 	inline uint32_t handle() const noexcept { return mHandle; }
 	inline bool isValid() const noexcept { return (mHandle != 0); }
+
+	/**
+	 * @brief Attempts to load source from file and recompile the program
+	 * This operation loads shader source from files and attempts to compile and link them into
+	 * a new program. The operation can therefore only succeed if the program was created from file
+	 * to begin with. If any step of the process fails it will be aborted and the current program
+	 * will remain unaffected.
+	 * @return whether the reload was successful or not
+	 */
 	bool reload() noexcept;
 
 	// Constructors & destructors
