@@ -4,7 +4,7 @@
 
 #include <cstdint>
 
-namespace sfz {
+namespace gl {
 
 using std::uint32_t;
 
@@ -27,5 +27,5 @@ private:
 	uint32_t mIndexBuffer = 0;
 };
 
-} // namespace sfz
+} // namespace gl
 #endif

@@ -5,7 +5,7 @@
 #include "sfz/gl/GLUtils.hpp"
 #include "sfz/gl/OpenGL.hpp"
 
-namespace sfz {
+namespace gl {
 
 using std::int32_t;
 
@@ -104,4 +104,4 @@ void PostProcessQuad::render() noexcept
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-} // namespace sfz
+} // namespace gl
