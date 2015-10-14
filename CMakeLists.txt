@@ -103,6 +103,8 @@ set(SOURCE_GL_FILES
 	${INCLUDE_DIR}/sfz/gl/GLUtils.hpp
 	 ${SOURCE_DIR}/sfz/gl/GLUtils.cpp
 	${INCLUDE_DIR}/sfz/gl/OpenGL.hpp
+	${INCLUDE_DIR}/sfz/gl/PostProcessQuad.hpp
+	 ${SOURCE_DIR}/sfz/gl/PostProcessQuad.cpp
 	${INCLUDE_DIR}/sfz/gl/Program.hpp
 	 ${SOURCE_DIR}/sfz/gl/Program.cpp
 	${INCLUDE_DIR}/sfz/gl/SpriteBatch.hpp
