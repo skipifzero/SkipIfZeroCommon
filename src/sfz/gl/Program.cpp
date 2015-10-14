@@ -229,6 +229,7 @@ Program::Program(Program&& other) noexcept
 	std::swap(this->mVertexPath, other.mVertexPath);
 	std::swap(this->mGeometryPath, other.mGeometryPath);
 	std::swap(this->mFragmentPath, other.mFragmentPath);
+	std::swap(this->mIsPostProcess, other.mIsPostProcess);
 	std::swap(this->mBindAttribFragFunc, other.mBindAttribFragFunc);
 }
 
@@ -238,6 +239,7 @@ Program& Program::operator= (Program&& other) noexcept
 	std::swap(this->mVertexPath, other.mVertexPath);
 	std::swap(this->mGeometryPath, other.mGeometryPath);
 	std::swap(this->mFragmentPath, other.mFragmentPath);
+	std::swap(this->mIsPostProcess, other.mIsPostProcess);
 	std::swap(this->mBindAttribFragFunc, other.mBindAttribFragFunc);
 	return *this;
 }
