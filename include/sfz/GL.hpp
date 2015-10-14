@@ -8,7 +8,7 @@
 #include "sfz/gl/GLUtils.hpp"
 #include "sfz/gl/PostProcessQuad.hpp"
 #include "sfz/gl/Program.hpp"
-#incldue "sfz/gl/SimpleModel.hpp"
+#include "sfz/gl/SimpleModel.hpp"
 #include "sfz/gl/SpriteBatch.hpp"
 #include "sfz/gl/Texture.hpp"
 #include "sfz/gl/TextureEnums.hpp"
