@@ -107,6 +107,8 @@ set(SOURCE_GL_FILES
 	 ${SOURCE_DIR}/sfz/gl/PostProcessQuad.cpp
 	${INCLUDE_DIR}/sfz/gl/Program.hpp
 	 ${SOURCE_DIR}/sfz/gl/Program.cpp
+	${INCLUDE_DIR}/sfz/gl/SimpleModel.hpp
+	 ${SOURCE_DIR}/sfz/gl/SimpleModel.cpp
 	${INCLUDE_DIR}/sfz/gl/SpriteBatch.hpp
 	 ${SOURCE_DIR}/sfz/gl/SpriteBatch.cpp
 	${INCLUDE_DIR}/sfz/gl/Texture.hpp
