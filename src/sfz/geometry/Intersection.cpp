@@ -157,29 +157,29 @@ bool intersects(const OBB& a, const OBB& b) noexcept
 	if (std::abs(t[0]*R.at(2,0) - t[2]*R.at(0,0)) > ra + rb) return false;
 
 	// Test axis L = aU[1] x bU[1]
-    ra = aE[0]*AbsR.at(2,1) + aE[2]*AbsR.at(0,1);
-    rb = bE[0]*AbsR.at(1,2) + bE[2]*AbsR.at(1,0);
-    if (std::abs(t[0]*R.at(2,1) - t[2]*R.at(0,1)) > ra + rb) return false;
+	ra = aE[0]*AbsR.at(2,1) + aE[2]*AbsR.at(0,1);
+	rb = bE[0]*AbsR.at(1,2) + bE[2]*AbsR.at(1,0);
+	if (std::abs(t[0]*R.at(2,1) - t[2]*R.at(0,1)) > ra + rb) return false;
 
-    // Test axis L = aU[1] x bU[2]
-    ra = aE[0]*AbsR.at(2,2) + aE[2]*AbsR.at(0,2);
-    rb = bE[0]*AbsR.at(1,1) + bE[1]*AbsR.at(1,0);
-    if (std::abs(t[0]*R.at(2,2) - t[2]*R.at(0,2)) > ra + rb) return false;
+	// Test axis L = aU[1] x bU[2]
+	ra = aE[0]*AbsR.at(2,2) + aE[2]*AbsR.at(0,2);
+	rb = bE[0]*AbsR.at(1,1) + bE[1]*AbsR.at(1,0);
+	if (std::abs(t[0]*R.at(2,2) - t[2]*R.at(0,2)) > ra + rb) return false;
 
-    // Test axis L = aU[2] x bU[0]
-    ra = aE[0]*AbsR.at(1,0) + aE[1]*AbsR.at(0,0);
-    rb = bE[1]*AbsR.at(2,2) + bE[2]*AbsR.at(2,1);
-    if (std::abs(t[1]*R.at(0,0) - t[0]*R.at(1,0)) > ra + rb) return false;
+	// Test axis L = aU[2] x bU[0]
+	ra = aE[0]*AbsR.at(1,0) + aE[1]*AbsR.at(0,0);
+	rb = bE[1]*AbsR.at(2,2) + bE[2]*AbsR.at(2,1);
+	if (std::abs(t[1]*R.at(0,0) - t[0]*R.at(1,0)) > ra + rb) return false;
 
-    // Test axis L = aU[2] x bU[1]
-    ra = aE[0]*AbsR.at(1,1) + aE[1]*AbsR.at(0,1);
-    rb = bE[0]*AbsR.at(2,2) + bE[2]*AbsR.at(2,0);
-    if (std::abs(t[1]*R.at(0,1) - t[0]*R.at(1,1)) > ra + rb) return false;
+	// Test axis L = aU[2] x bU[1]
+	ra = aE[0]*AbsR.at(1,1) + aE[1]*AbsR.at(0,1);
+	rb = bE[0]*AbsR.at(2,2) + bE[2]*AbsR.at(2,0);
+	if (std::abs(t[1]*R.at(0,1) - t[0]*R.at(1,1)) > ra + rb) return false;
 
-    // Test axis L = aU[2] x bU[2]
-    ra = aE[0]*AbsR.at(1,2) + aE[1]*AbsR.at(0,2);
-    rb = bE[0]*AbsR.at(2,1) + bE[1]*AbsR.at(2,0);
-    if (std::abs(t[1]*R.at(0,2) - t[0]*R.at(1,2)) > ra + rb) return false;
+	// Test axis L = aU[2] x bU[2]
+	ra = aE[0]*AbsR.at(1,2) + aE[1]*AbsR.at(0,2);
+	rb = bE[0]*AbsR.at(2,1) + bE[1]*AbsR.at(2,0);
+	if (std::abs(t[1]*R.at(0,2) - t[0]*R.at(1,2)) > ra + rb) return false;
 
 	// If no separating axis can be found then the OBBs must be intersecting.
 	return true;
