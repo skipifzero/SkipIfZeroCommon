@@ -219,9 +219,9 @@ bool overlaps(const Circle& circle, const AABB2D& rect) noexcept
 {
 	// If the length between the center of the circle and the closest point on the rectangle is
 	// less than or equal to the circles radius they overlap. Both sides of the equation is 
-	// squared to avoid somewhat expensive sqrt() function. 
-	vec2 e{ std::max(rect.min.x - circle.pos.x, 0.0f), std::max(rect.min.y - circle.pos.y, 0.0f) };
-	e += vec2{ std::max(circle.pos.x - rect.max.x, 0.0f), std::max(circle.pos.y - rect.max.y, 0.0f) };
+	// squared to avoid somewhat expensive sqrt() function.
+	vec2 e{ max(vec2{ rect.min.x - circle.pos.x, rect.min.y - circle.pos.y }, 0.0f) };
+	e +=    max(vec2{ circle.pos.x - rect.max.x, circle.pos.y - rect.max.y }, 0.0f);
 	return squaredLength(e) <= circle.radius * circle.radius;
 }
 
