@@ -324,6 +324,58 @@ Vector<T,2> rotate(Vector<T,2> vector, T angleRadians) noexcept
 }
 
 template<typename T, size_t N>
+Vector<T,N> min(const Vector<T,N>& left, const Vector<T,N>& right) noexcept
+{
+	Vector<T,N> temp;
+	for (size_t i = 0; i < N; ++i) {
+		temp[i] = std::min(left[i], right[i]);
+	}
+	return temp;
+}
+
+template<typename T, size_t N>
+Vector<T,N> max(const Vector<T,N>& left, const Vector<T,N>& right) noexcept
+{
+	Vector<T,N> temp;
+	for (size_t i = 0; i < N; ++i) {
+		temp[i] = std::max(left[i], right[i]);
+	}
+	return temp;
+}
+
+template<typename T, size_t N>
+Vector<T,N> min(const Vector<T,N>& vector, T scalar) noexcept
+{
+	Vector<T,N> temp;
+	for (size_t i = 0; i < N; ++i) {
+		temp[i] = std::min(vector[i], scalar);
+	}
+	return temp;
+}
+
+template<typename T, size_t N>
+Vector<T,N> min(T scalar, const Vector<T,N>& vector) noexcept
+{
+	return min(vector, scalar);
+}
+
+template<typename T, size_t N>
+Vector<T,N> max(const Vector<T,N>& vector, T scalar) noexcept
+{
+	Vector<T,N> temp;
+	for (size_t i = 0; i < N; ++i) {
+		temp[i] = std::max(vector[i], scalar);
+	}
+	return temp;
+}
+
+template<typename T, size_t N>
+Vector<T,N> max(T scalar, const Vector<T,N>& vector) noexcept
+{
+	return max(vector, scalar);
+}
+
+template<typename T, size_t N>
 size_t hash(const Vector<T,N>& vector) noexcept
 {
 	std::hash<T> hasher;

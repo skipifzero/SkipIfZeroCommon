@@ -199,6 +199,26 @@ T angle(Vector<T,2> vector) noexcept;
 template<typename T>
 Vector<T,2> rotate(Vector<T,2> vector, T angleRadians) noexcept;
 
+/** @brief Returns the element-wise minimum of two vectors. */
+template<typename T, size_t N>
+Vector<T,N> min(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
+
+/** @brief Returns the element-wise maximum of two vectors. */
+template<typename T, size_t N>
+Vector<T,N> max(const Vector<T,N>& left, const Vector<T,N>& right) noexcept;
+
+/** @brief Returns the element-wise minimum of a vector and a scalar. */
+template<typename T, size_t N>
+Vector<T,N> min(const Vector<T,N>& vector, T scalar) noexcept;
+template<typename T, size_t N>
+Vector<T,N> min(T scalar, const Vector<T,N>& vector) noexcept;
+
+/** @brief Returns the element-wise maximum of a vector and a scalar. */
+template<typename T, size_t N>
+Vector<T,N> max(const Vector<T,N>& vector, T scalar) noexcept;
+template<typename T, size_t N>
+Vector<T,N> max(T scalar, const Vector<T,N>& vector) noexcept;
+
 /** @brief Hashes the vector */
 template<typename T, size_t N>
 size_t hash(const Vector<T,N>& vector) noexcept;
