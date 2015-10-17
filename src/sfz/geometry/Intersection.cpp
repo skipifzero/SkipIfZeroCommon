@@ -220,25 +220,9 @@ bool overlaps(const Circle& circle, const AABB2D& rect) noexcept
 	// If the length between the center of the circle and the closest point on the rectangle is
 	// less than or equal to the circles radius they overlap. Both sides of the equation is 
 	// squared to avoid somewhat expensive sqrt() function. 
-	float closestX = circle.pos.x;
-	float closestY = circle.pos.y;
-	
-	// TODO: These can be optimized with min/max.
-	if (circle.pos.x <= rect.min.x) {
-		closestX = rect.min.x;
-	} 
-	else if (circle.pos.x >= rect.max.x) {
-		closestX = rect.max.x;
-	}
-	
-	if (circle.pos.y <= rect.min.y) {
-		closestY = rect.min.y;
-	}
-	else if (circle.pos.y >= rect.max.y) {
-		closestY = rect.max.y;
-	}
-	
-	return squaredLength(vec2{closestX,closestY} - circle.pos) <= (circle.radius*circle.radius);
+	vec2 e{ std::max(rect.min.x - circle.pos.x, 0.0f), std::max(rect.min.y - circle.pos.y, 0.0f) };
+	e += vec2{ std::max(circle.pos.x - rect.max.x, 0.0f), std::max(circle.pos.y - rect.max.y, 0.0f) };
+	return squaredLength(e) <= circle.radius * circle.radius;
 }
 
 bool overlaps(const AABB2D& rect, const Circle& circle) noexcept
