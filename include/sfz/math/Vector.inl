@@ -245,17 +245,13 @@ Vector<T,3> UNIT_Z() noexcept
 template<typename T, size_t N>
 T length(const Vector<T,N>& vector) noexcept
 {
-	return T(std::sqrt(squaredLength(vector)));
+	return T(std::sqrt(dot(vector, vector)));
 }
 
 template<typename T, size_t N>
 T squaredLength(const Vector<T,N>& vector) noexcept
 {
-	T squaredSum = 0;
-	for (size_t i = 0; i < N; ++i) {
-		squaredSum += vector.elements[i]*vector.elements[i];
-	}
-	return squaredSum;
+	return dot(vector, vector);
 }
 
 template<typename T, size_t N>

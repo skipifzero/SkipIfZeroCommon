@@ -243,7 +243,7 @@ bool overlaps(const Circle& circle, const AABB2D& rect) noexcept
 
 bool overlaps(const AABB2D& rect, const Circle& circle) noexcept
 {
-	return overlaps(rect, circle);
+	return overlaps(circle, rect);
 }
 
 // Plane & AABB tests

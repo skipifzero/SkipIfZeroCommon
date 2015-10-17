@@ -145,7 +145,7 @@ TEST_CASE("Circle vs Circle test", "[sfz::Intersection]")
 
 	Circle mid{vec2{0.0f}, 1.0f};
 	Circle midBig{vec2{0.0f}, 2.0f};
-	Circle left{vec2{-2.1f, 0.0}, 1.0f};
+	Circle left{vec2{-2.1f, 0.0f}, 1.0f};
 
 	REQUIRE(overlaps(mid, midBig));
 	REQUIRE(!overlaps(mid, left));
@@ -158,7 +158,7 @@ TEST_CASE("AABB2D vs AABB2D test", "[sfz::Intersection]")
 
 	AABB2D mid{vec2{0.0f}, vec2{2.0f}};
 	AABB2D midBig{vec2{0.0f}, vec2{4.0f}};
-	AABB2D left{vec2{-2.1, 0.0f}, vec2{2.0f}};
+	AABB2D left{vec2{-2.1f, 0.0f}, vec2{2.0f}};
 
 	REQUIRE(overlaps(mid, midBig));
 	REQUIRE(!overlaps(mid, left));
@@ -171,11 +171,11 @@ TEST_CASE("AABB2D vs Circle test", "[sfz::Intersection]")
 
 	AABB2D rMid{vec2{0.0f}, vec2{2.0f}};
 	AABB2D rMidBig{vec2{0.0f}, vec2{4.0f}};
-	AABB2D rLeft{vec2{-2.1, 0.0f}, vec2{2.0f}};
+	AABB2D rLeft{vec2{-2.1f, 0.0f}, vec2{2.0f}};
 
 	Circle cMid{vec2{0.0f}, 1.0f};
 	Circle cMidBig{vec2{0.0f}, 2.0f};
-	Circle cLeft{vec2{-2.1f, 0.0}, 1.0f};
+	Circle cLeft{vec2{-2.1f, 0.0f}, 1.0f};
 
 	REQUIRE(overlaps(rMid, cMid));
 	REQUIRE(overlaps(rMid, cMidBig));

@@ -2,6 +2,7 @@
 #ifndef SFZ_MATH_VECTOR_HPP
 #define SFZ_MATH_VECTOR_HPP
 
+#include <algorithm> // std::min & std::max
 #include <cstddef> // std::size_t
 #include <cstdint> // std::int32_t
 #include <functional> // std::hash
