@@ -220,6 +220,10 @@ Vector<T,N> max(const Vector<T,N>& vector, T scalar) noexcept;
 template<typename T, size_t N>
 Vector<T,N> max(T scalar, const Vector<T,N>& vector) noexcept;
 
+/** @brief Returns the element-wise abs() of the vector. */
+template<typename T, size_t N>
+Vector<T,N> abs(const Vector<T,N>& vector) noexcept;
+
 /** @brief Hashes the vector */
 template<typename T, size_t N>
 size_t hash(const Vector<T,N>& vector) noexcept;
