@@ -227,9 +227,9 @@ float FontRenderer::write(vec2 position, float size, const char* text) noexcept
 	CharInfo info;
 	uint32_t codepoint;
 	uint32_t state = 0;
-	const char* textPtr = text;
-	while (*textPtr++) {
-		uint8_t c = *textPtr;
+	const char* textItr = text;
+	uint8_t c;
+	while ((c = *textItr++)) {
 		if (decode(&state, &codepoint, c)) continue;
 		codepoint -= FIRST_CHAR;
 		if (LAST_CHAR < codepoint) codepoint = UNKNOWN_CHAR - FIRST_CHAR;
@@ -265,9 +265,9 @@ float FontRenderer::measureStringWidth(float size, const char* text) const noexc
 	vec2 currPos = vec2{0.0f};
 	uint32_t codepoint;
 	uint32_t state = 0;
-	const char* textPtr = text;
-	while (*textPtr++) {
-		uint8_t c = *textPtr;
+	const char* textItr = text;
+	uint8_t c;
+	while ((c = *textItr++)) {
 		if (decode(&state, &codepoint, c)) continue;
 		codepoint -= FIRST_CHAR;
 		if (LAST_CHAR < codepoint) codepoint = UNKNOWN_CHAR - FIRST_CHAR;
