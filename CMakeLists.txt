@@ -102,6 +102,8 @@ set(SOURCE_GL_FILES
 	 ${SOURCE_DIR}/sfz/gl/Context.cpp
 	${INCLUDE_DIR}/sfz/gl/FontRenderer.hpp
 	 ${SOURCE_DIR}/sfz/gl/FontRenderer.cpp
+	${INCLUDE_DIR}/sfz/gl/FrameBuffer.hpp
+	 ${SOURCE_DIR}/sfz/gl/Framebuffer.cpp
 	${INCLUDE_DIR}/sfz/gl/GLUtils.hpp
 	 ${SOURCE_DIR}/sfz/gl/GLUtils.cpp
 	${INCLUDE_DIR}/sfz/gl/OpenGL.hpp
