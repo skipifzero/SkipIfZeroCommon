@@ -14,6 +14,6 @@
 #include "sfz/gl/TextureEnums.hpp"
 #include "sfz/gl/TexturePacker.hpp"
 #include "sfz/gl/TextureRegion.hpp"
-
+#include "sfz/gl/ViewFrustumMesh.hpp"
 
 #endif

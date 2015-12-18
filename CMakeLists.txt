@@ -91,7 +91,9 @@ set(SOURCE_GEOMETRY_FILES
 	${INCLUDE_DIR}/sfz/geometry/Plane.hpp
 	${INCLUDE_DIR}/sfz/geometry/Plane.inl
 	${INCLUDE_DIR}/sfz/geometry/Sphere.hpp
-	${INCLUDE_DIR}/sfz/geometry/Sphere.inl)
+	${INCLUDE_DIR}/sfz/geometry/Sphere.inl
+	${INCLUDE_DIR}/sfz/geometry/ViewFrustum.hpp
+	 ${SOURCE_DIR}/sfz/geometry/ViewFrustum.cpp)
 source_group(sfz_geometry FILES ${SOURCE_GEOMETRY_FILES})
 
 set(SOURCE_GL_FILES
@@ -116,7 +118,9 @@ set(SOURCE_GL_FILES
 	${INCLUDE_DIR}/sfz/gl/TextureEnums.hpp
 	${INCLUDE_DIR}/sfz/gl/TexturePacker.hpp
 	 ${SOURCE_DIR}/sfz/gl/TexturePacker.cpp
-	${INCLUDE_DIR}/sfz/gl/TextureRegion.hpp)
+	${INCLUDE_DIR}/sfz/gl/TextureRegion.hpp
+	${INCLUDE_DIR}/sfz/gl/ViewFrustumMesh.hpp
+	 ${SOURCE_DIR}/sfz/gl/ViewFrustumMesh.cpp)
 source_group(sfz_gl FILES ${SOURCE_GL_FILES})
 
 set(SOURCE_MATH_FILES
