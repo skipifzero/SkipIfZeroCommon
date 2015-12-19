@@ -16,5 +16,10 @@ bool checkGLError() noexcept;
  */
 bool checkAllGLErrors() noexcept;
 
+/**
+ * @brief Prints system information to stdout.
+ */
+void printSystemGLInfo() noexcept;
+
 } // namespace gl
 #endif

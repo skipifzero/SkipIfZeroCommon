@@ -30,4 +30,12 @@ bool checkAllGLErrors() noexcept
 	return foundError;
 }
 
+void printSystemGLInfo() noexcept
+{
+	std::cout << "Vendor: " << glGetString(GL_VENDOR)
+	          << "\nVersion: " << glGetString(GL_VERSION)
+	          << "\nRenderer: " << glGetString(GL_RENDERER)
+	          << std::endl << std::endl;
+}
+
 } // namespace gl
