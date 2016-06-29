@@ -33,7 +33,6 @@ static const char* SSAO_SHADER = R"(
 
 	uniform vec2 uDimensions;
 	uniform float uRadius;
-	uniform float uMinDepthBias;
 	uniform float uOcclusionPower;
 
 	uniform int uKernelSize;
@@ -64,18 +63,22 @@ static const char* SSAO_SHADER = R"(
 		mat3 kernelRot = mat3(tangent, bitangent, normal);
 
 		// Calculates the minimum and maximum depth values for a sample to count as an occluder
-		float sampleMinDepth = linDepth - (uRadius / uFarPlaneDist);
-		float sampleMaxDepth = linDepth - (uMinDepthBias / uFarPlaneDist);
+		//float sampleMinDepth = linDepth - (uRadius / uFarPlaneDist);
+		//float sampleMaxDepth = linDepth - (uMinDepthBias / uFarPlaneDist);
+
+		float maxRangeDiff = uRadius / uFarPlaneDist;
 
 		// Samples points and calculates occlusion 
 		float occlusion = 0.0;
 		for (int i = 0; i < uKernelSize; i++) {
 			vec3 samplePos = vsPos + uRadius * (kernelRot * uKernel[i]);
+			float samplePosDepth = -samplePos.z / uFarPlaneDist;
 			float sampleDepth = sampleLinearDepth(samplePos);
 
-			// Add occlusion (+1) if sample's depth value is within precalculated range
-			if (sampleMinDepth < sampleDepth && sampleDepth < sampleMaxDepth) {
-				occlusion += 1.0;
+			// Add occlusion if sample is not behind object in its fragment
+			if (sampleDepth <= samplePosDepth) {
+				// Range check
+				occlusion += smoothstep(0.0, 1.0, maxRangeDiff / abs(linDepth - sampleDepth));
 			}
 		}
 		occlusion = pow(1.0 - (occlusion / uKernelSize), uOcclusionPower);
@@ -175,8 +178,8 @@ static void generateNoise(vec3* noisePtr) noexcept
 // SSAO: Constructors & destructors
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-SSAO::SSAO(vec2i dimensions, size_t numSamples, float radius, float minDepthBias,
-           float occlusionPower, bool blurOcclusion) noexcept
+SSAO::SSAO(vec2i dimensions, size_t numSamples, float radius, float occlusionPower,
+           bool blurOcclusion) noexcept
 :
 	mSSAOProgram{Program::postProcessFromSource(SSAO_SHADER)},
 	mHorizontalBlurProgram{Program::postProcessFromSource(HORIZONTAL_BLUR_4_SHADER)},
@@ -184,7 +187,6 @@ SSAO::SSAO(vec2i dimensions, size_t numSamples, float radius, float minDepthBias
 
 	mDimensions{dimensions},
 	mRadius{radius},
-	mMinDepthBias{minDepthBias},
 	mOcclusionPower{occlusionPower},
 	mBlurOcclusion{blurOcclusion},
 	
@@ -194,8 +196,6 @@ SSAO::SSAO(vec2i dimensions, size_t numSamples, float radius, float minDepthBias
 {
 	static_assert(sizeof(vec3) == sizeof(float)*3, "vec3 is padded");
 	sfz_assert_debug(numSamples <= 128);
-	sfz_assert_debug(0 <= minDepthBias);
-	sfz_assert_debug(minDepthBias < radius);
 	sfz_assert_debug(0 < occlusionPower);
 	
 	resizeFramebuffers(mOcclusionFBO, mTempFBO, mDimensions);
@@ -232,7 +232,6 @@ uint32_t SSAO::calculate(uint32_t linearDepthTex, uint32_t normalTex, const mat4
 
 	gl::setUniform(mSSAOProgram, "uDimensions", vec2{(float)mDimensions.x, (float)mDimensions.y});
 	gl::setUniform(mSSAOProgram, "uRadius", mRadius);
-	gl::setUniform(mSSAOProgram, "uMinDepthBias", mMinDepthBias);
 	gl::setUniform(mSSAOProgram, "uOcclusionPower", mOcclusionPower);
 
 	gl::setUniform(mSSAOProgram, "uKernelSize", (int32_t)mKernelSize);
@@ -303,12 +302,6 @@ void SSAO::radius(float radius) noexcept
 {
 	sfz_assert_debug(0.0f < radius);
 	mRadius = radius;
-}
-
-void SSAO::minDepthBias(float minDepthBias) noexcept
-{
-	sfz_assert_debug(0.0f <= minDepthBias);
-	mMinDepthBias = minDepthBias;
 }
 
 void SSAO::occlusionPower(float occlusionPower) noexcept
